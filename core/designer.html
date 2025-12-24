@@ -2204,25 +2204,29 @@
         }
 
         async function saveCalculatorsConfig() {
-            // Remove temporary preview URLs before saving to file
             const configToSave = window.CalculatorConfig.map(conf => {
                 const clean = { ...conf };
                 delete clean._previewIcon;
                 return clean;
             });
             const content = `window.CalculatorConfig = ${JSON.stringify(configToSave, null, 4)}; `;
+            const filename = 'data/config_calculators.js';
+
             try {
-                const handle = await window.showSaveFilePicker({
-                    suggestedName: 'config_calculators.js',
-                    types: [{ accept: { 'text/javascript': ['.js'] } }]
+                const response = await fetch('http://localhost:5005', {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename, content: content })
                 });
+                if (response.ok) return;
+            } catch (e) { }
+
+            try {
+                const handle = await window.showSaveFilePicker({ suggestedName: 'config_calculators.js', types: [{ accept: { 'text/javascript': ['.js'] } }] });
                 const writable = await handle.createWritable();
                 await writable.write(content);
                 await writable.close();
                 alert('✅ Список калькуляторів збережено!');
-            } catch (e) {
-                if (e.name !== 'AbortError') alert('Помилка: ' + e.message);
-            }
+            } catch (e) { if (e.name !== 'AbortError') alert('Помилка: ' + e.message); }
         }
 
         async function saveDashboardConfig() {
@@ -2266,19 +2270,24 @@
             };
             window.DashboardConfig = newConfig;
             const content = `window.DashboardConfig = ${JSON.stringify(newConfig, null, 4)};`;
+            const filename = 'data/config_dashboard.js';
+
             try {
-                const handle = await window.showSaveFilePicker({
-                    suggestedName: 'config_dashboard.js',
-                    types: [{ accept: { 'text/javascript': ['.js'] } }]
+                const response = await fetch('http://localhost:5005', {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename, content: content })
                 });
+                if (response.ok) { window.DashboardConfig = newConfig; return; }
+            } catch (e) { }
+
+            try {
+                const handle = await window.showSaveFilePicker({ suggestedName: 'config_dashboard.js', types: [{ accept: { 'text/javascript': ['.js'] } }] });
                 const writable = await handle.createWritable();
                 await writable.write(content);
                 await writable.close();
                 window.DashboardConfig = newConfig;
                 alert('✅ Налаштування збережено!');
-            } catch (e) {
-                if (e.name !== 'AbortError') alert('Помилка: ' + e.message);
-            }
+            } catch (e) { if (e.name !== 'AbortError') alert('Помилка: ' + e.message); }
         }
 
         async function handleGlobalSave() {

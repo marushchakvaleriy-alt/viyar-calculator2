@@ -2464,13 +2464,32 @@
         function handleCSV(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { e.target.result.split('\n').forEach(l => { const c = l.split(';'); if (c[1] && c[1].length > 2) Schema.fields.push({ id: 'f_csv_' + Math.random().toString(36).substr(2, 5), groupId: Schema.groups[0].id, label: c[1], type: 'number' }); }); renderMatrix(); }; r.readAsText(f, 'windows-1251'); }
         if (window.showSaveFilePicker) {
             window.saveData = async function () {
+                const defaultName = window.currentConfigFile ? window.currentConfigFile.split('/').pop() : 'schema.js';
+                const fileContent = `const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`;
+                const filename = window.currentConfigFile ? window.currentConfigFile : 'data/' + defaultName;
+
+                // Спроба автоматичного збереження через локальний сервер
                 try {
-                    // Ensure filename logic: if currentConfigFile is data/kitchen.js, we want just kitchen.js or schema_kitchen.js
-                    // Actually, the path might be data/schema_kitchen.js.
-                    const defaultName = window.currentConfigFile ? window.currentConfigFile.split('/').pop() : 'schema.js';
+                    const response = await fetch('http://localhost:5005', {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filename: filename, content: fileContent })
+                    });
+                    if (response.ok) {
+                        document.getElementById('unsavedHint').style.display = 'none';
+                        // Візуальна індикація на кнопці (якщо вона є в DOM)
+                        console.log("✅ Автоматично збережено через Local Saver");
+                        return;
+                    }
+                } catch (e) {
+                    console.log("Локальний сервер не запущено, використовуємо стандартне збереження.");
+                }
+
+                try {
                     const handle = await window.showSaveFilePicker({ suggestedName: defaultName, types: [{ accept: { 'text/javascript': ['.js'] } }] });
                     const writ = await handle.createWritable();
-                    await writ.write(`const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`);
+                    await writ.write(fileContent);
                     await writ.close();
                     document.getElementById('unsavedHint').style.display = 'none';
                     alert('✅ Конфігурацію збережено!');
@@ -2479,9 +2498,9 @@
                 }
             };
         } else {
-            // Fallback for older browsers
             window.saveData = function () {
-                const blob = new Blob([`const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`], { type: 'text/javascript' });
+                const fileContent = `const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`;
+                const blob = new Blob([fileContent], { type: 'text/javascript' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
