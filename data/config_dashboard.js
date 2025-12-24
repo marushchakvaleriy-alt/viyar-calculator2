@@ -5,7 +5,7 @@ window.DashboardConfig = {
     "logoText": "",
     "logoImage": "",
     "backgroundImage": "",
-    "bgType": "color",
+    "bgType": "gradient",
     "glassBlur": 10,
     "glassOpacity": 0.1,
     "cardMinWidth": 330,
@@ -26,11 +26,11 @@ window.DashboardConfig = {
     "illus1X": -895,
     "illus1Y": 5,
     "illus1Scale": 0.4,
-    "headerIllustration2": "",
+    "headerIllustration2": "images/hints/hlopchyk.png",
     "illus2X": -55,
     "illus2Y": 30,
     "illus2Scale": 1.2,
     "headerBgColor": "#1e88e5",
-    "headerOpacity": 0,
+    "headerOpacity": 0.15,
     "headerBlur": 31
 };
