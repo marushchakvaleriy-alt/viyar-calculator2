@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Matrix V14 (Separated Totals)</title>
+    <!-- Config Loaders -->
+    <script src="../data/config_calculators.js"></script>
+    <script src="../data/config_dashboard.js"></script>
     <!-- Dynamic Schema Loader -->
     <script>
         (function () {
@@ -600,8 +603,11 @@
             <button class="nav-btn" onclick="openActionModal('ADD_GROUP_CALC')">+ Група (Калк)</button>
             <button class="nav-btn" onclick="document.getElementById('csvIn').click()" style="margin-top:10px">📂 Імпорт
                 CSV</button>
+            <button class="nav-btn" onclick="window.location.href='../index.html'"
+                style="margin-top:10px; background: #3b82f6; border: 1px solid rgba(255,255,255,0.2); font-weight: 800; color: white;">🏠
+                НА ГОЛОВНУ</button>
             <button class="nav-btn" onclick="goToDesigner()"
-                style="margin-top:20px; background: #6366f1; border: 1px solid rgba(255,255,255,0.2)">🎨
+                style="margin-top:10px; background: #6366f1; border: 1px solid rgba(255,255,255,0.2)">🎨
                 ДИЗАЙНЕР</button>
             <input type="file" id="csvIn" style="display:none" onchange="handleCSV(this)">
         </div>
@@ -614,8 +620,12 @@
                 <a href="../index.html" style="text-decoration:none;font-size:20px; transition:transform 0.2s;"
                     onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"
                     title="На головну">🏠</a>
-                <div style="font-weight:700; color:var(--text-main); font-size: 11px; white-space: nowrap"
-                    class="top-bar-title">МАТРИЦЯ</div>
+                <div style="font-weight:700; color:var(--text-main); font-size: 11px; white-space: nowrap; opacity: 0.6;"
+                    class="top-bar-title">ПРАЦЮЄМО З:</div>
+                <select id="calcSwitcher" onchange="switchCalculator(this.value)"
+                    style="padding: 6px 12px; border-radius: 10px; border: 2px solid var(--accent); background: white; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--accent); outline: none; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.1); transition: 0.2s;">
+                    <!-- Javascript will populate this -->
+                </select>
             </div>
             <div style="display:flex; align-items:center; gap:12px">
                 <div
@@ -878,10 +888,42 @@
 
         function goToDesigner() {
             const config = window.currentConfigFile || 'data/schema_kitchen.js';
-            window.location.href = 'designer.html?config=' + encodeURIComponent(config);
+            window.location.href = 'designer.html?config=' + config;
         }
 
-        document.addEventListener('DOMContentLoaded', refresh);
+        function initCalcSwitcher() {
+            const select = document.getElementById('calcSwitcher');
+            if (!select || !window.CalculatorConfig) return;
+
+            select.innerHTML = '';
+            window.CalculatorConfig.forEach(conf => {
+                const opt = document.createElement('option');
+                opt.value = conf.file;
+                opt.textContent = conf.title;
+                // Normalize for comparison
+                const currentRel = window.currentConfigFile.replace('../', '');
+                const confRel = conf.file.replace('../', '');
+                if (currentRel === confRel) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        function switchCalculator(file) {
+            const hasUnsaved = document.getElementById('unsavedHint').style.display !== 'none';
+            if (hasUnsaved) {
+                if (!confirm('У вас є незбережені зміни! Ви впевнені, що хочете змінити калькулятор без збереження?')) {
+                    // Reset select to current
+                    document.getElementById('calcSwitcher').value = window.currentConfigFile;
+                    return;
+                }
+            }
+            window.location.href = 'admin.html?config=' + file;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCalcSwitcher();
+            refresh();
+        });
 
         function refresh() {
             if (!UIState.lastSchema) UIState.lastSchema = JSON.stringify(Schema);
@@ -2480,6 +2522,7 @@
                         document.getElementById('unsavedHint').style.display = 'none';
                         // Візуальна індикація на кнопці (якщо вона є в DOM)
                         console.log("✅ Автоматично збережено через Local Saver");
+                        alert('✅ Файл збережено автоматично!');
                         return;
                     }
                 } catch (e) {
@@ -2509,6 +2552,7 @@
                 a.click();
                 document.body.removeChild(a);
                 document.getElementById('unsavedHint').style.display = 'none';
+                alert('✅ Файл підготовлено до завантаження!');
             };
         }
     </script>

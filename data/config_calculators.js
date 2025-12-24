@@ -1,18 +1,18 @@
 window.CalculatorConfig = [
     {
-        "id": "wardrobe",
-        "title": "Шафа-гардероб",
-        "icon": "images/ui/шафа.png",
-        "file": "data/schema_wardrobe.js",
-        "desc": "Професійний калькулятор для розрахунку поіннтів шаф"
-    },
-    {
         "id": "kitchen",
         "title": "Кухня",
         "icon": "images/ui/кухня.png",
         "file": "data/schema_kitchen.js",
         "desc": "Детальний калькулятор для розрахунку поіннтів кухонних меблів",
         "colSpan": 1
+    },
+    {
+        "id": "wardrobe",
+        "title": "Шафа-гардероб",
+        "icon": "images/ui/шафа.png",
+        "file": "data/schema_wardrobe.js",
+        "desc": "Професійний калькулятор для розрахунку поіннтів шаф"
     },
     {
         "id": "schema_1766508374521",

@@ -806,12 +806,13 @@
                 <input type="file" id="dbFilePicker" style="display:none" onchange="handleDbFileSelection(this)">
 
                 <div class="section-tab">Список Калькуляторів</div>
+                <button class="btn-save" onclick="addNewCalculatorToConfig()"
+                    style="width:100%; background:var(--accent); margin-bottom: 15px; font-weight: 800; border: 2px solid rgba(255,255,255,0.3);">➕
+                    ДОДАТИ НОВИЙ КАЛЬКУЛЯТОР</button>
                 <div id="calculatorsListEditor"
                     style="display:flex; flex-direction:column; gap:15px; margin-bottom:20px;">
                     <!-- JS will populate this -->
                 </div>
-                <button class="btn-save" onclick="addNewCalculatorToConfig()"
-                    style="width:100%; background:var(--accent); margin-bottom: 20px;">+ Додати Калькулятор</button>
                 <button class="btn-save" onclick="saveCalculatorsConfig()" style="width:100%; background:#8b5cf6;">💾
                     Зберегти список калькуляторів</button>
             </div>
@@ -1653,7 +1654,11 @@
                     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ filename: filename, content: fileContent })
                 });
-                if (response.ok) { console.log("✅ Автоматично збережено через Local Saver"); return; }
+                if (response.ok) {
+                    console.log("✅ Автоматично збережено через Local Saver");
+                    alert('✅ Конфігурацію збережено!');
+                    return;
+                }
             } catch (e) { }
 
             try {
@@ -1921,7 +1926,7 @@
             if (!window.CalculatorConfig) return;
 
             const glassBlur = document.getElementById('dbBlur').value;
-            const glassOpacity = document.getElementById('dbOpacity').value;
+            let glassOpacity = parseFloat(document.getElementById('dbOpacity').value);
 
             window.CalculatorConfig.forEach((conf, idx) => {
                 const card = document.createElement('div');
@@ -1967,6 +1972,7 @@
                     grid-column: span ${colSpan};
                     transition: 0.3s;
                     box-sizing: border-box;
+                    position: relative;
                 `;
                 if (idx === window.selectedCalcIdx) card.classList.add('selected-db-card');
 
@@ -1984,6 +1990,9 @@
                 const iconHtml = isImage ? `<img src="${dIcon}" style="height:${cardIconSize}px; display:block; margin: 0 auto; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px">${conf.icon}</div>`;
 
                 card.innerHTML = `
+                    <button onclick="removeCalcFromConfig(${idx}); event.stopPropagation();" 
+                        style="position:absolute; top:12px; right:12px; background:#ef4444; border:none; color:white; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:14px; z-index:10; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.2s;" 
+                        onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Видалити">✕</button>
                     <div style="flex-grow: 1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
                         ${badgeHtml}
                         <div style="height: ${cardIconSize}px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
@@ -1992,7 +2001,7 @@
                         <div style="font-size:${cardTitleSize}px; color:${isPlaceholder ? 'inherit' : cardTitleColor}; font-weight:${cardTitleWeight}; margin-bottom: 8px; line-height: 1.2;">${conf.title}</div>
                         <div style="font-size:${cardDescSize}px; color:${isPlaceholder ? 'inherit' : cardDescColor}; opacity:0.8; line-height: 1.4; max-width: 250px;">${conf.desc || ''}</div>
                     </div>
-                    <button class="btn-logic" onclick="event.stopPropagation(); window.location.href='designer.html?config=${conf.file}'" 
+                    <button class="btn-logic" onclick="event.stopPropagation(); window.location.href='admin.html?config=${conf.file}'" 
                         style="margin-top:20px; font-size:10px; padding:6px 12px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:99px; cursor:pointer; color:inherit;">
                         ⚙️ Редагувати логіку
                     </button>
@@ -2017,6 +2026,53 @@
 
                 grid.appendChild(card);
             });
+
+            // Кнопка "+" для додавання нового калькулятора
+            const addCard = document.createElement('div');
+            addCard.className = 'dashboard-card-add';
+            addCard.style.cssText = `
+                background: rgba(255, 255, 255, ${glassOpacity * 0.8});
+                border: 3px dashed var(--accent) !important;
+                border-radius: 20px;
+                padding: 40px;
+                text-align: center;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 200px;
+                transition: 0.3s;
+                box-sizing: border-box;
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            `;
+            addCard.innerHTML = `
+                <div style="font-size: 60px; color: rgba(255,255,255,0.5); font-weight: 300; transition: 0.3s;" class="plus-icon">+</div>
+                <div style="color: rgba(255,255,255,0.4); font-size: 14px; margin-top: 10px;">Додати калькулятор</div>
+            `;
+            addCard.onmouseover = () => {
+                addCard.style.background = `rgba(255, 255, 255, ${glassOpacity})`;
+                addCard.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+                addCard.querySelector('.plus-icon').style.color = 'white';
+                addCard.querySelector('.plus-icon').style.transform = 'scale(1.1)';
+            };
+            addCard.onmouseout = () => {
+                addCard.style.background = `rgba(255, 255, 255, ${glassOpacity * 0.5})`;
+                addCard.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                addCard.querySelector('.plus-icon').style.color = 'rgba(255,255,255,0.5)';
+                addCard.querySelector('.plus-icon').style.transform = 'scale(1)';
+            };
+            addCard.onclick = () => {
+                addNewCalculatorToConfig();
+                // Scroll to newly added item in sidebar
+                setTimeout(() => {
+                    const list = document.getElementById('calculatorsListEditor');
+                    if (list && list.lastChild) list.lastChild.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            };
+
+            // Add at the END of the grid
+            grid.appendChild(addCard);
 
             grid.addEventListener('dragover', e => {
                 e.preventDefault();
@@ -2118,7 +2174,11 @@
                 const colSpan = conf.colSpan || 1;
 
                 item.innerHTML = `
-                    <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center">
+                    <button onclick="removeCalcFromConfig(${idx}); event.stopPropagation();" 
+                            style="position:absolute; right:8px; top:8px; background:#ef4444; border:none; color:white; cursor:pointer; width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; transition:0.2s; z-index:10" 
+                            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'" title="Видалити">🗑️</button>
+
+                    <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center; padding-right:25px">
                         <div style="position:relative">
                            <input type="text" id="calcIcon_${idx}" value="${conf.icon}" 
                                oninput="updateCalcInConfig(${idx}, 'icon', this.value)" 
@@ -2129,17 +2189,13 @@
                         
                         <input type="text" value="${conf.title}" 
                             oninput="updateCalcInConfig(${idx}, 'title', this.value)" 
-                            style="flex:1; font-weight:bold" placeholder="Назва калькулятора">
+                            style="flex:1; font-weight:bold; min-width:0" placeholder="Назва калькулятора">
                         
                         <select onchange="updateCalcInConfig(${idx}, 'colSpan', parseInt(this.value))" 
-                                style="width:50px; background:rgba(255,255,255,0.1); border:1px solid var(--border); color:white; border-radius:6px; font-size:11px; padding:4px; cursor:pointer">
+                                style="width:50px; background:rgba(255,255,255,0.1); border:1px solid var(--border); color:white; border-radius:6px; font-size:11px; padding:4px; cursor:pointer; flex-shrink:0">
                             <option value="1" ${colSpan === 1 ? 'selected' : ''}>1x</option>
                             <option value="2" ${colSpan === 2 ? 'selected' : ''}>2x</option>
                         </select>
-
-                        <button onclick="removeCalcFromConfig(${idx})" 
-                                style="background:#ef4444; border:none; color:white; cursor:pointer; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; transition:0.2s" 
-                                onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'" title="Видалити">🗑️</button>
                     </div>
                     <textarea oninput="updateCalcInConfig(${idx}, 'desc', this.value)"
                         style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:var(--text-dim); border-radius:6px; font-size:11px; resize:vertical; padding:8px; min-height:40px" placeholder="Опис для картки...">${conf.desc || ''}</textarea>
@@ -2229,7 +2285,10 @@
                     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ filename: filename, content: content })
                 });
-                if (response.ok) return;
+                if (response.ok) {
+                    alert('✅ Список калькуляторів збережено автоматично!');
+                    return;
+                }
             } catch (e) { }
 
             try {
@@ -2289,7 +2348,11 @@
                     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ filename: filename, content: content })
                 });
-                if (response.ok) { window.DashboardConfig = newConfig; return; }
+                if (response.ok) {
+                    window.DashboardConfig = newConfig;
+                    alert('✅ Налаштування головної збережено автоматично!');
+                    return;
+                }
             } catch (e) { }
 
             try {
@@ -2304,9 +2367,16 @@
 
         async function handleGlobalSave() {
             if (window.currentMode === 'dashboard') {
-                // Save both dashboard settings and calculator list
-                await saveDashboardConfig();
-                await saveCalculatorsConfig();
+                // Save both without showing individual alerts if possible, or handle here
+                const oldAlert = window.alert;
+                window.alert = () => { }; // Suppress individual alerts
+                try {
+                    await saveDashboardConfig();
+                    await saveCalculatorsConfig();
+                } finally {
+                    window.alert = oldAlert; // Restore alert
+                }
+                alert('✅ Всі налаштування та список калькуляторів збережено!');
             } else {
                 await saveLayout();
             }

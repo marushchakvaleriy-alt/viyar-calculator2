@@ -670,8 +670,7 @@ const Schema = {
             "id": "f1766570336121",
             "groupId": "g1766570333290",
             "label": "Нова дія",
-            "type": "checkbox",
-            "helpContent": ""
+            "type": "number"
         },
         {
             "id": "f1766570338225",
