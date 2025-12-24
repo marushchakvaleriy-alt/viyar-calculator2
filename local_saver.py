@@ -36,6 +36,22 @@ class SaveHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'status': 'ok'}).encode())
             print(f"✅ Файл збережено: {filename}")
+            
+            # 🚀 Автоматичний push на GitHub
+            import subprocess
+            import threading
+            def auto_push():
+                try:
+                    print("🌐 Запуск auto_push на GitHub...")
+                    subprocess.run(["python", "auto_push.py", f"Auto-save: {filename}"], 
+                                   capture_output=True, text=True)
+                    print("✅ Зміни відправлено на GitHub!")
+                except Exception as e:
+                    print(f"⚠️ Не вдалося відправити на GitHub: {e}")
+            
+            # Запускаємо push в окремому потоці, щоб не блокувати сервер
+            threading.Thread(target=auto_push, daemon=True).start()
+            
         except Exception as e:
             self.send_response(500)
             self.send_header('Access-Control-Allow-Origin', '*')

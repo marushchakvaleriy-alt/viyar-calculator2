@@ -1733,6 +1733,8 @@
             const undoBtn = document.getElementById('undoBtn');
             if (undoBtn) undoBtn.style.display = 'none';
             loadDashboardValues();
+            // CRITICAL: Render the calculator list editor so user can edit titles
+            renderCalculatorsEditorUI();
         }
 
         function activateCalculatorMode() {
@@ -2182,22 +2184,27 @@
                         <div style="position:relative">
                            <input type="text" id="calcIcon_${idx}" value="${conf.icon}" 
                                oninput="updateCalcInConfig(${idx}, 'icon', this.value)" 
+                               onclick="event.stopPropagation()"
                                style="width:45px; text-align:center; font-size:14px" placeholder="Icon">
-                           <button class="toggle-btn" onclick="openDbFilePicker('calcIcon_${idx}')" 
+                           <button class="toggle-btn" onclick="openDbFilePicker('calcIcon_${idx}'); event.stopPropagation();" 
                                style="position:absolute; right:-5px; top:-5px; padding:2px; font-size:10px; background:var(--accent); color:white; border-radius:50%; width:20px; height:20px; border:2px solid var(--bg)" title="Файл">📂</button>
                         </div>
                         
                         <input type="text" value="${conf.title}" 
                             oninput="updateCalcInConfig(${idx}, 'title', this.value)" 
+                            onclick="event.stopPropagation()"
+                            onfocus="this.select()"
                             style="flex:1; font-weight:bold; min-width:0" placeholder="Назва калькулятора">
                         
                         <select onchange="updateCalcInConfig(${idx}, 'colSpan', parseInt(this.value))" 
+                                onclick="event.stopPropagation()"
                                 style="width:50px; background:rgba(255,255,255,0.1); border:1px solid var(--border); color:white; border-radius:6px; font-size:11px; padding:4px; cursor:pointer; flex-shrink:0">
                             <option value="1" ${colSpan === 1 ? 'selected' : ''}>1x</option>
                             <option value="2" ${colSpan === 2 ? 'selected' : ''}>2x</option>
                         </select>
                     </div>
                     <textarea oninput="updateCalcInConfig(${idx}, 'desc', this.value)"
+                        onclick="event.stopPropagation()"
                         style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:var(--text-dim); border-radius:6px; font-size:11px; resize:vertical; padding:8px; min-height:40px" placeholder="Опис для картки...">${conf.desc || ''}</textarea>
                 `;
                 list.appendChild(item);
@@ -2251,12 +2258,14 @@
                 delete window.CalculatorConfig[idx]._previewIcon;
             }
             renderDashboardCardsPreview();
+            // NOTE: Do NOT call renderCalculatorsEditorUI() here - it destroys the input field you're typing in!
         }
 
         function removeCalcFromConfig(idx) {
             if (!confirm('Видалити цей калькулятор зі списку?')) return;
             window.CalculatorConfig.splice(idx, 1);
             updateDashboardPreview();
+            renderCalculatorsEditorUI(); // Re-render list after deletion
         }
 
         async function addNewCalculatorToConfig() {
@@ -2298,6 +2307,7 @@
             // 3. Add to config and update UI
             window.CalculatorConfig.push(newCalc);
             updateDashboardPreview();
+            renderCalculatorsEditorUI(); // Show new calculator in list immediately
 
             // 4. Save config to disk immediately too
             await saveCalculatorsConfig();
@@ -2318,7 +2328,11 @@
                     body: JSON.stringify({ filename: filename, content: content })
                 });
                 if (response.ok) {
-                    alert('✅ Список калькуляторів збережено автоматично!');
+                    alert('✅ Список калькуляторів збережено!\n🌐 Зміни відправлено на GitHub!\n🔄 Сторінка оновиться через 2 секунди...');
+                    // Автоматичне оновлення сторінки через 2 секунди
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                     return;
                 }
             } catch (e) { }

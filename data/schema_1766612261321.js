@@ -2,7 +2,7 @@ const Schema = {
     "meta": {
         "version": "2.1",
         "title": "Новий калькулятор",
-        "lastUpdated": "2025-12-24T13:08:31.867Z"
+        "lastUpdated": "2025-12-24T21:37:41.321Z"
     },
     "processes": [
         {

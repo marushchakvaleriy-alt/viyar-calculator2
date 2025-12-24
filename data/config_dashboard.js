@@ -5,7 +5,7 @@ window.DashboardConfig = {
     "logoText": "",
     "logoImage": "",
     "backgroundImage": "",
-    "bgType": "gradient",
+    "bgType": "color",
     "glassBlur": 10,
     "glassOpacity": 0.1,
     "cardMinWidth": 330,
