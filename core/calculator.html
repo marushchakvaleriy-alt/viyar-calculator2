@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viyar Calculator V2.1 - Унікальні Модалки</title>
+    <!-- Dynamic Schema Loader -->
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const configFile = params.get('config') || '../data/schema_kitchen.js'; // Default for backward compatibility
+
+            const script = document.createElement('script');
+            let cfgPath = configFile;
+            if (cfgPath.startsWith('data/')) {
+                cfgPath = '../' + cfgPath;
+            }
+            script.src = cfgPath + '?v=' + new Date().getTime(); // Prevent caching
+            script.onload = function () {
+                console.log('Schema loaded:', configFile);
+                // Initialize Engine only after Schema is loaded
+                if (window.Engine && window.Schema) {
+                    Engine.init('formContainer', 'productsList', 'totalScore');
+                }
+            };
+            script.onerror = function () {
+                document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:50px">Помилка: Не вдалося завантажити конфігурацію (' + configFile + ')</h1>';
+            };
+            document.head.appendChild(script);
+        })();
+    </script>
+    <script src="engine.js?v=2.2"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
+            background: #f3f4f6;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            min-height: 80vh;
+        }
+
+        h1 {
+            color: #111827;
+            margin-top: 0;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .layout {
+            display: flex;
+            gap: 30px;
+        }
+
+        .form-panel {
+            flex: 2;
+            padding-right: 30px;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .results-panel {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* === MODAL === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-box {
+            background: white;
+            width: 500px;
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: calc(80vh - 140px);
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .pg-field {
+            margin-bottom: 16px;
+        }
+
+        .pg-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 13px;
+        }
+
+        .pg-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        .pg-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .pg-check-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pg-check-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .pg-check-qty {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* === PRODUCT ITEMS === */
+        .product-item {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .product-details {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .product-score {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-left: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .results-header {
+            background: #f9fafb;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .total-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position:fixed; top:20px; left:20px; z-index:100">
+        <a href="../index.html"
+            style="text-decoration:none; background:white; padding:8px 12px; border-radius:30px; box-shadow:0 2px 5px rgba(0,0,0,0.1); font-weight:600; color:#4b5563; display:flex; align-items:center; gap:5px; font-size:13px; border:1px solid #e5e7eb; transition:0.2s">
+            <span style="font-size:16px">🏠</span> На головну
+        </a>
+    </div>
+    <div class="container">
+        <div id="calcHeader"></div>
+        <div class="layout">
+            <div class="form-panel">
+                <div id="categorySelection" style="margin-bottom: 25px;"></div>
+                <div id="formContainer"></div>
+            </div>
+
+            <div class="results-panel">
+                <h3 style="margin-top:0">Результати</h3>
+                <!-- Breakdown by Process -->
+                <div id="resultsContainer"
+                    style="margin-bottom:20px; border-bottom:2px solid #eee; padding-bottom:15px">
+                    <!-- Dynamic breakdown will be rendered here -->
+                </div>
+
+                <div class="results-header">
+                    <div
+                        style="font-size: 12px; color: #111827; font-weight:700; margin-bottom: 8px; text-transform:uppercase">
+                        ВСЬОГО</div>
+                    <div class="total-score" id="totalScore">0 грн</div>
+                </div>
+
+                <div id="productsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div class="modal" id="prodModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">📦 Додати виріб</h3>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalDynamicBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeProductModal()">Скасувати</button>
+                <button class="btn btn-primary" onclick="submitProduct()">Зберегти</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let editingProductId = null;
+        let currentButtonId = null;
+
+        // Initialize Engine when loaded
+        // window.addEventListener('DOMContentLoaded', () => {
+        //     // Logic moved to script onload handler in head
+        // });
+
+        // Open modal function (called from Engine)
+        window.openProductModal = function (buttonId, product = null) {
+            console.log('openProductModal called:', buttonId, product);
+
+            if (!buttonId) {
+                console.error('buttonId is missing!');
+                return;
+            }
+
+            currentButtonId = buttonId;
+            editingProductId = product ? product.id : null;
+
+            const modal = document.getElementById('prodModal');
+            if (!modal) {
+                console.error('Modal element not found!');
+                return;
+            }
+
+            const button = Schema.fields.find(f => f.id === buttonId);
+            const modalTitle = product ? '✏️ Редагувати' : (button?.default || button?.label || '📦 Додати виріб');
+
+            const titleEl = document.getElementById('modalTitle');
+            if (titleEl) {
+                titleEl.innerText = modalTitle;
+            }
+
+            renderModalContent(buttonId, product ? product.data : null);
+            modal.style.display = 'flex';
+        };
+
+        function closeProductModal() {
+            // Revert select_modal if it was just opened and no product exists
+            if (currentButtonId) {
+                const field = Schema.fields.find(f => f.id === currentButtonId);
+                if (field && field.type === 'select_modal') {
+                    const existing = Engine.addedProducts.find(p => p.buttonId === currentButtonId);
+                    if (!existing) {
+                        if (Engine.state[currentButtonId] === 'yes') {
+                            Engine.state[currentButtonId] = 'placeholder';
+                        }
+                        Engine.renderForm(); // Re-render to be safe and clean
+                    }
+                }
+            }
+            document.getElementById('prodModal').style.display = 'none';
+            editingProductId = null;
+            currentButtonId = null;
+        }
+
+        function renderModalContent(buttonId, editData = null) {
+            const container = document.getElementById('modalDynamicBody');
+            if (!container) {
+                console.error('Modal container not found!');
+                return;
+            }
+
+            container.innerHTML = '';
+
+            const button = Schema.fields.find(f => f.id === buttonId);
+            if (!button) {
+                console.error('Button not found:', buttonId);
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#ef4444;">❌ Помилка: кнопка не знайдена в схемі</div>';
+                return;
+            }
+
+            if (!button.modalFields || button.modalFields.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#666;">У цієї кнопки ще немає полів. Налаштуйте їх в адмінці (⚙️).</div>';
+                return;
+            }
+
+            console.log('Rendering modal for button:', button.label || button.default, 'Fields:', button.modalFields.length);
+
+            button.modalFields.forEach(f => {
+                const row = document.createElement('div');
+                row.className = 'pg-field';
+
+                const currentVal = editData ? editData[f.id] : null;
+
+                if (f.type === 'select') {
+                    let opts = (f.options || []).map(o => `<option value="${o.value}" ${currentVal === o.value ? 'selected' : ''}>${o.label}</option>`).join('');
+                    row.innerHTML = `<label>${f.label}</label><select class="pg-input" id="inp_${f.id}" data-fid="${f.id}" onchange="recalcModalTotal()">${opts}</select>`;
+                }
+                else if (f.type === 'multiselect') {
+                    const selectedVals = Array.isArray(currentVal) ? currentVal : [];
+                    let opts = (f.options || []).map(o => `<option value="${o.value}" ${selectedVals.includes(o.value) ? 'selected' : ''}>${o.label}</option>`).join('');
+                    row.innerHTML = `<label>${f.label} <span style="font-size:11px; color:#6b7280">(Ctrl+клік для множинного вибору)</span></label><select multiple class="pg-input" id="inp_${f.id}" data-fid="${f.id}" style="height:120px" onchange="recalcModalTotal()">${opts}</select>`;
+                }
+                else if (f.type === 'number') {
+                    const val = currentVal !== null ? currentVal : (f.default || 0);
+                    row.innerHTML = `<label>${f.label}</label><input type="number" class="pg-input" id="inp_${f.id}" data-fid="${f.id}" value="${val}" oninput="recalcModalTotal()">`;
+                }
+                else if (f.type === 'checkbox_qty') {
+                    row.className = 'pg-check-row';
+                    const isChecked = currentVal ? currentVal.checked : false;
+                    const qVal = currentVal ? currentVal.qty : 1;
+                    row.innerHTML = `
+                        <label class="pg-check-label"><input type="checkbox" id="chk_${f.id}" data-fid="${f.id}" ${isChecked ? 'checked' : ''} onchange="recalcModalTotal()"> ${f.label}</label>
+                        <input type="number" class="pg-check-qty" id="qty_${f.id}" value="${qVal}" oninput="recalcModalTotal()">
+                    `;
+                }
+                else if (f.type === 'checkbox') {
+                    row.className = 'pg-check-row';
+                    const isChecked = currentVal || false;
+                    row.innerHTML = `<label class="pg-check-label"><input type="checkbox" id="chk_${f.id}" data-fid="${f.id}" ${isChecked ? 'checked' : ''} onchange="recalcModalTotal()"> ${f.label}</label>`;
+                }
+
+                container.appendChild(row);
+            });
+
+            // Initial Calc
+            setTimeout(recalcModalTotal, 50);
+        }
+
+        function recalcModalTotal() {
+            if (!currentButtonId) return;
+            const button = Schema.fields.find(f => f.id === currentButtonId);
+            if (!button || !button.modalFields) return;
+
+            let total = 0;
+
+            button.modalFields.forEach(f => {
+                let isActive = false;
+                let multiplier = 1;
+
+                if (f.type === 'checkbox_qty') {
+                    const chk = document.getElementById(`chk_${f.id}`);
+                    const qty = document.getElementById(`qty_${f.id}`);
+                    if (chk && chk.checked) {
+                        isActive = true;
+                        multiplier = Math.max(0, parseInt(qty?.value || 1));
+                    }
+                }
+                else if (f.type === 'checkbox') {
+                    const chk = document.getElementById(`chk_${f.id}`);
+                    if (chk && chk.checked) isActive = true;
+                }
+                else if (f.type === 'number') {
+                    const inp = document.getElementById(`inp_${f.id}`);
+                    if (inp) {
+                        isActive = true;
+                        multiplier = parseFloat(inp.value) || 0;
+                    }
+                }
+
+                if (isActive) {
+                    // Sum up points from all processes for this field
+                    // Using Schema.modalFieldRules for action button sub-fields
+                    const ruleKey = `${currentButtonId}_${f.id}`;
+
+                    Schema.processes.forEach(p => {
+                        let pts = 0;
+                        if (Schema.modalFieldRules && Schema.modalFieldRules[ruleKey] && Schema.modalFieldRules[ruleKey][p.id]) {
+                            pts = Number(Schema.modalFieldRules[ruleKey][p.id]) || 0;
+                        }
+                        // If it's a number field, the rule is usually 'per unit', so multiply by value
+                        // BUT in this system, often the rule IS the points.
+                        // Let's assume for Checkbox/CheckboxQty it's fixed points per unit.
+                        // For Number field, usually the user enters a quantity.
+
+                        if (f.type === 'number') {
+                            total += pts * multiplier;
+                        } else {
+                            total += pts * multiplier;
+                        }
+                    });
+                }
+            });
+
+            const scoreEl = document.getElementById('modalTotalScore');
+            if (scoreEl) {
+                scoreEl.innerText = `${total.toLocaleString()} грн`;
+            }
+        }
+
+        function submitProduct() {
+            const data = {};
+            const button = Schema.fields.find(f => f.id === currentButtonId);
+
+            if (!button || !button.modalFields) return;
+
+            button.modalFields.forEach(f => {
+                if (f.type === 'checkbox_qty') {
+                    const chk = document.getElementById(`chk_${f.id}`);
+                    const qty = document.getElementById(`qty_${f.id}`);
+                    data[f.id] = { checked: chk?.checked || false, qty: parseInt(qty?.value || 1) };
+                }
+                else if (f.type === 'checkbox') {
+                    const chk = document.getElementById(`chk_${f.id}`);
+                    data[f.id] = chk?.checked || false;
+                }
+                else if (f.type === 'multiselect') {
+                    const sel = document.getElementById(`inp_${f.id}`);
+                    if (sel) {
+                        const selected = Array.from(sel.selectedOptions).map(opt => opt.value);
+                        data[f.id] = selected;
+                    }
+                }
+                else {
+                    const inp = document.getElementById(`inp_${f.id}`);
+                    if (inp) {
+                        data[f.id] = inp.value || f.default || '';
+                    } else {
+                        data[f.id] = f.default || '';
+                    }
+                }
+            });
+
+            if (editingProductId) {
+                Engine.updateProduct(editingProductId, data);
+            } else {
+                Engine.addProduct(currentButtonId, data);
+            }
+
+            closeProductModal();
+        }
+    </script>
+</body>
+
+</html>

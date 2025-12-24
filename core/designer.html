@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Designer - Viyar Pro</title>
+    <!-- Dynamic Schema Loader -->
+    <!-- Dynamic Schema Loader -->
+    <!-- Dynamic Schema Loader -->
+    <script src="../data/config_calculators.js?v=2"></script>
+    <script src="../data/config_dashboard.js?v=2"></script>
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const mode = params.get('mode');
+
+            // If dashboard mode, we don't need a specific config file immediately
+            // But we keep the existing logic for calculator mode
+            const configFile = params.get('config') || '../data/schema_kitchen.js';
+            window.currentConfigFile = configFile;
+            window.currentMode = mode === 'dashboard' ? 'dashboard' : 'calculator';
+
+            if (window.currentMode === 'calculator') {
+                const script = document.createElement('script');
+                let cfgPath = configFile;
+                if (cfgPath.startsWith('data/')) cfgPath = '../' + cfgPath;
+                script.src = cfgPath + '?v=' + new Date().getTime();
+                script.onload = function () {
+                    console.log('Schema loaded:', configFile);
+                    if (window.renderMatrix) window.renderMatrix();
+                    if (window.renderDesigner) window.renderDesigner();
+                };
+                script.onerror = function () {
+                    // console.error...
+                };
+                document.head.appendChild(script);
+            }
+        })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #111827;
+            --sidebar-bg: #1f2937;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --border: #374151;
+            --field-bg: #374151;
+            --text-main: #f3f4f6;
+            --text-dim: #9ca3af;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: var(--bg);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .context-select {
+            width: 100%;
+            background: #111827;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* New Premium Controls Styling */
+        .section-tab {
+            font-size: 9px;
+            color: var(--accent);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 25px 0 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-group {
+            display: flex;
+            background: #111827;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 6px;
+            font-size: 10px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .shadow-subtle {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .shadow-deep {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .shadow-glow {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .selected-db-card {
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.5), inset 0 0 15px rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 0.2) !important;
+            transform: translateY(-2px);
+        }
+
+        .calc-mode-back {
+            background: #4f46e5;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .calc-mode-back:hover {
+            background: #4338ca;
+            transform: translateX(-5px);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-footer {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .control-group {
+            margin-bottom: 24px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .control-label {
+            display: block;
+            font-size: 10px;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .property-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .width-btn-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+
+        .width-btn {
+            background: #111827;
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .width-btn:hover {
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .width-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .nav-btn-back,
+        .btn-save {
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .canvas {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .preview-container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            min-height: 80vh;
+        }
+
+        .group-box {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            padding: 30px 20px 20px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.01);
+            transition: border-color 0.3s;
+        }
+
+        .group-header {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            background: var(--accent);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .field-card {
+            background: #1f2937;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: move;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .field-card.selected {
+            border: 2px solid var(--accent);
+            background: #2d3748;
+        }
+
+        .field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .field-type-badge {
+            font-size: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dim);
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: fit-content;
+            text-transform: uppercase;
+        }
+
+        .field-mock-input {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 5px;
+        }
+
+        .w-100 {
+            grid-column: span 12;
+        }
+
+        .w-75 {
+            grid-column: span 9;
+        }
+
+        .w-66 {
+            grid-column: span 8;
+        }
+
+        .w-50 {
+            grid-column: span 6;
+        }
+
+        .w-33 {
+            grid-column: span 4;
+        }
+
+        .w-25 {
+            grid-column: span 3;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+
+        input[type="number"],
+        select {
+            background: #111827;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 12px;
+            width: 100%;
+        }
+
+        /* Light Theme Overrides */
+        body.light-theme {
+            --bg: #f3f4f6;
+            --sidebar-bg: #ffffff;
+            --border: #e5e7eb;
+            --text-main: #111827;
+            --text-dim: #6b7280;
+            --field-bg: #ffffff;
+        }
+
+        body.light-theme .canvas {
+            background: #f3f4f6;
+        }
+
+        body.light-theme .preview-container {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-theme .field-card {
+            background: #f9fafb;
+            border-color: #e5e7eb;
+        }
+
+        body.light-theme .field-label {
+            color: #111827;
+        }
+
+        body.light-theme .sidebar {
+            background: white;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .help-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            background: #9ca3af;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            margin-left: 5px;
+            cursor: help;
+        }
+
+        .input-preview {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        @keyframes pulseBg {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* --- SYNC WITH INDEX.HTML --- */
+        .preview-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-preview {
+            margin-bottom: 40px;
+            position: relative;
+            padding: 20px;
+        }
+
+        .logo-preview {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .logo-preview span {
+            color: #fbbf24;
+        }
+
+        .subtitle-preview {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .auth-controls-preview {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .settings-btn-preview {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn-preview {
+            background: rgba(239, 68, 68, 0.2);
+            color: white;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+                <span style="font-weight:800; font-size:16px;">🎨 Designer <span
+                        style="font-size:10px; color:var(--accent); background:rgba(255,255,255,0.1); padding:2px 5px; border-radius:4px; margin-left:5px">v5.0</span></span>
+                <a href="../index.html" class="nav-btn-back" style="background:rgba(255,255,255,0.1)">🏠 На головну</a>
+            </div>
+
+            <select id="contextSwitcher" class="context-select" onchange="switchContext(this.value)">
+                <option value="dashboard">🏠 Екран Привітання (Dashboard)</option>
+                <optgroup label="Калькулятори" id="calcOptions">
+                    <!-- Javascript will populate this -->
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="sidebar-content">
+            <!-- === DASHBOARD EDITOR === -->
+            <div id="dashboardEditor" style="display:none">
+                <div class="section-tab">Налаштування Головної</div>
+
+                <div class="control-group">
+                    <label class="control-label">Головний Заголовок</label>
+                    <input type="text" id="dbTitle" oninput="updateDashboardPreview()" placeholder="Vpoint">
+                    <label class="control-label" style="margin-top:10px; font-size:8px">Розмір шрифту: <span
+                            id="dbTitleSizeVal">48</span>px</label>
+                    <input type="range" min="20" max="100" id="dbTitleSize" oninput="updateDashboardPreview()">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Підзаголовок</label>
+                    <input type="text" id="dbSubtitle" oninput="updateDashboardPreview()" placeholder="Слоган...">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Тип фону</label>
+                    <select id="dbBgType" onchange="updateDashboardPreview()">
+                        <option value="color">Суцільний колір</option>
+                        <option value="gradient">Градієнт</option>
+                        <option value="animation">Анімований (Blobs)</option>
+                        <option value="image">Зображення</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Колір фону / Акцент</label>
+                    <div style="display:flex; gap:10px">
+                        <input type="color" id="dbColor" oninput="updateDashboardPreview()"
+                            style="width:40px; height:30px; padding:0; border:none">
+                        <input type="text" id="dbColorText" oninput="updateDashboardPreview()" style="flex:1"
+                            placeholder="#1e88e5">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Ілюстрація Заголовка (URL)</label>
+                    <div style="display:flex; gap:5px">
+                        <input type="text" id="dbHeaderIllustration" oninput="updateDashboardPreview()"
+                            placeholder="URL картинки справа" style="flex:1">
+                        <button class="toggle-btn" onclick="openDbFilePicker('dbHeaderIllustration')"
+                            title="Вибрати файл">📂</button>
+                    </div>
+                </div>
+
+                <div class="control-group" id="dbBgImageGroup">
+                    <label class="control-label">Фонове Зображення (URL)</label>
+                    <div style="display:flex; gap:5px">
+                        <input type="text" id="dbBgImage" oninput="updateDashboardPreview()"
+                            placeholder="URL зображення" style="flex:1">
+                        <button class="toggle-btn" onclick="pickDashboardImage('dbBgImage')"
+                            title="Вибрати файл">📂</button>
+                    </div>
+                </div>
+
+                <div class="section-tab">Ефекти Glassmorphism</div>
+                <div class="control-group">
+                    <label class="control-label">Розмиття (Blur): <span id="dbBlurVal">10</span>px</label>
+                    <input type="range" min="0" max="40" id="dbBlur" oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Прозорість: <span id="dbOpacityVal">0.1</span></label>
+                    <input type="range" min="0" max="1" step="0.05" id="dbOpacity" oninput="updateDashboardPreview()">
+                </div>
+
+                <div class="section-tab">Налаштування Header Box</div>
+                <div class="control-group">
+                    <label class="control-label">Колір фону Header</label>
+                    <input type="color" id="dbHeaderBg" oninput="updateDashboardPreview()" value="#ffffff">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Прозорість Header: <span id="dbHeaderOpacityVal">0.1</span></label>
+                    <input type="range" min="0" max="1" step="0.05" id="dbHeaderOpacity"
+                        oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Розмиття Header (Blur): <span id="dbHeaderBlurVal">10</span>px</label>
+                    <input type="range" min="0" max="40" id="dbHeaderBlur" oninput="updateDashboardPreview()">
+                </div>
+
+                <div class="section-tab">Позиціонування та Ілюстрації</div>
+
+                <div class="control-group">
+                    <label class="control-label">Логотип (X / Y / Scale)</label>
+                    <div style="display:flex; gap:5px; align-items:center">
+                        <input type="number" id="dbLogoX" oninput="updateDashboardPreview()" step="5" style="width:50px"
+                            title="X Position">
+                        <input type="number" id="dbLogoY" oninput="updateDashboardPreview()" step="5" style="width:50px"
+                            title="Y Position">
+                        <input type="number" id="dbLogoScale" oninput="updateDashboardPreview()" step="0.1"
+                            style="width:50px" title="Scale">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Ілюстрація 1 (URL)</label>
+                    <div style="display:flex; gap:5px">
+                        <input type="text" id="dbHeaderIllustration" oninput="updateDashboardPreview()"
+                            placeholder="URL" style="flex:1">
+                        <button class="toggle-btn" onclick="openDbFilePicker('dbHeaderIllustration')">📂</button>
+                    </div>
+                    <div style="display:flex; gap:5px; align-items:center; margin-top:5px">
+                        <input type="number" id="dbIllus1X" oninput="updateDashboardPreview()" step="5"
+                            style="width:50px" title="X">
+                        <input type="number" id="dbIllus1Y" oninput="updateDashboardPreview()" step="5"
+                            style="width:50px" title="Y">
+                        <input type="number" id="dbIllus1Scale" oninput="updateDashboardPreview()" step="0.1"
+                            style="width:50px" title="Scale">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Ілюстрація 2 (URL)</label>
+                    <div style="display:flex; gap:5px">
+                        <input type="text" id="dbHeaderIllustration2" oninput="updateDashboardPreview()"
+                            placeholder="URL" style="flex:1">
+                        <button class="toggle-btn" onclick="openDbFilePicker('dbHeaderIllustration2')">📂</button>
+                    </div>
+                    <div style="display:flex; gap:5px; align-items:center; margin-top:5px">
+                        <input type="number" id="dbIllus2X" oninput="updateDashboardPreview()" step="5"
+                            style="width:50px" title="X">
+                        <input type="number" id="dbIllus2Y" oninput="updateDashboardPreview()" step="5"
+                            style="width:50px" title="Y">
+                        <input type="number" id="dbIllus2Scale" oninput="updateDashboardPreview()" step="0.1"
+                            style="width:50px" title="Scale">
+                    </div>
+                </div>
+
+                <div class="section-tab">Стиль Карток</div>
+                <div class="control-group">
+                    <label class="control-label">Мін. ширина: <span id="dbCardWidthVal">250</span>px</label>
+                    <input type="range" min="150" max="500" step="10" id="dbCardWidth"
+                        oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Відступи (Padding): <span id="dbCardPaddingVal">20</span>px</label>
+                    <input type="range" min="5" max="60" id="dbCardPadding" oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Розмір іконок: <span id="dbCardIconSizeVal">40</span>px</label>
+                    <input type="range" min="20" max="100" id="dbCardIconSize" oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Шрифт заголовка: <span id="dbCardTitleSizeVal">16</span>px</label>
+                    <input type="range" min="10" max="40" id="dbCardTitleSize" oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Колір заголовка</label>
+                    <input type="color" id="dbCardTitleColor" oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Шрифт опису: <span id="dbCardDescSizeVal">12</span>px</label>
+                    <input type="range" min="8" max="24" id="dbCardDescSize" oninput="updateDashboardPreview()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Колір опису</label>
+                    <input type="color" id="dbCardDescColor" oninput="updateDashboardPreview()">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Жирність шрифту заголовка</label>
+                    <select id="dbCardTitleWeight" onchange="updateDashboardPreview()">
+                        <option value="400">Regular (400)</option>
+                        <option value="600">SemiBold (600)</option>
+                        <option value="800" selected>Bold (800)</option>
+                        <option value="900">Black (900)</option>
+                    </select>
+                </div>
+
+                <div class="section-tab">Картки "Скоро" (Placeholders)</div>
+                <div class="control-group">
+                    <label class="control-label">Колір фону заглушки</label>
+                    <input type="color" id="dbPlaceholderBg" oninput="updateDashboardPreview()" value="#cbd5e1">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Текст бейджа (Badge)</label>
+                    <input type="text" id="dbPlaceholderBadge" oninput="updateDashboardPreview()" placeholder="Скоро">
+                </div>
+
+                <div class="section-tab">Брендинг</div>
+                <div class="control-group">
+                    <label class="control-label">Текст логотипу</label>
+                    <input type="text" id="dbLogoText" oninput="updateDashboardPreview()" placeholder="Vpoint">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Картинка логотипу (URL)</label>
+                    <div style="display:flex; gap:5px">
+                        <input type="text" id="dbLogoImg" oninput="updateDashboardPreview()" placeholder="URL картинки"
+                            style="flex:1">
+                        <button class="toggle-btn" onclick="openDbFilePicker('dbLogoImg')"
+                            title="Вибрати файл">📂</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Фонове Зображення</label>
+                    <div style="display:flex; gap:5px">
+                        <input type="text" id="dbBgImage" oninput="updateDashboardPreview()"
+                            placeholder="URL зображення" style="flex:1">
+                        <button class="toggle-btn" onclick="openDbFilePicker('dbBgImage')"
+                            title="Вибрати файл">📂</button>
+                    </div>
+                </div>
+
+                <input type="file" id="dbFilePicker" style="display:none" onchange="handleDbFileSelection(this)">
+
+                <div class="section-tab">Список Калькуляторів</div>
+                <div id="calculatorsListEditor"
+                    style="display:flex; flex-direction:column; gap:15px; margin-bottom:20px;">
+                    <!-- JS will populate this -->
+                </div>
+                <button class="btn-save" onclick="addNewCalculatorToConfig()"
+                    style="width:100%; background:var(--accent); margin-bottom: 20px;">+ Додати Калькулятор</button>
+                <button class="btn-save" onclick="saveCalculatorsConfig()" style="width:100%; background:#8b5cf6;">💾
+                    Зберегти список калькуляторів</button>
+            </div>
+
+            <!-- === CALCULATOR EDITOR (Original) === -->
+            <div id="calculatorEditor">
+                <button class="calc-mode-back" onclick="activateDashboardMode()">
+                    <span>←</span> До налаштувань Dashboard
+                </button>
+                <div id="globalSettings" style="margin-bottom: 25px;">
+                    <div class="section-tab">🌐 Глобальні Налаштування</div>
+                    <div class="control-group" style="padding-bottom:10px">
+                        <span class="control-label">Тема Інтерфейсу</span>
+                        <div class="toggle-group">
+                            <button class="toggle-btn" id="themeDark" onclick="setGlobalTheme('dark')">Темна</button>
+                            <button class="toggle-btn" id="themeLight" onclick="setGlobalTheme('light')">Світла</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <span class="control-label">Назва калькулятора</span>
+                        <input type="text" id="calcTitleInp" oninput="updateGlobal('title', this.value)"
+                            style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; margin-bottom:10px;">
+                        <span class="control-label">Версія</span>
+                        <input type="text" id="calcVersionInp" oninput="updateGlobal('version', this.value)"
+                            style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; margin-bottom:15px;">
+
+                        <button class="toggle-btn"
+                            style="width:100%; border-color: #ef4444; color: #ef4444; margin-top:10px"
+                            onclick="resetAllToDefault()">
+                            🧹 Скинути всі стилі (Reset)
+                        </button>
+                    </div>
+                </div>
+
+                <div id="selectionPanel" style="display: none;">
+                    <div id="fieldProperties">
+                        <div class="section-tab">📏 Макет та Розміри</div>
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+                            <div id="selectedFieldName"
+                                style="font-weight: 800; color: #fff; font-size: 14px; letter-spacing: 0.5px;">-</div>
+                            <button class="toggle-btn" style="padding:4px 8px; font-size:9px"
+                                onclick="applySelectedStyleToAll()"
+                                title="Застосувати цей стиль до всіх полів">Копіювати на
+                                всі</button>
+                        </div>
+
+                        <div class="control-group">
+                            <span class="control-label">Ширина блоку</span>
+                            <div class="width-btn-group">
+                                <button class="width-btn" onclick="setFieldWidth('w-25')">1/4</button>
+                                <button class="width-btn" onclick="setFieldWidth('w-33')">1/3</button>
+                                <button class="width-btn" onclick="setFieldWidth('w-50')">1/2</button>
+                                <button class="width-btn" onclick="setFieldWidth('w-66')">2/3</button>
+                                <button class="width-btn" onclick="setFieldWidth('w-75')">3/4</button>
+                                <button class="width-btn" onclick="setFieldWidth('w-100')">1/1</button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <span class="control-label">Орієнтація</span>
+                            <div class="toggle-group">
+                                <button class="toggle-btn" id="btnDirCol"
+                                    onclick="updateStyle('flexDirection', 'column')">Вертикально</button>
+                                <button class="toggle-btn" id="btnDirRow"
+                                    onclick="updateStyle('flexDirection', 'row')">Горизонтально</button>
+                            </div>
+                            <div class="property-row">
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Відступ (Gap)</span>
+                                    <input type="number" id="gapInp" oninput="updateStyle('gap', this.value)"
+                                        style="width:80%">
+                                </div>
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Внутр. Padding</span>
+                                    <input type="number" id="paddingInp" oninput="updateStyle('padding', this.value)"
+                                        style="width:80%">
+                                </div>
+                            </div>
+                            <div style="margin-top:10px">
+                                <span class="control-label" style="font-size:8px">Вирівнювання назви</span>
+                                <div class="toggle-group" style="display:grid; grid-template-columns:repeat(3, 1fr)">
+                                    <button class="toggle-btn" id="alignLeft"
+                                        onclick="updateStyle('textAlign', 'left')">⬅️</button>
+                                    <button class="toggle-btn" id="alignCenter"
+                                        onclick="updateStyle('textAlign', 'center')">↔️</button>
+                                    <button class="toggle-btn" id="alignRight"
+                                        onclick="updateStyle('textAlign', 'right')">➡️</button>
+                                </div>
+                            </div>
+
+                            <div id="labelWidthControl" style="margin-top:15px; display:none;">
+                                <span class="control-label" style="font-size:8px">Ширина назви (px)</span>
+                                <div class="property-row">
+                                    <input type="range" min="10" max="400" id="labelWidthRange"
+                                        oninput="updateStyle('labelWidth', this.value)" style="flex:1">
+                                    <div id="labelWidthVal" style="font-size:10px; width:35px; font-weight:800">120
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Typography Pro -->
+                        <div class="section-tab">🔤 Типографіка та Текст</div>
+                        <div class="control-group">
+                            <div class="property-row">
+                                <input type="range" min="10" max="40" id="fontSizeRange"
+                                    oninput="updateStyle('fontSize', this.value)" style="flex: 2;">
+                                <div id="fontSizeVal" style="font-size: 10px; width: 30px; font-weight:800">14</div>
+                            </div>
+                            <div class="property-row">
+                                <select id="fontWeightSelect" onchange="updateStyle('fontWeight', this.value)"
+                                    style="flex:2; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; padding:5px; border-radius:5px;">
+                                    <option value="400">Regular</option>
+                                    <option value="600">SemiBold</option>
+                                    <option value="700">Bold</option>
+                                    <option value="800">Black</option>
+                                </select>
+                                <input type="color" id="labelColor" onchange="updateStyle('color', this.value)"
+                                    style="flex:1; height:32px; background:none; border:1px solid var(--border); padding:2px; border-radius:5px;">
+                            </div>
+                            <div style="margin-top:15px">
+                                <span class="control-label" style="font-size:8px">Текст-підказка (Placeholder)</span>
+                                <input type="text" id="placeholderInp" oninput="updateStyle('placeholder', this.value)"
+                                    placeholder="Введіть..."
+                                    style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit;">
+                            </div>
+                            <div style="margin-top:10px">
+                                <span class="control-label" style="font-size:8px">Опис / Help Text</span>
+                                <input type="text" id="helpInp" oninput="updateStyle('help', this.value)"
+                                    placeholder="З'явиться при наведенні..."
+                                    style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit;">
+                            </div>
+                            <div style="margin-top:10px">
+                                <span class="control-label" style="font-size:8px">URL фото у підказці</span>
+                                <div style="display:flex; gap:5px;">
+                                    <input type="text" id="helpImgInp" oninput="updateStyle('helpImg', this.value)"
+                                        placeholder="images/photo.jpg"
+                                        style="flex:1; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; font-size:12px;">
+                                    <button onclick="document.getElementById('filePicker').click()"
+                                        style="padding:0 12px; border-radius:6px; background:var(--accent); border:none; color:white; cursor:pointer;"
+                                        title="Вибрати файл">📂</button>
+                                </div>
+                                <input type="file" id="filePicker" style="display:none" onchange="pickHelpImg(this)">
+                            </div>
+                            <div class="toggle-group" style="margin-top:10px">
+                                <button class="toggle-btn" id="btnUpper"
+                                    onclick="toggleLayoutProp('uppercase')">АБВ</button>
+                                <button class="toggle-btn" id="btnLetterSpacing" onclick="toggleLayoutProp('spaced')">A
+                                    B
+                                    C</button>
+                            </div>
+                        </div>
+
+                        <!-- Section 5: Input Aesthetics -->
+                        <div class="section-tab">🖼️ Стиль Поля (Input)</div>
+                        <div class="control-group">
+                            <div style="margin-bottom:15px">
+                                <div style="display:flex; justify-content:space-between; align-items:center">
+                                    <span class="control-label" style="font-size:8px">Ширина поля (%)</span>
+                                    <button class="toggle-btn" style="padding:2px 5px; font-size:8px"
+                                        onclick="updateStyle('inputWidth', 100)">100%</button>
+                                </div>
+                                <div class="property-row">
+                                    <input type="range" min="10" max="100" id="inputWidthRange"
+                                        oninput="updateStyle('inputWidth', this.value)" style="flex:1">
+                                    <div id="inputWidthVal" style="font-size:10px; width:35px; font-weight:800">100%
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom:15px" id="inputOffsetGroup">
+                                <div style="display:flex; justify-content:space-between; align-items:center">
+                                    <span class="control-label" style="font-size:8px">Зсув вправо (px)</span>
+                                    <button class="toggle-btn" style="padding:2px 5px; font-size:8px"
+                                        onclick="updateStyle('inputOffset', 0)">Reset</button>
+                                </div>
+                                <div class="property-row">
+                                    <input type="range" min="0" max="400" id="inputOffsetRange"
+                                        oninput="updateStyle('inputOffset', this.value)" style="flex:1">
+                                    <div id="inputOffsetVal" style="font-size:10px; width:35px; font-weight:800">0</div>
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Рамка</span>
+                                    <input type="color" id="inpBorderColor"
+                                        onchange="updateStyle('inpBorder', this.value)" style="width:100%">
+                                </div>
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Background</span>
+                                    <input type="color" id="inpBgColor" onchange="updateStyle('inpBg', this.value)"
+                                        style="width:100%">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Effects -->
+                        <div class="section-tab">✨ Ефекти та Декор</div>
+                        <div class="control-group">
+                            <span class="control-label">Глибина (Тінь)</span>
+                            <div class="toggle-group" style="display:grid; grid-template-columns:repeat(4, 1fr)">
+                                <button class="toggle-btn" id="shNone"
+                                    onclick="updateStyle('shadow', 'none')">Off</button>
+                                <button class="toggle-btn" id="shSubtle"
+                                    onclick="updateStyle('shadow', 'subtle')">S</button>
+                                <button class="toggle-btn" id="shDeep"
+                                    onclick="updateStyle('shadow', 'deep')">D</button>
+                                <button class="toggle-btn" id="shGlow"
+                                    onclick="updateStyle('shadow', 'glow')">G</button>
+                            </div>
+                            <label
+                                style="font-size: 11px; display: flex; align-items: center; gap: 8px; color: var(--accent); cursor: pointer; margin-top:10px; font-weight:700;">
+                                <input type="checkbox" id="glassToggle" onchange="updateStyle('glass', this.checked)">
+                                Glassmorphism (Blur)
+                            </label>
+                        </div>
+
+                        <!-- Section 4: Action Button -->
+                        <div id="actionButtonProperties" style="display: none;">
+                            <div class="section-tab">🔘 Стиль Кнопки</div>
+                            <div class="property-row">
+                                <div style="flex:1"><span class="control-label" style="font-size:8px">Фон</span><input
+                                        type="color" id="btnBgColor" onchange="updateStyle('btnBg', this.value)"
+                                        style="width:100%"></div>
+                                <div style="flex:1"><span class="control-label" style="font-size:8px">Текст</span><input
+                                        type="color" id="btnTextColor" onchange="updateStyle('btnColor', this.value)"
+                                        style="width:100%"></div>
+                            </div>
+                            <div class="property-row" style="margin-top: 10px;">
+                                <input type="number" id="btnFontSize" placeholder="Шрифт"
+                                    oninput="updateStyle('btnFontSize', this.value)" style="width:45%">
+                                <input type="number" id="btnRadius" placeholder="Радіус"
+                                    oninput="updateStyle('btnRadius', this.value)" style="width:45%">
+                            </div>
+                        </div>
+
+                        <div class="control-group" style="margin-top: 20px; border: none;">
+                            <label
+                                style="font-size: 11px; display: flex; align-items: center; gap: 8px; color: #ef4444; cursor: pointer;">
+                                <input type="checkbox" id="fieldHidden" onchange="toggleFieldHidden(this.checked)">
+                                Приховати елемент
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Group Properties -->
+                    <div id="groupProperties" style="display: none;">
+                        <div class="section-tab">📂 Налаштування Групи</div>
+                        <div class="control-group">
+                            <span class="control-label">Заголовок групи</span>
+                            <input type="text" id="groupTitleInp" oninput="updateGroupStyle('title', this.value)"
+                                style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit;">
+                        </div>
+                        <div class="control-group">
+                            <span class="control-label">Фон секції</span>
+                            <input type="color" id="groupBgColor" onchange="updateGroupStyle('background', this.value)">
+                        </div>
+                        <div class="control-group">
+                            <label
+                                style="font-size: 11px; display: flex; align-items: center; gap: 8px; color: var(--accent); cursor: pointer; font-weight:700;">
+                                <input type="checkbox" id="groupNumbering"
+                                    onchange="updateGroupStyle('showNumbering', this.checked)"> Нумерувати групу
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="noSelection"
+                    style="color: var(--text-dim); font-size: 11px; text-align: center; margin-top: 40px; border: 1px dashed var(--border); padding: 15px; border-radius: 10px;">
+                    Клікніть на поле або заголовок групи для налаштування
+                </div>
+            </div>
+
+        </div><!-- end calculatorEditor -->
+        <div class="sidebar-footer">
+            <a href="admin.html" class="nav-btn-back"
+                style="background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border);">Матриця</a>
+            <button class="btn-save" onclick="handleGlobalSave()"
+                style="background: #10b981; color: white;">Зберегти</button>
+        </div>
+    </div>
+
+    <div class="canvas" id="mainCanvas">
+        <!-- === DASHBOARD PREVIEW === -->
+        <div id="dashboardPreview" style="display:none; padding-top:60px; width: 100%;">
+            <div class="preview-container">
+                <div class="header-preview" id="prevHeader" style="transition:0.3s; position:relative;">
+                    <div id="prevLogo" class="logo-preview"><span>V</span>point</div>
+                    <div id="prevSubtitle" class="subtitle-preview">Розраховуй і створюй</div>
+
+                    <!-- Premium Illustrations -->
+                    <img id="prevHeaderIllustration"
+                        style="position:absolute; right:80px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s;">
+                    <img id="prevHeaderIllustration2"
+                        style="position:absolute; right:150px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s;">
+
+                    <div class="auth-controls-preview">
+                        <button class="logout-btn-preview">Вийти</button>
+                        <button class="settings-btn-preview">⚙️</button>
+                    </div>
+                </div>
+
+                <div id="dbCardsGrid"
+                    style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px;">
+                    <!-- Real cards preview -->
+                </div>
+                <div style="margin-top:20px; opacity:0.5; font-size:12px">* Картки показані схематично</div>
+            </div>
+        </div>
+
+        <!-- === CALCULATOR PREVIEW === -->
+        <div id="calculatorPreview" style="width:100%; display:flex; justify-content:center">
+            <div class="preview-container" id="designerCanvas" style="flex:1"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedIds = []; // Array of selected field IDs
+        let selectedGroupId = null;
+        let selectedCatId = null; // Currently editing a category?
+
+        let historyStack = [];
+        const MAX_HISTORY = 50;
+
+        function saveHistory() {
+            historyStack.push(JSON.stringify(Schema));
+            if (historyStack.length > MAX_HISTORY) historyStack.shift();
+            const btn = document.getElementById('undoBtn');
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+        }
+
+        function undo() {
+            if (historyStack.length === 0) return;
+            const previous = historyStack.pop();
+            const currentSchema = JSON.parse(previous);
+
+            // Restore Schame
+            Object.keys(currentSchema).forEach(key => {
+                Schema[key] = currentSchema[key];
+            });
+
+            if (historyStack.length === 0) {
+                const btn = document.getElementById('undoBtn');
+                btn.style.opacity = '0.3';
+                btn.style.pointerEvents = 'none';
+            }
+            renderDesigner();
+            // Deselect to avoid stale references if IDs changed (though they shouldn't)
+            selectedIds = [];
+            selectedGroupId = null;
+            document.getElementById('noSelection').style.display = 'block';
+            document.getElementById('selectionPanel').style.display = 'none';
+        }
+
+        // Add Ctrl+Z listener
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+                e.preventDefault();
+                undo();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', renderDesigner);
+
+        function renderDesigner() {
+            const container = document.getElementById('designerCanvas');
+            container.innerHTML = '';
+
+            // Sync Global Inputs
+            document.getElementById('calcTitleInp').value = (Schema.layout && Schema.layout.title) || '';
+            document.getElementById('calcVersionInp').value = (Schema.layout && Schema.layout.version) || '';
+
+            // Render Header Preview
+            const headerPreview = document.createElement('div');
+            headerPreview.style.padding = '0 10px 20px 10px';
+            headerPreview.style.borderBottom = '1px solid var(--border)';
+            headerPreview.style.marginBottom = '30px';
+            headerPreview.style.display = 'flex';
+            headerPreview.style.justifyContent = 'space-between';
+            headerPreview.style.alignItems = 'baseline';
+            headerPreview.innerHTML = `
+            <div style="font-size: 18px; font-weight: 800; color:var(--accent)">${Schema.layout?.title || 'Калькулятор'}</div>
+             <div style="font-size: 10px; opacity:0.5; text-align: right;">
+                 ${Schema.layout?.version || 'v1.0'}<br>
+                    <span style="color:var(--accent); font-weight:bold;">Ctrl + Click для вибору декількох</span>
+            </div>
+            `;
+            container.appendChild(headerPreview);
+
+            // New: Category Toggles Preview
+            const catSelection = document.createElement('div');
+            catSelection.style.marginBottom = '25px';
+            catSelection.className = 'categories-preview-container';
+            catSelection.innerHTML = `
+            <div style="font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="background: var(--accent); width: 4px; height: 12px; border-radius: 2px;"></span>
+                Процеси для розрахунку (Перетягніть для сортування)
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;" id="catTogglesGrid"></div>
+            `;
+            container.appendChild(catSelection);
+
+            const catGrid = catSelection.querySelector('#catTogglesGrid');
+            Object.keys(Schema.categories || {}).forEach(cid => {
+                const cat = Schema.categories[cid];
+                const btn = document.createElement('div');
+                btn.className = 'cat-preview-toggle';
+                btn.draggable = true;
+                btn.dataset.cid = cid;
+                btn.style.cssText = `
+            padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 600;
+            border: 2px solid var(--accent); background: var(--accent); color: white;
+            display: flex; align-items: center; gap: 6px; cursor: move; transition: 0.2s;
+            `;
+                btn.innerHTML = `<span style="font-size: 8px;">✓</span> ${cat.name}`;
+                catGrid.appendChild(btn);
+            });
+            setupDragEvents(catGrid, '.cat-preview-toggle', updateCategoriesOrder);
+
+            // Create Main Layout (Form + Results)
+            const mainLayout = document.createElement('div');
+            mainLayout.style.display = 'flex';
+            mainLayout.style.gap = '30px';
+            mainLayout.style.width = '100%';
+
+            const formPanel = document.createElement('div');
+            formPanel.style.flex = '2';
+            formPanel.id = 'formPanelPreview';
+
+            const resultsPanel = document.createElement('div');
+            resultsPanel.style.flex = '1';
+            resultsPanel.style.minWidth = '250px';
+            resultsPanel.style.background = 'rgba(255,255,255,0.03)';
+            resultsPanel.style.borderRadius = '16px';
+            resultsPanel.style.padding = '20px';
+            resultsPanel.style.border = '1px solid var(--border)';
+            resultsPanel.innerHTML = `
+            <h3 style="margin-top:0; font-size: 14px; text-transform:uppercase; color:var(--text-dim)">Результати</h3>
+            <div style="margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:15px">
+                ${Object.keys(Schema.categories || {}).map(cid => `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px; color:var(--text-main)">
+                            <span>${Schema.categories[cid].name}</span>
+                            <span style="font-weight:600; color:var(--accent)">0 грн</span>
+                        </div>
+                    `).join('')}
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center">
+                <div style="font-size: 10px; color: var(--text-dim); font-weight:700; margin-bottom: 5px; text-transform:uppercase">ВСЬОГО</div>
+                <div style="font-size: 24px; font-weight: 800; color: white;">0 грн</div>
+            </div>
+            `;
+
+            mainLayout.appendChild(formPanel);
+            mainLayout.appendChild(resultsPanel);
+            container.appendChild(mainLayout);
+
+            Schema.groups.forEach((group, idx) => {
+                const gl = group.layout || {};
+                const groupEl = document.createElement('div');
+                groupEl.className = 'group-box';
+                groupEl.dataset.groupId = group.id;
+                groupEl.draggable = true;
+                if (gl.borderWidth) {
+                    groupEl.style.border = `${gl.borderWidth}px solid ${gl.borderColor || 'rgba(255,255,255,0.1)'}`;
+                }
+
+                const groupCont = document.createElement('div');
+                groupCont.className = 'group-content';
+                groupEl.appendChild(groupCont);
+
+                const header = document.createElement('div');
+                header.className = 'group-header';
+                const gLayout = group.layout || {};
+                const showNumbers = gLayout.showNumbering;
+
+                header.textContent = (showNumbers ? `${idx + 1}. ` : '') + (group.title || 'Без назви');
+                header.onclick = (e) => { e.stopPropagation(); selectGroup(group.id); };
+                if (selectedGroupId === group.id) header.classList.add('selected');
+                groupCont.appendChild(header);
+
+                groupCont.style.background = gLayout.background || (document.body.classList.contains('light-theme') ? '#fff' : '#111827');
+                groupCont.style.padding = '20px';
+                groupCont.style.borderRadius = '12px';
+                groupCont.style.border = '1px solid var(--border)';
+
+                const grid = document.createElement('div');
+                grid.className = 'fields-grid';
+                Schema.fields.filter(f => f.groupId === group.id).forEach(field => {
+                    grid.appendChild(createFieldCard(field));
+                });
+
+                groupCont.appendChild(grid);
+                formPanel.appendChild(groupEl);
+                setupDragEvents(grid, '.field-card', updateFieldsOrder);
+            });
+            setupDragEvents(formPanel, '.group-box', updateGroupsOrder);
+        }
+
+        function pickHelpImg(input) {
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                updateStyle('helpImg', 'images/' + fileName);
+                document.getElementById('helpImgInp').value = 'images/' + fileName;
+            }
+        }
+
+        function createFieldCard(field) {
+            const l = field.layout || {};
+            const widthClass = l.width || 'w-100';
+            const card = document.createElement('div');
+            card.className = `field-card ${widthClass}${field.hidden ? ' hidden-card' : ''}`;
+            if (selectedIds.includes(field.id)) card.classList.add('selected');
+            card.dataset.id = field.id;
+            card.draggable = true;
+
+            const isRow = l.flexDirection === 'row';
+            card.style.flexDirection = l.flexDirection || 'column';
+            card.style.gap = (l.gap || 8) + 'px';
+            if (isRow) card.style.alignItems = 'center';
+
+            const isLight = document.body.classList.contains('light-theme');
+            const defaultColor = isLight ? '#374151' : 'white';
+
+            const labelStyle = `
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size:${l.fontSize || 13}px;
+            ${isRow ? `flex: 0 0 ${l.labelWidth || 120}px;` : 'none'};
+            justify-content: ${l.textAlign === 'center' ? 'center' : (l.textAlign === 'right' ? 'flex-end' : 'flex-start')};
+            color:${l.color || defaultColor};
+            font-weight:${l.fontWeight || 600};
+            ${l.uppercase ? 'text-transform:uppercase;' : ''}
+            ${l.spaced ? 'letter-spacing:0.05em;' : ''}
+            `;
+
+            card.innerHTML = `
+            <div class="field-label" style="${labelStyle}">
+                ${field.label || field.default || 'Поле'}
+                ${l.help ? '<span class="help-icon">?</span>' : ''}
+            </div>
+            <div style="flex:${isRow ? 1 : 'none'}; width: 100%; display: flex; flex-direction: column; justify-content: center;">
+                <div style="width:${l.inputWidth || 100}%; margin-left:${l.inputOffset || 0}px;">
+                    <div class="field-type-badge">${field.type}</div>
+                    ${field.type === 'action_button' ?
+                    `<div class="btn-preview" style="background:${l.btnBg || '#2563eb'}; color:${l.btnColor || '#fff'}; font-size:${l.btnFontSize || 10}px; border-radius:${l.btnRadius || 8}px; padding:${(l.btnPadding || 12) / 2}px; text-align:center; font-weight:700; margin-top:5px;">${field.default || 'BUTTON'}</div>` :
+                    field.type === 'select_modal' ?
+                        `<div class="input-preview" style="border-color:${l.inpBorder || '#d1d5db'}; background:${l.inpBg || '#fff'}; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px;"><span>${field.placeholderText || field.label || 'Виберіть...'}</span><span style="font-size: 8px;">▼</span></div>` :
+                        field.type === 'select' ?
+                            `<div class="input-preview" style="border-color:${l.inpBorder || '#d1d5db'}; background:${l.inpBg || '#fff'}; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px;"><span>${field.placeholderText || field.label || 'Виберіть...'}</span><span style="font-size: 8px;">▼</span></div>` :
+                            `<div class="input-preview" style="border-color:${l.inpBorder || '#d1d5db'}; background:${l.inpBg || '#fff'}; color:${l.inpBg ? (parseInt(l.inpBg.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff') : '#9ca3af'}">${field.placeholderText || l.placeholder || 'Placeholder...'}</div>`
+                }
+                </div>
+            </div>
+            `;
+            card.onclick = (e) => {
+                e.stopPropagation();
+                const isMulti = e.ctrlKey || e.metaKey || e.shiftKey;
+                selectField(field.id, isMulti);
+            };
+            return card;
+        }
+
+        function updateGlobal(prop, val) {
+            saveHistory();
+            Schema.layout = Schema.layout || {};
+            Schema.layout[prop] = val;
+            renderDesigner();
+        }
+
+        function setGlobalTheme(theme) {
+            saveHistory();
+            Schema.layout = Schema.layout || {};
+            Schema.layout.theme = theme;
+            document.body.classList.toggle('light-theme', theme === 'light');
+            document.getElementById('themeDark').classList.toggle('active', theme === 'dark' || !theme);
+            document.getElementById('themeLight').classList.toggle('active', theme === 'light');
+            renderDesigner();
+        }
+
+        function resetAllToDefault() {
+            if (!confirm('Ви впевнені, що хочете видалити всі візуальні налаштування для всіх полів?')) return;
+            saveHistory();
+            Schema.fields.forEach(f => {
+                f.layout = {};
+            });
+            renderDesigner();
+            alert('Стилі всіх полів було скинуто до стандартних.');
+        }
+
+        function applySelectedStyleToAll() {
+            if (selectedIds.length === 0) return;
+            if (!confirm('Застосувати стиль вибраного поля до всіх інших полів?')) return;
+            saveHistory();
+            const sourceField = Schema.fields.find(f => f.id === selectedIds[0]);
+            const styleToCopy = JSON.parse(JSON.stringify(sourceField.layout || {}));
+
+            Schema.fields.forEach(f => {
+                f.layout = JSON.parse(JSON.stringify(styleToCopy));
+            });
+            renderDesigner();
+            alert('Стиль успішно застосовано до всіх полів.');
+        }
+
+        function selectField(id, multi = false) {
+            if (multi) {
+                const idx = selectedIds.indexOf(id);
+                if (idx > -1) selectedIds.splice(idx, 1);
+                else selectedIds.push(id);
+            } else {
+                selectedIds = [id];
+            }
+            selectedGroupId = null;
+
+            if (selectedIds.length === 0) {
+                document.getElementById('noSelection').style.display = 'block';
+                document.getElementById('selectionPanel').style.display = 'none';
+                renderDesigner();
+                return;
+            }
+
+            const field = Schema.fields.find(f => f.id === selectedIds[0]);
+            const l = field.layout || {};
+
+            document.getElementById('noSelection').style.display = 'none';
+            document.getElementById('selectionPanel').style.display = 'block';
+            document.getElementById('fieldProperties').style.display = 'block';
+            document.getElementById('groupProperties').style.display = 'none';
+
+            // Sync UI for the first/main selected field
+            document.getElementById('selectedFieldName').textContent = selectedIds.length > 1 ? `📦 Обрано об'єктів: ${selectedIds.length}` : (field.label || field.default);
+            document.getElementById('fontSizeRange').value = l.fontSize || 13;
+            document.getElementById('fontSizeVal').textContent = l.fontSize || 13;
+            // ... (sync other inputs as usual, they will show first item state)
+            document.getElementById('fontWeightSelect').value = l.fontWeight || 400;
+            document.getElementById('labelColor').value = l.color || (document.body.classList.contains('light-theme') ? '#111827' : '#ffffff');
+            document.getElementById('placeholderInp').value = l.placeholder || '';
+            document.getElementById('helpInp').value = l.help || '';
+            document.getElementById('helpImgInp').value = l.helpImg || '';
+            document.getElementById('inputWidthRange').value = l.inputWidth || 100;
+            document.getElementById('inputWidthVal').textContent = (l.inputWidth || 100) + '%';
+            document.getElementById('inputOffsetRange').value = l.inputOffset || 0;
+            document.getElementById('inputOffsetVal').textContent = l.inputOffset || 0;
+            document.getElementById('inpBorderColor').value = l.inpBorder || '#d1d5db';
+            document.getElementById('inpBgColor').value = l.inpBg || '#ffffff';
+            document.getElementById('gapInp').value = l.gap || 8;
+            document.getElementById('paddingInp').value = l.padding || 15;
+            document.getElementById('glassToggle').checked = !!l.glass;
+            document.getElementById('fieldHidden').checked = !!field.hidden;
+
+            const lwCtrl = document.getElementById('labelWidthControl');
+            if (l.flexDirection === 'row') {
+                lwCtrl.style.display = 'block';
+                document.getElementById('labelWidthRange').value = l.labelWidth || 120;
+                document.getElementById('labelWidthVal').textContent = (l.labelWidth || 120) + 'px';
+            } else {
+                lwCtrl.style.display = 'none';
+            }
+
+            document.getElementById('btnUpper').classList.toggle('active', !!l.uppercase);
+            document.getElementById('btnLetterSpacing').classList.toggle('active', !!l.spaced);
+            document.getElementById('btnDirCol').classList.toggle('active', (l.flexDirection || 'column') === 'column');
+            document.getElementById('btnDirRow').classList.toggle('active', l.flexDirection === 'row');
+
+            document.getElementById('alignLeft').classList.toggle('active', (l.textAlign || 'left') === 'left');
+            document.getElementById('alignCenter').classList.toggle('active', l.textAlign === 'center');
+            document.getElementById('alignRight').classList.toggle('active', l.textAlign === 'right');
+
+            ['none', 'subtle', 'deep', 'glow'].forEach(s => {
+                const btn = document.getElementById('sh' + s.charAt(0).toUpperCase() + s.slice(1));
+                if (btn) btn.classList.toggle('active', (l.shadow || 'none') === s);
+            });
+
+            const btnProps = document.getElementById('actionButtonProperties');
+            if (field.type === 'action_button') {
+                btnProps.style.display = 'block';
+                document.getElementById('btnBgColor').value = l.btnBg || '#2563eb';
+                document.getElementById('btnTextColor').value = l.btnColor || '#ffffff';
+                document.getElementById('btnFontSize').value = l.btnFontSize || 14;
+                document.getElementById('btnRadius').value = l.btnRadius || 8;
+            } else {
+                btnProps.style.display = 'none';
+            }
+
+            renderDesigner();
+        }
+
+        function selectGroup(id) {
+            selectedGroupId = id; selectedIds = [];
+            const group = Schema.groups.find(g => g.id === id);
+            const gl = group.layout || {};
+
+            document.getElementById('noSelection').style.display = 'none';
+            document.getElementById('selectionPanel').style.display = 'block';
+            document.getElementById('fieldProperties').style.display = 'none';
+            document.getElementById('groupProperties').style.display = 'block';
+
+            document.getElementById('groupTitleInp').value = group.title || '';
+            document.getElementById('groupBgColor').value = gl.background || (document.body.classList.contains('light-theme') ? '#ffffff' : '#111827');
+            document.getElementById('groupNumbering').checked = !!gl.showNumbering;
+
+            renderDesigner();
+        }
+
+        function updateGroupStyle(prop, val) {
+            const group = Schema.groups.find(g => g.id === selectedGroupId);
+            saveHistory();
+            if (prop === 'title') {
+                group.title = val;
+            } else {
+                if (!group.layout) group.layout = {};
+                group.layout[prop] = val;
+            }
+            renderDesigner();
+        }
+        function toggleLayoutProp(prop) {
+            saveHistory();
+            selectedIds.forEach(id => {
+                const field = Schema.fields.find(f => f.id === id);
+                if (!field.layout) field.layout = {};
+                field.layout[prop] = !field.layout[prop];
+            });
+            renderDesigner();
+            selectField(selectedIds[0], true); // Refresh UI state based on first item
+            // Note: multi selection refresh logic might needs refinement for toggle buttons
+        }
+
+        function updateStyle(prop, val) {
+            if (selectedIds.length === 0) return;
+            saveHistory();
+            selectedIds.forEach(id => {
+                const field = Schema.fields.find(f => f.id === id);
+                if (!field.layout) field.layout = {};
+
+                const intProps = ['fontSize', 'inputWidth', 'btnFontSize', 'btnRadius', 'gap', 'padding', 'labelWidth', 'inputOffset'];
+                field.layout[prop] = intProps.includes(prop) ? parseInt(val) : val;
+            });
+
+            // Immediate UI update for sliders (based on value passed)
+            if (prop === 'inputWidth') document.getElementById('inputWidthVal').textContent = val + '%';
+            if (prop === 'inputOffset') document.getElementById('inputOffsetVal').textContent = val;
+            if (prop === 'labelWidth') document.getElementById('labelWidthVal').textContent = val + 'px';
+
+            renderDesigner();
+            if (prop === 'shadow' || prop === 'flexDirection') selectField(selectedIds[0], true);
+        }
+
+        function setFieldWidth(w) { updateStyle('width', w); }
+        function toggleFieldHidden(v) {
+            selectedIds.forEach(id => {
+                Schema.fields.find(f => f.id === id).hidden = v;
+            });
+            renderDesigner();
+        }
+
+        function updateCategoriesOrder() {
+            saveHistory();
+            const newOrder = {};
+            [...document.querySelectorAll('.cat-preview-toggle')].forEach(el => {
+                const cid = el.dataset.cid;
+                newOrder[cid] = Schema.categories[cid];
+            });
+            Schema.categories = newOrder;
+            renderDesigner(); // Re-render to show updated results order
+        }
+
+        function updateGroupStyle(prop, val) {
+            const group = Schema.groups.find(g => g.id === selectedGroupId);
+            if (!group.layout) group.layout = {};
+            group.layout[prop] = prop === 'borderWidth' ? parseInt(val) : val;
+            renderDesigner();
+        }
+
+        function setupDragEvents(cont, sel, onDrop) {
+            cont.onsubmit = e => e.preventDefault();
+            cont.addEventListener('dragstart', e => { if (e.target.matches(sel)) e.target.classList.add('dragging'); });
+            cont.addEventListener('dragend', e => { if (e.target.matches(sel)) e.target.classList.remove('dragging'); });
+            cont.addEventListener('dragover', e => {
+                e.preventDefault();
+                const drag = document.querySelector('.dragging');
+                if (!drag || !drag.matches(sel)) return;
+
+                // Improved 2D proximity sorting
+                const others = [...cont.querySelectorAll(`${sel}:not(.dragging)`)];
+                const after = others.reduce((clos, child) => {
+                    const box = child.getBoundingClientRect();
+                    const centerX = box.left + box.width / 2;
+                    const centerY = box.top + box.height / 2;
+
+                    // Simple logic: if mouse is before the center of the element, place before it
+                    const isBefore = e.clientX < centerX && e.clientY < (box.top + box.height + 10);
+                    const isTrulyBefore = e.clientY < box.top || (e.clientY < (box.top + box.height) && e.clientX < centerX);
+
+                    const off = isTrulyBefore ? -1 : 1;
+                    // This is still a bit simple, but better than vertical-only
+                    // Let's use distance to box center to find the insertion point
+                    const dist = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
+
+                    if (e.clientX < centerX || e.clientY < box.top) {
+                        if (dist < clos.dist) return { dist, el: child };
+                    }
+                    return clos;
+                }, { dist: Infinity }).el;
+
+                if (after) cont.insertBefore(drag, after);
+                else cont.appendChild(drag);
+            });
+            cont.addEventListener('drop', (e) => {
+                saveHistory();
+                setTimeout(onDrop, 10);
+            });
+        }
+
+        function updateFieldsOrder() {
+            const sorted = [];
+            document.querySelectorAll('.group-box').forEach(gb => {
+                const gid = gb.dataset.groupId;
+                gb.querySelectorAll('.field-card').forEach(fc => {
+                    const f = Schema.fields.find(x => x.id === fc.dataset.id);
+                    f.groupId = gid; sorted.push(f);
+                });
+            });
+            Schema.fields = [...sorted, ...Schema.fields.filter(f => !sorted.includes(f))];
+        }
+
+        function updateGroupsOrder() {
+            Schema.groups = [...document.querySelectorAll('.group-box')].map(gb => Schema.groups.find(g => g.id === gb.dataset.groupId));
+        }
+
+        async function saveLayout() {
+            try {
+                const defaultName = window.currentConfigFile ? window.currentConfigFile.split('/').pop() : 'schema.js';
+                const handle = await window.showSaveFilePicker({ suggestedName: defaultName, types: [{ accept: { 'text/javascript': ['.js'] } }] });
+                const writ = await handle.createWritable();
+                await writ.write(`const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`);
+                await writ.close(); alert('✅ Збережено!');
+            } catch (e) { if (e.name !== 'AbortError') console.error(e); }
+        }
+    </script>
+    <script>
+        // --- Centralized Designer Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initContextSwitcher();
+            if (window.currentMode === 'dashboard') {
+                activateDashboardMode();
+            } else {
+                activateCalculatorMode();
+            }
+        });
+
+        async function initContextSwitcher() {
+            // Robust loading: if config is missing, try fetching it
+            if (!window.CalculatorConfig) {
+                try {
+                    const response = await fetch('data/config_calculators.js?v=' + new Date().getTime());
+                    if (response.ok) {
+                        const text = await response.text();
+                        eval(text); // Manually execute config script
+                    }
+                } catch (e) {
+                    console.error("Failed to load config manually", e);
+                }
+            }
+
+            const select = document.getElementById('contextSwitcher');
+            const group = document.getElementById('calcOptions');
+            if (window.CalculatorConfig) {
+                // Clear existing just in case
+                group.innerHTML = '';
+                window.CalculatorConfig.forEach(conf => {
+                    const opt = document.createElement('option');
+                    opt.value = conf.file;
+                    opt.textContent = `${conf.icon} ${conf.title}`;
+                    if (window.currentConfigFile === conf.file) opt.selected = true;
+                    group.appendChild(opt);
+                });
+            } else {
+                // Fallback if absolutely nothing works
+                const opt = document.createElement('option');
+                opt.textContent = "❌ Помилка завантаження конфігурації";
+                group.appendChild(opt);
+            }
+            if (window.currentMode === 'dashboard') select.value = 'dashboard';
+        }
+
+        function switchContext(val) {
+            if (val === 'dashboard') window.location.href = 'designer.html?mode=dashboard';
+            else window.location.href = 'designer.html?config=' + val;
+        }
+
+        function handleSave() {
+            if (window.currentMode === 'dashboard') saveDashboardConfig();
+            else saveLayout();
+        }
+
+        function activateDashboardMode() {
+            document.getElementById('dashboardEditor').style.display = 'block';
+            document.getElementById('calculatorEditor').style.display = 'none';
+            document.getElementById('dashboardPreview').style.display = 'block';
+            document.getElementById('calculatorPreview').style.display = 'none';
+            const undoBtn = document.getElementById('undoBtn');
+            if (undoBtn) undoBtn.style.display = 'none';
+            loadDashboardValues();
+        }
+
+        function activateCalculatorMode() {
+            document.getElementById('dashboardEditor').style.display = 'none';
+            document.getElementById('calculatorEditor').style.display = 'block';
+            document.getElementById('dashboardPreview').style.display = 'none';
+            document.getElementById('calculatorPreview').style.display = 'flex';
+            const backBtn = document.querySelector('.calc-mode-back');
+            if (backBtn) backBtn.style.display = 'flex';
+            if (typeof renderDesigner === 'function') renderDesigner();
+        }
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function loadDashboardValues() {
+            const cfg = window.DashboardConfig || {};
+            document.getElementById('dbTitle').value = cfg.siteTitle || '';
+            document.getElementById('dbSubtitle').value = cfg.siteSubtitle || '';
+            document.getElementById('dbColor').value = cfg.themeColor || '#1e88e5';
+            document.getElementById('dbColorText').value = cfg.themeColor || '#1e88e5';
+            document.getElementById('dbLogoText').value = cfg.logoText || '';
+            document.getElementById('dbLogoImg').value = cfg.logoImage || '';
+            document.getElementById('dbBgImage').value = cfg.backgroundImage || '';
+
+            document.getElementById('dbBgType').value = cfg.bgType || 'color';
+            document.getElementById('dbBlur').value = cfg.glassBlur ?? 10;
+            document.getElementById('dbOpacity').value = cfg.glassOpacity ?? 0.1;
+
+            // New Card Styles
+            // Premium Styles
+            document.getElementById('dbTitleSize').value = cfg.siteTitleSize ?? 48;
+            document.getElementById('dbHeaderIllustration').value = cfg.headerIllustration || '';
+            document.getElementById('dbCardTitleWeight').value = cfg.cardTitleWeight || '800';
+            document.getElementById('dbPlaceholderBg').value = cfg.placeholderBg || '#cbd5e1';
+            document.getElementById('dbPlaceholderBadge').value = cfg.placeholderBadgeText || 'Скоро';
+
+            // Coordinates & Header Style
+            document.getElementById('dbLogoX').value = cfg.logoX ?? 0;
+            document.getElementById('dbLogoY').value = cfg.logoY ?? 0;
+            document.getElementById('dbLogoScale').value = cfg.logoScale ?? 1;
+
+            document.getElementById('dbIllus1X').value = cfg.illus1X ?? 0;
+            document.getElementById('dbIllus1Y').value = cfg.illus1Y ?? 0;
+            document.getElementById('dbIllus1Scale').value = cfg.illus1Scale ?? 1;
+
+            document.getElementById('dbHeaderIllustration2').value = cfg.headerIllustration2 || '';
+            document.getElementById('dbIllus2X').value = cfg.illus2X ?? 0;
+            document.getElementById('dbIllus2Y').value = cfg.illus2Y ?? 0;
+            document.getElementById('dbIllus2Scale').value = cfg.illus2Scale ?? 1;
+
+            document.getElementById('dbHeaderBg').value = cfg.headerBgColor || '#ffffff';
+            document.getElementById('dbHeaderOpacity').value = cfg.headerOpacity ?? 0.15;
+            document.getElementById('dbHeaderBlur').value = cfg.headerBlur ?? 10;
+
+            updateDashboardPreview();
+        }
+
+        function updateDashboardPreview() {
+            const title = document.getElementById('dbTitle').value;
+            const subtitle = document.getElementById('dbSubtitle').value;
+            const color = document.getElementById('dbColor').value;
+            const logoText = document.getElementById('dbLogoText').value;
+            const logoImg = document.getElementById('dbLogoImg').value;
+            const bgImage = document.getElementById('dbBgImage').value;
+            const bgType = document.getElementById('dbBgType').value;
+            const glassBlur = parseInt(document.getElementById('dbBlur').value);
+            const glassOpacity = parseFloat(document.getElementById('dbOpacity').value);
+            const titleSize = document.getElementById('dbTitleSize').value;
+            const headerIllus = document.getElementById('dbHeaderIllustration').value;
+            const headerIllus2 = document.getElementById('dbHeaderIllustration2').value;
+
+            const hBg = document.getElementById('dbHeaderBg').value;
+            const hBlur = parseInt(document.getElementById('dbHeaderBlur').value);
+            const hOpacity = parseFloat(document.getElementById('dbHeaderOpacity').value);
+
+            document.getElementById('dbBlurVal').innerText = glassBlur;
+            document.getElementById('dbOpacityVal').innerText = glassOpacity.toFixed(2);
+            document.getElementById('dbHeaderOpacityVal').innerText = hOpacity.toFixed(2);
+            document.getElementById('dbHeaderBlurVal').innerText = hBlur;
+            document.getElementById('dbTitleSizeVal').innerText = titleSize;
+
+            document.getElementById('dbCardWidthVal').textContent = document.getElementById('dbCardWidth').value;
+            document.getElementById('dbCardPaddingVal').textContent = document.getElementById('dbCardPadding').value;
+            document.getElementById('dbCardIconSizeVal').textContent = document.getElementById('dbCardIconSize').value;
+            document.getElementById('dbCardTitleSizeVal').textContent = document.getElementById('dbCardTitleSize').value;
+            document.getElementById('dbCardDescSizeVal').textContent = document.getElementById('dbCardDescSize').value;
+
+            const canvas = document.getElementById('mainCanvas');
+            const prevHeader = document.getElementById('prevHeader');
+            const prevLogo = document.getElementById('prevLogo');
+            const prevSubtitle = document.getElementById('prevSubtitle');
+
+            prevHeader.style.background = hexToRgba(hBg, hOpacity);
+            prevHeader.style.backdropFilter = `blur(${hBlur}px)`;
+            prevHeader.style.webkitBackdropFilter = `blur(${hBlur}px)`;
+            prevHeader.style.border = '2px solid rgba(255,255,255,0.15)';
+
+            prevLogo.style.fontSize = titleSize + 'px';
+
+            // Illustrations
+            const prevIllus = document.getElementById('prevHeaderIllustration');
+            const i1X = document.getElementById('dbIllus1X').value;
+            const i1Y = document.getElementById('dbIllus1Y').value;
+            const i1S = document.getElementById('dbIllus1Scale').value;
+
+            if (headerIllus) {
+                let src1 = headerIllus;
+                if (src1 && src1.startsWith('images/')) src1 = '../' + src1;
+                prevIllus.src = (src1.startsWith('blob:') || src1.startsWith('data:')) ? src1 : encodeURI(src1);
+                prevIllus.style.display = 'block';
+                prevIllus.style.transform = `translate(${i1X}px, ${i1Y}px) scale(${i1S})`;
+            } else {
+                prevIllus.style.display = 'none';
+            }
+
+            const prevIllus2 = document.getElementById('prevHeaderIllustration2');
+            const i2X = document.getElementById('dbIllus2X').value;
+            const i2Y = document.getElementById('dbIllus2Y').value;
+            const i2S = document.getElementById('dbIllus2Scale').value;
+
+            if (headerIllus2) {
+                let src2 = headerIllus2;
+                if (src2 && src2.startsWith('images/')) src2 = '../' + src2;
+                prevIllus2.src = (src2.startsWith('blob:') || src2.startsWith('data:')) ? src2 : encodeURI(src2);
+                prevIllus2.style.display = 'block';
+                prevIllus2.style.transform = `translate(${i2X}px, ${i2Y}px) scale(${i2S})`;
+            } else {
+                prevIllus2.style.display = 'none';
+            }
+
+            const lX = document.getElementById('dbLogoX').value;
+            const lY = document.getElementById('dbLogoY').value;
+            const lS = document.getElementById('dbLogoScale').value;
+            prevLogo.style.transform = `translate(${lX}px, ${lY}px) scale(${lS})`;
+            prevLogo.style.transformOrigin = 'center';
+
+            // Apply Logo Image with Preview support
+            const displayLogo = window._dbLogoPreview || logoImg;
+            if (displayLogo) {
+                let dLogo = displayLogo;
+                if (dLogo && dLogo.startsWith('images/')) dLogo = '../' + dLogo;
+                prevLogo.innerHTML = `<img src="${dLogo}" style="height: 60px; display: block; margin: 0 auto;">`;
+            } else {
+                prevLogo.textContent = logoText || title || "Vpoint";
+                prevLogo.classList.add('logo-glow');
+            }
+
+            prevSubtitle.textContent = subtitle;
+
+            // Background Type with Preview support
+            const displayBg = window._dbBgPreview || bgImage;
+            if (bgType === 'animation') {
+                canvas.style.backgroundImage = 'none';
+                canvas.style.backgroundColor = '#0f172a';
+                // Sync Blobs
+                canvas.querySelectorAll('.blob').forEach(b => b.remove());
+                for (let i = 0; i < 3; i++) {
+                    const blob = document.createElement('div');
+                    blob.className = 'blob';
+                    blob.style.left = Math.random() * 100 + '%';
+                    blob.style.top = Math.random() * 100 + '%';
+                    blob.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+                    blob.style.animationDuration = (10 + Math.random() * 20) + 's';
+                    blob.style.animationDelay = (Math.random() * -20) + 's';
+                    canvas.appendChild(blob);
+                }
+            } else if (bgType === 'gradient') {
+                canvas.style.backgroundImage = 'none';
+                canvas.style.background = `linear-gradient(135deg, ${color} 0%, #0f172a 100%)`;
+            } else if (bgType === 'image' && displayBg) {
+                canvas.style.background = `url('${displayBg}') center/cover no-repeat`;
+            } else {
+                canvas.style.backgroundImage = 'none';
+                canvas.style.background = color;
+            }
+
+            renderDashboardCardsPreview();
+            renderCalculatorsEditorUI();
+        }
+
+        function renderDashboardCardsPreview() {
+            const grid = document.getElementById('dbCardsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (!window.CalculatorConfig) return;
+
+            const glassBlur = document.getElementById('dbBlur').value;
+            const glassOpacity = document.getElementById('dbOpacity').value;
+
+            window.CalculatorConfig.forEach((conf, idx) => {
+                const card = document.createElement('div');
+                card.className = 'dashboard-card-drag';
+                card.draggable = true;
+                card.dataset.idx = idx;
+                const cardWidth = document.getElementById('dbCardWidth').value;
+                const cardPadding = document.getElementById('dbCardPadding').value;
+                const cardIconSize = document.getElementById('dbCardIconSize').value;
+                const cardTitleSize = document.getElementById('dbCardTitleSize').value;
+                const cardTitleColor = document.getElementById('dbCardTitleColor').value;
+                const cardDescSize = document.getElementById('dbCardDescSize').value;
+                const cardDescColor = document.getElementById('dbCardDescColor').value;
+                const cardTitleWeight = document.getElementById('dbCardTitleWeight').value;
+                const placeholderBg = document.getElementById('dbPlaceholderBg').value;
+                const placeholderBadge = document.getElementById('dbPlaceholderBadge').value;
+
+                grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${cardWidth}px, 1fr))`;
+                grid.style.gridAutoRows = '1fr';
+                grid.style.alignItems = 'stretch';
+                grid.style.justifyItems = 'stretch';
+
+                const colSpan = conf.colSpan || 1;
+                const isPlaceholder = conf.isPlaceholder;
+
+                let bgStyle = `background: rgba(255, 255, 255, ${glassOpacity});`;
+                if (isPlaceholder && placeholderBg) {
+                    bgStyle = `background: ${placeholderBg}; color: #334155 !important;`;
+                }
+
+                card.style.cssText = `
+                    ${bgStyle}
+                    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+                    border-radius: 20px;
+                    padding: ${cardPadding}px;
+                    text-align: center;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 100%;
+                    width: 100%;
+                    grid-column: span ${colSpan};
+                    transition: 0.3s;
+                    box-sizing: border-box;
+                `;
+                if (idx === window.selectedCalcIdx) card.classList.add('selected-db-card');
+
+                let badgeHtml = '';
+                if (isPlaceholder) {
+                    badgeHtml = `<div class="badge" style="background:#d97706; margin-bottom:10px">${placeholderBadge}</div>`;
+                } else if (conf.badge) {
+                    badgeHtml = `<div class="badge" style="margin-bottom:10px">${conf.badge}</div>`;
+                }
+
+                const isImage = (conf.icon && (conf.icon.includes('/') || conf.icon.includes('.')));
+                const displayIcon = conf._previewIcon || conf.icon;
+                let dIcon = displayIcon;
+                if (dIcon && dIcon.startsWith('images/')) dIcon = '../' + dIcon;
+                const iconHtml = isImage ? `<img src="${dIcon}" style="height:${cardIconSize}px; display:block; margin: 0 auto; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px">${conf.icon}</div>`;
+
+                card.innerHTML = `
+                    <div style="flex-grow: 1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                        ${badgeHtml}
+                        <div style="height: ${cardIconSize}px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                            ${iconHtml}
+                        </div>
+                        <div style="font-size:${cardTitleSize}px; color:${isPlaceholder ? 'inherit' : cardTitleColor}; font-weight:${cardTitleWeight}; margin-bottom: 8px; line-height: 1.2;">${conf.title}</div>
+                        <div style="font-size:${cardDescSize}px; color:${isPlaceholder ? 'inherit' : cardDescColor}; opacity:0.8; line-height: 1.4; max-width: 250px;">${conf.desc || ''}</div>
+                    </div>
+                    <button class="btn-logic" onclick="event.stopPropagation(); window.location.href='designer.html?config=${conf.file}'" 
+                        style="margin-top:20px; font-size:10px; padding:6px 12px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:99px; cursor:pointer; color:inherit;">
+                        ⚙️ Редагувати логіку
+                    </button>
+                `;
+
+                card.onclick = (e) => {
+                    if (card.classList.contains('dragging')) return;
+                    selectCalculatorCard(idx);
+                };
+
+                card.onmouseenter = () => { if (card.querySelector('.edit-hint')) card.querySelector('.edit-hint').style.opacity = '1'; };
+                card.onmouseleave = () => { if (card.querySelector('.edit-hint')) card.querySelector('.edit-hint').style.opacity = '0'; };
+
+                card.addEventListener('dragstart', () => card.classList.add('dragging'));
+                card.addEventListener('dragend', () => {
+                    card.classList.remove('dragging');
+                    const dragItems = [...grid.querySelectorAll('.dashboard-card-drag')];
+                    const newOrderIndices = dragItems.map(el => parseInt(el.dataset.idx));
+                    window.CalculatorConfig = newOrderIndices.map(i => window.CalculatorConfig[i]);
+                    updateDashboardPreview();
+                });
+
+                grid.appendChild(card);
+            });
+
+            grid.addEventListener('dragover', e => {
+                e.preventDefault();
+                const dragging = document.querySelector('.dragging');
+                if (!dragging) return;
+                const afterElement = getDragAfterElementX(grid, e.clientX); // Search by X for grid
+                if (afterElement == null) {
+                    grid.appendChild(dragging);
+                } else {
+                    grid.insertBefore(dragging, afterElement);
+                }
+            });
+        }
+
+        function selectCalculatorCard(idx) {
+            window.selectedCalcIdx = idx;
+            renderDashboardCardsPreview();
+            renderCalculatorsEditorUI();
+
+            // Scroll sidebar to this item
+            const item = document.querySelector(`.calc-edit-item[data-idx="${idx}"]`);
+            if (item) {
+                item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                item.style.borderColor = 'var(--accent)';
+                setTimeout(() => item.style.borderColor = 'var(--border)', 2000);
+            }
+        }
+
+        async function editCalculatorFromDashboard(calcId) {
+            const conf = window.CalculatorConfig.find(c => c.id === calcId);
+            if (!conf) return;
+
+            if (!confirm(`Перейти до редагування логіки та полів калькулятора "${conf.title}" ? `)) return;
+
+            // Load script dynamically
+            try {
+                // Remove old script if exists
+                const oldScript = document.getElementById('calc-schema-script');
+                if (oldScript) oldScript.remove();
+
+                const script = document.createElement('script');
+                script.id = 'calc-schema-script';
+                let sSrc = conf.file;
+                if (sSrc.startsWith('data/')) sSrc = '../' + sSrc;
+                script.src = sSrc + '?v=' + Date.now();
+
+                script.onload = () => {
+                    activateCalculatorMode();
+                    alert(`Обрано для редагування: ${conf.title} `);
+                };
+
+                document.head.appendChild(script);
+            } catch (e) {
+                alert('Помилка завантаження схеми: ' + e.message);
+            }
+        }
+
+        function getDragAfterElementX(container, x) {
+            const draggableElements = [...container.querySelectorAll('.dashboard-card-drag:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = x - box.left - box.width / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function renderCalculatorsEditorUI() {
+            const list = document.getElementById('calculatorsListEditor');
+            if (!list) return;
+
+            // Forces refresh
+            list.innerHTML = '';
+
+            if (!window.CalculatorConfig) return;
+
+            window.CalculatorConfig.forEach((conf, idx) => {
+                const item = document.createElement('div');
+                item.className = 'calc-edit-item';
+                item.draggable = true;
+                item.dataset.idx = idx;
+
+                // Highlight if selected
+                const isSelected = window.selectedDbIdx === idx;
+
+                item.style.cssText = `
+                background: ${isSelected ? 'rgba(99, 102, 241, 0.2)' : 'rgba(0, 0, 0, 0.2)'};
+                border: 1px solid ${isSelected ? 'var(--accent)' : 'var(--border)'};
+                border-radius: 10px;
+                padding: 12px;
+                cursor: move;
+                transition: 0.2s;
+                position: relative;
+                `;
+
+                const colSpan = conf.colSpan || 1;
+
+                item.innerHTML = `
+                    <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center">
+                        <div style="position:relative">
+                           <input type="text" id="calcIcon_${idx}" value="${conf.icon}" 
+                               oninput="updateCalcInConfig(${idx}, 'icon', this.value)" 
+                               style="width:45px; text-align:center; font-size:14px" placeholder="Icon">
+                           <button class="toggle-btn" onclick="openDbFilePicker('calcIcon_${idx}')" 
+                               style="position:absolute; right:-5px; top:-5px; padding:2px; font-size:10px; background:var(--accent); color:white; border-radius:50%; width:20px; height:20px; border:2px solid var(--bg)" title="Файл">📂</button>
+                        </div>
+                        
+                        <input type="text" value="${conf.title}" 
+                            oninput="updateCalcInConfig(${idx}, 'title', this.value)" 
+                            style="flex:1; font-weight:bold" placeholder="Назва калькулятора">
+                        
+                        <select onchange="updateCalcInConfig(${idx}, 'colSpan', parseInt(this.value))" 
+                                style="width:50px; background:rgba(255,255,255,0.1); border:1px solid var(--border); color:white; border-radius:6px; font-size:11px; padding:4px; cursor:pointer">
+                            <option value="1" ${colSpan === 1 ? 'selected' : ''}>1x</option>
+                            <option value="2" ${colSpan === 2 ? 'selected' : ''}>2x</option>
+                        </select>
+
+                        <button onclick="removeCalcFromConfig(${idx})" 
+                                style="background:#ef4444; border:none; color:white; cursor:pointer; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; transition:0.2s" 
+                                onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'" title="Видалити">🗑️</button>
+                    </div>
+                    <textarea oninput="updateCalcInConfig(${idx}, 'desc', this.value)"
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:var(--text-dim); border-radius:6px; font-size:11px; resize:vertical; padding:8px; min-height:40px" placeholder="Опис для картки...">${conf.desc || ''}</textarea>
+                `;
+                list.appendChild(item);
+
+                item.addEventListener('dragstart', () => item.classList.add('dragging-calc'));
+                item.addEventListener('dragend', () => item.classList.remove('dragging-calc'));
+                item.onclick = () => selectCalculatorCard(idx);
+            });
+
+            // Reorder logic
+            list.addEventListener('dragover', e => {
+                e.preventDefault();
+                const dragging = document.querySelector('.dragging-calc');
+                if (!dragging) return;
+                const afterElement = getDragAfterSidebarElement(list, e.clientY);
+                if (afterElement == null) {
+                    list.appendChild(dragging);
+                } else {
+                    list.insertBefore(dragging, afterElement);
+                }
+            });
+
+            list.addEventListener('drop', () => {
+                const dragItems = [...list.querySelectorAll('.calc-edit-item')];
+                const newOrderIndices = dragItems.map(el => parseInt(el.dataset.idx));
+                const newConfig = newOrderIndices.map(i => window.CalculatorConfig[i]);
+                window.CalculatorConfig = newConfig;
+                updateDashboardPreview();
+            });
+        }
+
+        function getDragAfterSidebarElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.calc-edit-item:not(.dragging-calc)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function updateCalcInConfig(idx, prop, val, previewUrl = null) {
+            window.CalculatorConfig[idx][prop] = val;
+            if (previewUrl) {
+                // Temporary store preview URL for live rendering
+                window.CalculatorConfig[idx]._previewIcon = previewUrl;
+            } else {
+                delete window.CalculatorConfig[idx]._previewIcon;
+            }
+            renderDashboardCardsPreview();
+        }
+
+        function removeCalcFromConfig(idx) {
+            if (!confirm('Видалити цей калькулятор зі списку?')) return;
+            window.CalculatorConfig.splice(idx, 1);
+            updateDashboardPreview();
+        }
+
+        function addNewCalculatorToConfig() {
+            const id = 'schema_' + Date.now();
+            window.CalculatorConfig.push({
+                id: id,
+                title: 'Новий калькулятор',
+                icon: '📦',
+                file: 'data/' + id + '.js',
+                desc: 'Опис нового калькулятора'
+            });
+            updateDashboardPreview();
+        }
+
+        async function saveCalculatorsConfig() {
+            // Remove temporary preview URLs before saving to file
+            const configToSave = window.CalculatorConfig.map(conf => {
+                const clean = { ...conf };
+                delete clean._previewIcon;
+                return clean;
+            });
+            const content = `window.CalculatorConfig = ${JSON.stringify(configToSave, null, 4)}; `;
+            try {
+                const handle = await window.showSaveFilePicker({
+                    suggestedName: 'config_calculators.js',
+                    types: [{ accept: { 'text/javascript': ['.js'] } }]
+                });
+                const writable = await handle.createWritable();
+                await writable.write(content);
+                await writable.close();
+                alert('✅ Список калькуляторів збережено!');
+            } catch (e) {
+                if (e.name !== 'AbortError') alert('Помилка: ' + e.message);
+            }
+        }
+
+        async function saveDashboardConfig() {
+            const newConfig = {
+                siteTitle: document.getElementById('dbTitle').value,
+                siteSubtitle: document.getElementById('dbSubtitle').value,
+                themeColor: document.getElementById('dbColor').value,
+                logoText: document.getElementById('dbLogoText').value,
+                logoImage: document.getElementById('dbLogoImg').value,
+                backgroundImage: document.getElementById('dbBgImage').value,
+                bgType: document.getElementById('dbBgType').value,
+                glassBlur: parseInt(document.getElementById('dbBlur').value),
+                glassOpacity: parseFloat(document.getElementById('dbOpacity').value),
+                cardMinWidth: parseInt(document.getElementById('dbCardWidth').value),
+                cardPadding: parseInt(document.getElementById('dbCardPadding').value),
+                cardIconSize: parseInt(document.getElementById('dbCardIconSize').value),
+                cardTitleSize: parseInt(document.getElementById('dbCardTitleSize').value),
+                cardTitleColor: document.getElementById('dbCardTitleColor').value,
+                cardDescSize: parseInt(document.getElementById('dbCardDescSize').value),
+                cardDescColor: document.getElementById('dbCardDescColor').value,
+                // Premium fields
+                siteTitleSize: parseInt(document.getElementById('dbTitleSize').value),
+                headerIllustration: document.getElementById('dbHeaderIllustration').value,
+                cardTitleWeight: document.getElementById('dbCardTitleWeight').value,
+                placeholderBg: document.getElementById('dbPlaceholderBg').value,
+                placeholderBadgeText: document.getElementById('dbPlaceholderBadge').value,
+                // v5.0
+                logoX: parseInt(document.getElementById('dbLogoX').value),
+                logoY: parseInt(document.getElementById('dbLogoY').value),
+                logoScale: parseFloat(document.getElementById('dbLogoScale').value),
+                illus1X: parseInt(document.getElementById('dbIllus1X').value),
+                illus1Y: parseInt(document.getElementById('dbIllus1Y').value),
+                illus1Scale: parseFloat(document.getElementById('dbIllus1Scale').value),
+                headerIllustration2: document.getElementById('dbHeaderIllustration2').value,
+                illus2X: parseInt(document.getElementById('dbIllus2X').value),
+                illus2Y: parseInt(document.getElementById('dbIllus2Y').value),
+                illus2Scale: parseFloat(document.getElementById('dbIllus2Scale').value),
+                headerBgColor: document.getElementById('dbHeaderBg').value,
+                headerOpacity: parseFloat(document.getElementById('dbHeaderOpacity').value),
+                headerBlur: parseInt(document.getElementById('dbHeaderBlur').value)
+            };
+            window.DashboardConfig = newConfig;
+            const content = `window.DashboardConfig = ${JSON.stringify(newConfig, null, 4)};`;
+            try {
+                const handle = await window.showSaveFilePicker({
+                    suggestedName: 'config_dashboard.js',
+                    types: [{ accept: { 'text/javascript': ['.js'] } }]
+                });
+                const writable = await handle.createWritable();
+                await writable.write(content);
+                await writable.close();
+                window.DashboardConfig = newConfig;
+                alert('✅ Налаштування збережено!');
+            } catch (e) {
+                if (e.name !== 'AbortError') alert('Помилка: ' + e.message);
+            }
+        }
+
+        async function handleGlobalSave() {
+            if (window.currentMode === 'dashboard') {
+                // Save both dashboard settings and calculator list
+                await saveDashboardConfig();
+                await saveCalculatorsConfig();
+            } else {
+                await saveLayout();
+            }
+        }
+
+        let currentDbTargetId = '';
+        function openDbFilePicker(targetId) {
+            currentDbTargetId = targetId;
+            document.getElementById('dbFilePicker').click();
+        }
+
+        function handleDbFileSelection(input) {
+            if (input.files && input.files[0] && currentDbTargetId) {
+                const file = input.files[0];
+                const fileName = file.name;
+                const fullPath = 'images/' + fileName;
+                const previewUrl = URL.createObjectURL(file);
+
+                const el = document.getElementById(currentDbTargetId);
+                if (el) {
+                    el.value = fullPath;
+                    if (currentDbTargetId.startsWith('calcIcon_')) {
+                        const idx = parseInt(currentDbTargetId.split('_')[1]);
+                        updateCalcInConfig(idx, 'icon', fullPath, previewUrl);
+                    } else if (currentDbTargetId === 'dbLogoImg') {
+                        window._dbLogoPreview = previewUrl;
+                    } else if (currentDbTargetId === 'dbBgImage') {
+                        window._dbBgPreview = previewUrl;
+                    }
+                }
+                updateDashboardPreview();
+            }
+        }
+
+        async function pickDashboardImage(targetId) {
+            // Keep for compatibility but redirect to new logic if called
+            openDbFilePicker(targetId);
+        }
+    </script>
+</body>
+
+</html>

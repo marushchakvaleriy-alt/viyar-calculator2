@@ -1,0 +1,3449 @@
+<html lang="uk">
+<head>
+<meta charset="utf-8"/>
+<title>Калькулятор поінтів — Viyar</title>
+<style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f3f4f6;
+      font-size: 14px;
+    }
+    .wrapper {
+      max-width: 1100px;
+      margin: 20px auto;
+      background: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    header {
+      padding: 10px 0;
+      position: relative;
+      background: white;
+    }
+    .title-small {
+      font-size: 12px;
+      color: #4b5563;
+      margin-bottom: 4px;
+    }
+    .header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    header img { height: 32px; }
+    header label { margin-left: 6px; font-size: 13px; }
+    input, select {
+      font-size: 14px;
+      padding: 6px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+    }
+    header input { width: 110px; }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover { background: #1d4ed8; }
+    .section { margin: 20px 0; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .facade-list label {
+      display: block;
+      margin: 8px 0 4px;
+    }
+    .hidden { display: none; }
+    /* Модальне вікно - сучасний дизайн */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 0;
+      border-radius: 16px;
+      max-width: 600px; /* wider for better visibility */
+      width: 95%;
+      height: auto;
+      max-height: 90vh;         /* авто-підгонка до екрану */
+      overflow-y: auto;         /* скрол всієї модалки при необхідності */
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      animation: slideUp 0.3s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes slideUp {
+      from { 
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to { 
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0;
+      margin: 0;
+      transition: color 0.2s ease;
+    }
+    .close:hover {
+      color: white;
+    }
+
+    .modal-actions {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+    }
+    .modal-actions button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .modal-actions button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Стилі для кнопки видалення (×) */
+    .remove-btn {
+      background: none !important;
+      border: none !important;
+      color: #000 !important;
+      font-size: 16px !important;
+      cursor: pointer !important;
+      padding: 2px 6px !important;
+      margin-left: 8px !important;
+      border-radius: 0 !important;
+      font-weight: bold !important;
+    }
+    .remove-btn:hover {
+      color: #dc2626 !important;
+      background: none !important;
+    }
+  
+    .settings-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.35); z-index: 9999; }
+    .settings-content { position: relative; background:#fff; padding:16px 20px; border-radius:12px; max-width:720px; width:95%; max-height:80vh; overflow:auto; box-shadow:0 10px 30px rgba(0,0,0,.2); }
+    .settings-close { position:absolute; top:10px; right:12px; border:none; background:transparent; font-size:20px; line-height:1; cursor:pointer; color:#6b7280; }
+    .settings-close:hover { color:#111827; }
+  
+    .header-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .points-hud { display:inline-block; padding:8px 14px; border-radius:999px; background:#eef2ff; color:#1d4ed8; font-weight:700; border:1px solid #c7d2fe; font-size:16px; }
+    @media (max-width:640px){ .points-hud { font-size:12px; padding:4px 8px; } }
+    
+    /* Кнопка повернення */
+    .back-button {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      background: #1976d2;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .back-button:hover {
+      background: #1565c0;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+      text-decoration: none;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .back-button {
+        top: 10px;
+        left: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+    }
+    
+    /* Підказки */
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+      margin-left: 5px;
+    }
+    .tooltip-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: #6b7280;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: help;
+      vertical-align: middle;
+    }
+    .tooltip-icon:hover {
+      background: #374151;
+    }
+    .tooltip-content {
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: nowrap;
+      max-width: 300px;
+      white-space: normal;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .tooltip-content::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #1f2937;
+    }
+    .tooltip-container:hover .tooltip-content {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Поле пароля */
+    .password-field {
+      display: none;
+      margin: 10px 0;
+      padding: 10px;
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+    }
+    .password-field input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      margin-right: 10px;
+      width: 200px;
+    }
+    .password-field button {
+      padding: 8px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .password-field button:hover {
+      background: #1d4ed8;
+    }
+    .password-error {
+      color: #dc2626;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    
+    /* Стилі для друку - оптимізовано для А4 */
+    @media print {
+      @page {
+        size: A4;
+        margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+      }
+      
+      .no-print,
+      .header-bar,
+      .password-field,
+      .calc-actions,
+      .modal,
+      .password-modal,
+      .settings-modal {
+        display: none !important;
+      }
+      
+      /* Показуємо поінти при друку */
+      .points-hud {
+        display: inline-block !important;
+        background: #f0f0f0 !important;
+        border: 1px solid #ccc !important;
+        padding: 3px 6px !important;
+        margin: 5px 0 !important;
+        font-weight: bold !important;
+        font-size: 12px !important;
+      }
+      
+      * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #000 !important;
+        background: white !important;
+      }
+      
+      .wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+      }
+      
+      header {
+        margin: 0 0 5px 0 !important;
+        padding: 0 !important;
+        page-break-after: avoid;
+      }
+      
+      .container {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      
+      .section {
+        margin: 0 0 5px 0 !important;
+        padding: 0 !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        orphans: 1;
+        widows: 1;
+      }
+      
+      h3 {
+        font-size: 11px !important;
+        margin: 3px 0 2px 0 !important;
+        color: #000 !important;
+        page-break-after: avoid;
+        font-weight: bold !important;
+      }
+      
+      label {
+        font-size: 9px !important;
+        margin: 0 0 1px 0 !important;
+        display: inline-block !important;
+        width: auto !important;
+      }
+      
+      input, select {
+        font-size: 9px !important;
+        padding: 1px 2px !important;
+        margin: 0 0 1px 0 !important;
+        border: 1px solid #ccc !important;
+        width: 60px !important;
+        height: 16px !important;
+      }
+      
+      /* Компактний макет для полів */
+      .section > div {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      /* Групування полів в рядки */
+      .section label {
+        display: inline-block !important;
+        width: 120px !important;
+        margin-right: 5px !important;
+        vertical-align: top !important;
+      }
+      
+      .section input, .section select {
+        display: inline-block !important;
+        width: 50px !important;
+        margin-right: 15px !important;
+        margin-bottom: 2px !important;
+      }
+      
+      /* Спеціальні правила для flex-контейнерів */
+      .section div[style*="flex"] {
+        display: block !important;
+      }
+      
+      .section div[style*="flex"] > div {
+        display: inline-block !important;
+        margin-right: 20px !important;
+        vertical-align: top !important;
+      }
+      
+      /* Приховуємо зайві елементи */
+      .tooltip-container {
+        display: none !important;
+      }
+      
+      /* Мінімальні відступи */
+      br {
+        line-height: 0.5 !important;
+      }
+      
+      /* Уникаємо розривів сторінки */
+      .section:nth-child(5),
+      .section:nth-child(6),
+      .section:nth-child(7),
+      .section:nth-child(8),
+      .section:nth-child(9),
+      .section:nth-child(10) {
+        page-break-before: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    #functionalHardwareList > div:hover {
+      background-color: #f9fafb;
+    }
+
+    /* Modal body area - без внутрішнього скролу */
+    .modal-body {
+      padding: 20px 24px;
+      max-height: none;
+      overflow: visible;
+    }
+
+    /* Chips for readable lists */
+    .chips-row { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 12px;
+      line-height: 18px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #1e3a8a;
+      border: 1px solid #c7d2fe;
+      white-space: nowrap;
+    }
+    .chip--neutral { background: #f1f5f9; color: #334155; border-color: #e2e8f0; }
+    
+    </style>
+  
+  <!-- Додати jsPDF бібліотеку -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="налаштування/calculator-settings.js"></script>
+</head>
+<body>
+<!-- Кнопка повернення -->
+<a href="../index.html" class="back-button">←</a>
+
+<div class="wrapper">
+<header>
+  <div class="title-small">
+    <span>Калькулятор інші меблі v1</span>
+  </div>
+<div class="header-line">
+<img src="Картинки/logo2.svg" alt="Logo" class="header-logo">
+<label>Проєкт № <input id="projectNum" placeholder="Номер" type="text"/></label>
+<label>Назва виробу <input id="productName" placeholder="Назва" type="text"/></label>
+<label>Менеджер <input id="managerName" placeholder="Прізвище" type="text"/></label>
+<label>Дата 
+<input id="dateField" placeholder="Дата автоматично" type="text" readonly style="background-color: #f5f5f5; cursor: not-allowed;" value=""/>
+<script>
+(function() {
+  const dateField = document.getElementById("dateField");
+  if (dateField) {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    dateField.value = `${day}-${month}-${year}`;
+  }
+})();
+</script>
+</label>
+<button class="no-print" onclick="saveData()">Зберегти</button>
+<button class="no-print" onclick="loadData()">Завантажити</button>
+<button class="no-print" onclick="downloadPDF()" style="margin-left:8px;background:#2563eb;color:#fff;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;">Зберегти PDF</button>
+</div>
+</header>
+<div class="container">
+  <h3>1. Основні параметри окремостоячого виробу</h3>
+  <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px;">
+    <!-- Тип виробу -->
+    <div style="flex: 1;">
+      <div style="margin-bottom: 15px;">
+        <label for="kitType">Тип комплектації:</label><br/>
+        <select id="kitType" style="width: 60%;">
+          <option value="">Оберіть тип комплектації</option>
+          <option value="furniture_set">Меблевий набір \ Комплект</option>
+          <option value="single_product">Одинарний виріб</option>
+        </select>
+      </div>
+      
+      <!-- Вид виробу -->
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <label>Вид виробу:</label>
+        <button type="button" id="addProductBtn" onclick="showAddProductModal()" style="background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+          + Додати виріб
+        </button>
+      </div>
+      <div id="productsList"></div>
+      
+      <!-- Варіант встановлення -->
+      <div style="margin-top: 15px;">
+        <label for="installationType">Варіант встановлення:</label><br/>
+        <select id="installationType" style="width: 60%;">
+          <option value="">-- Виберіть --</option>
+          <option value="Окремо стоячі меблі">Окремо стоячі меблі</option>
+          <option value="Вбудовані меблі">Вбудовані меблі</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Заміри -->
+    <div style="flex: 1;">
+      <label for="measure">Заміри:</label><br/>
+      <select id="measure" style="width: 40%;">
+        <option value="">-- Виберіть --</option>
+        <option value="Без замірів">Без замірів</option>
+        <option value="По замірам 3D">По замірам 3D</option>
+        <option value="По замірам фото-ескіз">По замірам фото-ескіз</option>
+      </select>
+    </div>
+    
+    <!-- Нестандартна геометрія -->
+    <div style="flex: 1;">
+      <label for="geom">Нестандартна геометрія приміщення:<span class="tooltip-container"><span class="tooltip-icon">?</span><div class="tooltip-content">Наявність колон, вент-шахт, виступів, балок тощо</div></span></label><br/>
+      <select id="geom" style="width: 40%;">
+        <option value="">-- Виберіть --</option>
+        <option value="Так">Так</option>
+        <option value="Ні">Ні</option>
+      </select>
+    </div>
+  </div><!-- Розділ 2 -->
+  <div class="section">
+  <h3>2. Матеріали</h3>
+  <label for="corpus">Матеріал корпусу (шт.):</label>
+  <input id="corpus" min="0" onfocus="this.select()" type="number" value="0"/><br/><br/>
+  <label for="glassSelect">Скло-дзеркало:</label>
+  <select id="glassSelect" onchange="toggleGlassCount()">
+  <option value="">-- Виберіть --</option>
+  <option value="Так">Так</option>
+  <option value="Ні">Ні</option>
+  </select>
+  <div class="hidden" id="glassCountWrapper">
+  <br/>
+  <label for="glassCount">Кількість скло-дзеркал (шт.):</label>
+  <input id="glassCount" min="0" onfocus="this.select()" type="number" value="0"/>
+  </div><br/><br/>
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    <label for="hasFacadeMaterials">Фасадні матеріали:</label>
+    <select id="hasFacadeMaterials" onchange="toggleFacadeMaterialsFields()">
+      <option value="">-- Виберіть --</option>
+      <option value="yes">Так</option>
+      <option value="no">Ні</option>
+    </select>
+    <button type="button" id="addFacadeMaterialBtn" onclick="showAddFacadeMaterialModal()" class="hidden" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+      + Додати матеріал
+    </button>
+  </div>
+  <div class="hidden" id="facadeMaterialsFields">
+  <div id="facadeMaterialsList"></div>
+  </div>
+  </div>
+  <!-- Розділ 3 -->
+  <div class="section">
+  <h3>3. Стільниці</h3>
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    <label for="hasCountertops">Стільниці:</label>
+    <select id="hasCountertops" onchange="toggleCountertopsFields()">
+      <option value="">-- Виберіть --</option>
+      <option value="yes">Так</option>
+      <option value="no">Ні</option>
+    </select>
+    <button type="button" id="addCountertopBtn" onclick="showAddCountertopModal()" class="hidden" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+      + Додати стільницю
+    </button>
+  </div>
+  <div class="hidden" id="countertopsFields">
+  <div id="countertopsList"></div>
+  </div>
+  </div>
+
+  <!-- Розділ 4 -->
+  <div class="section">
+  <h3>4. Додаткові елементи – конструкції</h3>
+  <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+    <label>Є додаткові елементи:</label>
+    <select id="hasAdditionalElements" onchange="toggleAdditionalElementsFields()" style="width: 150px;">
+      <option value="">-- Виберіть --</option>
+      <option value="yes">Так</option>
+      <option value="no">Ні</option>
+    </select>
+    <button type="button" id="addAdditionalElementBtn" onclick="showAddAdditionalElementModal()" style="background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: none;">
+      + Додати елемент
+    </button>
+  </div>
+  <div id="additionalElementsList"></div>
+  </div>
+  <!-- Розділ 5 -->
+  <div class="section">
+  <h3>5. Вбудована техніка</h3>
+  <label for="appliancesHatch">Люк технічний інші комунікації:</label>
+  <input id="appliancesHatch" min="0" onfocus="this.select()" placeholder="Вкажіть кількість або 0" type="number"/><br/><br/>
+  <label for="appliancesSink">Рукомийник:</label>
+  <input id="appliancesSink" min="0" onfocus="this.select()" placeholder="Вкажіть кількість або 0" type="number"/><br/><br/>
+  <label for="appliancesFireplace">Каміни:</label>
+  <input id="appliancesFireplace" min="0" onfocus="this.select()" placeholder="Вкажіть кількість або 0" type="number"/><br/><br/>
+  <label for="appliancesOther">Техніка (пралка, сушка, бойлер тощо):</label>
+  <input id="appliancesOther" min="0" onfocus="this.select()" placeholder="Вкажіть кількість або 0" type="number"/>
+  </div>
+  <!-- Розділ 6 -->
+  <div class="section">
+  <h3>6. Ручки</h3>
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    <label for="hasHandles">Ручки:</label>
+    <select id="hasHandles" onchange="toggleHandlesFields()">
+      <option value="">-- Виберіть --</option>
+      <option value="yes">Так</option>
+      <option value="no">Ні</option>
+    </select>
+    <button type="button" id="addHandleBtn" onclick="showAddHandleModal()" class="hidden" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+      + Додати ручку
+    </button>
+  </div>
+  <div class="hidden" id="handlesFields">
+  <div id="handlesList"></div>
+  </div>
+  </div>
+  <script>
+        </script>
+  <!-- Розділ 7 -->
+  <div class="section">
+  <h3>7. Підсвітка</h3>
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    <label for="hasLighting">Підсвітка:</label>
+    <select id="hasLighting" onchange="toggleLightingFields()">
+      <option value="">-- Виберіть --</option>
+      <option value="yes">Так</option>
+      <option value="no">Ні</option>
+    </select>
+    <button type="button" id="addLightingBtn" onclick="showAddLightingModal()" class="hidden" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+      + Додати підсвітку
+    </button>
+  </div>
+  <div class="hidden" id="lightingFields">
+  <div id="lightingList"></div>
+  </div>
+  </div>
+  <div style="display: flex; align-items: center; gap: 15px;">
+    <button class="no-print" onclick="calculate()">Розрахувати</button>
+    <div class="points-hud" id="pointsHUD" style="display: none;">Поінти: 0</div>
+  </div>
+  </div>
+  </div>
+
+<!-- Модальне вікно для введення пароля -->
+<div id="passwordModal" class="modal" style="display: none;">
+  <div class="modal-content" style="max-width: 400px;">
+    <div class="modal-header">
+      <h3>Введіть пароль</h3>
+      <button class="close" onclick="closePasswordModal()">&times;</button>
+    </div>
+    <div style="padding: 20px 24px;">
+      <label for="passwordInput">Пароль:</label><br/>
+      <input type="password" id="passwordInput" onkeypress="handlePasswordKeypress(event)" style="width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" placeholder="Введіть пароль для доступу до налаштувань">
+    </div>
+    <div class="modal-actions">
+      <button onclick="closePasswordModal()" style="background: #6b7280;">Скасувати</button>
+      <button onclick="checkPassword()" style="background: #2563eb;">Відкрити налаштування</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модальне вікно для додавання виробу -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Додати виріб</h3>
+      <button class="close" onclick="closeProductModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <label for="productType">Тип виробу:</label><br/>
+      <select id="productType" onchange="onProductTypeChange()" style="width: 100%; margin-bottom: 15px;">
+        <option value="">-- Виберіть тип --</option>
+        <option value="Підлогова меблева конструкція">Підлогова меблева конструкція</option>
+        <option value="Підвісна меблева конструкція">Підвісна меблева конструкція</option>
+        <option value="Тумба в санвузол (з рукомийником)">Тумба в санвузол (з рукомийником)</option>
+        <option value="Тумба над інсталяцією">Тумба над інсталяцією</option>
+        <option value="Елементи стінових панелей прямих, як елемент конструкції">Елементи стінових панелей прямих, як елемент конструкції</option>
+        <option value="Стіл">Стіл</option>
+      </select>
+      
+      <!-- Динамічні поля для кожного типу виробу -->
+      <div id="dynamicProductFields"></div>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeProductModal()" style="background: #6b7280;">Скасувати</button>
+      <button onclick="addProduct()" style="background: #2563eb;">Додати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модальне вікно для додавання фасадного матеріалу -->
+<div id="addFacadeMaterialModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Додати фасадний матеріал</h3>
+      <span class="close" onclick="closeAddFacadeMaterialModal()">&times;</span>
+    </div>
+    <div style="padding: 20px 24px;">
+      <label for="newFacadeMaterialType">Тип матеріалу:</label>
+      <select id="newFacadeMaterialType" onchange="addFacadeMaterialOnSelect()" style="width: 100%; margin-bottom: 15px;">
+        <option value="">-- Виберіть --</option>
+        <option value="dsp_mat_corpus">ДСП мат. корпусу</option>
+        <option value="dsp">ДСП</option>
+        <option value="mdf_boards">МДФ плити</option>
+        <option value="paint_film_straight">Фарба/плівка "прямі"</option>
+        <option value="paint_film_milled">Фарба/плівка "фрезеровані"</option>
+        <option value="veneered_straight">Шпоновані "прямі"</option>
+        <option value="veneered_milled">Шпоновані "фрезеровані"</option>
+        <option value="aluminum_frame">Алюм. рамкові</option>
+        <option value="arpa_fenix">ARPA/Fenix</option>
+        <option value="fiushin">Fiushin</option>
+        <option value="hpl">HPL</option>
+        <option value="rd_individual">R&D фасади індивід.</option>
+        <option value="mdf_individual">МДФ фасади з індивідуальним фрезеруванням</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeAddFacadeMaterialModal()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модальне вікно для додавання стільниці (спрощене: матеріали як чекбокси) -->
+<div id="addCountertopModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Додати стільницю</h3>
+      <span class="close" onclick="closeAddCountertopModal()">&times;</span>
+    </div>
+    <div style="padding: 20px 24px;">
+      <label>Матеріали стільниці (можна кілька):</label>
+      <div id="countertopMaterials" style="margin-top: 8px;">
+        <label style="display:block; margin-bottom:6px;"><input type="checkbox" value="dsp_mdf"> ДСП-МДФ</label>
+        <label style="display:block; margin-bottom:6px;"><input type="checkbox" value="ceramic"> Керамограніт-Кварц</label>
+        <label style="display:block; margin-bottom:6px;"><input type="checkbox" value="hpl"> HPL</label>
+        <label style="display:block; margin-bottom:6px;"><input type="checkbox" value="acryl"> Акрил</label>
+        <label style="display:block; margin-bottom:6px;"><input type="checkbox" value="rd"> R&D (дерево-метал)</label>
+        <label style="display:block; margin-bottom:6px;"><input type="checkbox" value="sink_integrated"> Рукомийник інтегрований</label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeAddCountertopModal()" style="background: #6b7280;">Скасувати</button>
+      <button onclick="addCountertop()" style="background: #2563eb;">Додати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модальне вікно для додавання додаткового елемента -->
+<div id="addAdditionalElementModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Додати елемент</h3>
+      <span class="close" onclick="closeAddAdditionalElementModal()">&times;</span>
+    </div>
+    <div style="padding: 20px 24px;">
+      <label style="display: block; margin-bottom: 12px;">
+        <input type="checkbox" id="metal_frame_check" style="margin-right: 8px;">
+        Металоконструкція рамкова
+      </label>
+      
+      <label style="display: block; margin-bottom: 12px;">
+        <input type="checkbox" id="metal_volume_check" style="margin-right: 8px;">
+        Металоконструкція об'ємна
+      </label>
+      
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; margin-bottom: 6px;">
+          <input type="checkbox" id="rd_detail_check" onchange="toggleAdditionalElementQuantity('rd_detail')" style="margin-right: 8px;">
+          Деталь R&D, гнутий елемент тощо
+        </label>
+        <div id="rd_detail_quantity" style="display: none; margin-left: 24px;">
+          <label>Кількість:</label>
+          <input type="number" id="rd_detail_qty" min="1" value="1" onfocus="this.select()" style="width: 100px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; margin-left: 8px;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; margin-bottom: 6px;">
+          <input type="checkbox" id="false_horizontal_check" onchange="toggleAdditionalElementQuantity('false_horizontal')" style="margin-right: 8px;">
+          Фальш панелі горизонтальні
+        </label>
+        <div id="false_horizontal_quantity" style="display: none; margin-left: 24px;">
+          <label>Кількість:</label>
+          <input type="number" id="false_horizontal_qty" min="1" value="1" onfocus="this.select()" style="width: 100px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; margin-left: 8px;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; margin-bottom: 6px;">
+          <input type="checkbox" id="false_vertical_check" onchange="toggleAdditionalElementQuantity('false_vertical')" style="margin-right: 8px;">
+          Фальш панелі вертикальні
+        </label>
+        <div id="false_vertical_quantity" style="display: none; margin-left: 24px;">
+          <label>Кількість:</label>
+          <input type="number" id="false_vertical_qty" min="1" value="1" onfocus="this.select()" style="width: 100px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; margin-left: 8px;">
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeAddAdditionalElementModal()" style="background: #6b7280;">Скасувати</button>
+      <button onclick="addAdditionalElement()" style="background: #2563eb;">Додати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модальне вікно для додавання ручки -->
+<div id="addHandleModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Додати ручку</h3>
+      <span class="close" onclick="closeAddHandleModal()">&times;</span>
+    </div>
+    <div style="padding: 20px 24px;">
+      <label for="newHandleType">Тип ручки:</label>
+      <select id="newHandleType" style="width: 100%; margin-bottom: 15px;">
+        <option value="">-- Виберіть --</option>
+        <option value="handles_gola_low">GOLA низ</option>
+        <option value="handles_gola_up">GOLA верх</option>
+        <option value="handles_gola_vert">GOLA вертикал.</option>
+        <option value="handles_end">Торцеві</option>
+        <option value="handles_milled">Фрезеровані</option>
+        <option value="handles_other">Інші</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeAddHandleModal()" style="background: #6b7280;">Скасувати</button>
+      <button onclick="addHandle()" style="background: #2563eb;">Додати</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Масив для зберігання доданих виробів
+let addedProducts = [];
+
+// Змінна для режиму редагування
+let editingProductId = null;
+
+// Функція для відкриття модального вікна додавання виробу
+function showAddProductModal(productId = null) {
+  editingProductId = productId;
+  const modal = document.getElementById('productModal');
+  modal.style.display = 'flex';
+  // автофокус на тип
+  setTimeout(() => document.getElementById('productType')?.focus(), 0);
+  
+  if (productId) {
+    // Режим редагування
+    document.querySelector('.modal-header h3').textContent = 'Редагувати виріб';
+    modal.querySelector('.modal-actions button:last-child').textContent = 'Зберегти';
+  } else {
+    // Режим додавання
+    document.querySelector('.modal-header h3').textContent = 'Додати виріб';
+    modal.querySelector('.modal-actions button:last-child').textContent = 'Додати';
+  document.getElementById('productType').value = '';
+  document.getElementById('productQuantity').value = '1';
+  document.getElementById('dynamicProductFields').innerHTML = '';
+  }
+}
+
+// Функція для закриття модального вікна
+function closeProductModal() {
+  document.getElementById('productModal').style.display = 'none';
+  editingProductId = null; // Скидаємо режим редагування
+}
+
+// Функція обробки зміни типу продукту
+function onProductTypeChange() {
+  updateProductFields();
+  
+  // Якщо це режим редагування, після оновлення полів потрібно знову заповнити їх
+  if (editingProductId !== null) {
+    const product = addedProducts.find(p => p.id === editingProductId);
+    if (product) {
+      setTimeout(() => {
+        const sectionsInput = document.getElementById('sectionsCount');
+        if (sectionsInput) {
+          sectionsInput.value = product.sectionsCount || 0;
+        }
+        
+        // Заповнюємо функціональну фурнітуру
+        if (product.functionalHardware && typeof product.functionalHardware === 'object') {
+          Object.entries(product.functionalHardware).forEach(([key, qty]) => {
+            const input = document.querySelector(`#functionalHardwareList input[data-hw="${key}"]`);
+            if (input) {
+              input.value = qty;
+            }
+          });
+        }
+        
+        // Заповнюємо особливості конструкції
+        if (product.constructionFeatures && Array.isArray(product.constructionFeatures)) {
+          product.constructionFeatures.forEach(feature => {
+            const checkbox = document.getElementById(feature);
+            if (checkbox) {
+              checkbox.checked = true;
+            }
+          });
+        }
+        
+        // Оновлюємо текст кнопки фурнітури
+        updateFunctionalHardwareText();
+      }, 100);
+    }
+  }
+}
+
+// Функція для оновлення динамічних полів залежно від типу виробу
+function updateProductFields() {
+  const productType = document.getElementById('productType').value;
+  const dynamicFields = document.getElementById('dynamicProductFields');
+  
+  // Очищаємо попередні поля
+  dynamicFields.innerHTML = '';
+  
+  if (!productType) return;
+  
+  let fieldsHTML = '';
+  
+  // Загальні поля (для більшості типів). Для "Стіл" не показуємо секції
+  if (productType !== 'Стіл') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label for="sectionsCount">Кількість вертикальних проємів (секцій, відділень):</label><br/>
+        <input type="number" id="sectionsCount" min="0" value="0" style="width: 100%;">
+      </div>
+    `;
+  }
+  
+  // Поля для конкретних типів виробів
+  if (productType === 'Підлогова меблева конструкція') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Функціональна фурнітура:</label><br/>
+        <div style="margin-top: 8px; max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'section_no_facade')" data-hw="section_no_facade" style="margin-right: 8px;">Секція без фасадів</span>
+              <input type="number" id="qty_section_no_facade" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'swing_facades')" data-hw="swing_facades" style="margin-right: 8px;">Фасади розпашні</span>
+              <input type="number" id="qty_swing_facades" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'drawers')" data-hw="drawers" style="margin-right: 8px;">Ящики</span>
+              <input type="number" id="qty_drawers" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'lift_mechanisms')" data-hw="lift_mechanisms" style="margin-right: 8px;">Підйомні механізми</span>
+              <input type="number" id="qty_lift_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'bar_mechanisms')" data-hw="bar_mechanisms" style="margin-right: 8px;">Барні механізми</span>
+              <input type="number" id="qty_bar_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'accessories')" data-hw="accessories" style="margin-right: 8px;">Аксесуари</span>
+              <input type="number" id="qty_accessories" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'wingline_system')" data-hw="wingline_system" style="margin-right: 8px;">Складна система WingLine</span>
+              <input type="number" id="qty_wingline_system" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'slide_m_systems')" data-hw="slide_m_systems" style="margin-right: 8px;">Розсувні с-ми (типу slide М)</span>
+              <input type="number" id="qty_slide_m_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'sliding_door_systems')" data-hw="sliding_door_systems" style="margin-right: 8px;">Системи розсувних дверей (Revego, Hawa, Salice)</span>
+              <input type="number" id="qty_sliding_door_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'bottom_support_systems')" data-hw="bottom_support_systems" style="margin-right: 8px;">Розсувні с-ми (нижньоопорні)</span>
+              <input type="number" id="qty_bottom_support_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label>Особливості конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba90" value="tumba90"> Тумба конструкція 90*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba45" value="tumba45"> Тумба конструкція 45*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="irregularOrCutouts" value="irregularOrCutouts"> Неправильне геометрична форма, вирізи тощо
+          </label>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Поля для підвісної меблевої конструкції
+  if (productType === 'Підвісна меблева конструкція') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Функціональна фурнітура:</label><br/>
+        <div style="margin-top: 8px; max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'section_no_facade')" data-hw="section_no_facade" style="margin-right: 8px;">Секція без фасадів</span>
+              <input type="number" id="qty_section_no_facade" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'swing_facades')" data-hw="swing_facades" style="margin-right: 8px;">Фасади розпашні</span>
+              <input type="number" id="qty_swing_facades" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'drawers')" data-hw="drawers" style="margin-right: 8px;">Ящики</span>
+              <input type="number" id="qty_drawers" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'lift_mechanisms')" data-hw="lift_mechanisms" style="margin-right: 8px;">Підйомні механізми</span>
+              <input type="number" id="qty_lift_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'bar_mechanisms')" data-hw="bar_mechanisms" style="margin-right: 8px;">Барні механізми</span>
+              <input type="number" id="qty_bar_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'accessories')" data-hw="accessories" style="margin-right: 8px;">Аксесуари</span>
+              <input type="number" id="qty_accessories" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'wingline_system')" data-hw="wingline_system" style="margin-right: 8px;">Складна система WingLine</span>
+              <input type="number" id="qty_wingline_system" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'slide_m_systems')" data-hw="slide_m_systems" style="margin-right: 8px;">Розсувні с-ми (типу slide М)</span>
+              <input type="number" id="qty_slide_m_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label>Особливості конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba90" value="tumba90"> Тумба конструкція 90*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba45" value="tumba45"> Тумба конструкція 45*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="irregularOrCutouts" value="irregularOrCutouts"> Неправильне геометрична форма, вирізи тощо
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  // Поля для тумби в санвузол (з рукомийником)
+  if (productType === 'Тумба в санвузол (з рукомийником)') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Функціональна фурнітура:</label><br/>
+        <div style="margin-top: 8px; max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'section_no_facade')" data-hw="section_no_facade" style="margin-right: 8px;">Секція без фасадів</span>
+              <input type="number" id="qty_section_no_facade" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'swing_facades')" data-hw="swing_facades" style="margin-right: 8px;">Фасади розпашні</span>
+              <input type="number" id="qty_swing_facades" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'drawers')" data-hw="drawers" style="margin-right: 8px;">Ящики</span>
+              <input type="number" id="qty_drawers" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'lift_mechanisms')" data-hw="lift_mechanisms" style="margin-right: 8px;">Підйомні механізми</span>
+              <input type="number" id="qty_lift_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'bar_mechanisms')" data-hw="bar_mechanisms" style="margin-right: 8px;">Барні механізми</span>
+              <input type="number" id="qty_bar_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'wingline_system')" data-hw="wingline_system" style="margin-right: 8px;">Складна система WingLine</span>
+              <input type="number" id="qty_wingline_system" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'slide_m_systems')" data-hw="slide_m_systems" style="margin-right: 8px;">Розсувні с-ми (типу slide М)</span>
+              <input type="number" id="qty_slide_m_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label>Особливості конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba90" value="tumba90"> Тумба конструкція 90*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba45" value="tumba45"> Тумба конструкція 45*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="irregularOrCutouts" value="irregularOrCutouts"> Неправильне геометрична форма, вирізи тощо
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  // Поля для тумби над інсталяцією
+  if (productType === 'Тумба над інсталяцією') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Функціональна фурнітура:</label><br/>
+        <div style="margin-top: 8px; max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'section_no_facade')" data-hw="section_no_facade" style="margin-right: 8px;">Секція без фасадів</span>
+              <input type="number" id="qty_section_no_facade" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'swing_facades')" data-hw="swing_facades" style="margin-right: 8px;">Фасади розпашні</span>
+              <input type="number" id="qty_swing_facades" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'lift_mechanisms')" data-hw="lift_mechanisms" style="margin-right: 8px;">Підйомні механізми</span>
+              <input type="number" id="qty_lift_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'bar_mechanisms')" data-hw="bar_mechanisms" style="margin-right: 8px;">Барні механізми</span>
+              <input type="number" id="qty_bar_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'accessories')" data-hw="accessories" style="margin-right: 8px;">Аксесуари</span>
+              <input type="number" id="qty_accessories" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'wingline_system')" data-hw="wingline_system" style="margin-right: 8px;">Складна система WingLine</span>
+              <input type="number" id="qty_wingline_system" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'slide_m_systems')" data-hw="slide_m_systems" style="margin-right: 8px;">Розсувні с-ми (типу slide М)</span>
+              <input type="number" id="qty_slide_m_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label>Особливості конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba90" value="tumba90"> Тумба конструкція 90*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="tumba45" value="tumba45"> Тумба конструкція 45*
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="wallPanelFragment" value="wallPanelFragment"> Фрагмент стінової панелі (обшивка інсталяції)
+          </label>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Поля для елементів стінових панелей прямих, як елемент конструкції
+  if (productType === 'Елементи стінових панелей прямих, як елемент конструкції') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Тип конструкції:</label><br/>
+        <div style="margin-top: 8px; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="solid" value="solid"> Суцільні (площинні панелі з монтажом на стіну)</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="frame" value="frame"> Каркасні (площинні панелі з монтажом на підконструкцію)</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="profile" value="profile"> Профільні панелі (пагонажні елементи типу AGT)</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="slatted" value="slatted"> Рейкові (рейкові шпоновані, фрезеровані "Variety of lines")</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="modular" value="modular"> Модульні</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="rd" value="rd"> Панель індивідуальна R&D</label>
+        </div>
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label>Особливості:</label><br/>
+        <div style="margin-top: 8px; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="simplePanel" value="simplePanel"> Просте</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="complexPanel" value="complexPanel"> Складне</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="newDevelopment" value="newDevelopment"> Розробка нового</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="textureTransition" value="textureTransition"> Перехід текстури</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="millingTransition" value="millingTransition"> Перехід фрезерування</label>
+        </div>
+      </div>
+    `;
+  }
+
+  // Поля для Стіл
+  if (productType === 'Стіл') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Тип конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="top_straight" value="top_straight"> Форма стільниці "пряма"</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="top_corner" value="top_corner"> Форма стільниці "кутова"</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="no_cabinet" value="no_cabinet"> Стіл без тумби</label>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="with_cabinet" value="with_cabinet"> Стіл з тумбою</label>
+          <div id="cabinetQtyWrap" style="display:none; margin:4px 0 0 24px;">
+            <label for="tableCabinetQty">Кількість тумб:</label><br/>
+            <input id="tableCabinetQty" type="number" min="0" value="0" style="width: 120px;">
+          </div>
+          <label style="display:block; margin-bottom:5px;"><input type="checkbox" id="attached" value="attached"> Приставний елемент</label>
+          <div id="attachedQtyWrap" style="display:none; margin:4px 0 0 24px;">
+            <label for="attachedQty">Кількість приставних елементів:</label><br/>
+            <input id="attachedQty" type="number" min="0" value="0" style="width: 120px;">
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label>Функціональна фурнітура:</label><br/>
+        <div style="margin-top: 8px; max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'section_no_facade')" data-hw="section_no_facade" style="margin-right: 8px;">Секція без фасадів</span>
+              <input type="number" id="qty_section_no_facade" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'swing_facades')" data-hw="swing_facades" style="margin-right: 8px;">Фасади розпашні</span>
+              <input type="number" id="qty_swing_facades" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'drawers')" data-hw="drawers" style="margin-right: 8px;">Ящики</span>
+              <input type="number" id="qty_drawers" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'bar_mechanisms')" data-hw="bar_mechanisms" style="margin-right: 8px;">Барні механізми</span>
+              <input type="number" id="qty_bar_mechanisms" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'accessories')" data-hw="accessories" style="margin-right: 8px;">Аксесуари</span>
+              <input type="number" id="qty_accessories" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; justify-content: space-between;">
+              <span><input type="checkbox" onchange="toggleHardwareQty(this, 'slide_m_systems')" data-hw="slide_m_systems" style="margin-right: 8px;">Розсувні с-ми (типу slide М)</span>
+              <input type="number" id="qty_slide_m_systems" value="1" min="1" disabled onfocus="this.select()" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label>Особливості конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display: block; margin-bottom: 5px;"><input type="checkbox" id="tumba90" value="tumba90"> Тумба конструкція 90*</label>
+          <label style="display: block; margin-bottom: 5px;"><input type="checkbox" id="tumba45" value="tumba45"> Тумба конструкція 45*</label>
+          <label style="display: block; margin-bottom: 5px;"><input type="checkbox" id="irregularOrCutouts" value="irregularOrCutouts"> Неправильне геометрична форма, вирізи тощо</label>
+        </div>
+      </div>
+    `;
+  }
+
+  // Поля для стінових панелей (інші типи)
+  if (productType.includes('Елементи стінових панелей') && productType !== 'Елементи стінових панелей прямих, як елемент конструкції') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Особливості конструкції:</label><br/>
+        <div style="margin-top: 8px;">
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="irregularShape" value="irregularShape"> Неправильна геометрична форма
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="cutouts" value="cutouts"> Вирізи
+          </label>
+          <label style="display: block; margin-bottom: 5px;">
+            <input type="checkbox" id="customShape" value="customShape"> Нестандартна форма
+          </label>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Додаємо поле кількості виробів в кінці для всіх типів
+  fieldsHTML += `
+    <div style="margin-bottom: 15px;">
+      <label for="productQuantity">Кількість виробів:</label><br/>
+      <input type="number" id="productQuantity" min="1" value="1" onfocus="this.select()" style="width: 100%;">
+    </div>
+  `;
+  
+  dynamicFields.innerHTML = fieldsHTML;
+  // авто-виділення чисел при фокусі
+  const numbers = document.querySelectorAll('#dynamicProductFields input[type="number"]');
+  numbers.forEach(inp => {
+    inp.addEventListener('focus', function() { this.select(); });
+  });
+
+  // показ кількості тумб тільки якщо обрано "Стіл з тумбою"
+  const withCabinet = document.getElementById('with_cabinet');
+  const cabinetWrap = document.getElementById('cabinetQtyWrap');
+  if (withCabinet && cabinetWrap) {
+    const syncCabinet = () => { cabinetWrap.style.display = withCabinet.checked ? 'block' : 'none'; };
+    withCabinet.addEventListener('change', syncCabinet);
+    syncCabinet();
+  }
+  // показ кількості приставних елементів
+  const attached = document.getElementById('attached');
+  const attachedWrap = document.getElementById('attachedQtyWrap');
+  if (attached && attachedWrap) {
+    const syncAttached = () => { attachedWrap.style.display = attached.checked ? 'block' : 'none'; };
+    attached.addEventListener('change', syncAttached);
+    syncAttached();
+  }
+}
+
+// Функція для вмикання/вимикання поля кількості фурнітури
+function toggleHardwareQty(checkbox, hwId) {
+  const qtyInput = document.getElementById('qty_' + hwId);
+  if (qtyInput) {
+    qtyInput.disabled = !checkbox.checked;
+    if (!checkbox.checked) {
+      qtyInput.value = '1';
+    }
+  }
+}
+
+// Функція для відкриття/закриття випадаючого списку фурнітури (стара, залишаємо для сумісності)
+function toggleFunctionalHardware() {
+  const list = document.getElementById('functionalHardwareList');
+  if (list) {
+    list.style.display = list.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+// Функція для оновлення тексту кнопки з вибраними елементами (стара, залишаємо для сумісності)
+function updateFunctionalHardwareText() {
+  const inputs = document.querySelectorAll('#functionalHardwareList input[type="number"]');
+  const btn = document.getElementById('functionalHardwareBtn');
+  
+  if (!btn) return;
+  
+  const hardwareNames = {
+    'swing_facades': 'Фасади розпашні',
+    'drawers': 'Ящики',
+    'lift_mechanisms': 'Підйомні механізми',
+    'bar_mechanisms': 'Барні механізми',
+    'cabinet_accessories': 'Аксесуари до шафи',
+    'clothing_rods': 'Штанги для одягу',
+    'bottom_support_systems': 'Розсувні с-ми',
+    'wingline_system': 'WingLine',
+    'sliding_door_systems': 'Системи дверей',
+    'slide_m_systems': 'Slide М'
+  };
+  
+  let totalItems = 0;
+  const items = [];
+  
+  inputs.forEach(input => {
+    const value = parseInt(input.value) || 0;
+    if (value > 0) {
+      totalItems += value;
+      const name = hardwareNames[input.getAttribute('data-hw')] || input.getAttribute('data-hw');
+      items.push(`${name}: ${value}`);
+    }
+  });
+  
+  if (totalItems === 0) {
+    btn.textContent = 'Вказати кількість фурнітури';
+  } else if (totalItems <= 2) {
+    btn.textContent = items.join(', ');
+  } else {
+    btn.textContent = `Вказано елементів: ${totalItems}`;
+  }
+}
+
+// Функція для додавання виробу
+function addProduct() {
+  const type = document.getElementById('productType').value;
+  const quantity = parseInt(document.getElementById('productQuantity').value);
+  
+  if (!type || quantity < 1) {
+    alert('Будь ласка, виберіть тип виробу та вкажіть коректну кількість');
+    return;
+  }
+  
+  // Збираємо дані з динамічних полів
+  const sectionsCount = parseInt(document.getElementById('sectionsCount')?.value) || 0;
+  
+  // Збираємо функціональну фурнітуру з кількостями (нова структура з чекбоксами)
+  const functionalHardwareData = {};
+  const hardwareCheckboxes = document.querySelectorAll('#dynamicProductFields input[type="checkbox"][data-hw]');
+  hardwareCheckboxes.forEach(checkbox => {
+    if (checkbox.checked) {
+      const hwId = checkbox.getAttribute('data-hw');
+      const qtyInput = document.getElementById('qty_' + hwId);
+      const value = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+      functionalHardwareData[hwId] = value;
+    }
+  });
+  
+  // Збираємо особливості конструкції (чекбокси без data-hw)
+  const constructionFeatures = [];
+  const checkboxes = document.querySelectorAll('#dynamicProductFields input[type="checkbox"]:not([data-hw]):checked');
+  checkboxes.forEach(checkbox => {
+    constructionFeatures.push(checkbox.value);
+  });
+  
+  // Створюємо детальний опис виробу
+  let productDescription = type;
+  
+  if (sectionsCount > 0) {
+    productDescription += ` (${sectionsCount} секцій)`;
+  }
+  
+  // Додаємо функціональну фурнітуру до опису
+  if (Object.keys(functionalHardwareData).length > 0) {
+    const hardwareNames = {
+      'swing_facades': 'Фасади розпашні',
+      'drawers': 'Ящики',
+      'lift_mechanisms': 'Підйомні механізми',
+      'bar_mechanisms': 'Барні механізми',
+      'cabinet_accessories': 'Аксесуари до шафи',
+      'clothing_rods': 'Штанги для одягу',
+      'bottom_support_systems': 'Розсувні с-ми (нижньоопорні)',
+      'wingline_system': 'Складна система WingLine',
+      'sliding_door_systems': 'Системи розсувних дверей',
+      'slide_m_systems': 'Розсувні с-ми (типу slide М)'
+    };
+    
+    const hardwareItems = Object.entries(functionalHardwareData).map(([key, qty]) => {
+      const name = hardwareNames[key] || key;
+      return `${name} (${qty} шт.)`;
+    });
+    
+    productDescription += `, фурнітура: ${hardwareItems.join(', ')}`;
+  }
+  
+  if (constructionFeatures.length > 0) {
+    const featureNames = {
+      'tumba90': 'тумба 90*',
+      'tumba45': 'тумба 45*',
+      'irregularShape': 'неправильна форма',
+      'cutouts': 'вирізи',
+      'customShape': 'нестандартна форма'
+    };
+    
+    const features = constructionFeatures.map(feature => featureNames[feature] || feature).join(', ');
+    productDescription += `, ${features}`;
+  }
+  
+  // Перевіряємо, чи це режим редагування
+  if (editingProductId !== null) {
+    // Знаходимо продукт для редагування
+    const productIndex = addedProducts.findIndex(p => p.id === editingProductId);
+    if (productIndex !== -1) {
+      // Оновлюємо існуючий продукт
+      addedProducts[productIndex] = {
+        type: type,
+        description: productDescription,
+        quantity: quantity,
+        sectionsCount: sectionsCount,
+        functionalHardware: functionalHardwareData,
+        constructionFeatures: constructionFeatures,
+        id: editingProductId // зберігаємо той самий ID
+      };
+    }
+    editingProductId = null; // Скидаємо режим редагування
+  } else {
+    // Режим додавання
+  const existingProduct = addedProducts.find(p => p.type === type && p.description === productDescription);
+  
+  if (existingProduct) {
+    // Якщо існує, додаємо до кількості
+    existingProduct.quantity += quantity;
+  } else {
+    // Якщо не існує, додаємо новий
+    addedProducts.push({
+      type: type,
+      description: productDescription,
+      quantity: quantity,
+      sectionsCount: sectionsCount,
+        functionalHardware: functionalHardwareData,
+      constructionFeatures: constructionFeatures,
+      id: Date.now() // унікальний ID
+    });
+    }
+  }
+  
+  renderProductsList();
+  closeProductModal();
+}
+
+// Функція для відображення списку виробів
+function renderProductsList() {
+  const productsList = document.getElementById('productsList');
+  
+  if (addedProducts.length === 0) {
+    productsList.innerHTML = '<div style="color: #6b7280; font-style: italic;">Виробів не додано</div>';
+    return;
+  }
+  
+  // Функція для скорочення довгих назв
+  function getShortName(type) {
+    const shortNames = {
+      'Підлогова меблева конструкція': 'Підлогова конструкція',
+      'Підвісна меблева конструкція': 'Підвісна конструкція',
+      'Тумба в санвузол (з рукомийником)': 'Тумба в санвузол (з рукомийником)',
+      'Тумба над інсталяцією': 'Тумба над інсталяцією',
+      'Елементи стінових панелей прямих, як елемент конструкції': 'Стінові панелі прямі',
+      
+    };
+    
+    return shortNames[type] || type;
+  }
+  
+  let html = '';
+  addedProducts.forEach((product, index) => {
+    const displayName = getShortName(product.type);
+    html += `
+      <div style="padding: 8px 0; margin-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+          <div style="flex: 1;">
+            <div style="font-size: 14px; font-weight: 500; margin-bottom: 2px;">${index + 1}. ${displayName}</div>
+            ${product.sectionsCount > 0 ? `<div class="chips-row"><span class="chip chip--neutral">Секцій: ${product.sectionsCount}</span></div>` : ''}
+            ${product.functionalHardware && Object.keys(product.functionalHardware).length > 0 ? `<div class="chips-row">${Object.entries(product.functionalHardware).map(([key, qty]) => {
+              const names = {
+                'swing_facades': 'Фасади розпашні',
+                'drawers': 'Ящики',
+                'lift_mechanisms': 'Підйомні механізми',
+                'bar_mechanisms': 'Барні механізми',
+                'cabinet_accessories': 'Аксесуари до шафи',
+                'clothing_rods': 'Штанги для одягу',
+                'bottom_support_systems': 'Розсувні с-ми (нижньоопорні)',
+                'wingline_system': 'Складна система WingLine',
+                'sliding_door_systems': 'Системи розсувних дверей',
+                'slide_m_systems': 'Розсувні с-ми (типу slide М)'
+              };
+              const name = names[key] || key;
+              const label = `${name} (${qty} шт.)`;
+              return `<span class=\"chip\">${label}</span>`;
+            }).join('')}</div>` : ''}
+            ${product.constructionFeatures && product.constructionFeatures.length > 0 ? `<div class="chips-row">${product.constructionFeatures.map(f => {
+              const names = {
+                'tumba90': 'тумба 90*',
+                'tumba45': 'тумба 45*',
+                'irregularShape': 'неправильна форма',
+                'cutouts': 'вирізи',
+                'customShape': 'нестандартна форма'
+              };
+              const name = names[f] || f;
+              return `<span class=\"chip chip--neutral\">${name}</span>`;
+            }).join('')}</div>` : ''}
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="number" 
+                   id="quantity_${product.id}" 
+                   value="${product.quantity}" 
+                   min="1" 
+                   style="width: 60px; padding: 4px 6px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px;"
+                   onchange="updateProductQuantity(${product.id}, this.value)"
+                   onblur="updateProductQuantity(${product.id}, this.value)">
+            <span style="font-size: 12px; color: #666;">шт.</span>
+            <button onclick="editProduct(${product.id})" class="edit-btn" title="Редагувати" style="background: #2563eb; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">✎</button>
+            <button onclick="removeProduct(${product.id})" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">×</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  productsList.innerHTML = html;
+}
+
+// Функція для оновлення кількості виробу
+function updateProductQuantity(id, newQuantity) {
+  const quantity = parseInt(newQuantity);
+  
+  if (quantity < 1) {
+    alert('Кількість повинна бути не менше 1');
+    // Повертаємо попереднє значення
+    const product = addedProducts.find(p => p.id === id);
+    if (product) {
+      document.getElementById(`quantity_${id}`).value = product.quantity;
+    }
+    return;
+  }
+  
+  const product = addedProducts.find(p => p.id === id);
+  if (product) {
+    product.quantity = quantity;
+    // Додатковий бейдж біля заголовка прибрано; окремі пункти показують свою кількість
+  }
+}
+
+// Функція для редагування виробу
+function editProduct(id) {
+  const product = addedProducts.find(p => p.id === id);
+  if (!product) return;
+  
+  // Відкриваємо модальне вікно
+  showAddProductModal(id);
+  
+  // Заповнюємо поля
+  document.getElementById('productType').value = product.type;
+  document.getElementById('productQuantity').value = product.quantity;
+  
+  // Оновлюємо динамічні поля
+  updateProductFields();
+  
+  // Після оновлення полів, заповнюємо їх даними продукту
+  setTimeout(() => {
+    const sectionsInput = document.getElementById('sectionsCount');
+    if (sectionsInput) {
+      sectionsInput.value = product.sectionsCount || 0;
+    }
+    
+    // Заповнюємо функціональну фурнітуру
+    if (product.functionalHardware && typeof product.functionalHardware === 'object') {
+      Object.entries(product.functionalHardware).forEach(([key, qty]) => {
+        const input = document.querySelector(`#functionalHardwareList input[data-hw="${key}"]`);
+        if (input) {
+          input.value = qty;
+        }
+      });
+    }
+    
+    // Заповнюємо особливості конструкції
+    if (product.constructionFeatures && Array.isArray(product.constructionFeatures)) {
+      product.constructionFeatures.forEach(feature => {
+        const checkbox = document.getElementById(feature);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    }
+    
+    // Оновлюємо текст кнопки фурнітури
+    updateFunctionalHardwareText();
+  }, 100);
+}
+
+// Функція для видалення виробу
+function removeProduct(id) {
+  addedProducts = addedProducts.filter(p => p.id !== id);
+  renderProductsList();
+}
+
+// Ініціалізація списку виробів при завантаженні сторінки
+document.addEventListener('DOMContentLoaded', function() {
+  renderProductsList();
+});
+
+// Закриття модального вікна при кліку на фон
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById('productModal');
+  if (event.target === modal) {
+    closeProductModal();
+  }
+  
+  // Закриваємо випадаючий список фурнітури при кліку поза ним
+  const functionalHardwareDropdown = document.getElementById('functionalHardwareDropdown');
+  const functionalHardwareList = document.getElementById('functionalHardwareList');
+  if (functionalHardwareDropdown && functionalHardwareList && !functionalHardwareDropdown.contains(event.target)) {
+    functionalHardwareList.style.display = 'none';
+  }
+});
+
+// ===== ФУНКЦІЇ ДЛЯ ФАСАДНИХ МАТЕРІАЛІВ =====
+
+// Функція для переключення полів фасадних матеріалів
+function toggleFacadeMaterialsFields() {
+  const hasFacadeMaterials = document.getElementById("hasFacadeMaterials").value;
+  const fields = document.getElementById("facadeMaterialsFields");
+  const addButton = document.getElementById("addFacadeMaterialBtn");
+  
+  if (hasFacadeMaterials === "yes") {
+    fields.classList.remove("hidden");
+    addButton.classList.remove("hidden");
+  } else {
+    fields.classList.add("hidden");
+    addButton.classList.add("hidden");
+    // Очищаємо список матеріалів
+    document.getElementById("facadeMaterialsList").innerHTML = "";
+  }
+}
+
+// Функція для відкриття модального вікна додавання фасадного матеріалу
+function showAddFacadeMaterialModal() {
+  document.getElementById('addFacadeMaterialModal').style.display = 'flex';
+}
+
+// Функція для закриття модального вікна фасадних матеріалів
+function closeAddFacadeMaterialModal() {
+  document.getElementById('addFacadeMaterialModal').style.display = 'none';
+  // Скидаємо поля
+  document.getElementById('newFacadeMaterialType').value = '';
+}
+
+// Функція для додавання фасадного матеріалу при виборі
+function addFacadeMaterialOnSelect() {
+  const select = document.getElementById("newFacadeMaterialType");
+  const materialType = select.value;
+  
+  if (!materialType) return;
+
+  // Отримуємо назву з option тексту
+  const selectedOption = select.options[select.selectedIndex];
+  const displayName = selectedOption.text;
+  
+  const materialsList = document.getElementById("facadeMaterialsList");
+  
+  // Перевіряємо, чи вже існує такий матеріал
+  const existingMaterial = document.getElementById(`facadeMaterial_${materialType}`);
+  if (existingMaterial) {
+    alert('Цей матеріал вже додано!');
+    closeAddFacadeMaterialModal();
+    return;
+  }
+  
+  // Створюємо новий елемент
+  const materialDiv = document.createElement("div");
+  materialDiv.id = `facadeMaterial_${materialType}`;
+  materialDiv.setAttribute('data-material-type', materialType);
+  materialDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  
+  materialDiv.innerHTML = `
+    <span style="font-size: 14px;">
+      <span class="material-number"></span>. ${displayName} 
+      <button onclick="removeFacadeMaterial('facadeMaterial_${materialType}')" class="remove-btn" title="Видалити" style="margin-left: 8px;">×</button>
+    </span>
+  `;
+  
+  materialsList.appendChild(materialDiv);
+  
+  // Оновлюємо нумерацію
+  updateFacadeMaterialNumbers();
+  
+  // Закриваємо модальне вікно
+  closeAddFacadeMaterialModal();
+}
+
+// Функція для оновлення нумерації фасадних матеріалів
+function updateFacadeMaterialNumbers() {
+  const materialsList = document.getElementById("facadeMaterialsList");
+  const materials = materialsList.querySelectorAll('[id^="facadeMaterial_"]');
+  
+  materials.forEach((material, index) => {
+    const numberSpan = material.querySelector('.material-number');
+    if (numberSpan) {
+      numberSpan.textContent = index + 1;
+    }
+  });
+}
+
+// Функція для видалення фасадного матеріалу
+function removeFacadeMaterial(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.remove();
+    // Перенумеровуємо матеріали після видалення
+    updateFacadeMaterialNumbers();
+  }
+}
+
+// Функція для переключення полів скло-дзеркала
+function toggleGlassCount() {
+  const glassSelect = document.getElementById("glassSelect").value;
+  const glassCountWrapper = document.getElementById("glassCountWrapper");
+  
+  if (glassSelect === "Так") {
+    glassCountWrapper.classList.remove("hidden");
+  } else {
+    glassCountWrapper.classList.add("hidden");
+    document.getElementById("glassCount").value = "0";
+  }
+}
+
+// ===== ФУНКЦІЇ ДЛЯ СТІЛЬНИЦЬ =====
+
+// Функція для переключення полів стільниць
+function toggleCountertopsFields() {
+  const hasCountertops = document.getElementById("hasCountertops").value;
+  const fields = document.getElementById("countertopsFields");
+  const addButton = document.getElementById("addCountertopBtn");
+  
+  if (hasCountertops === "yes") {
+    fields.classList.remove("hidden");
+    addButton.classList.remove("hidden");
+  } else {
+    fields.classList.add("hidden");
+    addButton.classList.add("hidden");
+    // Очищаємо список стільниць
+    document.getElementById("countertopsList").innerHTML = "";
+  }
+}
+
+// Функція для відкриття модального вікна додавання стільниці
+function showAddCountertopModal() {
+  document.getElementById('addCountertopModal').style.display = 'flex';
+  // Скидаємо поля
+  document.getElementById('newCountertopMaterial').value = '';
+  document.getElementById('newCountertopQuantity').value = '1';
+  document.getElementById('newCountertopShape').value = '';
+  document.getElementById('newCountertopDrops').value = '';
+  document.getElementById('newCountertopDropsQuantity').value = '1';
+  // Приховуємо поля кількості
+  document.getElementById('quantityWrapper').classList.add('hidden');
+  document.getElementById('dropsQuantityWrapper').classList.add('hidden');
+}
+
+// Функція для закриття модального вікна стільниць
+function closeAddCountertopModal() {
+  document.getElementById('addCountertopModal').style.display = 'none';
+}
+
+// Функція для додавання стільниці
+function addCountertop() {
+  // Новий підхід: матеріали як чекбокси
+  const checkedMaterials = Array.from(document.querySelectorAll('#countertopMaterials input[type="checkbox"]:checked')).map(ch => ch.value);
+  if (checkedMaterials.length === 0) {
+    alert('Оберіть матеріал(и) стільниці');
+    return;
+  }
+
+  // Поля для підвісної меблевої конструкції
+  if (productType === 'Підвісна меблева конструкція') {
+    fieldsHTML += `
+      <div style="margin-bottom: 15px;">
+        <label>Функціональна фурнітура:</label><br/>
+        <div id="functionalHardwareDropdown" style="position: relative;">
+          <button type="button" id="functionalHardwareBtn" onclick="toggleFunctionalHardware()" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; text-align: left; cursor: pointer;">Функціональна фурнітура</button>
+          <div id="functionalHardwareList" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #d1d5db; border-radius: 6px; margin-top: 4px; max-height: 350px; overflow-y: auto; z-index: 1000; padding: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Секція без фасадів:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="section_no_facade">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Фасади розпашні:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="swing_facades">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Ящики:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="drawers">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Підйомні механізми:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="lift_mechanisms">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Барні механізми:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="bar_mechanisms">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Аксесуари:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="accessories">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Складна система WingLine:</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="wingline_system">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+              <span style="font-size: 13px;">Розсувні с-ми (типу slide М):</span>
+              <input type="number" value="0" min="0" style="width: 70px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="updateFunctionalHardwareText()" data-hw="slide_m_systems">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style=\"margin-bottom: 15px;\">
+        <label>Особливості конструкції:</label><br/>
+        <div style=\"margin-top: 8px;\">
+          <label style=\"display: block; margin-bottom: 5px;\">
+            <input type=\"checkbox\" id=\"tumba90\" value=\"tumba90\"> Тумба конструкція 90*
+          </label>
+          <label style=\"display: block; margin-bottom: 5px;\">
+            <input type=\"checkbox\" id=\"tumba45\" value=\"tumba45\"> Тумба конструкція 45*
+          </label>
+          <label style=\"display: block; margin-bottom: 5px;\">
+            <input type=\"checkbox\" id=\"irregularOrCutouts\" value=\"irregularOrCutouts\"> Неправильне геометрична форма, вирізи тощо
+          </label>
+        </div>
+      </div>
+    `;
+  }
+  const materialNames = {
+    "dsp_mdf": "ДСП-МДФ",
+    "ceramic": "Керамограніт-Кварц", 
+    "hpl": "HPL",
+    "acryl": "Акрил",
+    "rd": "R&D (дерево-метал)",
+    "sink_integrated": "Рукомийник інтегрований"
+  };
+  const labels = checkedMaterials.map(k => materialNames[k] || k);
+  const countertopsList = document.getElementById("countertopsList");
+  const countertopId = `countertop_${Date.now()}`;
+  
+  // Створюємо новий елемент
+  const countertopDiv = document.createElement("div");
+  countertopDiv.id = countertopId;
+  countertopDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  countertopDiv.setAttribute('data-materials', checkedMaterials.join(','));
+  
+  const quantityText = ""; // Не показуємо кількість
+  
+  // Створюємо HTML для стільниці з матеріалами як чіпси
+  const materialsChips = labels.map(label => 
+    `<span style="display: inline-block; background: #e0f2fe; color: #0c4a6e; padding: 4px 10px; border-radius: 12px; font-size: 13px; margin: 2px 4px 2px 0;">${label}</span>`
+  ).join('');
+  
+  let countertopHTML = `
+    <div style="display: flex; align-items: flex-start; gap: 10px; font-size: 14px; padding: 8px 0;">
+      <div style="flex: 1;">
+        <div style="margin-bottom: 4px;">
+          <span class="countertop-number" style="font-weight: 600;"></span>. Матеріали:
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+          ${materialsChips}
+        </div>
+      </div>
+      <button onclick="removeCountertop('${countertopId}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; flex-shrink: 0;">×</button>
+    </div>
+  `;
+  
+  countertopDiv.innerHTML = countertopHTML;
+  
+  countertopsList.appendChild(countertopDiv);
+  
+  // Оновлюємо нумерацію
+  updateCountertopNumbers();
+  
+  // Закриваємо модальне вікно
+  closeAddCountertopModal();
+}
+
+// Функція для оновлення нумерації стільниць
+function updateCountertopNumbers() {
+  const countertopsList = document.getElementById("countertopsList");
+  const countertops = countertopsList.querySelectorAll('[id^="countertop_"]');
+  
+  countertops.forEach((countertop, index) => {
+    const numberSpan = countertop.querySelector('.countertop-number');
+    if (numberSpan) {
+      numberSpan.textContent = index + 1;
+    }
+  });
+}
+
+// Функція для видалення стільниці
+function removeCountertop(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.remove();
+    // Перенумеровуємо стільниці після видалення
+    updateCountertopNumbers();
+  }
+}
+
+// Функція для оновлення кількості стільниці
+function updateCountertopQuantity(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  
+  const input = element.querySelector('input[type="number"]');
+  const newQuantity = parseInt(input.value) || 1;
+  
+  if (newQuantity < 1) {
+    input.value = 1;
+    element.setAttribute('data-quantity', 1);
+  } else {
+    element.setAttribute('data-quantity', newQuantity);
+  }
+}
+
+// Функція для оновлення кількості опусків
+function updateDropsCount(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  
+  const input = element.querySelector('input[id^="dropsCount_"]');
+  const newDropsCount = parseInt(input.value) || 1;
+  
+  if (newDropsCount < 1) {
+    input.value = 1;
+    element.setAttribute('data-drops-quantity', 1);
+  } else {
+    element.setAttribute('data-drops-quantity', newDropsCount);
+  }
+}
+
+// Функція для показу/приховування поля кількості опусків
+function toggleDropsQuantity() {
+  const dropsSelect = document.getElementById("newCountertopDrops").value;
+  const dropsQuantityWrapper = document.getElementById("dropsQuantityWrapper");
+  
+  if (dropsSelect === "yes") {
+    dropsQuantityWrapper.classList.remove("hidden");
+  } else {
+    dropsQuantityWrapper.classList.add("hidden");
+    document.getElementById("newCountertopDropsQuantity").value = "1";
+  }
+}
+
+// Функція для показу/приховування поля кількості (завжди приховане)
+function toggleQuantityField() {
+  const quantityWrapper = document.getElementById("quantityWrapper");
+  quantityWrapper.classList.add("hidden"); // Завжди приховуємо
+}
+
+// Функція для показу/приховування поля кількості для додаткових елементів
+function toggleAdditionalElementQuantity(elementType) {
+  const checkbox = document.getElementById(`${elementType}_check`);
+  const quantityDiv = document.getElementById(`${elementType}_quantity`);
+  
+  if (checkbox && checkbox.checked) {
+    quantityDiv.style.display = 'block';
+  } else {
+    quantityDiv.style.display = 'none';
+    const qtyInput = document.getElementById(`${elementType}_qty`);
+    if (qtyInput) qtyInput.value = '1';
+  }
+}
+
+// Функції для роботи з додатковими елементами
+function toggleAdditionalElementsFields() {
+  const hasAdditionalElements = document.getElementById("hasAdditionalElements").value;
+  const addAdditionalElementBtn = document.getElementById("addAdditionalElementBtn");
+  const additionalElementsList = document.getElementById("additionalElementsList");
+  
+  if (hasAdditionalElements === "yes") {
+    addAdditionalElementBtn.style.display = "inline-block";
+    additionalElementsList.style.display = "block";
+  } else {
+    addAdditionalElementBtn.style.display = "none";
+    additionalElementsList.style.display = "none";
+    // Очищаємо список елементів
+    additionalElementsList.innerHTML = "";
+  }
+}
+
+// Функція для відкриття модального вікна додавання додаткового елемента
+function showAddAdditionalElementModal() {
+  document.getElementById('addAdditionalElementModal').style.display = 'flex';
+  // Скидаємо всі чекбокси та поля кількості
+  document.getElementById('metal_frame_check').checked = false;
+  document.getElementById('metal_volume_check').checked = false;
+  document.getElementById('rd_detail_check').checked = false;
+  document.getElementById('false_horizontal_check').checked = false;
+  document.getElementById('false_vertical_check').checked = false;
+  
+  document.getElementById('rd_detail_quantity').style.display = 'none';
+  document.getElementById('false_horizontal_quantity').style.display = 'none';
+  document.getElementById('false_vertical_quantity').style.display = 'none';
+  
+  document.getElementById('rd_detail_qty').value = '1';
+  document.getElementById('false_horizontal_qty').value = '1';
+  document.getElementById('false_vertical_qty').value = '1';
+}
+
+// Функція для закриття модального вікна додаткових елементів
+function closeAddAdditionalElementModal() {
+  document.getElementById('addAdditionalElementModal').style.display = 'none';
+}
+
+// Функція для додавання додаткового елемента
+function addAdditionalElement() {
+  const typeNames = {
+    "metal_frame": "Металоконструкція рамкова",
+    "metal_volume": "Металоконструкція об'ємна",
+    "rd_detail": "Деталь R&D, гнутий елемент тощо",
+    "false_horizontal": "Фальш панелі горизонтальні",
+    "false_vertical": "Фальш панелі вертикальні"
+  };
+
+  const additionalElementsList = document.getElementById("additionalElementsList");
+  let hasSelected = false;
+
+  // Перевіряємо кожен чекбокс
+  ['metal_frame', 'metal_volume', 'rd_detail', 'false_horizontal', 'false_vertical'].forEach(type => {
+    const checkbox = document.getElementById(`${type}_check`);
+    
+    if (checkbox && checkbox.checked) {
+      hasSelected = true;
+      const typeName = typeNames[type];
+      let quantity = 1;
+      
+      // Для елементів з кількістю отримуємо значення
+      if (type === 'rd_detail' || type === 'false_horizontal' || type === 'false_vertical') {
+        const qtyInput = document.getElementById(`${type}_qty`);
+        quantity = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+      }
+      
+      const elementId = `additionalElement_${Date.now()}_${type}`;
+      
+      // Створюємо новий елемент
+      const elementDiv = document.createElement("div");
+      elementDiv.id = elementId;
+      elementDiv.style.cssText = "padding: 8px 0; margin-bottom: 6px;";
+      elementDiv.setAttribute('data-element-type', type);
+      elementDiv.setAttribute('data-quantity', quantity);
+      
+      // Для елементів без кількості показуємо лише назву
+      if (type === 'metal_frame' || type === 'metal_volume') {
+        elementDiv.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+            <span style="display: inline-block; background: #dbeafe; color: #1e40af; padding: 6px 12px; border-radius: 12px; font-size: 13px;">${typeName}</span>
+            <button onclick="removeAdditionalElement('${elementId}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-left: auto;">×</button>
+          </div>
+        `;
+      } else {
+        // Для елементів з кількістю показуємо назву та кількість
+        elementDiv.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+            <span style="display: inline-block; background: #dbeafe; color: #1e40af; padding: 6px 12px; border-radius: 12px; font-size: 13px;">${typeName} (${quantity} шт.)</span>
+            <button onclick="removeAdditionalElement('${elementId}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-left: auto;">×</button>
+          </div>
+        `;
+      }
+      
+      additionalElementsList.appendChild(elementDiv);
+    }
+  });
+
+  if (!hasSelected) {
+    alert('Будь ласка, оберіть хоча б один елемент');
+    return;
+  }
+  
+  // Закриваємо модальне вікно
+  closeAddAdditionalElementModal();
+}
+
+// Функція для видалення додаткового елемента
+function removeAdditionalElement(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.remove();
+  }
+}
+
+// Функції для роботи з ручками
+function toggleHandlesFields() {
+  const hasHandles = document.getElementById("hasHandles").value;
+  const addHandleBtn = document.getElementById("addHandleBtn");
+  const handlesFields = document.getElementById("handlesFields");
+  
+  if (hasHandles === "yes") {
+    addHandleBtn.classList.remove("hidden");
+    handlesFields.classList.remove("hidden");
+  } else {
+    addHandleBtn.classList.add("hidden");
+    handlesFields.classList.add("hidden");
+    // Очищаємо список ручок
+    document.getElementById("handlesList").innerHTML = "";
+  }
+}
+
+function showAddHandleModal() {
+  document.getElementById('addHandleModal').style.display = 'flex';
+  // Скидаємо поля
+  document.getElementById('newHandleType').value = '';
+}
+
+function closeAddHandleModal() {
+  document.getElementById('addHandleModal').style.display = 'none';
+}
+
+function addHandle() {
+  const handleType = document.getElementById("newHandleType").value;
+  
+  if (!handleType) {
+    alert('Будь ласка, виберіть тип ручки');
+    return;
+  }
+
+  const handleNames = {
+    "handles_gola_low": "GOLA низ",
+    "handles_gola_up": "GOLA верх",
+    "handles_gola_vert": "GOLA вертикал.",
+    "handles_end": "Торцеві",
+    "handles_milled": "Фрезеровані",
+    "handles_other": "Інші"
+  };
+
+  const displayName = handleNames[handleType] || handleType;
+  const handlesList = document.getElementById("handlesList");
+  
+  // Перевіряємо, чи вже існує такий тип ручки
+  const existingHandle = document.getElementById(`handle_${handleType}`);
+  if (existingHandle) {
+    // Якщо існує, не додаємо дублікат
+    return;
+  } else {
+    // Якщо не існує, створюємо новий
+    const handleDiv = document.createElement("div");
+    handleDiv.id = `handle_${handleType}`;
+    handleDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+    handleDiv.setAttribute('data-type', handleType);
+    
+    handleDiv.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+        <span class="handle-number"></span>. ${displayName}
+        <button onclick="removeHandle('handle_${handleType}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">×</button>
+      </div>
+    `;
+    
+    handlesList.appendChild(handleDiv);
+  }
+  
+  // Оновлюємо нумерацію
+  updateHandleNumbers();
+  
+  // Закриваємо модальне вікно
+  closeAddHandleModal();
+}
+
+function updateHandleNumbers() {
+  const handlesList = document.getElementById("handlesList");
+  const handles = handlesList.querySelectorAll('[id^="handle_"]');
+  
+  handles.forEach((handle, index) => {
+    const numberSpan = handle.querySelector('.handle-number');
+    if (numberSpan) {
+      numberSpan.textContent = index + 1;
+    }
+  });
+}
+
+function removeHandle(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.remove();
+    // Перенумеровуємо ручки після видалення
+    updateHandleNumbers();
+  }
+}
+
+// Функції для підсвітки
+function toggleLightingQuantity(lightingType) {
+  const checkbox = document.getElementById(`${lightingType}_check`);
+  const quantityDiv = document.getElementById(`${lightingType}_quantity`);
+  
+  if (checkbox && checkbox.checked) {
+    quantityDiv.style.display = 'block';
+  } else {
+    quantityDiv.style.display = 'none';
+    const qtyInput = document.getElementById(`${lightingType}_qty`);
+    if (qtyInput) qtyInput.value = '1';
+  }
+}
+
+function showAddLightingModal() {
+  document.getElementById('addLightingModal').style.display = 'flex';
+  // Скидаємо всі чекбокси та поля кількості
+  document.getElementById('light_elements_check').checked = false;
+  document.getElementById('light_control_check').checked = false;
+  
+  document.getElementById('light_control_quantity').style.display = 'none';
+  document.getElementById('light_control_qty').value = '1';
+}
+
+function closeAddLightingModal() {
+  document.getElementById('addLightingModal').style.display = 'none';
+}
+
+function addLighting() {
+  const lightingNames = {
+    "light_elements": "Елементів (деталей) з підсвіткою",
+    "light_control": "Пристроїв керування і вимірюються в кількостях"
+  };
+
+  const lightingList = document.getElementById("lightingList");
+  let hasSelected = false;
+
+  // Перевіряємо кожен чекбокс
+  ['light_elements', 'light_control'].forEach(type => {
+    const checkbox = document.getElementById(`${type}_check`);
+    
+    if (checkbox && checkbox.checked) {
+      hasSelected = true;
+      const typeName = lightingNames[type];
+      let quantity = 1;
+      
+      // Для елементів з кількістю отримуємо значення
+      if (type === 'light_control') {
+        const qtyInput = document.getElementById(`${type}_qty`);
+        quantity = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+      }
+      
+      const elementId = `lighting_${Date.now()}_${type}`;
+      
+      // Створюємо новий елемент
+      const elementDiv = document.createElement("div");
+      elementDiv.id = elementId;
+      elementDiv.style.cssText = "padding: 8px 0; margin-bottom: 6px;";
+      elementDiv.setAttribute('data-type', type);
+      elementDiv.setAttribute('data-quantity', quantity);
+      
+      // Для елементів без кількості показуємо лише назву
+      if (type === 'light_elements') {
+        elementDiv.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+            <span style="display: inline-block; background: #dbeafe; color: #1e40af; padding: 6px 12px; border-radius: 12px; font-size: 13px;">${typeName}</span>
+            <button onclick="removeLighting('${elementId}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-left: auto;">×</button>
+          </div>
+        `;
+      } else {
+        // Для елементів з кількістю показуємо назву та кількість
+        elementDiv.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+            <span style="display: inline-block; background: #dbeafe; color: #1e40af; padding: 6px 12px; border-radius: 12px; font-size: 13px;">${typeName} (${quantity} шт.)</span>
+            <button onclick="removeLighting('${elementId}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-left: auto;">×</button>
+          </div>
+        `;
+      }
+      
+      lightingList.appendChild(elementDiv);
+    }
+  });
+
+  if (!hasSelected) {
+    alert('Будь ласка, оберіть хоча б один тип підсвітки');
+    return;
+  }
+  
+  // Закриваємо модальне вікно
+  closeAddLightingModal();
+}
+
+function removeLighting(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.remove();
+  }
+}
+
+function toggleLightingFields() {
+  const hasLighting = document.getElementById("hasLighting").value;
+  const fields = document.getElementById("lightingFields");
+  const addButton = document.getElementById("addLightingBtn");
+  
+  if (hasLighting === "yes") {
+    fields.classList.remove("hidden");
+    addButton.classList.remove("hidden");
+  } else {
+    fields.classList.add("hidden");
+    addButton.classList.add("hidden");
+    // Очищаємо список підсвітки
+    document.getElementById("lightingList").innerHTML = "";
+  }
+}
+
+function getSettingValue(id) {
+  // Використовуємо бібліотеку налаштувань
+  if (typeof calculatorSettings !== 'undefined') {
+    // Шукаємо значення в налаштуваннях
+    for (const calcType in calculatorSettings) {
+      if (calculatorSettings[calcType][id]) {
+        console.log('✅ Знайдено значення для', id, ':', calculatorSettings[calcType][id].value);
+        return calculatorSettings[calcType][id].value;
+      }
+    }
+  }
+  
+  // Fallback - повертаємо стандартне значення
+  console.warn('⚠️ Не знайдено значення для', id, ', використовую стандартне значення: 1');
+  return 1;
+}
+
+function valInt(id) {
+  const el = document.getElementById(id);
+  if (!el) return 0;
+  const v = parseInt(el.value);
+  return (Number.isFinite(v) && v > 0) ? v : 0;
+}
+
+function valYes(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  if (el.type === "checkbox") return !!el.checked;
+  const v = (el.value || "").toString().trim().toLowerCase();
+  return v === "так" || v === "yes" || v === "1" || v === "true";
+}
+
+let points = 0; // Глобальна змінна для накопичення балів
+
+function addDetail(label, count, tariffId) {
+  if (!count || count <= 0) return;
+  
+  // Перевіряємо, чи не знаходимося в режимі перевірки полів
+  if (typeof window.isCheckingFields !== 'undefined' && window.isCheckingFields) {
+    return;
+  }
+  
+  const t = getSettingValue(tariffId);
+  if (!t || t <= 0) return;
+  const addedPoints = count * t;
+  points += addedPoints;
+  console.log(`${label}: ${count} × ${t} = ${addedPoints} (загалом: ${points})`);
+}
+
+function checkRequiredFields() {
+  const missing = [];
+  
+  // Встановлюємо прапор для перевірки полів
+  window.isCheckingFields = true;
+  
+  console.log("=== Початок перевірки полів ===");
+  
+  // 1. Основні параметри
+  if (!document.getElementById("kitType")?.value) {
+    missing.push("1. Тип комплектації");
+  }
+  if (addedProducts.length === 0) {
+    missing.push("1. Вид виробу");
+  }
+  if (!document.getElementById("installationType")?.value) {
+    missing.push("1. Варіант встановлення");
+  }
+  if (!document.getElementById("measure")?.value) {
+    missing.push("1. Тип замірів");
+  }
+  if (!document.getElementById("geom")?.value) {
+    missing.push("1. Нестандартна геометрія приміщення");
+  }
+  
+  // 2. Матеріали
+  console.log("Перевіряємо розділ 2 - Матеріали");
+  const corpus = document.getElementById("corpus")?.value;
+  console.log("corpus value:", corpus);
+  if (!corpus || parseInt(corpus) <= 0) {
+    missing.push("2. Матеріал корпуса (кількість)");
+  }
+  
+  const hasMaterials = document.getElementById("hasFacadeMaterials");
+  console.log("hasMaterials element:", hasMaterials);
+  console.log("hasMaterials value:", hasMaterials?.value);
+  if (!hasMaterials || !hasMaterials.value) {
+    missing.push("2. Матеріали (вибір)");
+  } else if (hasMaterials.value === "yes") {
+    const materials = document.querySelectorAll('[id^="facadeMaterial_"]');
+    console.log("materials count:", materials.length);
+    if (materials.length === 0) {
+      missing.push("2. Матеріали (не додано жодного)");
+    }
+  }
+  
+  // 3. Стільниці
+  const hasCountertops = document.getElementById("hasCountertops");
+  if (!hasCountertops || !hasCountertops.value) {
+    missing.push("3. Стільниці (вибір)");
+  } else if (hasCountertops.value === "yes") {
+    const countertops = document.querySelectorAll('[id^="countertop_"]');
+    if (countertops.length === 0) {
+      missing.push("3. Стільниці (не додано жодної)");
+    }
+  }
+  
+  // 4. Додаткові елементи - перевіряємо динамічні елементи
+  const hasElements = document.getElementById("hasAdditionalElements");
+  if (!hasElements || !hasElements.value) {
+    missing.push("4. Додаткові елементи (вибір)");
+  } else if (hasElements.value === "yes") {
+    const elements = document.querySelectorAll('[id^="additionalElement_"]');
+    if (elements.length === 0) {
+      missing.push("4. Додаткові елементи (не додано жодного)");
+    }
+  }
+  
+  // 5. Вбудована техніка
+  const applianceFields = ["appliancesHatch", "appliancesSink", "appliancesFireplace", "appliancesOther"];
+  for (let fieldId of applianceFields) {
+    const field = document.getElementById(fieldId);
+    if (!field || field.value === "") {
+      const labels = {
+        "appliancesHatch": "5. Люк технічний інші комунікації",
+        "appliancesSink": "5. Рукомийник",
+        "appliancesFireplace": "5. Каміни",
+        "appliancesOther": "5. Техніка (пралка, сушка, бойлер тощо)"
+      };
+      missing.push(labels[fieldId]);
+    }
+  }
+  
+  // 7. Ручки - перевіряємо динамічні ручки
+  const hasHandles = document.getElementById("hasHandles");
+  if (!hasHandles || !hasHandles.value) {
+    missing.push("7. Ручки (вибір)");
+  } else if (hasHandles.value === "yes") {
+    const handles = document.querySelectorAll('[id^="handle_"]');
+    if (handles.length === 0) {
+      missing.push("7. Ручки (не додано жодної)");
+    }
+  }
+  
+  // 8. Підсвітка - перевіряємо динамічну підсвітку
+  const hasLighting = document.getElementById("hasLighting");
+  if (!hasLighting || !hasLighting.value) {
+    missing.push("8. Підсвітка (вибір)");
+  } else if (hasLighting.value === "yes") {
+    const lights = document.querySelectorAll('[id^="lighting_"]');
+    if (lights.length === 0) {
+      missing.push("8. Підсвітка (не додано жодного типу)");
+    }
+  }
+  
+  console.log("=== Кінець перевірки полів ===");
+  console.log("Всього відсутніх полів:", missing.length);
+  console.log("Список відсутніх полів:", missing);
+  
+  // Скидаємо прапор для перевірки полів
+  window.isCheckingFields = false;
+  
+  return missing;
+}
+
+function showMissingFieldsWarning(missingFields) {
+  let warningText = "Не заповнені наступні поля:\n\n";
+  missingFields.forEach((field) => {
+    warningText += `${field}\n`;
+  });
+  
+  document.getElementById("warningText").innerText = warningText;
+  document.getElementById("warningModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("warningModal").style.display = "none";
+}
+
+function saveData() {
+  try {
+    // Збираємо всі дані форми
+    const formData = {};
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      if (el.id && !el.closest('#settingsModal')) {
+        const value = el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value;
+        formData[el.id] = value;
+      }
+    });
+    
+    // Додаємо динамічні списки
+    const dynamicData = {};
+    
+    // Матеріали
+    const materials = document.querySelectorAll('[id^="facadeMaterial_"]');
+    materials.forEach(material => {
+      const materialType = material.getAttribute('data-material-type');
+      if (materialType) {
+        dynamicData[`material_${materialType}`] = {
+          type: materialType,
+          quantity: material.getAttribute('data-quantity') || 1
+        };
+      }
+    });
+    
+    // Стільниці
+    const countertops = document.querySelectorAll('[id^="countertop_"]');
+    countertops.forEach(countertop => {
+      const material = countertop.getAttribute('data-material');
+      const shape = countertop.getAttribute('data-shape');
+      const drops = countertop.getAttribute('data-drops');
+      const quantity = countertop.getAttribute('data-quantity') || 1;
+      if (material) {
+        dynamicData[`countertop_${material}_${shape}_${drops}`] = {
+          material, shape, drops, quantity
+        };
+      }
+    });
+    
+    // Додаткові елементи
+    const elements = document.querySelectorAll('[id^="additionalElement_"]');
+    elements.forEach(element => {
+      const elementType = element.getAttribute('data-element-type');
+      const quantity = element.getAttribute('data-quantity') || 1;
+      if (elementType) {
+        dynamicData[`element_${elementType}`] = {
+          type: elementType,
+          quantity
+        };
+      }
+    });
+    
+    // Ручки
+    const handles = document.querySelectorAll('[id^="handle_"]');
+    handles.forEach(handle => {
+      const handleType = handle.getAttribute('data-handle-type');
+      if (handleType) {
+        dynamicData[`handle_${handleType}`] = {
+          type: handleType
+        };
+      }
+    });
+    
+    // Підсвітка
+    const lightings = document.querySelectorAll('[id^="lighting_"]');
+    lightings.forEach(lighting => {
+      const lightingType = lighting.getAttribute('data-type');
+      const quantity = lighting.getAttribute('data-quantity') || 1;
+      if (lightingType) {
+        dynamicData[`lighting_${lightingType}`] = {
+          type: lightingType,
+          quantity
+        };
+      }
+    });
+    
+    // Додаємо метадані
+    const data = {
+      meta: {
+        kind: 'viyar-other-furniture-calc',
+        version: '1.6',
+        timestamp: new Date().toISOString(),
+        title: document.getElementById('productName')?.value || 'Інші меблі'
+      },
+      values: formData,
+      dynamic: dynamicData
+    };
+    
+    // Створюємо та завантажуємо файл
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `інші_меблі_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert('Дані збережено успішно!');
+  } catch (error) {
+    console.error('Помилка збереження:', error);
+    alert('Помилка збереження даних');
+  }
+}
+
+function loadData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,.vcalc.json';
+  
+  input.onchange = function(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (data && data.values) {
+          // Застосовуємо збережені дані
+          Object.keys(data.values).forEach(key => {
+            const element = document.getElementById(key);
+            if (element) {
+              if (element.type === 'checkbox' || element.type === 'radio') {
+                element.checked = data.values[key];
+              } else {
+                element.value = data.values[key];
+              }
+            }
+          });
+          
+          // Відновлюємо динамічні списки
+          if (data.dynamic) {
+            // Очищуємо існуючі динамічні списки
+            document.getElementById('materialsList').innerHTML = '';
+            document.getElementById('countertopsList').innerHTML = '';
+            document.getElementById('additionalElementsList').innerHTML = '';
+            document.getElementById('handlesList').innerHTML = '';
+            document.getElementById('lightingList').innerHTML = '';
+            
+            // Відновлюємо матеріали
+            Object.keys(data.dynamic).forEach(key => {
+              if (key.startsWith('material_')) {
+                const materialData = data.dynamic[key];
+                addMaterialFromLoad(materialData.type, materialData.quantity);
+              }
+            });
+            
+            // Відновлюємо стільниці
+            Object.keys(data.dynamic).forEach(key => {
+              if (key.startsWith('countertop_')) {
+                const countertopData = data.dynamic[key];
+                addCountertopFromLoad(countertopData.material, countertopData.shape, countertopData.drops, countertopData.quantity);
+              }
+            });
+            
+            // Відновлюємо додаткові елементи
+            Object.keys(data.dynamic).forEach(key => {
+              if (key.startsWith('element_')) {
+                const elementData = data.dynamic[key];
+                addElementFromLoad(elementData.type, elementData.quantity);
+              }
+            });
+            
+            // Відновлюємо ручки
+            Object.keys(data.dynamic).forEach(key => {
+              if (key.startsWith('handle_')) {
+                const handleData = data.dynamic[key];
+                addHandleFromLoad(handleData.type);
+              }
+            });
+            
+            // Відновлюємо підсвітку
+            Object.keys(data.dynamic).forEach(key => {
+              if (key.startsWith('lighting_')) {
+                const lightingData = data.dynamic[key];
+                addLightingFromLoad(lightingData.type, lightingData.quantity);
+              }
+            });
+          }
+          
+          alert('Дані завантажено успішно!');
+        }
+      } catch (error) {
+        console.error('Помилка завантаження:', error);
+        alert('Помилка завантаження файлу');
+      }
+    };
+    reader.readAsText(file);
+  };
+  
+  input.click();
+}
+
+// Функції для відновлення динамічних елементів при завантаженні
+function addMaterialFromLoad(materialType, quantity) {
+  const materialNames = {
+    "dsp_mat_corpus": "ДСП мат. корпусу",
+    "dsp": "ДСП", 
+    "mdf_boards": "МДФ плити",
+    "paint_film_straight": "Фарба/плівка \"прямі\"",
+    "paint_film_milled": "Фарба/плівка \"фрезеровані\"",
+    "veneered_straight": "Шпоновані \"прямі\"",
+    "veneered_milled": "Шпоновані \"фрезеровані\"",
+    "aluminum_frame": "Алюм. рамкові",
+    "arpa_fenix": "ARPA/Fenix",
+    "fiushin": "Fiushin",
+    "hpl": "HPL",
+    "rd_individual": "R&D фасади індивід.",
+    "mdf_individual": "МДФ фасади з індивідуальним фрезеруванням"
+  };
+  
+  const displayName = materialNames[materialType] || materialType;
+  const materialsList = document.getElementById("materialsList");
+  
+  const materialDiv = document.createElement("div");
+  materialDiv.id = `material_${materialType}`;
+  materialDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  materialDiv.setAttribute('data-material-type', materialType);
+  materialDiv.setAttribute('data-quantity', quantity);
+  
+  materialDiv.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+      <span class="material-number"></span>. ${displayName}
+      <button onclick="removeMaterial('material_${materialType}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">×</button>
+    </div>
+  `;
+  
+  materialsList.appendChild(materialDiv);
+  updateMaterialNumbers();
+}
+
+function addCountertopFromLoad(material, shape, drops, quantity) {
+  const materialNames = {
+    "laminate": "Ламінат",
+    "postforming": "Постформінг",
+    "acrylic": "Акрил",
+    "stone": "Камінь",
+    "wood": "Дерево"
+  };
+  
+  const shapeNames = {
+    "straight": "Пряма",
+    "curved": "Криволінійна"
+  };
+  
+  const dropsNames = {
+    "yes": "Так",
+    "no": "Ні"
+  };
+  
+  const displayName = `${materialNames[material] || material} (${shapeNames[shape] || shape}, опуски: ${dropsNames[drops] || drops})`;
+  const countertopsList = document.getElementById("countertopsList");
+  
+  const countertopDiv = document.createElement("div");
+  countertopDiv.id = `countertop_${material}_${shape}_${drops}`;
+  countertopDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  countertopDiv.setAttribute('data-material', material);
+  countertopDiv.setAttribute('data-shape', shape);
+  countertopDiv.setAttribute('data-drops', drops);
+  countertopDiv.setAttribute('data-quantity', quantity);
+  
+  // Створюємо HTML для стільниці
+  let countertopHTML = `
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+      <span class="countertop-number"></span>. ${displayName}`;
+  
+  // Додаємо поле кількості опусків тільки якщо є опуски
+  if (drops === "yes") {
+    countertopHTML += `
+      <span style="margin-left: 10px;">Кількість опусків:</span>
+      <input type="number" id="dropsCount_${countertopDiv.id}" value="1" min="1" onchange="updateDropsCount('${countertopDiv.id}')" style="width: 80px; padding: 3px; border: 1px solid #ccc; border-radius: 4px;">`;
+  }
+  
+  countertopHTML += `
+      <button onclick="removeCountertop('countertop_${material}_${shape}_${drops}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-left: auto;">×</button>
+    </div>
+  `;
+  
+  countertopDiv.innerHTML = countertopHTML;
+  
+  countertopsList.appendChild(countertopDiv);
+  updateCountertopNumbers();
+}
+
+function addElementFromLoad(elementType, quantity) {
+  const elementNames = {
+    "metal_frame": "Металоконструкція рамкова",
+    "metal_volume": "Металоконструкція об'ємна",
+    "rd_detail": "Деталь R&D, гнутий елемент тощо",
+    "false_horizontal": "Фальш панелі горизонтальні",
+    "false_vertical": "Фальш панелі вертикальні"
+  };
+  
+  const displayName = elementNames[elementType] || elementType;
+  const elementsList = document.getElementById("additionalElementsList");
+  
+  const elementDiv = document.createElement("div");
+  elementDiv.id = `additionalElement_${elementType}`;
+  elementDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  elementDiv.setAttribute('data-element-type', elementType);
+  elementDiv.setAttribute('data-quantity', quantity);
+  
+  elementDiv.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+      <span class="element-number"></span>. ${displayName}
+      <input type="number" id="quantity_${elementDiv.id}" value="${quantity}" min="1" onchange="updateElementQuantity('${elementDiv.id}')" style="width: 100px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+      <button onclick="removeElement('additionalElement_${elementType}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">×</button>
+    </div>
+  `;
+  
+  elementsList.appendChild(elementDiv);
+  updateElementNumbers();
+}
+
+function addHandleFromLoad(handleType) {
+  const handleNames = {
+    "gola_low": "GOLA низ",
+    "gola_high": "GOLA високий",
+    "gola_medium": "GOLA середній",
+    "gola_extra": "GOLA екстра",
+    "gola_ultra": "GOLA ультра",
+    "gola_plus": "GOLA плюс",
+    "gola_plus_plus": "GOLA плюс плюс",
+    "gola_plus_plus_plus": "GOLA плюс плюс плюс",
+    "gola_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс",
+    "gola_plus_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс плюс",
+    "gola_plus_plus_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс плюс плюс",
+    "gola_plus_plus_plus_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс плюс плюс плюс",
+    "gola_plus_plus_plus_plus_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс плюс плюс плюс плюс",
+    "gola_plus_plus_plus_plus_plus_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс плюс плюс плюс плюс плюс",
+    "gola_plus_plus_plus_plus_plus_plus_plus_plus_plus_plus": "GOLA плюс плюс плюс плюс плюс плюс плюс плюс плюс плюс"
+  };
+  
+  const displayName = handleNames[handleType] || handleType;
+  const handlesList = document.getElementById("handlesList");
+  
+  const handleDiv = document.createElement("div");
+  handleDiv.id = `handle_${handleType}`;
+  handleDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  handleDiv.setAttribute('data-handle-type', handleType);
+  
+  handleDiv.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+      <span class="handle-number"></span>. ${displayName}
+      <button onclick="removeHandle('handle_${handleType}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">×</button>
+    </div>
+  `;
+  
+  handlesList.appendChild(handleDiv);
+  updateHandleNumbers();
+}
+
+function addLightingFromLoad(lightingType, quantity) {
+  const lightingNames = {
+    "light_elements": "Елементів (деталей) з підсвіткою",
+    "light_control": "Пристроїв керування і вимірюються в кількостях"
+  };
+  
+  const displayName = lightingNames[lightingType] || lightingType;
+  const lightingList = document.getElementById("lightingList");
+  
+  const lightingDiv = document.createElement("div");
+  lightingDiv.id = `lighting_${lightingType}`;
+  lightingDiv.style.cssText = "padding: 4px 0; margin-bottom: 3px;";
+  lightingDiv.setAttribute('data-type', lightingType);
+  lightingDiv.setAttribute('data-quantity', quantity);
+  
+  lightingDiv.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px; font-size: 14px;">
+      <span class="lighting-number"></span>. ${displayName}
+      <input type="number" id="quantity_${lightingDiv.id}" value="${quantity}" min="1" onchange="updateLightingQuantity('${lightingDiv.id}')" style="width: 100px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+      <button onclick="removeLighting('lighting_${lightingType}')" class="remove-btn" title="Видалити" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">×</button>
+    </div>
+  `;
+  
+  lightingList.appendChild(lightingDiv);
+  updateLightingNumbers();
+}
+
+// Функція очищення форми
+function clearForm() {
+  if (confirm('Ви впевнені, що хочете очистити всі дані?')) {
+    // Очищуємо всі поля вводу
+    document.querySelectorAll("input, select, textarea").forEach(el => {
+      if (el.id !== "dateField" && !el.closest('#settingsModal')) {
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          el.checked = false;
+        } else {
+          el.value = "";
+        }
+      }
+    });
+    
+    // Очищуємо динамічні списки
+    document.getElementById("materialsList").innerHTML = "";
+    document.getElementById("countertopsList").innerHTML = "";
+    document.getElementById("additionalElementsList").innerHTML = "";
+    document.getElementById("handlesList").innerHTML = "";
+    document.getElementById("lightingList").innerHTML = "";
+    
+    // Приховуємо поля динамічних розділів
+    document.getElementById("materialsFields").classList.add("hidden");
+    document.getElementById("countertopsFields").classList.add("hidden");
+    document.getElementById("additionalElementsFields").classList.add("hidden");
+    document.getElementById("handlesFields").classList.add("hidden");
+    document.getElementById("lightingFields").classList.add("hidden");
+    
+    // Скидаємо селекти на "no"
+    document.getElementById("hasMaterials").value = "no";
+    document.getElementById("hasCountertops").value = "no";
+    document.getElementById("hasElements").value = "no";
+    document.getElementById("hasHandles").value = "no";
+    document.getElementById("hasLighting").value = "no";
+    
+    // Приховуємо лічильник поінтів
+    document.getElementById("pointsHUD").style.display = "none";
+    
+    alert('Форма очищена!');
+  }
+}
+
+function calculate() {
+  // Перевіряємо, чи всі обов'язкові поля заповнені
+  const missingFields = checkRequiredFields();
+  
+  if (missingFields.length > 0) {
+    showMissingFieldsWarning(missingFields);
+    return;
+  }
+  
+  // Встановлюємо тип калькулятора для getSettingValue
+  window.calculatorType = 'otherFurniture';
+  
+  points = 0; // Скидаємо глобальну змінну
+  
+  // ===== 1. Основні параметри =====
+  (function(){
+    // Динамічні вироби
+    addedProducts.forEach(product => {
+      const productNames = {
+        "Підлогова меблева конструкція": "Підлогова меблева конструкція",
+        "Підвісна меблева конструкція": "Підвісна меблева конструкція",
+        "Тумба в санвузол (з рукомийником)": "Тумба в санвузол (з рукомийником)",
+        "Тумба над інсталяцією": "Тумба над інсталяцією",
+        "Елементи стінових панелей прямих, як елемент конструкції": "Елементи стінових панелей прямих, як елемент конструкції",
+        
+      };
+      
+      const productName = productNames[product.type] || product.type;
+      
+      // Мапа для правильного відображення ID полів
+      const productIdMap = {
+        "Підлогова меблева конструкція": "p_other_product_підлогова_меблева_конструкція",
+        "Підвісна меблева конструкція": "p_other_product_підвісна_меблева_конструкція",
+        "Тумба в санвузол (з рукомийником)": "p_other_product_тумба_в_санвузол_з_рукомийником",
+        "Тумба над інсталяцією": "p_other_product_тумба_над_інсталяцією",
+        "Елементи стінових панелей прямих, як елемент конструкції": "p_other_product_елементи_стінових_панелей_прямих_як_елемент_конструкції",
+        
+      };
+      
+      const productId = productIdMap[product.type] || `p_other_product_${product.type.replace(/\s+/g, '_').toLowerCase()}`;
+      addDetail(`Вид виробу: ${productName}`, product.quantity, productId);
+    });
+  })();
+  
+  // ===== Варіант встановлення =====
+  (function(){
+    const installationType = document.getElementById("installationType")?.value;
+    if (installationType) {
+      const installationMap = {
+        "Окремо стоячі меблі": "p_other_installation_standalone",
+        "Вбудовані меблі": "p_other_installation_built_in"
+      };
+      const installationId = installationMap[installationType];
+      if (installationId) {
+        addDetail(`Варіант встановлення: ${installationType}`, 1, installationId);
+      }
+    }
+  })();
+  
+  // ===== Заміри =====
+  (function(){
+    const measure = document.getElementById("measure")?.value;
+    if (measure) {
+      const measureMap = {
+        "Без замірів": "p_other_measure_no",
+        "По замірам 3D": "p_other_measure_3d", 
+        "По замірам фото-ескіз": "p_other_measure_photo"
+      };
+      const measureId = measureMap[measure];
+      if (measureId) {
+        addDetail(`Заміри: ${measure}`, 1, measureId);
+      }
+    }
+  })();
+  
+  // ===== Додаткові параметри =====
+  (function(){
+    const geometry = document.getElementById("geom")?.value;
+    if (geometry === "Так") {
+      addDetail("Нестандартна геометрія приміщення", 1, "p_other_geometry");
+    }
+    
+    
+    const corpus = valInt("corpus");
+    if (corpus > 0) {
+      addDetail("Матеріал корпусу (шт.)", corpus, "p_other_corpus");
+    }
+    
+    const glass = document.getElementById("glassSelect")?.value;
+    const glassCount = parseInt(document.getElementById("glassCount")?.value) || 0;
+    if (glass === "Так" && glassCount > 0) {
+      addDetail("Скло-дзеркало", glassCount, "p_other_glass");
+    }
+  })();
+  
+  // ===== 2. Матеріали =====
+  (function(){
+    // Динамічні матеріали
+    const materials = document.querySelectorAll('[id^="facadeMaterial_"]');
+    materials.forEach(material => {
+      const materialType = material.getAttribute('data-material-type');
+      const materialNames = {
+        "dsp_mat_corpus": "ДСП мат. корпусу",
+        "dsp": "ДСП",
+        "mdf_boards": "МДФ плити",
+        "paint_film_straight": "Фарба/плівка \"прямі\"",
+        "paint_film_milled": "Фарба/плівка \"фрезеровані\"",
+        "veneered_straight": "Шпоновані \"прямі\"",
+        "veneered_milled": "Шпоновані \"фрезеровані\"",
+        "aluminum_frame": "Алюм. рамкові",
+        "arpa_fenix": "ARPA/Fenix",
+        "fiushin": "Fiushin",
+        "hpl": "HPL",
+        "rd_individual": "R&D фасади індивід.",
+        "mdf_individual": "МДФ фасади з індивідуальним фрезеруванням"
+      };
+      
+      const materialName = materialNames[materialType] || materialType;
+      const count = 1; // Кожен матеріал рахується як 1
+      addDetail(`Матеріал: ${materialName}`, count, `p_other_material_${materialType}`);
+    });
+  })();
+  
+  // ===== 3. Стільниці =====
+  (function(){
+    const countertops = document.querySelectorAll('[id^="countertop_"]');
+    const materialNames = {
+      "dsp_mdf": "ДСП-МДФ",
+      "ceramic": "Керамограніт-Кварц",
+      "hpl": "HPL",
+      "acryl": "Акрил",
+      "rd": "R&D (дерево-метал)",
+      "sink_integrated": "Рукомийник інтегрований"
+    };
+    countertops.forEach(countertop => {
+      const materials = (countertop.getAttribute('data-materials') || '').split(',').filter(Boolean);
+      materials.forEach(mat => {
+        addDetail(`Стільниця: ${materialNames[mat] || mat}`, 1, `p_other_countertop_${mat}`);
+      });
+    });
+  })();
+  
+  // ===== 4. Додаткові елементи =====
+  (function(){
+    const elements = document.querySelectorAll('[id^="additionalElement_"]');
+    elements.forEach(element => {
+      const elementType = element.getAttribute('data-element-type');
+      const quantity = parseInt(element.getAttribute('data-quantity')) || 1;
+      
+      const elementNames = {
+        "metal_frame": "Металоконструкція рамкова",
+        "metal_volume": "Металоконструкція об'ємна",
+        "rd_detail": "Деталь R&D, гнутий елемент тощо",
+        "false_horizontal": "Фальш панелі горизонтальні",
+        "false_vertical": "Фальш панелі вертикальні"
+      };
+      
+      const elementName = elementNames[elementType] || elementType;
+      addDetail(`Додатковий елемент: ${elementName}`, quantity, `p_other_element_${elementType}`);
+    });
+  })();
+  
+  // ===== 6. Вбудована техніка =====
+  (function(){
+    addDetail("Люк технічний інші комунікації", valInt("appliancesHatch"), "p_other_appliances_hatch");
+    addDetail("Рукомийник", valInt("appliancesSink"), "p_other_appliances_sink");
+    addDetail("Каміни", valInt("appliancesFireplace"), "p_other_appliances_fireplace");
+    addDetail("Техніка (пралка, сушка, бойлер тощо)", valInt("appliancesOther"), "p_other_appliances_other");
+  })();
+  
+  // ===== 7. Ручки =====
+  (function(){
+    const handles = document.querySelectorAll('[id^="handle_"]');
+    handles.forEach(handle => {
+      const handleType = handle.getAttribute('data-type');
+      const handleNames = {
+        "handles_gola_low": "GOLA низ",
+        "handles_gola_up": "GOLA верх",
+        "handles_gola_vert": "GOLA вертикал.",
+        "handles_end": "Торцеві",
+        "handles_milled": "Фрезеровані",
+        "handles_other": "Інші"
+      };
+      
+      const handleName = handleNames[handleType] || handleType;
+      addDetail(`Ручка: ${handleName}`, 1, `p_other_handle_${handleType.replace('handles_', '')}`);
+    });
+  })();
+  
+  // ===== 8. Підсвітка =====
+  (function(){
+    const lightings = document.querySelectorAll('[id^="lighting_"]');
+    lightings.forEach(lighting => {
+      const lightingType = lighting.getAttribute('data-type');
+      const quantity = parseInt(lighting.getAttribute('data-quantity')) || 1;
+      
+      const lightingNames = {
+        "light_elements": "Елементів (деталей) з підсвіткою",
+        "light_control": "Пристроїв керування і вимірюються в кількостях"
+      };
+      
+      const lightingName = lightingNames[lightingType] || lightingType;
+      addDetail(`Підсвітка: ${lightingName}`, quantity, `p_other_lighting_${lightingType}`);
+    });
+  })();
+  
+  // ===== Додаємо постійне значення =====
+  const constantValue = parseFloat(document.getElementById('constant_value')?.value || 0);
+  if (constantValue !== 0) {
+    points += constantValue;
+    console.log(`Постійне значення: ${constantValue} (загалом: ${points})`);
+  }
+  
+  // Показуємо результат
+  document.getElementById('pointsHUD').style.display = 'inline-block';
+  document.getElementById('pointsHUD').textContent = `Поінти: ${points}`;
+  
+  return points;
+}
+
+// Функція для завантаження налаштувань
+function loadSettings() {
+  // Налаштування завантажуються автоматично з calculator-settings.js
+  console.log('✅ Налаштування завантажені');
+}
+
+// Завантажуємо налаштування при завантаженні сторінки
+document.addEventListener('DOMContentLoaded', function() {
+  loadSettings();
+});
+
+// Функція для завантаження PDF
+async function downloadPDF() {
+  try {
+    // Показуємо індикатор завантаження
+    const button = document.querySelector('button[onclick="downloadPDF()"]');
+    const originalText = button.textContent;
+    button.textContent = 'Генеруємо PDF...';
+    button.disabled = true;
+    
+    // Імпортуємо html2canvas
+    const html2canvas = window.html2canvas;
+    const jsPDF = window.jspdf.jsPDF;
+    
+    // Отримуємо елемент для конвертації
+    const element = document.querySelector('.wrapper');
+    
+    // Конвертуємо в canvas
+    const canvas = await html2canvas(element, {
+      scale: 2, // Вища якість
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      width: element.scrollWidth,
+      height: element.scrollHeight
+    });
+    
+    // Створюємо PDF
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    
+    // Розраховуємо розміри для A4
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+    const imgX = (pdfWidth - imgWidth * ratio) / 2;
+    const imgY = 0;
+    
+    // Додаємо зображення до PDF
+    pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+    
+    // Генеруємо назву файлу
+    const projectNum = document.getElementById('projectNum').value || 'Без_номера';
+    const productName = document.getElementById('productName').value || 'Без_назви';
+    const date = document.getElementById('dateField').value || new Date().toLocaleDateString('uk-UA');
+    const fileName = `Калькулятор_інші_меблі_${projectNum}_${productName}_${date}.pdf`;
+    
+    // Завантажуємо PDF
+    pdf.save(fileName);
+    
+    // Повертаємо кнопку в початковий стан
+    button.textContent = originalText;
+    button.disabled = false;
+    
+  } catch (error) {
+    console.error('Помилка при створенні PDF:', error);
+    alert('Помилка при створенні PDF. Спробуйте ще раз.');
+    
+    // Повертаємо кнопку в початковий стан
+    const button = document.querySelector('button[onclick="downloadPDF()"]');
+    button.textContent = 'Завантажити PDF';
+    button.disabled = false;
+  }
+}
+
+</script>
+
+<!-- Модальне вікно для додавання підсвітки -->
+<div id="addLightingModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Додати підсвітку</h3>
+      <span class="close" onclick="closeAddLightingModal()">&times;</span>
+    </div>
+    <div style="padding: 20px 24px;">
+      <label style="display: block; margin-bottom: 12px;">
+        <input type="checkbox" id="light_elements_check" style="margin-right: 8px;">
+        Елементів (деталей) з підсвіткою
+      </label>
+      
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; margin-bottom: 6px;">
+          <input type="checkbox" id="light_control_check" onchange="toggleLightingQuantity('light_control')" style="margin-right: 8px;">
+          Пристроїв керування і вимірюються в кількостях
+        </label>
+        <div id="light_control_quantity" style="display: none; margin-left: 24px;">
+          <label>Кількість:</label>
+          <input type="number" id="light_control_qty" min="1" value="1" onfocus="this.select()" style="width: 100px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; margin-left: 8px;">
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeAddLightingModal()" style="background: #6b7280;">Скасувати</button>
+      <button onclick="addLighting()" style="background: #2563eb;">Додати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модальне вікно попередження -->
+<div class="modal" id="warningModal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>⚠ Помилка</h3>
+      <span class="close" onclick="closeModal()">&times;</span>
+    </div>
+    <div style="padding: 20px 24px;">
+      <p id="warningText"></p>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeModal()" style="background: #2563eb;">OK</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+</html>

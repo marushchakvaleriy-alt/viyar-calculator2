@@ -1,0 +1,11 @@
+# Git ignore
+.crswap
+*.crswap
+.tmp
+temp/
+.gemini/
+.agent/
+brain/
+implementation_plan.md
+task.md
+walkthrough.md
