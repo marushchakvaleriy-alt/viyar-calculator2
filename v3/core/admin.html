@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Адмін-панель v3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f3f4f6;
+            --sidebar-bg: #ffffff;
+            --accent: #6366f1;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: var(--bg);
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            color: #374151;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .item-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .item-card input,
+        .item-card select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-save {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .group-container {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Структура v3</h2>
+
+        <div class="section-title">Категорії</div>
+        <div id="categoriesList"></div>
+
+        <div class="section-title">Групи</div>
+        <div id="groupsList"></div>
+    </div>
+
+    <div class="main">
+        <div id="editorContent">
+            <h1>Редактор процесів</h1>
+            <div id="processesGrid"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                <!-- Тут будуть процеси -->
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-save" onclick="saveSchema()">💾 ЗБЕРЕГТИ ЗМІНИ</button>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const schemaFile = urlParams.get('file') || '../data/schema_default.js';
+
+        async function loadSchema() {
+            // Динамічне завантаження файлу схеми
+            const script = document.createElement('script');
+            script.src = schemaFile + '?t=' + Date.now();
+            document.head.appendChild(script);
+
+            script.onload = () => {
+                window.Schema = window.DefaultSchema || window.Schema; // Підтримка обох назв
+                renderAll();
+            }
+        }
+
+        function renderAll() {
+            renderCategories();
+            renderProcesses();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesList');
+            container.innerHTML = Object.entries(window.Schema.categories).map(([id, cat]) => `
+                <div class="item-card">
+                    <div class="category-badge" style="background: ${cat.color}">${cat.name}</div>
+                    <input type="text" value="${cat.name}" oninput="updateCat('${id}', 'name', this.value)">
+                    <input type="color" value="${cat.color}" oninput="updateCat('${id}', 'color', this.value)">
+                </div>
+            `).join('');
+        }
+
+        function renderProcesses() {
+            const container = document.getElementById('processesGrid');
+            container.innerHTML = window.Schema.processes.map((pr, idx) => {
+                const cat = window.Schema.categories[pr.category];
+                return `
+                    <div class="item-card">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div class="category-badge" style="background: ${cat.color}">${cat.name}</div>
+                            <button class="btn" style="background: #fee2e2; color: #ef4444; padding: 2px 8px;" onclick="removeProcess(${idx})">✕</button>
+                        </div>
+                        <input type="text" value="${pr.name}" oninput="updateProcess(${idx}, 'name', this.value)">
+                        <select onchange="updateProcess(${idx}, 'category', this.value)">
+                            ${Object.entries(window.Schema.categories).map(([id, c]) => `
+                                <option value="${id}" ${id === pr.category ? 'selected' : ''}>${c.name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                `;
+            }).join('') + `
+                <div class="item-card" style="border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="addProcess()">
+                    <span style="font-size: 2rem; color: var(--border);">+</span>
+                </div>
+            `;
+        }
+
+        function addProcess() {
+            window.Schema.processes.push({
+                id: "pr_new_" + Date.now(),
+                name: "Новий процес",
+                category: Object.keys(window.Schema.categories)[0]
+            });
+            renderProcesses();
+        }
+
+        function removeProcess(idx) {
+            if (confirm('Видалити цей процес?')) {
+                window.Schema.processes.splice(idx, 1);
+                renderProcesses();
+            }
+        }
+
+        function updateProcess(idx, prop, val) { window.Schema.processes[idx][prop] = val; }
+        function updateCat(id, prop, val) {
+            window.Schema.categories[id][prop] = val;
+            renderProcesses(); // Оновити бейджі
+        }
+
+        async function saveSchema() {
+            const content = `window.Schema = ${JSON.stringify(window.Schema, null, 4)};`;
+            // Важливо: шлях має бути відносним до local_saver.py
+            const cleanPath = 'v3/' + schemaFile.replace('../', '');
+
+            const response = await fetch('http://localhost:5005', {
+                method: 'POST',
+                body: JSON.stringify({ filename: cleanPath, content: content })
+            });
+
+            if (response.ok) {
+                alert('✅ Зміни збережено!');
+                if (window.parent && window.parent.postMessage) {
+                    window.parent.postMessage('saved', '*');
+                }
+            } else {
+                alert('❌ Помилка збереження! Перевірте local_saver.py');
+            }
+        }
+
+        loadSchema();
+    </script>
+</body>
+
+</html>

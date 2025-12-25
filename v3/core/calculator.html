@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор v3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --accent: #6366f1;
+            --text: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .group-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 20px 0 10px;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 5px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .proc-category {
+            margin-bottom: 20px;
+        }
+
+        .cat-header {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .proc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            border-bottom: 1px solid var(--bg);
+            font-size: 0.95rem;
+        }
+
+        .proc-name {
+            color: #475569;
+        }
+
+        .proc-val {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .total-box {
+            background: var(--accent);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .total-val {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .btn-edit {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout" id="app">
+        <!-- Поля вводу -->
+        <div class="panel">
+            <h2 id="calcTitle">Завантаження...</h2>
+            <div id="fieldsContainer"></div>
+        </div>
+
+        <!-- Результати -->
+        <div class="panel">
+            <h2>Результати</h2>
+            <div id="resultsContainer"></div>
+
+            <div class="total-box">
+                <div>ЗАГАЛЬНА СУМА</div>
+                <div class="total-val" id="totalSum">0 грн</div>
+            </div>
+
+            <a href="#" id="editLink" class="btn-edit">⚙️ Редагувати структуру</a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const calcId = urlParams.get('id') || 'schema_default';
+        const schemaPath = '../data/' + (calcId === 'schema_default' ? 'schema_default.js' : calcId + '.js');
+
+        async function init() {
+            // Завантаження схеми
+            const script = document.createElement('script');
+            script.src = schemaPath + '?t=' + Date.now();
+            document.head.appendChild(script);
+
+            script.onload = () => {
+                window.Schema = window.Schema || window.DefaultSchema;
+                document.getElementById('calcTitle').textContent = window.Schema.meta.title;
+                document.getElementById('editLink').href = 'admin.html?file=' + schemaPath;
+                renderFields();
+                calculate();
+            };
+        }
+
+        function renderFields() {
+            const container = document.getElementById('fieldsContainer');
+            container.innerHTML = window.Schema.groups.map(group => `
+                <div class="group-title">${group.title}</div>
+                ${window.Schema.fields.filter(f => f.group === group.id).map(f => `
+                    <div class="field">
+                        <label>${f.name}</label>
+                        <input type="${f.type}" value="${f.value}" oninput="updateVal('${f.id}', this.value)">
+                    </div>
+                `).join('')}
+            `).join('');
+        }
+
+        function updateVal(id, val) {
+            const field = window.Schema.fields.find(f => f.id === id);
+            field.value = field.type === 'number' ? parseFloat(val) : val;
+            calculate();
+        }
+
+        function calculate() {
+            // Базова логіка розрахунку (v3 engine)
+            // Поки що кожна категорія має базову вартість, яку ми пізніше налаштуємо через правила
+            let total = 0;
+            const resContainer = document.getElementById('resultsContainer');
+
+            const resultsHtml = Object.entries(window.Schema.categories).map(([catId, cat]) => {
+                // Тимчасово: сума = кількість виробів * кількість процесів в категорії * 100
+                const qty = window.Schema.fields.find(f => f.id === 'f_qty')?.value || 1;
+                const procCount = window.Schema.processes.filter(p => p.category === catId).length;
+                const catSum = qty * procCount * 100; // Це просто заглушка для тесту
+                total += catSum;
+
+                return `
+                    <div class="proc-category">
+                        <div class="cat-header" style="background: ${cat.color}33; border-left: 4px solid ${cat.color}">
+                            <span>${cat.name}</span>
+                            <span>${catSum} грн</span>
+                        </div>
+                        ${window.Schema.processes.filter(p => p.category === catId).map(p => `
+                            <div class="proc-item">
+                                <span class="proc-name">${p.name}</span>
+                                <span class="proc-val">+100</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }).join('');
+
+            resContainer.innerHTML = resultsHtml;
+            document.getElementById('totalSum').textContent = total.toLocaleString() + ' грн';
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

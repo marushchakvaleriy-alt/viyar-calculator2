@@ -19,16 +19,26 @@ class SaveHandler(BaseHTTPRequestHandler):
         filename = data.get('filename')
         content = data.get('content')
 
-        # Захист: зберігаємо тільки в папку data
-        if not filename.startswith('data/'):
+        # Захист: зберігаємо тільки в дозволені папки (data або images)
+        is_allowed = any(filename.startswith(p) for p in ['data/', 'images/'])
+        if not is_allowed:
             filename = os.path.join('data', os.path.basename(filename))
 
         try:
-            # Створюємо папку data, якщо її немає
+            # Створюємо папку, якщо її немає
             os.makedirs(os.path.dirname(filename), exist_ok=True)
             
-            with open(filename, 'w', encoding='utf-8') as f:
-                f.write(content)
+            # Якщо контент - це base64 зображення (data:image/...), зберігаємо як бінарний файл
+            if isinstance(content, str) and content.startswith('data:') and ';base64,' in content:
+                print(f"📦 Отримано бінарні дані для: {filename}")
+                import base64
+                header, encoded = content.split(';base64,', 1)
+                binary_data = base64.b64decode(encoded)
+                with open(filename, 'wb') as f:
+                    f.write(binary_data)
+            else:
+                with open(filename, 'w', encoding='utf-8') as f:
+                    f.write(content)
             
             self.send_response(200)
             self.send_header('Access-Control-Allow-Origin', '*')

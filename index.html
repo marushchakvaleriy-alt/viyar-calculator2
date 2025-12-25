@@ -417,7 +417,8 @@
 
             if (logo) {
                 if (cfg.logoImage) {
-                    logo.innerHTML = `<img src="${cfg.logoImage}" alt="Logo" style="height: 60px;">`;
+                    const finalLogoSrc = (cfg.logoImage.startsWith('blob:') || cfg.logoImage.startsWith('data:')) ? cfg.logoImage : encodeURI(cfg.logoImage);
+                    logo.innerHTML = `<img src="${finalLogoSrc}" alt="Logo" style="height: 60px;">`;
                 } else {
                     logo.textContent = cfg.logoText || cfg.siteTitle || "Vpoint";
                     logo.classList.add('logo-glow');
@@ -437,7 +438,8 @@
                         path = './' + path;
                     }
                 }
-                illus.src = path + '?v=' + Date.now();
+                const finalIllusSrc = (path.startsWith('blob:') || path.startsWith('data:')) ? path : encodeURI(path);
+                illus.src = finalIllusSrc + '?v=' + Date.now();
                 illus.style.display = 'block';
                 illus.style.width = 'auto'; // Help SVG rendering
                 const i1X = cfg.illus1X ?? 0;
@@ -457,7 +459,8 @@
                         path2 = './' + path2;
                     }
                 }
-                illus2.src = path2 + '?v=' + Date.now();
+                const finalIllus2Src = (path2.startsWith('blob:') || path2.startsWith('data:')) ? path2 : encodeURI(path2);
+                illus2.src = finalIllus2Src + '?v=' + Date.now();
                 illus2.style.display = 'block';
                 illus2.style.width = 'auto';
                 const i2X = cfg.illus2X ?? 0;
@@ -648,7 +651,8 @@
                 btn.style.border = '1px solid #1e40af';
                 btn.style.marginBottom = '0';
                 const isImage = (conf.icon && (conf.icon.includes('/') || conf.icon.includes('.')));
-                const iconHtml = isImage ? `<img src="${conf.icon}" style="height:20px; vertical-align:middle; margin-right:5px; object-fit:contain">` : `<span style="font-size:16px">${conf.icon}</span>`;
+                const finalIconSrc = isImage ? encodeURI(conf.icon) : '';
+                const iconHtml = isImage ? `<img src="${finalIconSrc}" style="height:20px; vertical-align:middle; margin-right:5px; object-fit:contain">` : `<span style="font-size:16px">${conf.icon}</span>`;
                 btn.innerHTML = `${iconHtml} <b>${conf.title}</b><br><span style="font-size:10px; opacity:0.6">${conf.file}</span>`;
                 btn.onclick = function () {
                     window.location.href = 'core/admin.html?config=' + conf.file;

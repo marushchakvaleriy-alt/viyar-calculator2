@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visual Designer - Viyar Pro</title>
     <!-- Dynamic Schema Loader -->
-    <!-- Dynamic Schema Loader -->
-    <!-- Dynamic Schema Loader -->
     <script src="../data/config_calculators.js?v=2"></script>
     <script src="../data/config_dashboard.js?v=2"></script>
     <script>
@@ -299,6 +297,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .group-header:hover {
+            filter: brightness(1.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .group-header.selected {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
+            transform: scale(1.05);
         }
 
         .fields-grid {
@@ -322,6 +332,14 @@
         .field-card.selected {
             border: 2px solid var(--accent);
             background: #2d3748;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            transform: scale(1.02);
+        }
+
+        .field-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
 
         .field-label {
@@ -573,6 +591,49 @@
         .mobile-menu-btn {
             display: none;
         }
+
+        .badge {
+            background: #d97706;
+            color: white;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .calc-edit-item.is-placeholder {
+            border-color: #d97706 !important;
+            background: rgba(217, 119, 6, 0.1) !important;
+        }
+
+        .custom-checkbox {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            font-size: 11px;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .custom-checkbox:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .custom-checkbox input {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+        }
     </style>
 </head>
 
@@ -613,6 +674,18 @@
                     <label class="control-label">Підзаголовок</label>
                     <input type="text" id="dbSubtitle" oninput="updateDashboardPreview()" placeholder="Слоган...">
                 </div>
+
+                <div class="section-tab">Список Калькуляторів</div>
+                <button class="btn-save" onclick="addNewCalculatorToConfig()"
+                    style="width:100%; background:var(--accent); margin-bottom: 15px; font-weight: 800; border: 2px solid rgba(255,255,255,0.3);">➕
+                    ДОДАТИ НОВИЙ КАЛЬКУЛЯТОР</button>
+                <div id="calculatorsListEditor"
+                    style="display:flex; flex-direction:column; gap:15px; margin-bottom:20px;">
+                    <!-- JS will populate this -->
+                </div>
+                <button class="btn-save" onclick="saveCalculatorsConfig()"
+                    style="width:100%; background:#8b5cf6; margin-bottom: 20px;">💾
+                    Зберегти список калькуляторів</button>
 
                 <div class="control-group">
                     <label class="control-label">Тип фону</label>
@@ -805,16 +878,6 @@
 
                 <input type="file" id="dbFilePicker" style="display:none" onchange="handleDbFileSelection(this)">
 
-                <div class="section-tab">Список Калькуляторів</div>
-                <button class="btn-save" onclick="addNewCalculatorToConfig()"
-                    style="width:100%; background:var(--accent); margin-bottom: 15px; font-weight: 800; border: 2px solid rgba(255,255,255,0.3);">➕
-                    ДОДАТИ НОВИЙ КАЛЬКУЛЯТОР</button>
-                <div id="calculatorsListEditor"
-                    style="display:flex; flex-direction:column; gap:15px; margin-bottom:20px;">
-                    <!-- JS will populate this -->
-                </div>
-                <button class="btn-save" onclick="saveCalculatorsConfig()" style="width:100%; background:#8b5cf6;">💾
-                    Зберегти список калькуляторів</button>
             </div>
 
             <!-- === CALCULATOR EDITOR (Original) === -->
@@ -832,11 +895,16 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <span class="control-label">Назва калькулятора</span>
                         <input type="text" id="calcTitleInp" oninput="updateGlobal('title', this.value)"
                             style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; margin-bottom:10px;">
                         <span class="control-label">Версія</span>
                         <input type="text" id="calcVersionInp" oninput="updateGlobal('version', this.value)"
+                            style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; margin-bottom:10px;">
+                        <span class="control-label">Акцентний Колір</span>
+                        <input type="text" id="calcAccentColor" onchange="updateGlobal('accentColor', this.value)"
+                            style="width:100%; height:32px; border-radius:6px; border:1px solid var(--border); background:none; padding:2px; margin-bottom:10px;">
+                        <span class="control-label">Шрифт (Base)</span>
+                        <input type="number" id="calcBaseFontSize" oninput="updateGlobal('baseFontSize', this.value)"
                             style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit; margin-bottom:15px;">
 
                         <button class="toggle-btn"
@@ -850,14 +918,15 @@
                 <div id="selectionPanel" style="display: none;">
                     <div id="fieldProperties">
                         <div class="section-tab">📏 Макет та Розміри</div>
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-                            <div id="selectedFieldName"
-                                style="font-weight: 800; color: #fff; font-size: 14px; letter-spacing: 0.5px;">-</div>
-                            <button class="toggle-btn" style="padding:4px 8px; font-size:9px"
-                                onclick="applySelectedStyleToAll()"
-                                title="Застосувати цей стиль до всіх полів">Копіювати на
-                                всі</button>
+                        <div style="margin-bottom: 20px;">
+                            <span class="control-label">Назва поля</span>
+                            <div style="display:flex; gap:8px; align-items:center">
+                                <input type="text" id="fieldLabelInp" oninput="updateFieldLabel(this.value)"
+                                    style="flex:1; padding:8px; border-radius:6px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:white; font-weight:600;">
+                                <button class="toggle-btn" style="padding:4px 8px; font-size:9px; width:auto"
+                                    onclick="applySelectedStyleToAll()" title="Застосувати цей стиль до всіх полів">На
+                                    всі</button>
+                            </div>
                         </div>
 
                         <div class="control-group">
@@ -997,14 +1066,50 @@
                             </div>
                             <div class="property-row">
                                 <div style="flex:1">
-                                    <span class="control-label" style="font-size:8px">Рамка</span>
+                                    <span class="control-label" style="font-size:8px">Рамка (Колір)</span>
                                     <input type="color" id="inpBorderColor"
                                         onchange="updateStyle('inpBorder', this.value)" style="width:100%">
                                 </div>
                                 <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Товщина рамки</span>
+                                    <input type="number" id="inpBorderWidthInp"
+                                        oninput="updateStyle('inpBorderWidth', this.value)" style="width:100%">
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div style="flex:1">
                                     <span class="control-label" style="font-size:8px">Background</span>
                                     <input type="color" id="inpBgColor" onchange="updateStyle('inpBg', this.value)"
                                         style="width:100%">
+                                </div>
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Заокруглення (px)</span>
+                                    <input type="number" id="inpRadiusInp"
+                                        oninput="updateStyle('inpRadius', this.value)" style="width:100%">
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Відступ зверху (Moving)</span>
+                                    <input type="number" id="marginTopInp"
+                                        oninput="updateStyle('marginTop', this.value)" style="width:100%">
+                                </div>
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Відступ зліва</span>
+                                    <input type="number" id="marginLeftInp"
+                                        oninput="updateStyle('marginLeft', this.value)" style="width:100%">
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Відступ справа</span>
+                                    <input type="number" id="marginRightInp"
+                                        oninput="updateStyle('marginRight', this.value)" style="width:100%">
+                                </div>
+                                <div style="flex:1">
+                                    <span class="control-label" style="font-size:8px">Радіус Картки</span>
+                                    <input type="number" id="cardRadiusInp"
+                                        oninput="updateStyle('cardRadius', this.value)" style="width:100%">
                                 </div>
                             </div>
                         </div>
@@ -1049,6 +1154,23 @@
                             </div>
                         </div>
 
+                        <!-- Section: Product Window Style (for buttons/modals) -->
+                        <div id="productWindowProperties" style="display: none;">
+                            <div class="section-tab">🪟 Вікно Виробу (Картка)</div>
+                            <div class="control-group">
+                                <span class="control-label" style="font-size:8px">Ширина вікна (напр: 300px,
+                                    150%)</span>
+                                <input type="text" id="prodWidthInp" oninput="updateStyle('prodWidth', this.value)"
+                                    placeholder="100%"
+                                    style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit;">
+                                <div style="margin-top:10px">
+                                    <span class="control-label" style="font-size:8px">Фон картки</span>
+                                    <input type="color" id="prodBgColor" onchange="updateStyle('prodBg', this.value)"
+                                        style="width:100%">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="control-group" style="margin-top: 20px; border: none;">
                             <label
                                 style="font-size: 11px; display: flex; align-items: center; gap: 8px; color: #ef4444; cursor: pointer;">
@@ -1066,9 +1188,29 @@
                             <input type="text" id="groupTitleInp" oninput="updateGroupStyle('title', this.value)"
                                 style="width:100%; padding:8px; border-radius:6px; background:rgba(0,0,0,0.1); border:1px solid var(--border); color:inherit;">
                         </div>
-                        <div class="control-group">
-                            <span class="control-label">Фон секції</span>
-                            <input type="color" id="groupBgColor" onchange="updateGroupStyle('background', this.value)">
+                        <div class="property-row">
+                            <div style="flex:1">
+                                <span class="control-label" style="font-size:8px">Фон секції</span>
+                                <input type="color" id="groupBgColor"
+                                    onchange="updateGroupStyle('background', this.value)" style="width:100%">
+                            </div>
+                            <div style="flex:1">
+                                <span class="control-label" style="font-size:8px">Колір рамки</span>
+                                <input type="color" id="groupBorderColor"
+                                    onchange="updateGroupStyle('borderColor', this.value)" style="width:100%">
+                            </div>
+                        </div>
+                        <div class="property-row">
+                            <div style="flex:1">
+                                <span class="control-label" style="font-size:8px">Товщина рамки (px)</span>
+                                <input type="number" id="groupBorderWidthInp"
+                                    oninput="updateGroupStyle('borderWidth', this.value)" style="width:100%">
+                            </div>
+                            <div style="flex:1">
+                                <span class="control-label" style="font-size:8px">Заокруглення (px)</span>
+                                <input type="number" id="groupRadiusInp"
+                                    oninput="updateGroupStyle('borderRadius', this.value)" style="width:100%">
+                            </div>
                         </div>
                         <div class="control-group">
                             <label
@@ -1081,8 +1223,16 @@
                 </div>
 
                 <div id="noSelection"
-                    style="color: var(--text-dim); font-size: 11px; text-align: center; margin-top: 40px; border: 1px dashed var(--border); padding: 15px; border-radius: 10px;">
-                    Клікніть на поле або заголовок групи для налаштування
+                    style="padding: 30px 20px; text-align: center; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border); margin-top: 20px;">
+                    <div style="font-size: 32px; margin-bottom: 15px; opacity: 0.5;">👆</div>
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">
+                        Виберіть елемент для редагування
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">
+                        Клацніть на будь-яке <b style="color:var(--accent)">поле</b> або <b
+                            style="color:var(--accent)">заголовок групи</b> в прек’ю справа, щоб побачити налаштування
+                        рамок, відступів та стилів.
+                    </div>
                 </div>
             </div>
 
@@ -1138,11 +1288,14 @@
         const MAX_HISTORY = 50;
 
         function saveHistory() {
+            if (typeof Schema === 'undefined') return;
             historyStack.push(JSON.stringify(Schema));
             if (historyStack.length > MAX_HISTORY) historyStack.shift();
             const btn = document.getElementById('undoBtn');
-            btn.style.opacity = '1';
-            btn.style.pointerEvents = 'auto';
+            if (btn) {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }
         }
 
         function undo() {
@@ -1179,12 +1332,28 @@
         document.addEventListener('DOMContentLoaded', renderDesigner);
 
         function renderDesigner() {
+            if (typeof Schema === 'undefined') return;
             const container = document.getElementById('designerCanvas');
+            if (!container) return;
             container.innerHTML = '';
 
             // Sync Global Inputs
-            document.getElementById('calcTitleInp').value = (Schema.layout && Schema.layout.title) || '';
-            document.getElementById('calcVersionInp').value = (Schema.layout && Schema.layout.version) || '';
+            const title = Schema.layout?.title || Schema.meta?.title || '';
+            const version = Schema.layout?.version || Schema.meta?.version || 'v1.0';
+
+            const titleInp = document.getElementById('calcTitleInp');
+            const versionInp = document.getElementById('calcVersionInp');
+            const accentInp = document.getElementById('calcAccentColor');
+            const fontInp = document.getElementById('calcBaseFontSize');
+
+            if (titleInp) titleInp.value = title;
+            if (versionInp) versionInp.value = version;
+            if (accentInp) accentInp.value = Schema.layout?.accentColor || '#6366f1';
+            if (fontInp) fontInp.value = Schema.layout?.baseFontSize || 14;
+
+            if (Schema.layout?.accentColor) {
+                document.documentElement.style.setProperty('--accent', Schema.layout.accentColor);
+            }
 
             // Render Header Preview
             const headerPreview = document.createElement('div');
@@ -1195,9 +1364,9 @@
             headerPreview.style.justifyContent = 'space-between';
             headerPreview.style.alignItems = 'baseline';
             headerPreview.innerHTML = `
-            <div style="font-size: 18px; font-weight: 800; color:var(--accent)">${Schema.layout?.title || 'Калькулятор'}</div>
+            <div style="font-size: 18px; font-weight: 800; color:var(--accent)">${title || 'Калькулятор'}</div>
              <div style="font-size: 10px; opacity:0.5; text-align: right;">
-                 ${Schema.layout?.version || 'v1.0'}<br>
+                 ${version}<br>
                     <span style="color:var(--accent); font-weight:bold;">Ctrl + Click для вибору декількох</span>
             </div>
             `;
@@ -1217,8 +1386,10 @@
             container.appendChild(catSelection);
 
             const catGrid = catSelection.querySelector('#catTogglesGrid');
-            Object.keys(Schema.categories || {}).forEach(cid => {
-                const cat = Schema.categories[cid];
+            const categories = Schema.categories || {};
+            Object.keys(categories).forEach(cid => {
+                const cat = categories[cid];
+                if (!cat) return;
                 const btn = document.createElement('div');
                 btn.className = 'cat-preview-toggle';
                 btn.draggable = true;
@@ -1253,9 +1424,9 @@
             resultsPanel.innerHTML = `
             <h3 style="margin-top:0; font-size: 14px; text-transform:uppercase; color:var(--text-dim)">Результати</h3>
             <div style="margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:15px">
-                ${Object.keys(Schema.categories || {}).map(cid => `
+                ${Object.keys(categories).map(cid => `
                         <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px; color:var(--text-main)">
-                            <span>${Schema.categories[cid].name}</span>
+                            <span>${categories[cid].name}</span>
                             <span style="font-weight:600; color:var(--accent)">0 грн</span>
                         </div>
                     `).join('')}
@@ -1270,53 +1441,67 @@
             mainLayout.appendChild(resultsPanel);
             container.appendChild(mainLayout);
 
-            Schema.groups.forEach((group, idx) => {
-                const gl = group.layout || {};
-                const groupEl = document.createElement('div');
-                groupEl.className = 'group-box';
-                groupEl.dataset.groupId = group.id;
-                groupEl.draggable = true;
-                if (gl.borderWidth) {
-                    groupEl.style.border = `${gl.borderWidth}px solid ${gl.borderColor || 'rgba(255,255,255,0.1)'}`;
-                }
+            try {
+                (Schema.groups || []).forEach((group, idx) => {
+                    if (!group) return;
+                    const gl = group.layout || {};
+                    const groupEl = document.createElement('div');
+                    groupEl.className = 'group-box';
+                    groupEl.dataset.groupId = group.id;
+                    groupEl.draggable = true;
+                    if (gl.borderWidth) {
+                        groupEl.style.border = `${gl.borderWidth}px solid ${gl.borderColor || 'rgba(255,255,255,0.1)'}`;
+                    }
+                    if (gl.borderRadius) {
+                        groupEl.style.borderRadius = `${gl.borderRadius}px`;
+                    }
+                    groupEl.style.marginTop = (gl.marginTop || 0) + 'px';
 
-                const groupCont = document.createElement('div');
-                groupCont.className = 'group-content';
-                groupEl.appendChild(groupCont);
+                    const groupCont = document.createElement('div');
+                    groupCont.className = 'group-content';
+                    groupEl.appendChild(groupCont);
 
-                const header = document.createElement('div');
-                header.className = 'group-header';
-                const gLayout = group.layout || {};
-                const showNumbers = gLayout.showNumbering;
+                    const header = document.createElement('div');
+                    header.className = 'group-header';
+                    const gLayout = group.layout || {};
+                    const showNumbers = gLayout.showNumbering;
 
-                header.textContent = (showNumbers ? `${idx + 1}. ` : '') + (group.title || 'Без назви');
-                header.onclick = (e) => { e.stopPropagation(); selectGroup(group.id); };
-                if (selectedGroupId === group.id) header.classList.add('selected');
-                groupCont.appendChild(header);
+                    header.textContent = (showNumbers ? `${idx + 1}. ` : '') + (group.title || 'Без назви');
+                    header.onclick = (e) => { e.stopPropagation(); selectGroup(group.id); };
+                    if (selectedGroupId === group.id) header.classList.add('selected');
+                    groupCont.appendChild(header);
 
-                groupCont.style.background = gLayout.background || (document.body.classList.contains('light-theme') ? '#fff' : '#111827');
-                groupCont.style.padding = '20px';
-                groupCont.style.borderRadius = '12px';
-                groupCont.style.border = '1px solid var(--border)';
+                    groupCont.style.background = gLayout.background || (document.body.classList.contains('light-theme') ? '#fff' : '#111827');
+                    groupCont.style.padding = '20px';
+                    if (gl.borderRadius) { // Apply borderRadius to groupCont here, after it's defined
+                        groupCont.style.borderRadius = `${gl.borderRadius}px`;
+                    } else {
+                        groupCont.style.borderRadius = '12px';
+                    }
+                    groupCont.style.border = '1px solid var(--border)';
 
-                const grid = document.createElement('div');
-                grid.className = 'fields-grid';
-                Schema.fields.filter(f => f.groupId === group.id).forEach(field => {
-                    grid.appendChild(createFieldCard(field));
+                    const grid = document.createElement('div');
+                    grid.className = 'fields-grid';
+                    (Schema.fields || []).filter(f => f && f.groupId === group.id).forEach(field => {
+                        grid.appendChild(createFieldCard(field));
+                    });
+
+                    groupCont.appendChild(grid);
+                    formPanel.appendChild(groupEl);
+                    setupDragEvents(grid, '.field-card', updateFieldsOrder);
                 });
-
-                groupCont.appendChild(grid);
-                formPanel.appendChild(groupEl);
-                setupDragEvents(grid, '.field-card', updateFieldsOrder);
-            });
+            } catch (err) {
+                console.error("Render Group Error:", err);
+                container.innerHTML += `<div style="color:#ef4444; padding:20px; background:rgba(239,68,68,0.1); border-radius:10px; border:1px solid #ef4444; margin-top:20px">⚠️ Помилка рендерингу груп: ${err.message}</div>`;
+            }
             setupDragEvents(formPanel, '.group-box', updateGroupsOrder);
         }
 
         function pickHelpImg(input) {
             if (input.files && input.files[0]) {
                 const fileName = input.files[0].name;
-                updateStyle('helpImg', 'images/' + fileName);
-                document.getElementById('helpImgInp').value = 'images/' + fileName;
+                updateStyle('helpImg', 'images/hints/' + fileName);
+                document.getElementById('helpImgInp').value = 'images/hints/' + fileName;
             }
         }
 
@@ -1333,6 +1518,10 @@
             card.style.flexDirection = l.flexDirection || 'column';
             card.style.gap = (l.gap || 8) + 'px';
             if (isRow) card.style.alignItems = 'center';
+            card.style.marginTop = (l.marginTop || 0) + 'px';
+            card.style.marginLeft = (l.marginLeft || 0) + 'px';
+            card.style.marginRight = (l.marginRight || 0) + 'px';
+            if (l.cardRadius !== undefined) card.style.borderRadius = l.cardRadius + 'px';
 
             const isLight = document.body.classList.contains('light-theme');
             const defaultColor = isLight ? '#374151' : 'white';
@@ -1360,11 +1549,9 @@
                     <div class="field-type-badge">${field.type}</div>
                     ${field.type === 'action_button' ?
                     `<div class="btn-preview" style="background:${l.btnBg || '#2563eb'}; color:${l.btnColor || '#fff'}; font-size:${l.btnFontSize || 10}px; border-radius:${l.btnRadius || 8}px; padding:${(l.btnPadding || 12) / 2}px; text-align:center; font-weight:700; margin-top:5px;">${field.default || 'BUTTON'}</div>` :
-                    field.type === 'select_modal' ?
-                        `<div class="input-preview" style="border-color:${l.inpBorder || '#d1d5db'}; background:${l.inpBg || '#fff'}; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px;"><span>${field.placeholderText || field.label || 'Виберіть...'}</span><span style="font-size: 8px;">▼</span></div>` :
-                        field.type === 'select' ?
-                            `<div class="input-preview" style="border-color:${l.inpBorder || '#d1d5db'}; background:${l.inpBg || '#fff'}; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px;"><span>${field.placeholderText || field.label || 'Виберіть...'}</span><span style="font-size: 8px;">▼</span></div>` :
-                            `<div class="input-preview" style="border-color:${l.inpBorder || '#d1d5db'}; background:${l.inpBg || '#fff'}; color:${l.inpBg ? (parseInt(l.inpBg.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff') : '#9ca3af'}">${field.placeholderText || l.placeholder || 'Placeholder...'}</div>`
+                    field.type === 'select_modal' || field.type === 'select' ?
+                        `<div class="input-preview" style="border: ${l.inpBorderWidth !== undefined ? l.inpBorderWidth : 1}px solid ${l.inpBorder || '#d1d5db'}; border-radius: ${l.inpRadius !== undefined ? l.inpRadius : 6}px; background:${l.inpBg || '#fff'}; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px;"><span>${field.placeholderText || field.label || 'Виберіть...'}</span><span style="font-size: 8px;">▼</span></div>` :
+                        `<div class="input-preview" style="border: ${l.inpBorderWidth !== undefined ? l.inpBorderWidth : 1}px solid ${l.inpBorder || '#d1d5db'}; border-radius: ${l.inpRadius !== undefined ? l.inpRadius : 6}px; background:${l.inpBg || '#fff'}; color:${l.inpBg ? (parseInt(l.inpBg.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff') : '#9ca3af'}">${field.placeholderText || l.placeholder || 'Placeholder...'}</div>`
                 }
                 </div>
             </div>
@@ -1378,9 +1565,13 @@
         }
 
         function updateGlobal(prop, val) {
-            saveHistory();
-            Schema.layout = Schema.layout || {};
-            Schema.layout[prop] = val;
+            if (!Schema.layout) Schema.layout = {};
+            if (prop === 'title' || prop === 'version' || prop === 'accentColor' || prop === 'baseFontSize') {
+                Schema.layout[prop] = (prop.includes('Size')) ? parseInt(val) : val;
+                if (prop === 'accentColor') document.documentElement.style.setProperty('--accent', val);
+            } else {
+                Schema.layout[prop] = val;
+            }
             renderDesigner();
         }
 
@@ -1444,7 +1635,9 @@
             document.getElementById('groupProperties').style.display = 'none';
 
             // Sync UI for the first/main selected field
-            document.getElementById('selectedFieldName').textContent = selectedIds.length > 1 ? `📦 Обрано об'єктів: ${selectedIds.length}` : (field.label || field.default);
+            const labelInp = document.getElementById('fieldLabelInp');
+            if (labelInp) labelInp.value = field.label || field.default || '';
+
             document.getElementById('fontSizeRange').value = l.fontSize || 13;
             document.getElementById('fontSizeVal').textContent = l.fontSize || 13;
             // ... (sync other inputs as usual, they will show first item state)
@@ -1458,7 +1651,13 @@
             document.getElementById('inputOffsetRange').value = l.inputOffset || 0;
             document.getElementById('inputOffsetVal').textContent = l.inputOffset || 0;
             document.getElementById('inpBorderColor').value = l.inpBorder || '#d1d5db';
+            document.getElementById('inpBorderWidthInp').value = l.inpBorderWidth !== undefined ? l.inpBorderWidth : 1;
             document.getElementById('inpBgColor').value = l.inpBg || '#ffffff';
+            document.getElementById('inpRadiusInp').value = l.inpRadius !== undefined ? l.inpRadius : 6;
+            document.getElementById('marginTopInp').value = l.marginTop || 0;
+            document.getElementById('marginLeftInp').value = l.marginLeft || 0;
+            document.getElementById('marginRightInp').value = l.marginRight || 0;
+            document.getElementById('cardRadiusInp').value = l.cardRadius !== undefined ? l.cardRadius : 12;
             document.getElementById('gapInp').value = l.gap || 8;
             document.getElementById('paddingInp').value = l.padding || 15;
             document.getElementById('glassToggle').checked = !!l.glass;
@@ -1488,14 +1687,23 @@
             });
 
             const btnProps = document.getElementById('actionButtonProperties');
-            if (field.type === 'action_button') {
-                btnProps.style.display = 'block';
-                document.getElementById('btnBgColor').value = l.btnBg || '#2563eb';
-                document.getElementById('btnTextColor').value = l.btnColor || '#ffffff';
-                document.getElementById('btnFontSize').value = l.btnFontSize || 14;
-                document.getElementById('btnRadius').value = l.btnRadius || 8;
+            const prodProps = document.getElementById('productWindowProperties');
+            if (field.type === 'action_button' || field.type === 'select_modal') {
+                if (field.type === 'action_button') {
+                    btnProps.style.display = 'block';
+                    document.getElementById('btnBgColor').value = l.btnBg || '#2563eb';
+                    document.getElementById('btnTextColor').value = l.btnColor || '#ffffff';
+                    document.getElementById('btnFontSize').value = l.btnFontSize || 14;
+                    document.getElementById('btnRadius').value = l.btnRadius || 8;
+                } else {
+                    btnProps.style.display = 'none';
+                }
+                prodProps.style.display = 'block';
+                document.getElementById('prodWidthInp').value = l.prodWidth || '';
+                document.getElementById('prodBgColor').value = l.prodBg || '#ffffff';
             } else {
                 btnProps.style.display = 'none';
+                prodProps.style.display = 'none';
             }
 
             renderDesigner();
@@ -1513,6 +1721,9 @@
 
             document.getElementById('groupTitleInp').value = group.title || '';
             document.getElementById('groupBgColor').value = gl.background || (document.body.classList.contains('light-theme') ? '#ffffff' : '#111827');
+            document.getElementById('groupBorderColor').value = gl.borderColor || 'rgba(255,255,255,0.1)';
+            document.getElementById('groupBorderWidthInp').value = gl.borderWidth || 0;
+            document.getElementById('groupRadiusInp').value = gl.borderRadius || 16;
             document.getElementById('groupNumbering').checked = !!gl.showNumbering;
 
             renderDesigner();
@@ -1548,7 +1759,7 @@
                 const field = Schema.fields.find(f => f.id === id);
                 if (!field.layout) field.layout = {};
 
-                const intProps = ['fontSize', 'inputWidth', 'btnFontSize', 'btnRadius', 'gap', 'padding', 'labelWidth', 'inputOffset'];
+                const intProps = ['fontSize', 'inputWidth', 'btnFontSize', 'btnRadius', 'gap', 'padding', 'labelWidth', 'inputOffset', 'inpBorderWidth', 'inpRadius', 'marginTop', 'marginLeft', 'marginRight', 'cardRadius'];
                 field.layout[prop] = intProps.includes(prop) ? parseInt(val) : val;
             });
 
@@ -1562,6 +1773,14 @@
         }
 
         function setFieldWidth(w) { updateStyle('width', w); }
+        function updateFieldLabel(val) {
+            if (selectedIds.length === 0) return;
+            selectedIds.forEach(id => {
+                const field = Schema.fields.find(f => f.id === id);
+                field.label = val;
+            });
+            renderDesigner();
+        }
         function toggleFieldHidden(v) {
             selectedIds.forEach(id => {
                 Schema.fields.find(f => f.id === id).hidden = v;
@@ -1622,25 +1841,30 @@
                 else cont.appendChild(drag);
             });
             cont.addEventListener('drop', (e) => {
-                saveHistory();
+                if (typeof Schema !== 'undefined') saveHistory();
                 setTimeout(onDrop, 10);
             });
         }
 
         function updateFieldsOrder() {
+            if (typeof Schema === 'undefined') return;
             const sorted = [];
             document.querySelectorAll('.group-box').forEach(gb => {
                 const gid = gb.dataset.groupId;
                 gb.querySelectorAll('.field-card').forEach(fc => {
                     const f = Schema.fields.find(x => x.id === fc.dataset.id);
-                    f.groupId = gid; sorted.push(f);
+                    if (f) {
+                        f.groupId = gid;
+                        sorted.push(f);
+                    }
                 });
             });
             Schema.fields = [...sorted, ...Schema.fields.filter(f => !sorted.includes(f))];
         }
 
         function updateGroupsOrder() {
-            Schema.groups = [...document.querySelectorAll('.group-box')].map(gb => Schema.groups.find(g => g.id === gb.dataset.groupId));
+            if (typeof Schema === 'undefined') return;
+            Schema.groups = [...document.querySelectorAll('.group-box')].map(gb => Schema.groups.find(g => g.id === gb.dataset.groupId)).filter(g => g);
         }
 
         async function saveLayout() {
@@ -1702,7 +1926,9 @@
                 window.CalculatorConfig.forEach(conf => {
                     const opt = document.createElement('option');
                     opt.value = conf.file;
-                    opt.textContent = `${conf.icon} ${conf.title}`;
+                    const isImg = conf.icon && (conf.icon.includes('/') || conf.icon.includes('.'));
+                    const iconDisplay = isImg ? '🖼️' : conf.icon;
+                    opt.textContent = `${iconDisplay} ${conf.title}`;
                     if (window.currentConfigFile === conf.file) opt.selected = true;
                     group.appendChild(opt);
                 });
@@ -1848,7 +2074,8 @@
             if (headerIllus) {
                 let src1 = headerIllus;
                 if (src1 && src1.startsWith('images/')) src1 = '../' + src1;
-                prevIllus.src = (src1.startsWith('blob:') || src1.startsWith('data:')) ? src1 : encodeURI(src1);
+                const finalSrc1 = (src1.startsWith('blob:') || src1.startsWith('data:')) ? src1 : encodeURI(src1);
+                prevIllus.src = finalSrc1;
                 prevIllus.style.display = 'block';
                 prevIllus.style.transform = `translate(${i1X}px, ${i1Y}px) scale(${i1S})`;
             } else {
@@ -1863,7 +2090,8 @@
             if (headerIllus2) {
                 let src2 = headerIllus2;
                 if (src2 && src2.startsWith('images/')) src2 = '../' + src2;
-                prevIllus2.src = (src2.startsWith('blob:') || src2.startsWith('data:')) ? src2 : encodeURI(src2);
+                const finalSrc2 = (src2.startsWith('blob:') || src2.startsWith('data:')) ? src2 : encodeURI(src2);
+                prevIllus2.src = finalSrc2;
                 prevIllus2.style.display = 'block';
                 prevIllus2.style.transform = `translate(${i2X}px, ${i2Y}px) scale(${i2S})`;
             } else {
@@ -1881,7 +2109,8 @@
             if (displayLogo) {
                 let dLogo = displayLogo;
                 if (dLogo && dLogo.startsWith('images/')) dLogo = '../' + dLogo;
-                prevLogo.innerHTML = `<img src="${dLogo}" style="height: 60px; display: block; margin: 0 auto;">`;
+                const finalLogoSrc = (dLogo && (dLogo.startsWith('blob:') || dLogo.startsWith('data:'))) ? dLogo : encodeURI(dLogo);
+                prevLogo.innerHTML = `<img src="${finalLogoSrc}" style="height: 60px; display: block; margin: 0 auto;">`;
             } else {
                 prevLogo.textContent = logoText || title || "Vpoint";
                 prevLogo.classList.add('logo-glow');
@@ -1989,7 +2218,10 @@
                 const displayIcon = conf._previewIcon || conf.icon;
                 let dIcon = displayIcon;
                 if (dIcon && dIcon.startsWith('images/')) dIcon = '../' + dIcon;
-                const iconHtml = isImage ? `<img src="${dIcon}" style="height:${cardIconSize}px; display:block; margin: 0 auto; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px">${conf.icon}</div>`;
+
+                // [FIX] Encode URI for Cyrillic support
+                const finalSrc = (dIcon && (dIcon.startsWith('blob:') || dIcon.startsWith('data:'))) ? dIcon : encodeURI(dIcon);
+                const iconHtml = isImage ? `<img src="${finalSrc}" style="height:${cardIconSize}px; display:block; margin: 0 auto; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px">${conf.icon}</div>`;
 
                 card.innerHTML = `
                     <button onclick="removeCalcFromConfig(${idx}); event.stopPropagation();" 
@@ -2163,15 +2395,18 @@
                 // Highlight if selected
                 const isSelected = window.selectedDbIdx === idx;
 
+                const isPlaceholder = !!conf.isPlaceholder;
+
                 item.style.cssText = `
                 background: ${isSelected ? 'rgba(99, 102, 241, 0.2)' : 'rgba(0, 0, 0, 0.2)'};
-                border: 1px solid ${isSelected ? 'var(--accent)' : 'var(--border)'};
+                border: 2px solid ${isSelected ? 'var(--accent)' : (isPlaceholder ? '#d97706' : 'var(--border)')};
                 border-radius: 10px;
                 padding: 12px;
                 cursor: move;
                 transition: 0.2s;
                 position: relative;
                 `;
+                if (isPlaceholder) item.style.background = 'rgba(217, 119, 6, 0.05)';
 
                 const colSpan = conf.colSpan || 1;
 
@@ -2182,12 +2417,12 @@
 
                     <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center; padding-right:25px">
                         <div style="position:relative">
-                           <input type="text" id="calcIcon_${idx}" value="${conf.icon}" 
-                               oninput="updateCalcInConfig(${idx}, 'icon', this.value)" 
-                               onclick="event.stopPropagation()"
-                               style="width:45px; text-align:center; font-size:14px" placeholder="Icon">
-                           <button class="toggle-btn" onclick="openDbFilePicker('calcIcon_${idx}'); event.stopPropagation();" 
-                               style="position:absolute; right:-5px; top:-5px; padding:2px; font-size:10px; background:var(--accent); color:white; border-radius:50%; width:20px; height:20px; border:2px solid var(--bg)" title="Файл">📂</button>
+                            <input type="text" id="calcIcon_${idx}" value="${conf.icon}" 
+                                oninput="updateCalcInConfig(${idx}, 'icon', this.value)" 
+                                onclick="event.stopPropagation()"
+                                style="width:45px; text-align:center; font-size:14px" placeholder="Icon">
+                            <button class="toggle-btn" onclick="openDbFilePicker('calcIcon_${idx}'); event.stopPropagation();" 
+                                style="position:absolute; right:-5px; top:-5px; padding:2px; font-size:10px; background:var(--accent); color:white; border-radius:50%; width:20px; height:20px; border:2px solid var(--bg)" title="Файл">📂</button>
                         </div>
                         
                         <input type="text" value="${conf.title}" 
@@ -2202,6 +2437,14 @@
                             <option value="1" ${colSpan === 1 ? 'selected' : ''}>1x</option>
                             <option value="2" ${colSpan === 2 ? 'selected' : ''}>2x</option>
                         </select>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center; margin-top:8px">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" ${isPlaceholder ? 'checked' : ''} 
+                                onchange="updateCalcInConfig(${idx}, 'isPlaceholder', this.checked); renderCalculatorsEditorUI();"
+                                onclick="event.stopPropagation()">
+                            <span>🔒 Заглушка (Скоро)</span>
+                        </label>
                     </div>
                     <textarea oninput="updateCalcInConfig(${idx}, 'desc', this.value)"
                         onclick="event.stopPropagation()"
@@ -2259,6 +2502,8 @@
             }
             renderDashboardCardsPreview();
             // NOTE: Do NOT call renderCalculatorsEditorUI() here - it destroys the input field you're typing in!
+            // Exception: if we toggle placeholder, we might want to refresh the card status visually in the list too if there's other logic, 
+            // but for now isPlaceholder is just a flag.
         }
 
         function removeCalcFromConfig(idx) {
@@ -2269,11 +2514,26 @@
         }
 
         async function addNewCalculatorToConfig() {
-            const id = 'schema_' + Date.now();
+            const userTitle = prompt('Введіть назву для нового калькулятора:', 'Новий калькулятор');
+            if (!userTitle) return;
+
+            // Transliterate for filename
+            function translit(str) {
+                const map = {
+                    'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'є': 'ye', 'ж': 'zh', 'з': 'z', 'и': 'y', 'і': 'i', 'ї': 'yi', 'й': 'y',
+                    'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts',
+                    'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ь': '', 'ю': 'yu', 'я': 'ya'
+                };
+                return str.toLowerCase().split('').map(c => map[c] || (/[a-z0-9]/.test(c) ? c : '_')).join('').replace(/_+/g, '_');
+            }
+
+            const slug = translit(userTitle);
+            const id = 'schema_' + slug + '_' + Math.floor(Math.random() * 1000);
             const filename = 'data/' + id + '.js';
+
             const newCalc = {
                 id: id,
-                title: 'Новий калькулятор',
+                title: userTitle,
                 icon: '📦',
                 file: filename,
                 desc: 'Опис нового калькулятора'
@@ -2281,13 +2541,70 @@
 
             // 1. Create default schema file content
             const defaultSchema = {
-                meta: { version: "2.1", title: "Новий калькулятор", lastUpdated: new Date().toISOString() },
-                processes: [{ id: "pr_setup", name: "Налаштування", category: "cat_main" }],
-                categories: { "cat_main": { name: "Основні", color: "#e0f2fe" } },
-                groups: [{ id: "g_main", title: "Загальні параметри" }],
-                fields: [],
-                products: { groups: [], fields: [] },
-                rules: {}
+                "meta": {
+                    "version": "2.2",
+                    "title": userTitle,
+                    "lastUpdated": new Date().toISOString().split('T')[0]
+                },
+                "categories": {
+                    "cat_construction": { "name": "Конструювання", "color": "#e0f2fe" },
+                    "cat_design": { "name": "Проєктування", "color": "#f3e8ff" },
+                    "cat_assembly": { "name": "Збірка", "color": "#fef9c3" },
+                    "cat_installation": { "name": "Монтаж", "color": "#dcfce7" }
+                },
+                "processes": [
+                    { "id": "pr_c1", "name": "ознайомлення з ТЗ", "category": "cat_construction" },
+                    { "id": "pr_c2", "name": "моделювання приміщення", "category": "cat_construction" },
+                    { "id": "pr_c3", "name": "Моделювання елементу", "category": "cat_construction" },
+                    { "id": "pr_c4", "name": "виставити в модель", "category": "cat_construction" },
+                    { "id": "pr_c5", "name": "розставити ф-ру", "category": "cat_construction" },
+                    { "id": "pr_c6", "name": "структура виробу", "category": "cat_construction" },
+                    { "id": "pr_c7", "name": "креслення СБ", "category": "cat_construction" },
+                    { "id": "pr_c8", "name": "Креслення на індивід. виготовлення", "category": "cat_construction" },
+                    { "id": "pr_c9", "name": "монтажна схема", "category": "cat_construction" },
+                    { "id": "pr_c10", "name": "проджект на матеріал", "category": "cat_construction" },
+                    { "id": "pr_c11", "name": "Кф. доровартісного мат.", "category": "cat_construction" },
+                    { "id": "pr_c12", "name": "ф-ра проджект", "category": "cat_construction" },
+                    { "id": "pr_c13", "name": "ОДК", "category": "cat_construction" },
+                    { "id": "pr_c14", "name": "Заміна-корегув. матеріалу", "category": "cat_construction" },
+                    { "id": "pr_d1", "name": "ознайомлення з ТЗ", "category": "cat_design" },
+                    { "id": "pr_d2", "name": "Виявлення потреби, питання, пошук крішень, нерозуміння", "category": "cat_design" },
+                    { "id": "pr_d3", "name": "моделювання приміщення", "category": "cat_design" },
+                    { "id": "pr_d4", "name": "Моделювання елементу", "category": "cat_design" },
+                    { "id": "pr_d5", "name": "виставити в модель", "category": "cat_design" },
+                    { "id": "pr_d6", "name": "структура виробу -?", "category": "cat_design" },
+                    { "id": "pr_d7", "name": "Комунікація виробництвом, по можливості виготовлення", "category": "cat_design" },
+                    { "id": "pr_d8", "name": "Креслення вузлового елементу", "category": "cat_design" },
+                    { "id": "pr_d9", "name": "Креслення на погодження", "category": "cat_design" },
+                    { "id": "pr_d10", "name": "Специфікація", "category": "cat_design" },
+                    { "id": "pr_d11", "name": "Кольорова схема", "category": "cat_design" },
+                    { "id": "pr_a1", "name": "Комплектування", "category": "cat_assembly" },
+                    { "id": "pr_a2", "name": "Сортування", "category": "cat_assembly" },
+                    { "id": "pr_a3", "name": "Додаткова Індивідуальна послуга", "category": "cat_assembly" },
+                    { "id": "pr_a4", "name": "Збірка", "category": "cat_assembly" },
+                    { "id": "pr_a5", "name": "Контрольний монтаж", "category": "cat_assembly" },
+                    { "id": "pr_a6", "name": "Демонтаж", "category": "cat_assembly" },
+                    { "id": "pr_a7", "name": "Демонтаж подетальний", "category": "cat_assembly" },
+                    { "id": "pr_a8", "name": "Пакування помодульне", "category": "cat_assembly" },
+                    { "id": "pr_a9", "name": "Пакування подетальне", "category": "cat_assembly" },
+                    { "id": "pr_i1", "name": "перевірка приміщення", "category": "cat_installation" },
+                    { "id": "pr_i2", "name": "ознайомлення із кресленям", "category": "cat_installation" },
+                    { "id": "pr_i3", "name": "розпаковка", "category": "cat_installation" },
+                    { "id": "pr_i4", "name": "перевірка модулів", "category": "cat_installation" },
+                    { "id": "pr_i5", "name": "розмітка та сверління под монтажну планку", "category": "cat_installation" },
+                    { "id": "pr_i6", "name": "Монтаж", "category": "cat_installation" },
+                    { "id": "pr_i7", "name": "ПІДРІЗКА ПРОФІЛЮ ТА ФАЛЬШІВ І КАРНІЗІВ", "category": "cat_installation" },
+                    { "id": "pr_i8", "name": "монтаж підсвітки", "category": "cat_installation" },
+                    { "id": "pr_i9", "name": "Виріз отворів під розетки", "category": "cat_installation" },
+                    { "id": "pr_i10", "name": "прибирання та винос сміття", "category": "cat_installation" },
+                    { "id": "pr_i11", "name": "вирізи / зарізи", "category": "cat_installation" }
+                ],
+                "groups": [
+                    { "id": "g_main", "title": "Основні параметри" }
+                ],
+                "fields": [],
+                "products": { "groups": [], "fields": [] },
+                "rules": {}
             };
             const fileContent = `const Schema = ${JSON.stringify(defaultSchema, null, 4)};\nwindow.Schema = Schema;`;
 
@@ -2441,6 +2758,22 @@
                 const fullPath = 'images/' + fileName;
                 const previewUrl = URL.createObjectURL(file);
 
+                // Auto-upload the image file to the local server
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const base64Content = e.target.result;
+                    try {
+                        const resp = await fetch('http://localhost:5005', {
+                            method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename: fullPath, content: base64Content })
+                        });
+                        if (resp.ok) console.log("✅ Image uploaded to server:", fullPath);
+                    } catch (err) {
+                        console.warn("Could not auto-save image to server disk. Preview still works though.");
+                    }
+                };
+                reader.readAsDataURL(file);
+
                 const el = document.getElementById(currentDbTargetId);
                 if (el) {
                     el.value = fullPath;
@@ -2449,8 +2782,10 @@
                         updateCalcInConfig(idx, 'icon', fullPath, previewUrl);
                     } else if (currentDbTargetId === 'dbLogoImg') {
                         window._dbLogoPreview = previewUrl;
+                        updateDashboardPreview();
                     } else if (currentDbTargetId === 'dbBgImage') {
                         window._dbBgPreview = previewUrl;
+                        updateDashboardPreview();
                     }
                 }
                 updateDashboardPreview();

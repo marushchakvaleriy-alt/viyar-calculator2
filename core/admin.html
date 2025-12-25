@@ -48,13 +48,70 @@
             };
             window.createMissingFile = async function (filename) {
                 const defaultSchema = {
-                    meta: { version: "2.1", title: "Новий калькулятор", lastUpdated: new Date().toISOString() },
-                    processes: [{ id: "pr_setup", name: "Налаштування", category: "cat_main" }],
-                    categories: { "cat_main": { name: "Основні", color: "#e0f2fe" } },
-                    groups: [{ id: "g_main", title: "Загальні параметри" }],
-                    fields: [],
-                    products: { groups: [], fields: [] },
-                    rules: {}
+                    "meta": {
+                        "version": "2.2",
+                        "title": "Новий калькулятор",
+                        "lastUpdated": new Date().toISOString().split('T')[0]
+                    },
+                    "categories": {
+                        "cat_construction": { "name": "Конструювання", "color": "#e0f2fe" },
+                        "cat_design": { "name": "Проєктування", "color": "#f3e8ff" },
+                        "cat_assembly": { "name": "Збірка", "color": "#fef9c3" },
+                        "cat_installation": { "name": "Монтаж", "color": "#dcfce7" }
+                    },
+                    "processes": [
+                        { "id": "pr_c1", "name": "ознайомлення з ТЗ", "category": "cat_construction" },
+                        { "id": "pr_c2", "name": "моделювання приміщення", "category": "cat_construction" },
+                        { "id": "pr_c3", "name": "Моделювання елементу", "category": "cat_construction" },
+                        { "id": "pr_c4", "name": "виставити в модель", "category": "cat_construction" },
+                        { "id": "pr_c5", "name": "розставити ф-ру", "category": "cat_construction" },
+                        { "id": "pr_c6", "name": "структура виробу", "category": "cat_construction" },
+                        { "id": "pr_c7", "name": "креслення СБ", "category": "cat_construction" },
+                        { "id": "pr_c8", "name": "Креслення на індивід. виготовлення", "category": "cat_construction" },
+                        { "id": "pr_c9", "name": "монтажна схема", "category": "cat_construction" },
+                        { "id": "pr_c10", "name": "проджект на матеріал", "category": "cat_construction" },
+                        { "id": "pr_c11", "name": "Кф. доровартісного мат.", "category": "cat_construction" },
+                        { "id": "pr_c12", "name": "ф-ра проджект", "category": "cat_construction" },
+                        { "id": "pr_c13", "name": "ОДК", "category": "cat_construction" },
+                        { "id": "pr_c14", "name": "Заміна-корегув. матеріалу", "category": "cat_construction" },
+                        { "id": "pr_d1", "name": "ознайомлення з ТЗ", "category": "cat_design" },
+                        { "id": "pr_d2", "name": "Виявлення потреби, питання, пошук крішень, нерозуміння", "category": "cat_design" },
+                        { "id": "pr_d3", "name": "моделювання приміщення", "category": "cat_design" },
+                        { "id": "pr_d4", "name": "Моделювання елементу", "category": "cat_design" },
+                        { "id": "pr_d5", "name": "виставити в модель", "category": "cat_design" },
+                        { "id": "pr_d6", "name": "структура виробу -?", "category": "cat_design" },
+                        { "id": "pr_d7", "name": "Комунікація виробництвом, по можливості виготовлення", "category": "cat_design" },
+                        { "id": "pr_d8", "name": "Креслення вузлового елементу", "category": "cat_design" },
+                        { "id": "pr_d9", "name": "Креслення на погодження", "category": "cat_design" },
+                        { "id": "pr_d10", "name": "Специфікація", "category": "cat_design" },
+                        { "id": "pr_d11", "name": "Кольорова схема", "category": "cat_design" },
+                        { "id": "pr_a1", "name": "Комплектування", "category": "cat_assembly" },
+                        { "id": "pr_a2", "name": "Сортування", "category": "cat_assembly" },
+                        { "id": "pr_a3", "name": "Додаткова Індивідуальна послуга", "category": "cat_assembly" },
+                        { "id": "pr_a4", "name": "Збірка", "category": "cat_assembly" },
+                        { "id": "pr_a5", "name": "Контрольний монтаж", "category": "cat_assembly" },
+                        { "id": "pr_a6", "name": "Демонтаж", "category": "cat_assembly" },
+                        { "id": "pr_a7", "name": "Демонтаж подетальний", "category": "cat_assembly" },
+                        { "id": "pr_a8", "name": "Пакування помодульне", "category": "cat_assembly" },
+                        { "id": "pr_a9", "name": "Пакування подетальне", "category": "cat_assembly" },
+                        { "id": "pr_i1", "name": "перевірка приміщення", "category": "cat_installation" },
+                        { "id": "pr_i2", "name": "ознайомлення із кресленям", "category": "cat_installation" },
+                        { "id": "pr_i3", "name": "розпаковка", "category": "cat_installation" },
+                        { "id": "pr_i4", "name": "перевірка модулів", "category": "cat_installation" },
+                        { "id": "pr_i5", "name": "розмітка та сверління под монтажну планку", "category": "cat_installation" },
+                        { "id": "pr_i6", "name": "Монтаж", "category": "cat_installation" },
+                        { "id": "pr_i7", "name": "ПІДРІЗКА ПРОФІЛЮ ТА ФАЛЬШІВ І КАРНІЗІВ", "category": "cat_installation" },
+                        { "id": "pr_i8", "name": "монтаж підсвітки", "category": "cat_installation" },
+                        { "id": "pr_i9", "name": "Виріз отворів під розетки", "category": "cat_installation" },
+                        { "id": "pr_i10", "name": "прибирання та винос сміття", "category": "cat_installation" },
+                        { "id": "pr_i11", "name": "вирізи / зарізи", "category": "cat_installation" }
+                    ],
+                    "groups": [
+                        { "id": "g_main", "title": "Основні параметри" }
+                    ],
+                    "fields": [],
+                    "products": { "groups": [], "fields": [] },
+                    "rules": {}
                 };
                 const fileContent = `const Schema = ${JSON.stringify(defaultSchema, null, 4)};\nwindow.Schema = Schema;`;
                 try {
@@ -103,15 +160,25 @@
             font-weight: 900 !important;
         }
 
-        .matrix-table td.selected-cell {
-            outline: 2px solid #059669 !important;
-            outline-offset: -2px;
-            z-index: 10000 !important;
-        }
-
         .selected-cell .formula-btn {
             filter: brightness(0) invert(1) !important;
             opacity: 1 !important;
+        }
+
+        /* DRAG AND DROP STYLES */
+        .dragging {
+            opacity: 0.5;
+            background: #e2e8f0 !important;
+        }
+
+        .drag-over {
+            border-top: 3px solid var(--accent) !important;
+            background: rgba(59, 130, 246, 0.05) !important;
+        }
+
+        .th-proc.drag-over {
+            border-left: 3px solid var(--accent) !important;
+            border-top: none !important;
         }
 
         body {
@@ -560,7 +627,7 @@
         }
 
         /* --- RESPONSIVE ADJUSTMENTS --- */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .sidebar {
                 position: fixed;
                 left: -260px;
@@ -626,8 +693,82 @@
             }
         }
 
-        .mobile-menu-btn {
-            display: none;
+        /* Sidebar Process List Styles */
+        .sidebar-section-header {
+            padding: 20px 20px 5px;
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cat-item {
+            margin: 4px 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .cat-header-sidebar {
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+        }
+
+        .cat-header-sidebar:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .proc-list-sidebar {
+            padding: 4px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .proc-item-sidebar {
+            padding: 8px 12px 8px 28px;
+            font-size: 11px;
+            color: #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.2s;
+        }
+
+        .proc-item-sidebar:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: white;
+            padding-left: 32px;
+        }
+
+        .proc-manage-modal {
+            max-width: 800px !important;
+            width: 90% !important;
+        }
+
+        .proc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .proc-card-edit {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
     </style>
 </head>
@@ -636,17 +777,21 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
     <div class="sidebar" id="mainSidebar">
-        <div class="sidebar-header">🛠️ Admin <button class="btn-mini" style="margin-left:auto; display:none"
-                id="closeSidebarBtn" onclick="toggleSidebar(false)">×</button></div>
+        <div class="sidebar-header" style="display:flex; flex-direction:column; gap:10px; padding-bottom:15px">
+            <div style="display:flex; align-items:center; width:100%">
+                🛠️ Admin
+                <button class="btn-mini" style="margin-left:auto; display:none" id="closeSidebarBtn"
+                    onclick="toggleSidebar(false)">×</button>
+            </div>
+            <button class="nav-btn" onclick="window.location.href='../index.html'"
+                style="background: #3b82f6; border: 1px solid rgba(255,255,255,0.2); font-weight: 800; color: white; width:100%; justify-content:center">🏠
+                НА ГОЛОВНУ</button>
+        </div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div class="nav-actions">
-            <button class="nav-btn" onclick="quickAddTrigger()">⚡ Кнопка Модалки</button>
             <button class="nav-btn" onclick="openActionModal('ADD_GROUP_CALC')">+ Група (Калк)</button>
             <button class="nav-btn" onclick="document.getElementById('csvIn').click()" style="margin-top:10px">📂 Імпорт
                 CSV</button>
-            <button class="nav-btn" onclick="window.location.href='../index.html'"
-                style="margin-top:10px; background: #3b82f6; border: 1px solid rgba(255,255,255,0.2); font-weight: 800; color: white;">🏠
-                НА ГОЛОВНУ</button>
             <button class="nav-btn" onclick="goToDesigner()"
                 style="margin-top:10px; background: #6366f1; border: 1px solid rgba(255,255,255,0.2)">🎨
                 ДИЗАЙНЕР</button>
@@ -973,19 +1118,58 @@
         }
 
         function renderSidebar() {
-            const nav = document.getElementById('sidebarNav'); nav.innerHTML = '';
-            const addNav = (title, items) => {
-                const h = document.createElement('div'); h.style = 'padding:20px 20px 5px; font-size:10px; color:#64748b; font-weight:700; text-transform:uppercase';
-                h.innerText = title; nav.appendChild(h);
-                items.forEach(g => {
-                    const i = document.createElement('div'); i.className = 'nav-item'; i.innerHTML = `📁 ${g.title}`;
-                    i.onclick = () => document.getElementById(`group-${g.id}`).scrollIntoView({ behavior: 'smooth' }); nav.appendChild(i);
-                });
-            };
-            addNav('Калькулятор', Schema.groups);
+            const nav = document.getElementById('sidebarNav');
+            if (!nav) return;
+            nav.innerHTML = '';
+
+
+            // 1. Поля та Групи (Навігація)
+            const hFields = document.createElement('div');
+            hFields.className = 'sidebar-section-header';
+            hFields.innerText = 'Параметри та Групи';
+            nav.appendChild(hFields);
+
+            Schema.groups.forEach(g => {
+                const i = document.createElement('div');
+                i.className = 'nav-item';
+                i.innerHTML = `📁 ${g.title}`;
+                i.onclick = () => {
+                    const el = document.getElementById(`group-${g.id}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                };
+                nav.appendChild(i);
+            });
+
+            // 2. Категорії та Процеси (Видалено з сайдбару за запитом)
+
+
+
             if (Schema.products && Schema.products.groups && Schema.products.groups.length > 0) {
-                addNav('Вироби (Архів)', Schema.products.groups);
+                const hProd = document.createElement('div');
+                hProd.className = 'sidebar-section-header';
+                hProd.innerText = 'Вироби (Архів)';
+                nav.appendChild(hProd);
+                Schema.products.groups.forEach(g => {
+                    const i = document.createElement('div');
+                    i.className = 'nav-item'; i.innerHTML = `📦 ${g.title}`;
+                    nav.appendChild(i);
+                });
             }
+        }
+
+        function scrollToProc(pid) {
+            // Find the header for this process
+            const ths = document.querySelectorAll('.th-proc');
+            let found = false;
+            ths.forEach(th => {
+                if (th.innerHTML.includes(`'${pid}'`) || th.innerHTML.includes(`"${pid}"`)) {
+                    th.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    th.style.background = '#fde047';
+                    setTimeout(() => th.style.background = '', 2000);
+                    found = true;
+                }
+            });
+            if (!found) alert('Процес не знайдено в таблиці (можливо, категорія згорнута)');
         }
 
         // --- NEW CUSTOM MODAL LOGIC ---
@@ -1035,17 +1219,17 @@
             if (!val) return closeModal('actionModal');
             pushHistory();
 
-            if (type === 'RENAME_CAT') { Schema.categories[id].name = val; renderMatrix(); }
-            else if (type === 'RENAME_PROC') { Schema.processes.find(x => x.id === id).name = val; renderMatrix(); }
+            if (type === 'RENAME_CAT') { Schema.categories[id].name = val; refresh(); }
+            else if (type === 'RENAME_PROC') { Schema.processes.find(x => x.id === id).name = val; refresh(); }
             else if (type === 'RENAME_GROUP') { (isP ? Schema.products.groups : Schema.groups).find(x => x.id === id).title = val; refresh(); }
             else if (type === 'ADD_CAT') {
                 const nid = 'cat_' + Date.now();
                 const colors = ['#eff6ff', '#f0fdf4', '#faf5ff', '#fff7ed', '#f0fdfa'];
                 const color = colors[Object.keys(Schema.categories).length % colors.length];
                 Schema.categories[nid] = { name: val, color: color };
-                renderMatrix();
+                refresh();
             }
-            else if (type === 'ADD_PROC') { Schema.processes.push({ id: 'p' + Date.now(), name: val, category: id }); renderMatrix(); }
+            else if (type === 'ADD_PROC') { Schema.processes.push({ id: 'p' + Date.now(), name: val, category: id }); refresh(); }
             else if (type === 'ADD_GROUP_CALC') { Schema.groups.push({ id: 'g' + Date.now(), title: val }); refresh(); }
 
             markDirty();
@@ -1242,53 +1426,93 @@
             }
         }
 
-        function delCat(id) { if (confirm('Видалити цей розділ зі всіма процесами?')) { Schema.processes = Schema.processes.filter(p => p.category !== id); delete Schema.categories[id]; renderMatrix(); } }
-        function delProc(id) { if (confirm('Видалити цей процес?')) { Schema.processes = Schema.processes.filter(p => p.id !== id); renderMatrix(); } }
+        function delCat(id) { if (confirm('Видалити цей розділ зі всіма процесами?')) { Schema.processes = Schema.processes.filter(p => p.category !== id); delete Schema.categories[id]; refresh(); } }
+        function delProc(id) { if (confirm('Видалити цей процес?')) { Schema.processes = Schema.processes.filter(p => p.id !== id); refresh(); } }
 
         // Drag and Drop functionality
         let draggedElement = null;
 
         function handleDragStart(e) {
-            draggedElement = this;
-            this.classList.add('dragging');
+            const target = e.target.closest('tr') || e.target.closest('th');
+            if (!target) return;
+            draggedElement = target;
+            draggedElement.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.innerHTML);
+            e.dataTransfer.setData('text/plain', ''); // Required for some browsers
         }
 
         function handleDragEnd(e) {
             this.classList.remove('dragging');
             document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+            draggedElement = null;
         }
 
         function handleDragOver(e) {
             if (e.preventDefault) e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
+
+            // Highlight target
+            const target = e.target.closest('tr') || e.target.closest('th');
+            if (target && target !== draggedElement) {
+                // Ensure same type of element
+                const isProcess = draggedElement.dataset.processId !== undefined;
+                const isGroup = draggedElement.dataset.groupId !== undefined;
+                const isField = draggedElement.dataset.fieldId !== undefined;
+
+                if ((isProcess && target.classList.contains('th-proc')) ||
+                    (isGroup && target.classList.contains('group-row')) ||
+                    (isField && target.classList.contains('row-field'))) {
+                    target.classList.add('drag-over');
+                }
+            }
             return false;
         }
 
         function handleDragLeave(e) {
-            this.classList.remove('drag-over');
+            const target = e.target.closest('tr') || e.target.closest('th');
+            if (target) target.classList.remove('drag-over');
         }
 
         function handleDrop(e) {
             if (e.stopPropagation) e.stopPropagation();
-            if (draggedElement === this) return false;
+            if (!draggedElement || draggedElement === this) return false;
 
-            this.classList.remove('drag-over');
+            const target = e.target.closest('tr') || e.target.closest('th');
+            if (target) target.classList.remove('drag-over');
 
-            const draggedId = draggedElement.dataset.groupId || draggedElement.dataset.fieldId;
-            const targetId = this.dataset.groupId || this.dataset.fieldId;
             const isProduct = draggedElement.dataset.isProduct === 'true';
 
-            if (draggedElement.dataset.groupId && this.dataset.groupId) {
-                // Reordering groups
-                reorderGroups(draggedId, targetId, isProduct);
-            } else if (draggedElement.dataset.fieldId && this.dataset.fieldId) {
-                // Reordering fields
-                reorderFields(draggedId, targetId, isProduct);
+            // 1. Processes Reordering
+            if (draggedElement.dataset.processId && this.dataset.processId) {
+                reorderProcesses(draggedElement.dataset.processId, this.dataset.processId);
+            }
+            // 2. Groups Reordering
+            else if (draggedElement.dataset.groupId && this.dataset.groupId) {
+                reorderGroups(draggedElement.dataset.groupId, this.dataset.groupId, isProduct);
+            }
+            // 3. Fields Reordering
+            else if (draggedElement.dataset.fieldId && this.dataset.fieldId) {
+                reorderFields(draggedElement.dataset.fieldId, this.dataset.fieldId, isProduct);
             }
 
             return false;
+        }
+
+        function reorderProcesses(draggedId, targetId) {
+            const draggedIndex = Schema.processes.findIndex(p => p.id === draggedId);
+            const targetIndex = Schema.processes.findIndex(p => p.id === targetId);
+
+            if (draggedIndex === -1 || targetIndex === -1) return;
+
+            // Maintain category if needed? No, let user move between categories if UI allows.
+            // But here processes are in columns, usually we move within same category or between?
+            // User just wants to reorder "actions".
+
+            const [removed] = Schema.processes.splice(draggedIndex, 1);
+            Schema.processes.splice(targetIndex, 0, removed);
+
+            markDirty();
+            renderMatrix();
         }
 
         function reorderGroups(draggedId, targetId, isProduct) {
@@ -1408,10 +1632,20 @@
                         const isCore = ['pr_design', 'pr_construction', 'pr_assembly', 'pr_install'].includes(p.id);
                         const delBtn = isCore ? '' : `<button class="btn-mini" onclick="delProc('${p.id}')" style="opacity:0.2;border:none">&times;</button>`;
                         const th = document.createElement('th'); th.className = 'th-proc';
-                        th.style.width = '60px'; th.style.minWidth = '60px';
+                        th.draggable = true;
+                        th.dataset.processId = p.id;
+                        th.style.width = '70px'; th.style.minWidth = '70px';
+
+                        th.addEventListener('dragstart', handleDragStart);
+                        th.addEventListener('dragend', handleDragEnd);
+                        th.addEventListener('dragover', handleDragOver);
+                        th.addEventListener('drop', handleDrop);
+                        th.addEventListener('dragleave', handleDragLeave);
+
                         th.innerHTML = `
                             <div style="display:flex; flex-direction:column; align-items:center; gap:2px">
                                 <div style="display:flex; align-items:center; justify-content:center; gap:4px">
+                                    <span class="drag-handle" style="opacity:0.2; cursor:grab; font-size:10px">☰</span>
                                     <span style="cursor:pointer" onclick="openActionModal('RENAME_PROC', '${p.id}')">${p.name}</span>${delBtn}
                                 </div>
                             </div>`;
@@ -1430,13 +1664,19 @@
                 grRow.dataset.groupId = g.id;
                 grRow.dataset.isProduct = isP;
 
+                grRow.addEventListener('dragstart', handleDragStart);
+                grRow.addEventListener('dragend', handleDragEnd);
+                grRow.addEventListener('dragover', handleDragOver);
+                grRow.addEventListener('drop', handleDrop);
+                grRow.addEventListener('dragleave', handleDragLeave);
+
                 // Group Name Cell
                 const nameTd = document.createElement('td');
                 nameTd.className = 'col-sticky';
                 const isCollapsed = UIState.collapsedGroups.includes(g.id);
                 nameTd.innerHTML = `
                     <div style="display:flex; align-items:center; gap:8px">
-                        <span class="drag-handle" draggable="true" ondragstart="handleRowDragStart(event)" title="Перетягнути групу" style="opacity:0.2; cursor:grab">☰</span>
+                        <span class="drag-handle" title="Перетягнути групу" style="opacity:0.2; cursor:grab">☰</span>
                         <span class="collapse-btn" onclick="toggleGroup('${g.id}')">${isCollapsed ? '▶' : '▼'}</span>
                         <span style="cursor:pointer; flex:1" onclick="openActionModal('RENAME_GROUP', '${g.id}', ${isP})">${g.title}</span>
                     </div>
@@ -1511,7 +1751,10 @@
                     fRow.className = 'row-field draggable-row';
                     fRow.dataset.fieldId = f.id;
                     fRow.dataset.isProduct = isP;
+                    fRow.draggable = true;
 
+                    fRow.addEventListener('dragstart', handleDragStart);
+                    fRow.addEventListener('dragend', handleDragEnd);
                     fRow.addEventListener('dragover', handleDragOver);
                     fRow.addEventListener('drop', handleDrop);
                     fRow.addEventListener('dragleave', handleDragLeave);
@@ -1521,7 +1764,7 @@
                     labelTd.className = 'col-sticky';
                     labelTd.innerHTML = `
                         <div style="display:flex; align-items:center; gap:6px; width:100%">
-                            <span class="drag-handle" draggable="true" ondragstart="handleRowDragStart(event)" title="Перетягнути рядок">☰</span>
+                            <span class="drag-handle" style="opacity:0.2; cursor:grab" title="Перетягнути рядок">☰</span>
                             <span style="font-size:8px; opacity:0.3; min-width:20px">${f.type.substring(0, 3)}</span>
                             <input class="cell-input" style="text-align:left; font-weight:700; flex:1; width:0; min-width:50px" value="${f.label}" onfocus="this.select()" onchange="updFLab('${f.id}',this.value,${isP})">
                             <button onclick="event.stopPropagation(); openFModal('${f.id}',${isP})" class="gear-btn" title="Налаштування">⚙️</button>
@@ -1948,7 +2191,14 @@
             // Якщо Ctrl НЕ натиснуто — скидаємо все виділення
             if (!isCtrl) {
                 const wasEmpty = UIState.selectedCells.length === 0;
-                UIState.selectedCells = [];
+
+                // [FIX] Якщо ми клікаємо в інпут, який ВЖЕ виділений — не скидаємо виділення!
+                // Це дозволить спрацювати груповому оновленню в onchange.
+                if (isInput && isAlreadySelected) {
+                    // Тільки якщо ми клікнули в інпут, який уже виділений, залишаємо масив як є
+                } else {
+                    UIState.selectedCells = [];
+                }
 
                 // [FIX] Ручне очищення стилів, якщо ми не перемальовуємо матрицю (наприклад, при кліку в інпут)
                 if (!wasEmpty) {
@@ -2207,7 +2457,7 @@
             if (v && typeof v === 'object' && v.v !== undefined) return v.v;
             return v;
         }
-        async function updModalFieldRule(buttonId, mfId, pI, v, isP, isOnceUpdate = false) {
+        async function updModalFieldRule(buttonId, mfId, pId, v, isP, isOnceUpdate = false) {
             if (UIState.isBulkUpdating) return;
             pushHistory();
             if (!isOnceUpdate) {
@@ -2216,7 +2466,7 @@
             }
 
             const key = `${buttonId}_${mfId}`;
-            const isInSelection = UIState.selectedCells.some(c => c.fId === buttonId && c.pId === pI && c.mfId === mfId && !c.oV);
+            const isInSelection = UIState.selectedCells.some(c => c.fId === buttonId && c.pId === pId && c.mfId === mfId && !c.oV);
 
             if (isInSelection && UIState.selectedCells.length > 1) {
                 UIState.isBulkUpdating = true;
@@ -2227,7 +2477,7 @@
                 UIState.isBulkUpdating = false;
                 UIState.selectedCells = [];
             } else {
-                applyModalFieldUpdate(buttonId, mfId, null, pI, v, isOnceUpdate);
+                applyModalFieldUpdate(buttonId, mfId, null, pId, v, isOnceUpdate);
             }
             if (UIState.clearSelectionOnNextUpdate) {
                 UIState.selectedCells = [];
@@ -2236,7 +2486,7 @@
             renderMatrix();
         }
 
-        function applyModalFieldUpdate(buttonId, mfId, optVal, pI, v, isOnceUpdate) {
+        function applyModalFieldUpdate(buttonId, mfId, optVal, pId, v, isOnceUpdate) {
             if (!Schema.modalFieldRules) Schema.modalFieldRules = {};
             const key = `${buttonId}_${mfId}`;
             if (!Schema.modalFieldRules[key]) Schema.modalFieldRules[key] = {};
@@ -2277,7 +2527,7 @@
             if (v && typeof v === 'object' && v.v !== undefined) return v.v;
             return v;
         }
-        async function updModalFieldOptionRule(buttonId, mfId, optVal, pI, v, isP, isOnceUpdate = false) {
+        async function updModalFieldOptionRule(buttonId, mfId, optVal, pId, v, isP, isOnceUpdate = false) {
             if (UIState.isBulkUpdating) return;
             pushHistory();
             if (!isOnceUpdate) {
@@ -2286,7 +2536,7 @@
             }
 
             const key = `${buttonId}_${mfId}`;
-            const isInSelection = UIState.selectedCells.some(c => c.fId === buttonId && c.pId === pI && c.mfId === mfId && c.oV === optVal);
+            const isInSelection = UIState.selectedCells.some(c => c.fId === buttonId && c.pId === pId && c.mfId === mfId && c.oV === optVal);
 
             if (isInSelection && UIState.selectedCells.length > 1) {
                 UIState.isBulkUpdating = true;
@@ -2297,7 +2547,7 @@
                 UIState.isBulkUpdating = false;
                 UIState.selectedCells = [];
             } else {
-                applyModalFieldUpdate(buttonId, mfId, optVal, pI, v, isOnceUpdate);
+                applyModalFieldUpdate(buttonId, mfId, optVal, pId, v, isOnceUpdate);
             }
             if (UIState.clearSelectionOnNextUpdate) {
                 UIState.selectedCells = [];
@@ -2427,8 +2677,13 @@
                         row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><select class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="select" style="padding:6px 10px; font-size:12px; width:100%" onchange="recalcPreviewTotal('${button.id}')">${opts}</select>`;
                     }
                     else if (f.type === 'multiselect') {
-                        const opts = (f.options || []).map(o => `<option value="${o.value}">${o.label}</option>`).join('');
-                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><select multiple class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="multiselect" style="padding:6px 10px; font-size:12px; width:100%; height:80px" onchange="recalcPreviewTotal('${button.id}')">${opts}</select>`;
+                        let items = (f.options || []).map(o => `
+                            <label style="display:flex; align-items:center; gap:8px; margin-bottom:4px; cursor:pointer;">
+                                <input type="checkbox" class="preview-input preview-ms-check" data-bid="${button.id}" data-fid="${f.id}" data-type="multiselect" value="${o.value}" onchange="recalcPreviewTotal('${button.id}')">
+                                <span style="font-size:12px">${o.label}</span>
+                            </label>
+                        `).join('');
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><div style="background:#f8fafc; padding:8px; border-radius:6px; border:1px solid #e2e8f0; max-height:150px; overflow-y:auto">${items}</div>`;
                     }
                     else if (f.type === 'checkbox') {
                         row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox" style="width:18px; height:18px" onchange="recalcPreviewTotal('${button.id}')"><label style="font-size:12px; font-weight:500">${f.label}</label></div>`;
@@ -2520,24 +2775,22 @@
 
                 // Handle Select/Multiselect Options separately as they have their own rows in matrix
                 if (f.type === 'select' || f.type === 'multiselect') {
-                    const sel = container.querySelector(`select[data-fid="${f.id}"]`);
-                    if (sel) {
-                        const selectedOpts = Array.from(sel.selectedOptions).map(o => o.value);
-                        selectedOpts.forEach(optVal => {
-                            // Look for option rules
-                            // Rule Key format for options: `${fId}_${mfId}_${optVal}` ? No, looking at admin.html:
-                            // getModalFieldOptionVal uses key `${f.id}_${mf.id}_${val}`
-                            const optRuleKey = `${btnId}_${f.id}`; // The key for the modal field itself
-                            Schema.processes.forEach(p => {
-                                let val = 0;
-                                // Check rules for the specific option within the modal field's rules
-                                if (Schema.modalFieldRules && Schema.modalFieldRules[optRuleKey] && Schema.modalFieldRules[optRuleKey][optVal] && Schema.modalFieldRules[optRuleKey][optVal][p.id]) {
-                                    val = Number(Schema.modalFieldRules[optRuleKey][optVal][p.id]) || 0;
-                                }
-                                total += val; // Multiplier is 1 for selected option
-                            });
-                        });
+                    let selectedOpts = [];
+                    if (f.type === 'select') {
+                        const sel = container.querySelector(`select[data-fid="${f.id}"]`);
+                        if (sel) selectedOpts = [sel.value];
+                    } else {
+                        selectedOpts = Array.from(container.querySelectorAll(`.preview-ms-check[data-fid="${f.id}"]:checked`)).map(el => el.value);
                     }
+
+                    selectedOpts.forEach(optVal => {
+                        const optRuleKey = `${btnId}_${f.id}`;
+                        Schema.processes.forEach(p => {
+                            if (Schema.modalFieldRules?.[optRuleKey]?.[optVal]?.[p.id]) {
+                                total += Number(Schema.modalFieldRules[optRuleKey][optVal][p.id]) || 0;
+                            }
+                        });
+                    });
                 }
             });
 
@@ -2545,6 +2798,94 @@
             if (totalEl) totalEl.innerText = `Всього: ${total.toLocaleString()}`;
         }
         function handleCSV(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { e.target.result.split('\n').forEach(l => { const c = l.split(';'); if (c[1] && c[1].length > 2) Schema.fields.push({ id: 'f_csv_' + Math.random().toString(36).substr(2, 5), groupId: Schema.groups[0].id, label: c[1], type: 'number' }); }); renderMatrix(); }; r.readAsText(f, 'windows-1251'); }
+        function openProcsModal() {
+            renderProcsEditor();
+            document.getElementById('procsModal').style.display = 'flex';
+        }
+
+        function renderProcsEditor() {
+            const container = document.getElementById('procsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const categories = Schema.categories || {};
+            const processes = Schema.processes || [];
+
+            Object.entries(categories).forEach(([cid, cat]) => {
+                const sect = document.createElement('div');
+                sect.style.marginBottom = '30px';
+                sect.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px; background:${cat.color}22; border-radius:10px; border-left:5px solid ${cat.color}">
+                        <input type="text" value="${cat.name}" onchange="Schema.categories['${cid}'].name = this.value; markDirty(); renderSidebar();" style="font-weight:700; border:none; background:transparent; font-size:16px; flex:1">
+                        <input type="color" value="${cat.color}" onchange="Schema.categories['${cid}'].color = this.value; markDirty(); refresh();" style="width:30px; height:30px; padding:0; border:none; cursor:pointer">
+                        <button onclick="delCat('${cid}')" style="background:none; border:none; cursor:pointer; font-size:18px">🗑️</button>
+                    </div>
+                `;
+
+                const grid = document.createElement('div');
+                grid.className = 'proc-grid';
+
+                processes.filter(p => p.category === cid).forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'proc-card-edit';
+                    card.innerHTML = `
+                        <div style="display:flex; flex-direction:column; gap:8px">
+                            <input type="text" value="${p.name}" onchange="let x = Schema.processes.find(i=>i.id==='${p.id}'); if(x) x.name=this.value; markDirty(); renderSidebar();" style="font-weight:600; border:1px solid #eee; padding:5px; border-radius:5px">
+                            <div style="display:flex; justify-content:space-between; align-items:center">
+                                <span style="font-size:10px; color:#94a3b8">ID: ${p.id}</span>
+                                <button onclick="delProc('${p.id}')" style="background:none; border:none; color:var(--danger); cursor:pointer">Видалити</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                const addBtn = document.createElement('div');
+                addBtn.className = 'proc-card-edit';
+                addBtn.style.display = 'flex';
+                addBtn.style.alignItems = 'center';
+                addBtn.style.justifyContent = 'center';
+                addBtn.style.cursor = 'pointer';
+                addBtn.style.border = '2px dashed #eee';
+                addBtn.style.color = '#94a3b8';
+                addBtn.innerHTML = '+ Додати процес';
+                addBtn.onclick = () => openActionModal('ADD_PROC', cid);
+                grid.appendChild(addBtn);
+
+                sect.appendChild(grid);
+                container.appendChild(sect);
+            });
+
+            const addCatBtn = document.createElement('button');
+            addCatBtn.className = 'btn';
+            addCatBtn.style.width = '100%';
+            addCatBtn.style.background = '#f1f5f9';
+            addCatBtn.style.color = '#475569';
+            addCatBtn.innerHTML = '+ Створити Нову Категорію';
+            addCatBtn.onclick = () => openActionModal('ADD_CAT');
+            container.appendChild(addCatBtn);
+        }
+
+        function delCat(cid) {
+            if (!confirm(`Видалити категорію "${Schema.categories[cid].name}"? Усі її процеси будуть видалені!`)) return;
+            pushHistory();
+            Schema.processes = Schema.processes.filter(p => p.category !== cid);
+            delete Schema.categories[cid];
+            markDirty(); refresh(); renderProcsEditor();
+        }
+
+        function delProc(pid) {
+            if (!confirm('Видалити цей процес та всі пов’язані формули?')) return;
+            pushHistory();
+            Schema.processes = Schema.processes.filter(p => p.id !== pid);
+            // Cleanup formulas
+            const tk = `_total_${pid}`;
+            (Schema.fields || []).forEach(f => {
+                if (Schema.rules && Schema.rules[f.id]) delete Schema.rules[f.id][tk];
+            });
+            markDirty(); refresh(); renderProcsEditor();
+        }
+
         if (window.showSaveFilePicker) {
             window.saveData = async function () {
                 const defaultName = window.currentConfigFile ? window.currentConfigFile.split('/').pop() : 'schema.js';
@@ -2561,7 +2902,7 @@
                     });
                     if (response.ok) {
                         document.getElementById('unsavedHint').style.display = 'none';
-                        // Візуальна індикація на кнопці (якщо вона є в DOM)
+                        markClean();
                         console.log("✅ Автоматично збережено через Local Saver");
                         alert('✅ Файл збережено автоматично!');
                         return;
@@ -2576,6 +2917,7 @@
                     await writ.write(fileContent);
                     await writ.close();
                     document.getElementById('unsavedHint').style.display = 'none';
+                    markClean();
                     alert('✅ Конфігурацію збережено!');
                 } catch (e) {
                     if (e.name !== 'AbortError') alert('Помилка збереження: ' + e.message);
@@ -2593,6 +2935,7 @@
                 a.click();
                 document.body.removeChild(a);
                 document.getElementById('unsavedHint').style.display = 'none';
+                markClean();
                 alert('✅ Файл підготовлено до завантаження!');
             };
         }
@@ -2610,6 +2953,23 @@
             }
         }
     </script>
+
+    <!-- PROCESS EDITOR MODAL -->
+    <div id="procsModal" class="modal">
+        <div class="modal-card proc-manage-modal">
+            <div class="modal-header" style="background:linear-gradient(to right, #10b981, #3b82f6); color:white">
+                <h3>📋 Редактор Процесів та Категорій</h3>
+                <button onclick="closeModal('procsModal')"
+                    style="background:none; border:none; font-size:24px; color:white; cursor:pointer">&times;</button>
+            </div>
+            <div id="procsContainer" class="modal-body" style="background:#f8fafc">
+                <!-- Javascript will populate this -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-save" onclick="closeModal('procsModal')">Завершити редагування</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

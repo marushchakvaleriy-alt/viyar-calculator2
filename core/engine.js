@@ -279,8 +279,28 @@ const Engine = {
 
             if (l.helpImg) {
                 const img = document.createElement('img');
-                // Fix path for core/ directory
-                img.src = l.helpImg.startsWith('images/') ? '../' + l.helpImg : l.helpImg;
+
+                // Base path resolution
+                let src = l.helpImg;
+                if (src.startsWith('images/')) {
+                    // If it's just 'images/name.jpg', try to see if it should be in hints/
+                    // though we also have a fallback below.
+                    src = '../' + src;
+                }
+
+                img.src = src;
+
+                // Fallback mechanism: if image doesn't load from root images/, try images/hints/
+                img.onerror = () => {
+                    if (l.helpImg.startsWith('images/') && !l.helpImg.includes('images/hints/')) {
+                        const fallbackSrc = '../images/hints/' + l.helpImg.replace('images/', '');
+                        if (img.src !== window.location.origin + fallbackSrc.replace('..', '')) {
+                            console.log("Image fallback triggered for:", l.helpImg);
+                            img.src = fallbackSrc;
+                        }
+                    }
+                };
+
                 tooltip.appendChild(img);
             }
 
@@ -324,7 +344,11 @@ const Engine = {
         inputContainer.style.justifyContent = 'flex-start';
         inputContainer.style.width = '100%';
         inputContainer.style.minWidth = '0'; // Prevent flex items from expanding
-        inputContainer.style.overflow = 'hidden'; // Clip any offset overflow
+        inputContainer.style.overflow = (field.type === 'action_button' || field.type === 'select_modal') ? 'visible' : 'hidden';
+        if (field.type === 'action_button' || field.type === 'select_modal') {
+            inputContainer.style.position = 'relative';
+            inputContainer.style.zIndex = '10';
+        }
 
         const inputWrapper = document.createElement('div');
         inputWrapper.style.width = (l.inputWidth || 100) + '%';
@@ -412,7 +436,7 @@ const Engine = {
 
             const productsContainer = document.createElement('div');
             productsContainer.id = `products_${field.id}`;
-            productsContainer.style.cssText = `display:flex; flex-direction:column; gap:8px; margin-top:8px; width:100%;`;
+            productsContainer.style.cssText = `display:flex; flex-direction:column; gap:8px; margin-top:8px; width:100%; position:relative; z-index:100;`;
             btnContainer.appendChild(productsContainer);
             this.buttonContainers[field.id] = productsContainer;
 
@@ -635,11 +659,26 @@ const Engine = {
             productsByButton[buttonId].forEach(({ prod, index }) => {
                 const el = document.createElement('div');
                 el.className = 'product-item';
+                const buttonField = Schema.fields.find(f => f.id === buttonId);
+                const bl = buttonField?.layout || {};
+
+                el.innerHTML = '';
                 el.style.cssText = `
-                    background: white; padding: 12px 15px; margin-bottom: 8px; border-radius: 12px;
-                    border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-                    display: flex; flex-direction: column; gap: 8px; position: relative;
-                    animation: slideIn 0.3s ease-out; transition: 0.2s;
+                    background: ${bl.prodBg || 'white'}; 
+                    padding: 12px 15px; 
+                    margin-bottom: 8px; 
+                    border-radius: 12px;
+                    border: 1px solid #e5e7eb; 
+                    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+                    display: flex; 
+                    flex-direction: column; 
+                    gap: 8px; 
+                    position: relative;
+                    animation: slideIn 0.3s ease-out; 
+                    transition: 0.2s;
+                    width: ${bl.prodWidth || '100%'};
+                    min-width: fit-content;
+                    z-index: 101;
                 `;
 
                 // Calculate total cost including category sums
@@ -726,9 +765,12 @@ const Engine = {
             if (!mf || !ruleSet) return;
 
             let qty = val;
-            if (mf.type === 'select') {
-                const active = ruleSet[val];
-                if (active) this.applyPoints(active, points, null, catSums, mf);
+            if (mf.type === 'select' || mf.type === 'multiselect') {
+                const values = mf.type === 'multiselect' ? (Array.isArray(val) ? val : []) : [val];
+                values.forEach(v => {
+                    const active = ruleSet[v];
+                    if (active) this.applyPoints(active, points, null, catSums, mf);
+                });
             } else {
                 if (mf.type === 'checkbox_qty') qty = val?.qty || 0;
                 else if (mf.type === 'checkbox') qty = val ? 1 : 0;
@@ -740,31 +782,35 @@ const Engine = {
         Object.keys(data).forEach(fieldId => {
             const val = data[fieldId];
             const mf = button.modalFields.find(f => f.id === fieldId);
-            const ruleKey = `${buttonId}_${fieldId}`;
-            const ruleSet = Schema.modalFieldRules?.[ruleKey];
+            const ruleKey = `${buttonId}_${fieldId}`; // Corrected from `${buttonId}_fieldId`
+            const ruleSet = Schema.modalFieldRules?.[ruleKey]; // Corrected from `${buttonId}_${fieldId}`
             if (!mf || !ruleSet) return;
 
-            const targetRules = (mf.type === 'select') ? ruleSet[val] : ruleSet;
-            if (!targetRules) return;
+            const values = (mf.type === 'multiselect') ? (Array.isArray(val) ? val : []) : [val];
 
-            Object.keys(Schema.categories).forEach(cid => {
-                const formula = targetRules[`_total_${cid}`];
-                if (!formula) return;
+            values.forEach(v => {
+                const targetRules = (mf.type === 'select' || mf.type === 'multiselect') ? ruleSet[v] : ruleSet;
+                if (!targetRules) return;
 
-                // Calculate current sum for this field/category
-                const tempSums = {};
-                Object.keys(Schema.categories).forEach(c => tempSums[c] = 0);
-                this.applyPoints(targetRules, null, (mf.type === 'checkbox_qty' ? val?.qty : val), tempSums, mf);
-                const currentSum = tempSums[cid] || 0;
+                Object.keys(Schema.categories).forEach(cid => {
+                    const formula = targetRules[`_total_${cid}`];
+                    if (!formula) return;
 
-                let finalVal = 0;
-                if (String(formula).startsWith('=')) {
-                    finalVal = this.evaluateFormulaExtended(formula, (mf.type === 'checkbox_qty' ? val?.qty : val), { '@sum': currentSum });
-                } else if (!isNaN(formula)) {
-                    finalVal = currentSum + Number(formula);
-                }
+                    // Calculate current sum for this field/category
+                    const tempSums = {};
+                    Object.keys(Schema.categories).forEach(c => tempSums[c] = 0);
+                    this.applyPoints(targetRules, null, (mf.type === 'checkbox_qty' ? val?.qty : v), tempSums, mf);
+                    const currentSum = tempSums[cid] || 0;
 
-                catSums[cid] += (finalVal - currentSum);
+                    let finalVal = 0;
+                    if (String(formula).startsWith('=')) {
+                        finalVal = this.evaluateFormulaExtended(formula, (mf.type === 'checkbox_qty' ? val?.qty : v), { '@sum': currentSum }); // Reverted contextVal and extraVars to original logic
+                    } else if (!isNaN(formula)) {
+                        finalVal = currentSum + Number(formula); // Reverted to original logic for fixed numbers
+                    }
+
+                    catSums[cid] += (finalVal - currentSum); // Reverted to original logic
+                });
             });
         });
 
