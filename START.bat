@@ -15,9 +15,15 @@ if %ERRORLEVEL% NEQ 0 (
     pause
     exit /b
 )
-git pull
-
 echo.
+echo 📥 Отримання змін (git pull --rebase)...
+git pull --rebase
+if %ERRORLEVEL% NEQ 0 (
+    echo ⚠️ Помилка при отриманні оновлень. Можливо, є конфлікти.
+    echo Спробуйте запустити git pull вручну в консолі.
+)
+echo.
+
 echo 📡 Синхронізація локальних змін...
 python --version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
@@ -32,7 +38,16 @@ echo.
 echo 🔍 Перевірка сервера збереження...
 tasklist /FI "IMAGENAME eq python.exe" /V | find /I "Local Saver" >nul
 if "%ERRORLEVEL%"=="0" (
-    echo ✅ Local Saver вже запущений
+    echo ✅ Local Saver вже запущений.
+    set /p restart="Перезапустити сервер? (y/n): "
+    if /I "%restart%"=="y" (
+        echo 🛑 Зупинка старого сервера...
+        taskkill /FI "WINDOWTITLE eq Local Saver*" /F >nul 2>&1
+        timeout /t 1 /nobreak >nul
+        echo 📡 Запуск заново...
+        start "Local Saver - Port 5005" /MIN python local_saver.py
+        echo ✅ Local Saver перезапущено
+    )
 ) else (
     echo 📡 Запуск Local Saver у фоновому вікні...
     start "Local Saver - Port 5005" /MIN python local_saver.py

@@ -11,6 +11,13 @@ def run_git_commands():
         print("📁 Крок 1: Додавання файлів...")
         subprocess.run(["git", "add", "."], check=True)
 
+        # Перевірка на конфлікти
+        conflicts = subprocess.run(["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True).stdout.strip()
+        if conflicts:
+            print(f"⚠️ Виявлено конфлікти у файлах:\n{conflicts}")
+            print("Спробуйте вирішити їх вручну або зверніться до розробника.")
+            return
+
         # 3. git commit
         commit_message = f"Auto-update: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         if len(sys.argv) > 1:

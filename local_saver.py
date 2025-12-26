@@ -53,11 +53,23 @@ class SaveHandler(BaseHTTPRequestHandler):
             def auto_push():
                 try:
                     print("🌐 Запуск auto_push на GitHub...")
-                    subprocess.run(["python", "auto_push.py", f"Auto-save: {filename}"], 
-                                   capture_output=True, text=True)
-                    print("✅ Зміни відправлено на GitHub!")
+                    result = subprocess.run(
+                        ["python", "auto_push.py", f"Auto-save: {filename}"],
+                        capture_output=True, text=True, timeout=60
+                    )
+                    # Показуємо вивід у консолі Local Saver
+                    if result.stdout:
+                        print(result.stdout)
+                    if result.stderr:
+                        print(f"⚠️ Stderr: {result.stderr}")
+                    if result.returncode == 0:
+                        print("✅ GitHub sync OK!")
+                    else:
+                        print(f"❌ Push failed (code {result.returncode})")
+                except subprocess.TimeoutExpired:
+                    print("⏱️ Timeout: auto_push took too long")
                 except Exception as e:
-                    print(f"⚠️ Не вдалося відправити на GitHub: {e}")
+                    print(f"⚠️ Помилка push: {e}")
             
             # Запускаємо push в окремому потоці, щоб не блокувати сервер
             threading.Thread(target=auto_push, daemon=True).start()
