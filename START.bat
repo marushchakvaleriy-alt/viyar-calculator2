@@ -9,27 +9,35 @@ echo ═════════════════════════
 echo.
 
 echo 🔄 Оновлення коду з GitHub...
-git pull
+git --version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ⚠️ Не вдалося отримати оновлення. Перевірте інтернет.
-) else (
-    echo ✅ Код актуальний
+    echo ❌ Помилка: Git не знайдено! Переконайтеся, що Git встановлено.
+    pause
+    exit /b
 )
-echo.
+git pull
 
+echo.
 echo 📡 Синхронізація локальних змін...
+python --version >nul 2>&1
+if %ERRORLEVEL% NEQ 0 (
+    echo ❌ Помилка: Python не знайдено! Переконайтеся, що Python встановлено.
+    pause
+    exit /b
+)
 python auto_push.py initial_sync_on_start
 echo.
 
 :: Перевірка, чи вже запущений local_saver.py
-tasklist /FI "WINDOWTITLE eq Local Saver*" 2>NUL | find /I /N "python.exe">NUL
+echo 🔍 Перевірка сервера збереження...
+tasklist /FI "IMAGENAME eq python.exe" /V | find /I "Local Saver" >nul
 if "%ERRORLEVEL%"=="0" (
     echo ✅ Local Saver вже запущений
 ) else (
-    echo 📡 Запуск Local Saver...
+    echo 📡 Запуск Local Saver у фоновому вікні...
     start "Local Saver - Port 5005" /MIN python local_saver.py
     timeout /t 2 /nobreak >nul
-    echo ✅ Local Saver запущено на порту 5005
+    echo ✅ Local Saver запущено
 )
 
 echo.

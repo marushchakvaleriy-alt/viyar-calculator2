@@ -12,19 +12,25 @@ def run_git_commands():
         subprocess.run(["git", "add", "."], check=True)
 
         # 3. git commit
-        # Отримуємо повідомлення від користувача, або використовуємо дату за замовчуванням
         commit_message = f"Auto-update: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         if len(sys.argv) > 1:
+            # Якщо передано аргументи, склеюємо їх (корисна мітка для автозбереження)
             commit_message = " ".join(sys.argv[1:])
         
-        print(f"📝 Крок 2: Збереження (commit) з повідомленням: '{commit_message}'")
-        subprocess.run(["git", "commit", "-m", commit_message], check=True)
+        print(f"📝 Крок 2: Збереження (commit)...")
+        # Перевіряємо чи є зміни
+        status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout.strip()
+        if not status:
+            print("✨ Немає нових змін для збереження.")
+        else:
+            print(f"📝 Комміт: '{commit_message}'")
+            subprocess.run(["git", "commit", "-m", commit_message], check=True)
 
         # 4. git push
-        print("☁️ Крок 3: Відправка на сервер...")
+        print("☁️ Крок 3: Відправка на GitHub...")
         subprocess.run(["git", "push"], check=True)
 
-        print("\n✅ Успішно оновлено! Ваші зміни скоро з'являться на сайті.")
+        print("\n✅ Успішно оновлено!")
         
     except subprocess.CalledProcessError as e:
         print(f"\n❌ Помилка під час виконання команди: {e}")
