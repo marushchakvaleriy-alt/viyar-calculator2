@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дизайнер - Vpoint V3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/designer.css">
+</head>
+
+<body>
+    <div class="designer-layout">
+        <!-- Sidebar -->
+        <aside class="designer-sidebar">
+            <h2 class="designer-sidebar-title">🎨 Дизайнер V3</h2>
+
+            <div class="designer-panel">
+                <div class="designer-panel-header">🏠 Головна</div>
+                <div class="designer-panel-body">
+                    <div class="form-group">
+                        <label class="form-label">Заголовок</label>
+                        <input type="text" class="form-input" id="heroTitle" value="Vpoint Calculator"
+                            onchange="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Підзаголовок</label>
+                        <input type="text" class="form-input" id="heroSubtitle" value="Виберіть калькулятор"
+                            onchange="updatePreview()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="designer-panel">
+                <div class="designer-panel-header">🎨 Тема</div>
+                <div class="designer-panel-body">
+                    <div class="theme-toggle">
+                        <div class="theme-btn active" data-theme="dark" onclick="setTheme('dark')">🌙 Темна</div>
+                        <div class="theme-btn" data-theme="light" onclick="setTheme('light')">☀️ Світла</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Основний колір</label>
+                        <div class="color-input">
+                            <input type="color" id="primaryColor" value="#3b82f6" onchange="updatePreview()">
+                            <input type="text" class="form-input" value="#3b82f6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="designer-panel">
+                <div class="designer-panel-header">📊 Калькулятори</div>
+                <div class="designer-panel-body">
+                    <div class="calc-list" id="calcList">
+                        <!-- JS will populate -->
+                    </div>
+                    <button class="add-calc-btn" onclick="addCalculator()">+ Додати калькулятор</button>
+                </div>
+            </div>
+
+            <div style="padding: 16px;">
+                <button class="btn btn-success" style="width: 100%;" onclick="saveConfig()">💾 Зберегти</button>
+                <a href="../index.html" class="btn btn-ghost" style="width: 100%; margin-top: 10px;">🏠 На головну</a>
+            </div>
+        </aside>
+
+        <!-- Preview -->
+        <div class="designer-preview">
+            <div class="designer-preview-container" id="previewContainer">
+                <!-- JS will render preview -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../data/config_calculators.js"></script>
+    <script src="js/uiHelpers.js"></script>
+
+    <script>
+        let config = {
+            theme: 'dark',
+            primaryColor: '#3b82f6',
+            hero: { title: 'Vpoint Calculator', subtitle: 'Виберіть калькулятор' }
+        };
+
+        function init() {
+            renderCalcList();
+            updatePreview();
+        }
+
+        function renderCalcList() {
+            const list = document.getElementById('calcList');
+            const calcs = window.CalculatorConfig || [];
+
+            list.innerHTML = '';
+            calcs.forEach((calc, idx) => {
+                const item = document.createElement('div');
+                item.className = 'calc-list-item';
+                item.innerHTML = `
+                    <span class="calc-list-icon">${calc.icon || '📊'}</span>
+                    <span class="calc-list-title">${calc.title}</span>
+                    <div class="calc-list-actions">
+                        <button onclick="editCalculator(${idx})" style="background: none; border: none; cursor: pointer;">✏️</button>
+                        <button onclick="deleteCalculator(${idx})" style="background: none; border: none; cursor: pointer; color: #ef4444;">🗑️</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function updatePreview() {
+            const container = document.getElementById('previewContainer');
+            const title = document.getElementById('heroTitle').value;
+            const subtitle = document.getElementById('heroSubtitle').value;
+            const color = document.getElementById('primaryColor').value;
+
+            config.hero.title = title;
+            config.hero.subtitle = subtitle;
+            config.primaryColor = color;
+
+            const calcs = window.CalculatorConfig || [];
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; background: ${config.theme === 'dark' ? '#0f172a' : '#f8fafc'}; border-radius: 16px; color: ${config.theme === 'dark' ? 'white' : '#1e293b'};">
+                    <h1 style="font-size: 36px; font-weight: 800; background: linear-gradient(135deg, ${color}, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${title}</h1>
+                    <p style="color: ${config.theme === 'dark' ? '#94a3b8' : '#64748b'};">${subtitle}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 20px;">
+                    ${calcs.map(c => `
+                        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div style="font-size: 32px;">${c.icon || '📊'}</div>
+                            <div style="font-weight: 700; margin-top: 8px;">${c.title}</div>
+                            <div style="font-size: 12px; color: #64748b;">${c.desc || ''}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function setTheme(theme) {
+            config.theme = theme;
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.theme === theme);
+            });
+            updatePreview();
+        }
+
+        function addCalculator() {
+            const title = prompt('Назва калькулятора:');
+            if (!title) return;
+
+            const id = 'schema_' + title.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Date.now();
+
+            window.CalculatorConfig.push({
+                id: id,
+                title: title,
+                icon: '📊',
+                file: 'data/' + id + '.js',
+                desc: 'Новий калькулятор'
+            });
+
+            renderCalcList();
+            updatePreview();
+            UIHelpers.toast('Калькулятор додано!', 'success');
+        }
+
+        function editCalculator(idx) {
+            const calc = window.CalculatorConfig[idx];
+            if (!calc) return;
+
+            const newTitle = prompt('Назва:', calc.title);
+            if (newTitle) calc.title = newTitle;
+
+            renderCalcList();
+            updatePreview();
+        }
+
+        function deleteCalculator(idx) {
+            if (!confirm('Видалити цей калькулятор?')) return;
+
+            window.CalculatorConfig.splice(idx, 1);
+            renderCalcList();
+            updatePreview();
+            UIHelpers.toast('Видалено', 'info');
+        }
+
+        async function saveConfig() {
+            const content = `window.CalculatorConfig = ${JSON.stringify(window.CalculatorConfig, null, 4)};`;
+
+            try {
+                const resp = await fetch('http://localhost:5005', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: 'data/config_calculators.js', content })
+                });
+
+                if (resp.ok) {
+                    UIHelpers.toast('✅ Збережено!', 'success');
+                } else {
+                    throw new Error('Server error');
+                }
+            } catch (err) {
+                UIHelpers.toast('Локальний сервер не запущено', 'error');
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

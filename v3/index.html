@@ -4,212 +4,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор v3 - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Vpoint Calculator V3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="core/css/common.css">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --radius: 12px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text-main);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            padding: 40px 20px;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        header {
+        .hero {
             text-align: center;
-            margin-bottom: 50px;
+            padding: 60px 20px;
+            color: white;
         }
 
-        header h1 {
-            font-size: 2.5rem;
+        .hero-title {
+            font-size: 48px;
             font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 10px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .hero-subtitle {
+            font-size: 18px;
+            color: #94a3b8;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
+        .calc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             padding: 24px;
-            box-shadow: var(--shadow);
             transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid transparent;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
         }
 
-        .card:hover {
+        .calc-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            border-color: var(--primary);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
         }
 
-        .card-icon {
-            font-size: 2.5rem;
+        .calc-card-icon {
+            font-size: 48px;
             margin-bottom: 16px;
         }
 
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
+        .calc-card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
             margin-bottom: 8px;
         }
 
-        .card-desc {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        .calc-card-desc {
+            font-size: 14px;
+            color: #94a3b8;
             line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        .btn-add {
-            background: var(--primary);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 99px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.2s;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-
-        .btn-add:hover {
-            background: var(--primary-hover);
-        }
-
-        .actions {
-            text-align: center;
         }
 
         .admin-link {
-            display: block;
-            margin-top: 20px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
         }
 
-        .admin-link:hover {
-            color: var(--primary);
-            text-decoration: underline;
+        .admin-btn {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .admin-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
 
 <body>
-    <div class="container" id="app">
-        <header>
-            <h1>Калькулятор v3</h1>
-            <p>Оберіть калькулятор для роботи або створіть новий</p>
-        </header>
+    <div class="hero">
+        <h1 class="hero-title">Vpoint Calculator</h1>
+        <p class="hero-subtitle">Виберіть калькулятор для розрахунку балів</p>
+    </div>
 
-        <div class="grid" id="calcList">
-            <!-- Сюди рендеряться калькулятори -->
-        </div>
+    <div class="grid" id="calcGrid">
+        <!-- JS will populate -->
+    </div>
 
-        <div class="actions">
-            <button class="btn-add" onclick="addNewCalculator()">
-                <span>➕</span> Додати новий калькулятор
-            </button>
-            <a href="core/designer.html" class="admin-link">Перейти в Designer (v3)</a>
-        </div>
+    <div class="admin-link">
+        <button class="admin-btn" onclick="location.href='core/designer.html'">🎨 Дизайнер</button>
+        <button class="admin-btn" onclick="showAdminAuth()">🔐 Адмін</button>
     </div>
 
     <script src="data/config_calculators.js"></script>
+    <script src="core/js/configLoader.js"></script>
     <script>
+        const grid = document.getElementById('calcGrid');
+
         function renderCalculators() {
-            const list = document.getElementById('calcList');
-            list.innerHTML = window.CalculatorConfig.map((calc, idx) => `
-                <a href="core/calculator.html?id=${calc.id}" class="card">
-                    <div class="card-icon">${calc.icon}</div>
-                    <div class="card-title">${calc.title}</div>
-                    <div class="card-desc">${calc.desc}</div>
-                </a>
-            `).join('');
+            const config = window.CalculatorConfig || [];
+            grid.innerHTML = '';
+
+            if (config.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #64748b;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📦</div>
+                        <p>Немає калькуляторів. Додайте перший через Дизайнер.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            config.forEach(calc => {
+                const card = document.createElement('div');
+                card.className = 'calc-card';
+                card.innerHTML = `
+                    <div class="calc-card-icon">${calc.icon || '📊'}</div>
+                    <div class="calc-card-title">${calc.title}</div>
+                    <div class="calc-card-desc">${calc.desc || 'Натисніть для розрахунку'}</div>
+                `;
+                card.onclick = () => {
+                    location.href = 'core/calculator.html?config=' + calc.file;
+                };
+                grid.appendChild(card);
+            });
         }
 
-        async function addNewCalculator() {
-            const id = 'schema_' + Date.now();
-            const title = prompt('Введіть назву калькулятора:', 'Новий калькулятор');
-            if (!title) return;
-
-            const newCalc = {
-                id: id,
-                title: title,
-                icon: '📦',
-                file: 'data/' + id + '.js',
-                desc: 'Калькулятор створений на базі v3 шаблону'
-            };
-
-            // 1. Зберігаємо новий файл схеми (копіюючиDefaultSchema)
-            // Ми використаємо DefaultSchema як базу
-            const response = await fetch('http://localhost:5005', {
-                method: 'POST',
-                body: JSON.stringify({
-                    filename: 'v3/data/' + id + '.js',
-                    content: 'window.Schema = ' + JSON.stringify(window.DefaultSchema, null, 4) + ';'
-                })
-            });
-
-            if (response.ok) {
-                window.CalculatorConfig.push(newCalc);
-                // 2. Оновлюємо config_calculators.js
-                await fetch('http://localhost:5005', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        filename: 'v3/data/config_calculators.js',
-                        content: 'window.CalculatorConfig = ' + JSON.stringify(window.CalculatorConfig, null, 4) + ';'
-                    })
-                });
-                renderCalculators();
-                alert('Калькулятор створено!');
+        function showAdminAuth() {
+            const pass = prompt('Введіть пароль адміністратора:');
+            if (pass === '1111') {
+                sessionStorage.setItem('admin', 'true');
+                location.href = 'core/admin.html';
+            } else if (pass) {
+                alert('Невірний пароль');
             }
         }
 
         renderCalculators();
     </script>
-    <script src="data/schema_default.js"></script>
 </body>
 
 </html>

@@ -1,16 +1,16 @@
 window.CalculatorConfig = [
     {
-        "id": "schema_novyy_kal_kulyator_733",
-        "title": "калькулятор",
-        "icon": "images/кухня.png",
-        "file": "data/schema_novyy_kal_kulyator_733.js",
-        "desc": "Опис нового калькулятора"
+        "id": "schema_default",
+        "title": "Демо Калькулятор",
+        "icon": "📊",
+        "file": "data/schema_default.js",
+        "desc": "Приклад калькулятора для демонстрації"
     },
     {
-        "id": "schema_iuluililuiyoly_304",
-        "title": "tryr",
-        "icon": "📦",
-        "file": "data/schema_iuluililuiyoly_304.js",
-        "desc": "Опис нового калькулятора"
+        "id": "schema_kgjhg_1766770771600",
+        "title": "kgjhg",
+        "icon": "📊",
+        "file": "data/schema_kgjhg_1766770771600.js",
+        "desc": "Новий калькулятор"
     }
-]; 
+];

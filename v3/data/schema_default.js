@@ -1,80 +1,83 @@
-window.DefaultSchema = {
+/**
+ * Sample Schema
+ * Default calculator schema for Vpoint V3
+ * @version 3.0.0
+ */
+const Schema = {
     "meta": {
         "version": "3.0",
-        "title": "Новий калькулятор v3",
-        "lastUpdated": "2025-12-25"
+        "title": "Демо Калькулятор",
+        "lastUpdated": "2025-12-26"
     },
     "categories": {
-        "cat_construction": { "name": "Конструювання", "color": "#e0f2fe" },
-        "cat_design": { "name": "Проєктування", "color": "#f3e8ff" },
-        "cat_assembly": { "name": "Збірка", "color": "#fef9c3" },
-        "cat_installation": { "name": "Монтаж", "color": "#dcfce7" }
+        "cat_construction": {
+            "name": "Конструювання",
+            "color": "#3b82f6"
+        },
+        "cat_assembly": {
+            "name": "Збірка",
+            "color": "#10b981"
+        },
+        "cat_installation": {
+            "name": "Монтаж",
+            "color": "#f59e0b"
+        }
     },
     "processes": [
-        /* 1. Конструювання */
-        { "id": "pr_c1", "name": "ознайомлення з ТЗ", "category": "cat_construction" },
-        { "id": "pr_c2", "name": "моделювання приміщення", "category": "cat_construction" },
-        { "id": "pr_c3", "name": "Моделювання елементу", "category": "cat_construction" },
-        { "id": "pr_c4", "name": "виставити в модель", "category": "cat_construction" },
-        { "id": "pr_c5", "name": "розставити ф-ру", "category": "cat_construction" },
-        { "id": "pr_c6", "name": "структура виробу", "category": "cat_construction" },
-        { "id": "pr_c7", "name": "креслення СБ", "category": "cat_construction" },
-        { "id": "pr_c8", "name": "Креслення на індивід. виготовлення", "category": "cat_construction" },
-        { "id": "pr_c9", "name": "монтажна схема", "category": "cat_construction" },
-        { "id": "pr_c10", "name": "проджект на матеріал", "category": "cat_construction" },
-        { "id": "pr_c11", "name": "Кф. доровартісного мат.", "category": "cat_construction" },
-        { "id": "pr_c12", "name": "ф-ра проджект", "category": "cat_construction" },
-        { "id": "pr_c13", "name": "ОДК", "category": "cat_construction" },
-        { "id": "pr_c14", "name": "Заміна-корегув. матеріалу", "category": "cat_construction" },
-
-        /* 2. Проєктування */
-        { "id": "pr_d1", "name": "ознайомлення з ТЗ", "category": "cat_design" },
-        { "id": "pr_d2", "name": "Виявлення потреби, питання, пошук крішень, нерозуміння", "category": "cat_design" },
-        { "id": "pr_d3", "name": "моделювання приміщення", "category": "cat_design" },
-        { "id": "pr_d4", "name": "Моделювання елементу", "category": "cat_design" },
-        { "id": "pr_d5", "name": "виставити в модель", "category": "cat_design" },
-        { "id": "pr_d6", "name": "структура виробу -?", "category": "cat_design" },
-        { "id": "pr_d7", "name": "Комунікація виробництвом, по можливості виготовлення", "category": "cat_design" },
-        { "id": "pr_d8", "name": "Креслення вузлового елементу", "category": "cat_design" },
-        { "id": "pr_d9", "name": "Креслення на погодження", "category": "cat_design" },
-        { "id": "pr_d10", "name": "Специфікація", "category": "cat_design" },
-        { "id": "pr_d11", "name": "Кольорова схема", "category": "cat_design" },
-
-        /* 3. Монтаж (зі скріншота №3) */
-        { "id": "pr_i1", "name": "перевірка приміщення", "category": "cat_installation" },
-        { "id": "pr_i2", "name": "ознайомлення із кресленям", "category": "cat_installation" },
-        { "id": "pr_i3", "name": "розпаковка", "category": "cat_installation" },
-        { "id": "pr_i4", "name": "перевірка модулів", "category": "cat_installation" },
-        { "id": "pr_i5", "name": "розмітка та сверління під монтажну планку", "category": "cat_installation" },
-        { "id": "pr_i6", "name": "Монтаж", "category": "cat_installation" },
-        { "id": "pr_i7", "name": "ПІДРІЗКА ПРОФІЛЮ ТА ФАЛЬШІВ І КАРНІЗІВ", "category": "cat_installation" },
-        { "id": "pr_i8", "name": "монтаж підсвітки", "category": "cat_installation" },
-        { "id": "pr_i9", "name": "Виріз отворів під розетки", "category": "cat_installation" },
-        { "id": "pr_i10", "name": "прибирання та винос сміття", "category": "cat_installation" },
-        { "id": "pr_i11", "name": "вирізи / зарізи", "category": "cat_installation" },
-
-        /* 4. Збірка (зі скріншота №4) */
-        { "id": "pr_a1", "name": "Комплектування", "category": "cat_assembly" },
-        { "id": "pr_a2", "name": "Сортування", "category": "cat_assembly" },
-        { "id": "pr_a3", "name": "Додаткова Індивідуальна послуга", "category": "cat_assembly" },
-        { "id": "pr_a4", "name": "Збірка", "category": "cat_assembly" },
-        { "id": "pr_a5", "name": "Контрольний монтаж", "category": "cat_assembly" },
-        { "id": "pr_a6", "name": "Демонтаж", "category": "cat_assembly" },
-        { "id": "pr_a7", "name": "Демонтаж подетальний", "category": "cat_assembly" },
-        { "id": "pr_a8", "name": "Пакування помодульне", "category": "cat_assembly" },
-        { "id": "pr_a9", "name": "Пакування подетальне", "category": "cat_assembly" }
+        { "id": "pr_c1", "name": "Креслення", "category": "cat_construction" },
+        { "id": "pr_c2", "name": "Моделювання", "category": "cat_construction" },
+        { "id": "pr_a1", "name": "Збірка", "category": "cat_assembly" },
+        { "id": "pr_a2", "name": "Контроль", "category": "cat_assembly" },
+        { "id": "pr_i1", "name": "Монтаж", "category": "cat_installation" },
+        { "id": "pr_i2", "name": "Пуско-наладка", "category": "cat_installation" }
     ],
     "groups": [
-        { "id": "g_main", "title": "Основні параметри", "processes": ["pr_c1", "pr_d1"] }
+        { "id": "g_main", "title": "Основні параметри" },
+        { "id": "g_options", "title": "Опції" }
     ],
     "fields": [
+        { "id": "f_modules", "type": "number", "label": "Кількість модулів", "groupId": "g_main", "default": 1 },
+        { "id": "f_drawers", "type": "number", "label": "Кількість ящиків", "groupId": "g_main", "default": 0 },
         {
-            "id": "f_qty",
-            "name": "Кількість виробів",
-            "type": "number",
-            "value": 1,
-            "group": "g_main"
-        }
+            "id": "f_material", "type": "select", "label": "Матеріал", "groupId": "g_main",
+            "options": [
+                { "value": "laminate", "label": "Ламіноване ДСП" },
+                { "value": "mdf", "label": "МДФ фарбований" },
+                { "value": "solid", "label": "Масив дерева" }
+            ]
+        },
+        { "id": "f_soft_close", "type": "checkbox", "label": "Доводчики", "groupId": "g_options" },
+        { "id": "f_lighting", "type": "checkbox_qty", "label": "Підсвітка", "groupId": "g_options", "default": 0 }
     ],
-    "rules": {}
+    "rules": {
+        "f_modules": {
+            "pr_c1": 15,
+            "pr_c2": 20,
+            "pr_a1": "=@qty * 10",
+            "pr_i1": "=@qty * 5"
+        },
+        "f_drawers": {
+            "pr_c1": 5,
+            "pr_c2": 10,
+            "pr_a1": "=@qty * 8",
+            "pr_a2": "=@qty * 3",
+            "pr_i1": "=@qty * 2"
+        },
+        "f_material": {
+            "laminate": { "pr_c1": 0, "pr_c2": 0 },
+            "mdf": { "pr_c1": 10, "pr_c2": 15 },
+            "solid": { "pr_c1": 25, "pr_c2": 30 }
+        },
+        "f_soft_close": {
+            "pr_a1": 5,
+            "pr_a2": 3
+        },
+        "f_lighting": {
+            "pr_c2": 10,
+            "pr_i1": "=@qty * 5",
+            "pr_i2": "=@qty * 3"
+        }
+    }
 };
+
+window.Schema = Schema;

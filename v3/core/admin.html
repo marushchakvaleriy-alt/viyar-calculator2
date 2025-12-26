@@ -3,228 +3,213 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Адмін-панель v3</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #f3f4f6;
-            --sidebar-bg: #ffffff;
-            --accent: #6366f1;
-            --border: #e5e7eb;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            background: var(--bg);
-        }
-
-        .sidebar {
-            width: 300px;
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .main {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 20px 0 10px;
-            color: #374151;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .item-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-        }
-
-        .item-card input,
-        .item-card select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-save {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .category-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .group-container {
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Vpoint V3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 
 <body>
-    <div class="sidebar">
-        <h2>Структура v3</h2>
-
-        <div class="section-title">Категорії</div>
-        <div id="categoriesList"></div>
-
-        <div class="section-title">Групи</div>
-        <div id="groupsList"></div>
-    </div>
-
-    <div class="main">
-        <div id="editorContent">
-            <h1>Редактор процесів</h1>
-            <div id="processesGrid"
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
-                <!-- Тут будуть процеси -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-logo">🛠️ Admin V3</div>
             </div>
-        </div>
+            <nav class="admin-nav" id="sidebarNav">
+                <div class="admin-nav-section">Групи</div>
+                <!-- JS will populate -->
+            </nav>
+            <div style="padding: 20px;">
+                <button class="btn btn-primary" style="width: 100%;" onclick="addGroup()">+ Група</button>
+                <a href="../index.html" class="btn btn-ghost" style="width: 100%; margin-top: 10px;">🏠 На головну</a>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="admin-main">
+            <div class="admin-topbar">
+                <div class="admin-topbar-title">
+                    <select id="calcSwitcher" onchange="switchCalculator(this.value)">
+                        <!-- JS will populate -->
+                    </select>
+                </div>
+                <div class="admin-topbar-actions">
+                    <span id="unsavedBadge" class="unsaved-badge hidden">⚠️ Незбережено</span>
+                    <button class="btn btn-secondary" onclick="openPreview()">👁️ Перегляд</button>
+                    <button class="btn btn-success" onclick="saveSchema()">💾 Зберегти</button>
+                </div>
+            </div>
+
+            <div class="admin-matrix-wrap">
+                <div style="overflow-x: auto;">
+                    <table class="matrix-table" id="matrixTable">
+                        <!-- JS will render -->
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <button class="btn btn-primary btn-save" onclick="saveSchema()">💾 ЗБЕРЕГТИ ЗМІНИ</button>
+    <!-- Core Modules -->
+    <script src="js/configLoader.js"></script>
+    <script src="js/schemaValidator.js"></script>
+    <script src="js/formulaEngine.js"></script>
+    <script src="js/uiHelpers.js"></script>
+    <script src="js/adminMatrix.js"></script>
+    <script src="../data/config_calculators.js"></script>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const schemaFile = urlParams.get('file') || '../data/schema_default.js';
+        let Schema = null;
+        let currentConfigFile = null;
+        let hasUnsavedChanges = false;
 
-        async function loadSchema() {
-            // Динамічне завантаження файлу схеми
-            const script = document.createElement('script');
-            script.src = schemaFile + '?t=' + Date.now();
-            document.head.appendChild(script);
+        // Initialize
+        (async function () {
+            currentConfigFile = ConfigLoader.getConfigFromURL() || '../data/schema_default.js';
 
-            script.onload = () => {
-                window.Schema = window.DefaultSchema || window.Schema; // Підтримка обох назв
-                renderAll();
+            try {
+                Schema = await ConfigLoader.loadSchema(currentConfigFile);
+                initCalcSwitcher();
+                renderSidebar();
+                renderMatrix();
+            } catch (err) {
+                console.error('[Admin] Load error:', err);
+                UIHelpers.toast('Помилка: ' + err.message, 'error');
             }
-        }
+        })();
 
-        function renderAll() {
-            renderCategories();
-            renderProcesses();
-        }
+        function initCalcSwitcher() {
+            const select = document.getElementById('calcSwitcher');
+            const config = window.CalculatorConfig || [];
 
-        function renderCategories() {
-            const container = document.getElementById('categoriesList');
-            container.innerHTML = Object.entries(window.Schema.categories).map(([id, cat]) => `
-                <div class="item-card">
-                    <div class="category-badge" style="background: ${cat.color}">${cat.name}</div>
-                    <input type="text" value="${cat.name}" oninput="updateCat('${id}', 'name', this.value)">
-                    <input type="color" value="${cat.color}" oninput="updateCat('${id}', 'color', this.value)">
-                </div>
-            `).join('');
-        }
-
-        function renderProcesses() {
-            const container = document.getElementById('processesGrid');
-            container.innerHTML = window.Schema.processes.map((pr, idx) => {
-                const cat = window.Schema.categories[pr.category];
-                return `
-                    <div class="item-card">
-                        <div style="display: flex; justify-content: space-between;">
-                            <div class="category-badge" style="background: ${cat.color}">${cat.name}</div>
-                            <button class="btn" style="background: #fee2e2; color: #ef4444; padding: 2px 8px;" onclick="removeProcess(${idx})">✕</button>
-                        </div>
-                        <input type="text" value="${pr.name}" oninput="updateProcess(${idx}, 'name', this.value)">
-                        <select onchange="updateProcess(${idx}, 'category', this.value)">
-                            ${Object.entries(window.Schema.categories).map(([id, c]) => `
-                                <option value="${id}" ${id === pr.category ? 'selected' : ''}>${c.name}</option>
-                            `).join('')}
-                        </select>
-                    </div>
-                `;
-            }).join('') + `
-                <div class="item-card" style="border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="addProcess()">
-                    <span style="font-size: 2rem; color: var(--border);">+</span>
-                </div>
-            `;
-        }
-
-        function addProcess() {
-            window.Schema.processes.push({
-                id: "pr_new_" + Date.now(),
-                name: "Новий процес",
-                category: Object.keys(window.Schema.categories)[0]
+            select.innerHTML = '';
+            config.forEach(calc => {
+                const opt = document.createElement('option');
+                opt.value = calc.file;
+                opt.textContent = calc.title;
+                if (calc.file === currentConfigFile.replace('../', '')) opt.selected = true;
+                select.appendChild(opt);
             });
-            renderProcesses();
         }
 
-        function removeProcess(idx) {
-            if (confirm('Видалити цей процес?')) {
-                window.Schema.processes.splice(idx, 1);
-                renderProcesses();
+        function switchCalculator(file) {
+            if (hasUnsavedChanges && !confirm('Є незбережені зміни! Продовжити?')) {
+                document.getElementById('calcSwitcher').value = currentConfigFile.replace('../', '');
+                return;
+            }
+            location.href = 'admin.html?config=' + file;
+        }
+
+        function renderSidebar() {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = '<div class="admin-nav-section">Групи</div>';
+
+            (Schema?.groups || []).forEach(g => {
+                const item = document.createElement('div');
+                item.className = 'admin-nav-item';
+                item.innerHTML = `📁 ${g.title}`;
+                item.onclick = () => scrollToGroup(g.id);
+                nav.appendChild(item);
+            });
+        }
+
+        function renderMatrix() {
+            const table = document.getElementById('matrixTable');
+            if (!Schema || !table) return;
+
+            // Use AdminMatrix module if available
+            if (window.AdminMatrix && AdminMatrix.render) {
+                AdminMatrix.render(table, Schema, {
+                    onUpdate: () => markDirty(),
+                    onSave: saveSchema
+                });
+            } else {
+                // Fallback simple render
+                table.innerHTML = `
+                    <tr>
+                        <th class="matrix-table th">Параметр</th>
+                        ${(Schema.processes || []).slice(0, 5).map(p =>
+                    `<th>${p.name}</th>`
+                ).join('')}
+                    </tr>
+                    ${(Schema.fields || []).slice(0, 10).map(f => `
+                        <tr>
+                            <td>${f.label}</td>
+                            ${(Schema.processes || []).slice(0, 5).map(p => `
+                                <td><input class="cell-input" value="${Schema.rules?.[f.id]?.[p.id] || ''}"></td>
+                            `).join('')}
+                        </tr>
+                    `).join('')}
+                `;
             }
         }
 
-        function updateProcess(idx, prop, val) { window.Schema.processes[idx][prop] = val; }
-        function updateCat(id, prop, val) {
-            window.Schema.categories[id][prop] = val;
-            renderProcesses(); // Оновити бейджі
+        function scrollToGroup(id) {
+            const el = document.getElementById('group-' + id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addGroup() {
+            const name = prompt('Назва нової групи:');
+            if (!name) return;
+
+            if (!Schema.groups) Schema.groups = [];
+            Schema.groups.push({ id: 'g_' + Date.now(), title: name });
+
+            markDirty();
+            renderSidebar();
+            renderMatrix();
+        }
+
+        function markDirty() {
+            hasUnsavedChanges = true;
+            document.getElementById('unsavedBadge').classList.remove('hidden');
+        }
+
+        function markClean() {
+            hasUnsavedChanges = false;
+            document.getElementById('unsavedBadge').classList.add('hidden');
         }
 
         async function saveSchema() {
-            const content = `window.Schema = ${JSON.stringify(window.Schema, null, 4)};`;
-            // Важливо: шлях має бути відносним до local_saver.py
-            const cleanPath = 'v3/' + schemaFile.replace('../', '');
+            const content = `const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`;
 
-            const response = await fetch('http://localhost:5005', {
-                method: 'POST',
-                body: JSON.stringify({ filename: cleanPath, content: content })
-            });
+            try {
+                const resp = await fetch('http://localhost:5005', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: currentConfigFile.replace('../', ''), content })
+                });
 
-            if (response.ok) {
-                alert('✅ Зміни збережено!');
-                if (window.parent && window.parent.postMessage) {
-                    window.parent.postMessage('saved', '*');
+                if (resp.ok) {
+                    markClean();
+                    UIHelpers.toast('✅ Збережено!', 'success');
+                } else {
+                    throw new Error('Server error');
                 }
-            } else {
-                alert('❌ Помилка збереження! Перевірте local_saver.py');
+            } catch (err) {
+                console.error('[Admin] Save error:', err);
+                UIHelpers.toast('Локальний сервер не запущено', 'error');
+
+                // Fallback: download file
+                if (confirm('Завантажити файл вручну?')) {
+                    const blob = new Blob([content], { type: 'text/javascript' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = currentConfigFile.split('/').pop();
+                    a.click();
+                }
             }
         }
 
-        loadSchema();
+        function openPreview() {
+            window.open('calculator.html?config=' + currentConfigFile, '_blank');
+        }
+
+        // Warn on leave
+        window.onbeforeunload = () => hasUnsavedChanges ? 'Є незбережені зміни!' : null;
     </script>
 </body>
 
