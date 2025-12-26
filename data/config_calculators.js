@@ -14,10 +14,10 @@ window.CalculatorConfig = [
         "desc": "Опис нового калькулятора"
     },
     {
-        "id": "schema_novyy_kal_kulyator_414",
-        "title": "dfsddfsdfsd",
+        "id": "schema_fgdgdfgdfgfgdfgrtret_217",
+        "title": "fgdgdfgdfgfgdfgrtret",
         "icon": "📦",
-        "file": "data/schema_novyy_kal_kulyator_414.js",
+        "file": "data/schema_fgdgdfgdfgfgdfgrtret_217.js",
         "desc": "Опис нового калькулятора"
     }
 ]; 
