@@ -7,10 +7,10 @@ window.CalculatorConfig = [
         "desc": "Опис нового калькулятора"
     },
     {
-        "id": "schema_novyy_kal_kulyator_71",
-        "title": "Новий калькулятор",
+        "id": "schema_iuluililuiyoly_304",
+        "title": "iuluililuiyoly",
         "icon": "📦",
-        "file": "data/schema_novyy_kal_kulyator_71.js",
+        "file": "data/schema_iuluililuiyoly_304.js",
         "desc": "Опис нового калькулятора"
     }
 ]; 
