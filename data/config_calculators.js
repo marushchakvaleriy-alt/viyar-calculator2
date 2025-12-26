@@ -8,7 +8,7 @@ window.CalculatorConfig = [
     },
     {
         "id": "schema_iuluililuiyoly_304",
-        "title": "iuluililuiyoly",
+        "title": "tryr",
         "icon": "📦",
         "file": "data/schema_iuluililuiyoly_304.js",
         "desc": "Опис нового калькулятора"
