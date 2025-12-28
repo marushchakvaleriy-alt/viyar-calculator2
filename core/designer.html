@@ -1997,6 +1997,16 @@
             // New Card Styles
             // Premium Styles
             document.getElementById('dbTitleSize').value = cfg.siteTitleSize ?? 48;
+
+            // Fix: Load Card Styles
+            document.getElementById('dbCardWidth').value = cfg.cardMinWidth ?? 250;
+            document.getElementById('dbCardPadding').value = cfg.cardPadding ?? 20;
+            document.getElementById('dbCardIconSize').value = cfg.cardIconSize ?? 40;
+            document.getElementById('dbCardTitleSize').value = cfg.cardTitleSize ?? 16;
+            document.getElementById('dbCardTitleColor').value = cfg.cardTitleColor || '#1f2937'; // Default text color
+            document.getElementById('dbCardDescSize').value = cfg.cardDescSize ?? 12;
+            document.getElementById('dbCardDescColor').value = cfg.cardDescColor || '#9ca3af'; // Default dim color
+
             document.getElementById('dbHeaderIllustration').value = cfg.headerIllustration || '';
             document.getElementById('dbCardTitleWeight').value = cfg.cardTitleWeight || '800';
             document.getElementById('dbPlaceholderBg').value = cfg.placeholderBg || '#cbd5e1';
