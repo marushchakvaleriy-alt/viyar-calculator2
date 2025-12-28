@@ -999,9 +999,22 @@ const Engine = {
         expr = expr.replace(/min\(/g, 'Math.min(').replace(/max\(/g, 'Math.max(');
         expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(');
 
+        // Helper function for schema lookups
+        const GET = (fId, pId) => {
+            if (typeof Schema === 'undefined') return 0;
+            const r = Schema.rules[fId];
+            if (!r) return 0;
+            const v = r[pId];
+            if (v === undefined) return 0;
+            if (typeof v === 'object' && v.v !== undefined) return Number(v.v) || 0;
+            if (typeof v === 'string' && v.startsWith('=')) return 0; // Prevent recursion/complexity for now
+            return Number(v) || 0;
+        };
+
         try {
-            // Use a clean scope for evaluation
-            const res = new Function(`return (${expr})`)();
+            // Use a clean scope for evaluation, injecting GET
+            const func = new Function('GET', `return (${expr})`);
+            const res = func(GET);
             return isNaN(res) ? 0 : Number(res);
         } catch (e) {
             console.error("Formula Evaluation Error:", expr, e);

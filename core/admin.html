@@ -581,6 +581,28 @@
             }
         }
 
+        /* [NEW] Formula Modal Specifics - Allow clicking behind */
+        #formulaModal {
+            background: rgba(15, 23, 42, 0.05);
+            /* Almost transparent */
+            backdrop-filter: none;
+            /* REMOVE BLUR so user can see table */
+            pointer-events: none;
+            /* Let clicks pass through background */
+            align-items: flex-start;
+            /* Align to top to show more grid */
+            padding-top: 50px;
+            /* Move higher up */
+        }
+
+        #formulaModal .modal-card {
+            pointer-events: auto;
+            /* Re-enable clicks on the modal itself */
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            /* Stronger shadow to separate */
+            border: 2px solid white;
+        }
+
         .modal-header {
             padding: 24px;
             background: rgba(255, 255, 255, 0.5);
@@ -1551,6 +1573,13 @@
 
 
         function renderMatrix() {
+            let globalRowIndex = 1;
+            let globalColIndex = 0;
+            const getColName = (i) => {
+                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                return i < 26 ? letters[i] : letters[Math.floor(i / 26) - 1] + letters[i % 26];
+            };
+
             const cont = document.getElementById('matrixContainer'); cont.innerHTML = '';
             const table = document.createElement('table'); table.className = 'matrix-table';
             const valid = Schema.processes.filter(p => Schema.categories[p.category]);
@@ -1648,11 +1677,13 @@
                         th.addEventListener('drop', handleDrop);
                         th.addEventListener('dragleave', handleDragLeave);
 
+                        const colLetter = getColName(globalColIndex++);
                         th.innerHTML = `
                             <div style="display:flex; flex-direction:column; align-items:center; gap:2px">
+                                <div style="font-size:9px; color:#3b82f6; font-weight:700" title="Col ${colLetter}\nID: '${p.id}'">${colLetter}</div>
                                 <div style="display:flex; align-items:center; justify-content:center; gap:4px">
                                     <span class="drag-handle" style="opacity:0.2; cursor:grab; font-size:10px">☰</span>
-                                    <span style="cursor:pointer" onclick="openActionModal('RENAME_PROC', '${p.id}')">${p.name}</span>${delBtn}
+                                    <span style="cursor:pointer" onclick="openActionModal('RENAME_PROC', '${p.id}')" title="ID: '${p.id}'">${p.name}</span>${delBtn}
                                 </div>
                             </div>`;
                         h2.appendChild(th);
@@ -1766,12 +1797,14 @@
                     fRow.addEventListener('dragleave', handleDragLeave);
 
                     // Row Label with drag handle
+                    const rowNum = globalRowIndex++;
                     const labelTd = document.createElement('td');
                     labelTd.className = 'col-sticky';
                     labelTd.innerHTML = `
                         <div style="display:flex; align-items:center; gap:6px; width:100%">
+                            <span style="font-size:10px; color:#9db2ce; font-weight:600; min-width:18px; text-align:right" title="Row ${rowNum}\nID: '${f.id}'">${rowNum}</span>
                             <span class="drag-handle" style="opacity:0.2; cursor:grab" title="Перетягнути рядок">☰</span>
-                            <span style="font-size:8px; opacity:0.3; min-width:20px">${f.type.substring(0, 3)}</span>
+                            <span style="font-size:8px; opacity:0.3; min-width:20px" title="ID: '${f.id}'">${f.type.substring(0, 3)}</span>
                             <input class="cell-input" style="text-align:left; font-weight:700; flex:1; width:0; min-width:50px" value="${f.label}" onfocus="this.select()" onchange="updFLab('${f.id}',this.value,${isP})">
                             <button onclick="event.stopPropagation(); openFModal('${f.id}',${isP})" class="gear-btn" title="Налаштування">⚙️</button>
                             <button onclick="event.stopPropagation(); delField('${f.id}',${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; padding:2px 6px; transition:0.2s" onmouseover="this.style.color='#dc2626'; this.style.transform='scale(1.2)'" onmouseout="this.style.color='#ef4444'; this.style.transform='scale(1)'" title="Видалити поле">❌</button>
@@ -2162,6 +2195,32 @@
         } // End renderMatrix
 
         function startSelection(e) {
+            // [NEW] Logic for Formula Reference Picking
+            const formulaModal = document.getElementById('formulaModal');
+            if (formulaModal && formulaModal.style.display === 'flex') {
+                const td = e.target.closest('td');
+                if (td && td.dataset.fieldId && td.dataset.processId) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const fId = td.dataset.fieldId;
+                    const pId = td.dataset.processId;
+                    const refToken = `GET('${fId}', '${pId}')`;
+
+                    const el = document.getElementById('formulaInput');
+                    if (el) {
+                        const start = el.selectionStart;
+                        const end = el.selectionEnd;
+                        const text = el.value;
+                        el.value = text.substring(0, start) + refToken + text.substring(end);
+                        el.focus();
+                        el.selectionStart = el.selectionEnd = start + refToken.length;
+                        updateFormulaPreview(); // Trigger preview update
+                    }
+                    return;
+                }
+            }
+
             // [FIX] Ignore clicks on interactive elements to let them handle their own events
             const isInteractive = e.target.closest('button') ||
                 e.target.closest('.btn-mini') ||
@@ -2368,8 +2427,10 @@
             expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(');
 
             // Safe evaluation via Function constructor
+            const GET = (f, p) => 10; // Mock value for preview
             try {
-                const res = new Function(`return (${expr})`)();
+                const func = new Function('GET', `return (${expr})`);
+                const res = func(GET);
                 return isNaN(res) ? 0 : Number(res.toFixed(2));
             } catch (err) {
                 throw err;
