@@ -255,11 +255,38 @@ const Schema = {
             "title": "Основні параметри"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "id": "f1766946529128",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1766946531138",
+            "groupId": "g_main",
+            "label": "фівіф",
+            "type": "number"
+        },
+        {
+            "id": "f1766946530141",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        }
+    ],
     "products": {
         "groups": [],
         "fields": []
     },
-    "rules": {}
+    "rules": {
+        "f1766946530141": {
+            "pr_c3": 11,
+            "pr_c4": 11
+        },
+        "f1766946529128": {
+            "pr_c5": 11
+        }
+    }
 };
 window.Schema = Schema;
