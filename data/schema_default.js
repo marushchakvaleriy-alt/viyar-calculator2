@@ -278,7 +278,8 @@ const Schema = {
             "id": "f1766947986888",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number"
+            "type": "checkbox",
+            "helpContent": ""
         }
     ],
     "products": {
