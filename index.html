@@ -363,7 +363,7 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <h3>🔐 Вхід для адміністратора</h3>
-            <input type="password" id="adminPass" class="modal-input" placeholder="Пароль">
+            <input type="password" id="1111Pass" class="modal-input" placeholder="Пароль">
             <button class="modal-btn" onclick="checkLogin()">Увійти</button>
             <div style="margin-top:10px; font-size:12px; cursor:pointer; color:#666" onclick="closeLogin()">Скасувати
             </div>
@@ -810,8 +810,8 @@
         }
 
         function checkLogin() {
-            const pass = document.getElementById('adminPass').value;
-            if (pass === 'admin') {
+            const pass = document.getElementById('1111Pass').value;
+            if (pass === '1111') {
                 sessionStorage.setItem('isAdmin', 'true');
                 // clear local storage legacy if exists
                 localStorage.removeItem('isAdmin');
@@ -834,7 +834,7 @@
         }
 
         // Simple Enter key support
-        document.getElementById('adminPass').addEventListener('keypress', function (e) {
+        document.getElementById('1111Pass').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkLogin();
             }
