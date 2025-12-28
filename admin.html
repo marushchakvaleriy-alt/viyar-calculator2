@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Matrix V14 (Separated Totals)</title>
+    <script src="schema.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-sidebar: #0f172a;
+            --sidebar-text: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --glass: rgba(255, 255, 255, 0.8);
+
+            /* Column Colors */
+            --col-total-bg: #f0f9ff;
+            --col-raw-bg: #f8fafc;
+        }
+
+        /* NUCLEAR SELECTION STYLES */
+        .matrix-table td.selected-cell,
+        .matrix-table td.selected-cell input {
+            background-color: #10b981 !important;
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+
+        .matrix-table td.selected-cell {
+            outline: 2px solid #059669 !important;
+            outline-offset: -2px;
+            z-index: 10000 !important;
+        }
+
+        .selected-cell .formula-btn {
+            filter: brightness(0) invert(1) !important;
+            opacity: 1 !important;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+            height: 100vh;
+            display: flex;
+            background: var(--bg-body);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 10px;
+        }
+
+        .nav-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--sidebar-text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 8px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-actions {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .top-bar {
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            z-index: 100;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .matrix-container {
+            flex: 1;
+            overflow: auto;
+            background: #f8fafc;
+            position: relative;
+            min-height: 0;
+        }
+
+        .matrix-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            table-layout: fixed;
+            background: white;
+        }
+
+        .th-cat {
+            position: sticky;
+            top: 0;
+            z-index: 102;
+            background: #fff;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
+            vertical-align: middle;
+            white-space: normal;
+            padding: 8px 12px;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .th-proc {
+            position: sticky;
+            top: 25px;
+            /* Adjust based on h1 height */
+            z-index: 102;
+            background: #fff;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            vertical-align: middle;
+            white-space: normal;
+            padding: 4px;
+            min-width: 25px;
+            word-break: break-word;
+        }
+
+        .col-sticky {
+            position: sticky;
+            left: 0;
+            z-index: 101;
+            background: white !important;
+            border-right: 2px solid #e2e8f0 !important;
+            width: 220px;
+            min-width: 220px;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid #e2e8f0;
+            padding: 2px 4px;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* VERTICAL COLUMN COLORING */
+        .td-total-column {
+            background-color: var(--col-total-bg) !important;
+        }
+
+        .td-raw-column {
+            background-color: var(--col-raw-bg) !important;
+        }
+
+        .th-proc,
+        .th-cat {
+            white-space: normal !important;
+        }
+
+        .group-row {
+            background: #f8fafc !important;
+            font-weight: 800;
+            color: #334155;
+            font-size: 11px;
+            height: 32px;
+        }
+
+        .group-row td {
+            border-top: 2px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .row-field:hover {
+            background-color: #f1f5f9;
+        }
+
+        .cell-input {
+            width: 100%;
+            border: 1px solid transparent;
+            background: transparent;
+            padding: 2px;
+            font-size: 11px;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.15s;
+        }
+
+        .cell-input:focus {
+            background: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
+
+        .has-val {
+            background: #f0fdf4 !important;
+            font-weight: 600;
+        }
+
+        .has-formula {
+            color: #be185d;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .cell-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+        }
+
+        .once-tick {
+            font-size: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 2px;
+            margin-left: -18px;
+            z-index: 5;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            opacity: 0.3;
+            transition: all 0.2s;
+        }
+
+        .once-tick:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .once-tick.active {
+            opacity: 1;
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .once-tick input {
+            cursor: pointer;
+            margin: 0;
+            width: 8px;
+            height: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-save {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #059669;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-mini {
+            padding: 3px 6px;
+            font-size: 10px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #64748b;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: 0.2s;
+        }
+
+        .btn-mini:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: #f0f9ff;
+        }
+
+        .add-row-hint {
+            padding: 10px;
+            text-align: center;
+            color: #64748b;
+            border: 2px dashed #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 8px;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .add-row-hint:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: #eff6ff;
+            transform: translateY(-1px);
+        }
+
+        /* MODALS - GLASSMORPHISM */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-card {
+            background: var(--glass);
+            width: 520px;
+            max-width: 95%;
+            margin: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px) scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-body {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
+
+        .gear-btn {
+            opacity: 0.4;
+            transition: all 0.3s;
+            color: #64748b;
+        }
+
+        .gear-btn:hover {
+            opacity: 1;
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">🛠️ Admin Matrix V14</div>
+        <div class="sidebar-nav" id="sidebarNav"></div>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="quickAddTrigger()">⚡ Додати кнопку Модалки</button>
+            <button class="nav-btn" onclick="openActionModal('ADD_GROUP_CALC')">+ Група
+                (Калк)</button>
+            <button class="nav-btn" onclick="document.getElementById('csvIn').click()" style="margin-top:10px">📂 Імпорт
+                з CSV</button>
+            <button class="nav-btn" onclick="window.location.href='designer.html'"
+                style="margin-top:20px; background: #6366f1; border: 1px solid rgba(255,255,255,0.2)">🎨 ПЕРЕЙТИ В
+                ДИЗАЙНЕР</button>
+            <input type="file" id="csvIn" style="display:none" onchange="handleCSV(this)">
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="top-bar">
+            <div style="font-weight:700; color:var(--text-main); font-size: 14px">ГЛОБАЛЬНА МАТРИЦЯ</div>
+            <div style="display:flex; align-items:center; gap:12px">
+                <div
+                    style="display:flex; align-items:center; background:#f1f5f9; padding:4px; border-radius:8px; gap:4px">
+                    <button class="btn-mini" style="font-size:16px; width:32px; height:32px" onclick="undo()"
+                        title="Назад (Ctrl+Z)">↩️</button>
+                    <button class="btn-mini" style="font-size:16px; width:32px; height:32px" onclick="redo()"
+                        title="Вперед (Ctrl+Y)">↪️</button>
+                </div>
+                <span id="unsavedHint"
+                    style="display:none; color:var(--danger); font-size:12px; font-weight:700; background:#fee2e2; padding:4px 10px; border-radius:20px; border:1px solid #fecaca">⚠️
+                    Є незбережені зміни!</span>
+                <button class="btn"
+                    style="background:#6366f1; color:white; box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);"
+                    onclick="togglePreview(true)">👁️ Тестовий перегляд</button>
+                <button id="mainSaveBtn" class="btn btn-save"
+                    style="box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);" onclick="saveData()">💾 Зберегти
+                    зміни</button>
+            </div>
+        </div>
+        <div class="matrix-container" id="matrixContainer"></div>
+    </div>
+
+    <!-- UNIVERSAL ACTION MODAL (Replaces Prompts) -->
+    <div id="actionModal" class="modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="actionTitle">Дія</h3>
+                <button onclick="closeModal('actionModal')"
+                    style="background:none; border:none; font-size:24px; color:#94a3b8; cursor:pointer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="actionType">
+                <input type="hidden" id="actionId">
+                <input type="hidden" id="actionIsP">
+                <div class="form-group">
+                    <label class="form-label" id="actionLabel">Назва</label>
+                    <input type="text" id="actionInput" class="form-input" placeholder="Введіть значення...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:none; color:#64748b"
+                    onclick="closeModal('actionModal')">Скасувати</button>
+                <button class="btn btn-save" onclick="handleActionSubmit()">Підтвердити</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIELD SETTINGS MODAL -->
+    <div id="fieldModal" class="modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>⚙️ Налаштування Поля</h3>
+                <button onclick="closeModal('fieldModal')"
+                    style="background:none; border:none; font-size:24px; color:#94a3b8; cursor:pointer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="fId">
+                <div class="form-group">
+                    <label class="form-label">Тип Поля</label>
+                    <select id="fType" class="form-input" onchange="toggleFieldSettings(this.value)">
+                        <option value="number">Число / Кількість</option>
+                        <option value="select">Випадаючий список</option>
+                        <option value="checkbox">Галочка (Так/Ні)</option>
+                        <option value="checkbox_qty">Галочка + Кількість</option>
+                        <option value="action_button">Кнопка виклику форми (Модалка)</option>
+                        <option value="select_modal">Список (Так/Ні) + Модалка</option>
+                    </select>
+                </div>
+                <div class="form-group" id="btnTextInput" style="display:none">
+                    <label class="form-label" id="btnTextLabel">Текст на кнопці</label>
+                    <input type="text" id="fDefault" class="form-input" placeholder="+ Додати виріб">
+                </div>
+                <div class="form-group" id="selectLabels" style="display:none">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px">
+                        <div>
+                            <label class="form-label">Мітка "Так"</label>
+                            <input type="text" id="fLabelYes" class="form-input" placeholder="Так">
+                        </div>
+                        <div>
+                            <label class="form-label">Мітка "Ні"</label>
+                            <input type="text" id="fLabelNo" class="form-input" placeholder="Ні">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" id="selectPlaceholder" style="display:none">
+                    <label class="form-label">Текст-заповнювач (-- Виберіть --)</label>
+                    <input type="text" id="fPlaceholder" class="form-input" placeholder="-- Виберіть --">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Підказка (Tooltip)</label>
+                    <textarea id="fHelp" class="form-input" rows="4"
+                        placeholder="Текст, який з'явиться при наведенні на [?]"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:none" onclick="closeModal('fieldModal')">Скасувати</button>
+                <button class="btn btn-save" onclick="saveFModal()">Зберегти</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORMULA EDITOR MODAL -->
+    <div id="formulaModal" class="modal">
+        <div class="modal-card" style="width: 700px;">
+            <div class="modal-header">
+                <h3>📜 Редактор Формули</h3>
+                <button onclick="closeModal('formulaModal')"
+                    style="background:none; border:none; font-size:24px; color:#94a3b8; cursor:pointer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="formFI">
+                <input type="hidden" id="formPI">
+                <input type="hidden" id="formOV">
+                <p id="formulaDesc" style="font-size: 13px; color: #64748b; margin-bottom: 15px;"></p>
+                <div class="form-group">
+                    <label class="form-label">Пришвидшене введення (шаблони)</label>
+                    <select id="formulaTemplate" onchange="applyFormulaTemplate(this.value)">
+                        <option value="">-- Виберіть шаблон --</option>
+                        <option value="linear">Лінійне множення: @qty * X</option>
+                        <option value="maxlimit">Максимальний ліміт: min(@qty, 2) * 15</option>
+                        <option value="base_plus">База + приріст: 10 + (@qty * 0.5)</option>
+                        <option value="tiered">Ступінчаста ціна: @qty <= 5 ? @qty*10 : 5*10+(@qty-5)*8</option>
+                        <option value="fixed">Фіксована + змінна: 50 + (@qty-1)*20</option>
+                        <option value="percent">Відсоток від іншої категорії: @sum_zbira * 0.15</option>
+                    </select>
+                </div>
+                <div class="formula-hints">
+                    <h4>📝 Доступні змінні:</h4>
+                    <code>@qty</code> - кількість (яку ввів користувач)<br>
+                    <code>@raw</code> - сума балів <b>тільки цього рядка</b> (білі клітинки)<br>
+                    <code>@sum</code> - сума рядка × кількість (@raw * @qty)<br>
+                    <code>@sum_konst</code>, <code>@sum_proekt</code>... - <b>ЗАГАЛЬНА</b> сума всього розділу<br>
+                    <code>min(a, b)</code>, <code>max(a, b)</code> - мат. функції
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Формула (починайте з =)</label>
+                    <textarea id="formulaInput" class="form-input formula-box" rows="5"
+                        oninput="updateFormulaPreview()"></textarea>
+                </div>
+                <div class="formula-preview">
+                    <h4>👁️ Попередній перегляд:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Кількість (@qty)</th>
+                                <th>Результат (хв/бали)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="formulaPreviewBody">
+                            <tr>
+                                <td>1</td>
+                                <td id="prev_1">-</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td id="prev_5">-</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td id="prev_10">-</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td id="prev_20">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <details class="formula-help">
+                    <summary>📚 Приклади та пояснення</summary>
+                    <div class="example">
+                        <strong>Ваш кейс (Ящики): Максимум 3 по 5 хв</strong>
+                        <code>=min(@qty, 3) * 5</code>
+                        <p>Якщо 10 ящиків → порахує як 3 * 5 = 15 хв.</p>
+                    </div>
+                    <div class="example">
+                        <strong>За кожну одиницю по 10 балів</strong>
+                        <code>=@qty * 10</code>
+                    </div>
+                </details>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:none" onclick="closeModal('formulaModal')">Закрити</button>
+                <button class="btn btn-save" onclick="saveFormula()">Зберегти формулу</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREVIEW MODAL -->
+    <div id="prodModal" class="modal" onclick="event.target==this && closeModal('prodModal')">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🧪 Тестовий Перегляд Форми</h3>
+                <button onclick="closeModal('prodModal')"
+                    style="background:none; border:none; font-size:24px; color:#94a3b8; cursor:pointer">&times;</button>
+            </div>
+            <div id="prodBody" class="modal-body" style="max-height:60vh; overflow-y:auto"></div>
+            <div class="modal-footer">
+                <button class="btn" style="background:var(--accent); color:white"
+                    onclick="closeModal('prodModal')">Зрозуміло</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const UIState = {
+            collapsed: [],
+            collapsedGroups: [],
+            history: [],
+            redoStack: [],
+            lastSchema: null,
+            selectedCells: [], // {fieldId, processId, optionValue, isModal, mfId}
+            isSelecting: false,
+            isBulkUpdating: false,
+            highlightedCat: null,
+            clearSelectionOnNextUpdate: false
+        };
+
+        window.onkeydown = (e) => {
+            if (e.ctrlKey && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
+            if (e.ctrlKey && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+            if (e.ctrlKey && e.key.toLowerCase() === 's') { e.preventDefault(); saveData(); }
+        };
+
+        const CatAliases = {
+            'cat_construction': 'konst',
+            'cat_design': 'proekt',
+            'cat_assembly': 'zbira',
+            'cat_install': 'montaz'
+        };
+
+        function pushHistory() {
+            const snapshot = JSON.stringify(Schema);
+            if (UIState.lastSchema === snapshot) return;
+            UIState.history.push(UIState.lastSchema);
+            UIState.redoStack = [];
+            UIState.lastSchema = snapshot;
+            if (UIState.history.length > 50) UIState.history.shift();
+            markDirty();
+        }
+
+        function undo() {
+            if (UIState.history.length === 0) return;
+            UIState.redoStack.push(JSON.stringify(Schema));
+            const prev = UIState.history.pop();
+            Object.assign(Schema, JSON.parse(prev));
+            UIState.lastSchema = prev;
+            refresh();
+        }
+
+        function redo() {
+            if (UIState.redoStack.length === 0) return;
+            UIState.history.push(JSON.stringify(Schema));
+            const next = UIState.redoStack.pop();
+            Object.assign(Schema, JSON.parse(next));
+            UIState.lastSchema = next;
+            refresh();
+        }
+
+        document.addEventListener('DOMContentLoaded', refresh);
+
+        function refresh() {
+            if (!UIState.lastSchema) UIState.lastSchema = JSON.stringify(Schema);
+            renderSidebar();
+            renderMatrix();
+        }
+
+        function renderSidebar() {
+            const nav = document.getElementById('sidebarNav'); nav.innerHTML = '';
+            const addNav = (title, items) => {
+                const h = document.createElement('div'); h.style = 'padding:20px 20px 5px; font-size:10px; color:#64748b; font-weight:700; text-transform:uppercase';
+                h.innerText = title; nav.appendChild(h);
+                items.forEach(g => {
+                    const i = document.createElement('div'); i.className = 'nav-item'; i.innerHTML = `📁 ${g.title}`;
+                    i.onclick = () => document.getElementById(`group-${g.id}`).scrollIntoView({ behavior: 'smooth' }); nav.appendChild(i);
+                });
+            };
+            addNav('Калькулятор', Schema.groups);
+            if (Schema.products && Schema.products.groups && Schema.products.groups.length > 0) {
+                addNav('Вироби (Архів)', Schema.products.groups);
+            }
+        }
+
+        // --- NEW CUSTOM MODAL LOGIC ---
+        function openActionModal(type, id = '', isP = false) {
+            document.getElementById('actionType').value = type;
+            document.getElementById('actionId').value = id;
+            document.getElementById('actionIsP').value = isP ? '1' : '0';
+
+            let title = 'Дія';
+            let currentVal = '';
+
+            if (type === 'ADD_CAT') {
+                title = 'Додати новий розділ';
+            } else if (type === 'ADD_PROC') {
+                const cat = Schema.categories[id];
+                title = `Додати Процес до "${cat ? cat.name : id}"`;
+            } else if (type === 'RENAME_CAT') {
+                const cat = Schema.categories[id];
+                title = 'Перейменування розділу';
+                currentVal = cat ? cat.name : '';
+            } else if (type === 'RENAME_PROC') {
+                const proc = Schema.processes.find(p => p.id === id);
+                title = 'Перейменування процесу';
+                currentVal = proc ? proc.name : '';
+            } else if (type === 'RENAME_GROUP') {
+                const group = (isP ? Schema.products.groups : Schema.groups).find(g => g.id === id);
+                title = 'Назва групи';
+                currentVal = group ? group.title : '';
+            } else if (type === 'ADD_GROUP_CALC') {
+                title = 'Додати групу калькулятора';
+            }
+
+            document.getElementById('actionTitle').innerText = title;
+            document.getElementById('actionInput').value = currentVal;
+            document.getElementById('actionModal').style.display = 'flex';
+            setTimeout(() => document.getElementById('actionInput').focus(), 100);
+        }
+
+        function closeModal(mId) { document.getElementById(mId).style.display = 'none'; }
+
+        function handleActionSubmit() {
+            const type = document.getElementById('actionType').value;
+            const val = document.getElementById('actionInput').value.trim();
+            const id = document.getElementById('actionId').value;
+            const isP = document.getElementById('actionIsP').value === '1';
+
+            if (!val) return closeModal('actionModal');
+            pushHistory();
+
+            if (type === 'RENAME_CAT') { Schema.categories[id].name = val; renderMatrix(); }
+            else if (type === 'RENAME_PROC') { Schema.processes.find(x => x.id === id).name = val; renderMatrix(); }
+            else if (type === 'RENAME_GROUP') { (isP ? Schema.products.groups : Schema.groups).find(x => x.id === id).title = val; refresh(); }
+            else if (type === 'ADD_CAT') {
+                const nid = 'cat_' + Date.now();
+                const colors = ['#eff6ff', '#f0fdf4', '#faf5ff', '#fff7ed', '#f0fdfa'];
+                const color = colors[Object.keys(Schema.categories).length % colors.length];
+                Schema.categories[nid] = { name: val, color: color };
+                renderMatrix();
+            }
+            else if (type === 'ADD_PROC') { Schema.processes.push({ id: 'p' + Date.now(), name: val, category: id }); renderMatrix(); }
+            else if (type === 'ADD_GROUP_CALC') { Schema.groups.push({ id: 'g' + Date.now(), title: val }); refresh(); }
+
+            markDirty();
+            closeModal('actionModal');
+        }
+
+
+        let formulaSaveFn = null;
+
+        function renderTotalCell(fieldId, catId, manualSum, optionValue = null, isP = false, isModal = false) {
+            const td = document.createElement('td');
+            td.className = 'td-total td-total-column';
+            td.style.textAlign = 'center';
+            td.style.position = 'relative';
+            td.style.width = '70px';
+            td.style.minWidth = '70px';
+
+            const ruleKey = isModal ? `${fieldId}` : fieldId;
+            const formulaKey = `_total_${catId}`;
+            const rules = isModal ? (Schema.modalFieldRules?.[ruleKey] || {}) : (Schema.rules?.[fieldId] || {});
+            const formula = optionValue ? (rules[optionValue]?.[formulaKey]) : (rules[formulaKey]);
+
+            // Highlighting
+            if (UIState.highlightedCat) {
+                const alias = CatAliases[UIState.highlightedCat];
+                if (alias && String(formula).includes(`@sum_${alias}`)) {
+                    td.classList.add('highlight-connection');
+                }
+            }
+
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'flex';
+            wrapper.style.alignItems = 'center';
+            wrapper.style.justifyContent = 'center';
+            wrapper.style.gap = '4px';
+
+            const span = document.createElement('span');
+            span.style.fontWeight = '700';
+
+            if (formula) {
+                span.innerText = 'f(x)';
+                span.style.color = '#ef4444';
+                td.style.background = 'var(--formula-bg)';
+            } else {
+                span.innerText = manualSum > 0 ? manualSum.toLocaleString() : '0';
+                span.style.color = '#94a3b8';
+                span.style.fontWeight = '400';
+            }
+            wrapper.appendChild(span);
+
+            const btn = document.createElement('button');
+            btn.innerHTML = '🧮';
+            btn.className = 'formula-btn';
+            btn.style.padding = '1px 3px';
+            btn.style.fontSize = '10px';
+            btn.style.opacity = formula ? '1' : '0.2';
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                const title = `Сума категорії "${Schema.categories[catId]?.name || catId}"`;
+                openFormulaModal(title, formula, (v) => {
+                    pushHistory();
+                    const rSet = isModal ? (Schema.modalFieldRules || (Schema.modalFieldRules = {})) : (Schema.rules || (Schema.rules = {}));
+                    const rPath = isModal ? (rSet[ruleKey] || (rSet[ruleKey] = {})) : (rSet[fieldId] || (rSet[fieldId] = {}));
+                    if (optionValue) {
+                        const oPath = rPath[optionValue] || (rPath[optionValue] = {});
+                        oPath[formulaKey] = v;
+                    } else rPath[formulaKey] = v;
+                    renderMatrix();
+                });
+            };
+            wrapper.appendChild(btn);
+            td.appendChild(wrapper);
+            return td;
+        }
+
+        function renderCellInput(val, onUpdate, onFormulaOpen, onToggleOnce) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'cell-wrapper';
+
+            let dVal = val;
+            let isOnce = false;
+            if (val && typeof val === 'object' && val.v !== undefined) {
+                dVal = val.v;
+                isOnce = !!val.once;
+            }
+
+            const inp = document.createElement('input');
+            inp.className = 'cell-input';
+            inp.value = dVal || '';
+            const isF = String(dVal).startsWith('=');
+            if (isF) inp.classList.add('has-formula');
+            else if (dVal) inp.classList.add('has-val');
+
+            // Highlighting
+            if (UIState.highlightedCat && isF) {
+                const alias = CatAliases[UIState.highlightedCat];
+                if (alias && String(dVal).includes(`@sum_${alias}`)) {
+                    inp.classList.add('highlight-connection');
+                }
+            }
+
+            inp.onfocus = (e) => {
+                e.target.select();
+            };
+            inp.onchange = (e) => onUpdate(e.target.value);
+            inp.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    UIState.clearSelectionOnNextUpdate = true;
+                    e.target.blur();
+                }
+            };
+
+            wrapper.appendChild(inp);
+
+            if (onToggleOnce && dVal && !isF && !isNaN(dVal)) {
+                const tick = document.createElement('div');
+                tick.className = 'once-tick' + (isOnce ? ' active' : '');
+                tick.title = isOnce ? 'Враховується 1 раз (фіксовано)' : 'Множиться на кількість';
+                tick.innerHTML = `<input type="checkbox" ${isOnce ? 'checked' : ''} tabindex="-1"><span>1x</span>`;
+                tick.onclick = (e) => { e.stopPropagation(); onToggleOnce(!isOnce); };
+                wrapper.appendChild(tick);
+            }
+
+            return wrapper;
+        }
+
+        function quickAddTrigger() {
+            if (!Schema.groups || Schema.groups.length === 0) return alert('Спочатку додайте групу в калькуляторі');
+            const newId = 'f_trig_' + Date.now();
+            Schema.fields.push({
+                id: newId,
+                groupId: Schema.groups[0].id,
+                label: 'Виклик форми',
+                type: 'action_button',
+                default: '+ Додати виріб'
+            });
+            console.log('QuickAdded field:', newId);
+            markDirty();
+            renderMatrix();
+            alert('⚡ Кнопка додана у першу групу калькулятора!');
+        }
+
+        // Modal Fields Management
+        function addModalField(buttonId, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+
+            if (!field) {
+                console.error('Field not found:', buttonId);
+                alert('Помилка: Поле не знайдено');
+                return;
+            }
+            if (!field.modalFields) field.modalFields = [];
+
+            const typeChoice = prompt('Виберіть тип поля для модалки:\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - ✅ Чекбокс (checkbox)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - 📑 Множинний вибір (multiselect)', '1');
+
+            const typeMap = { '1': 'number', '2': 'select', '3': 'checkbox', '4': 'checkbox_qty', '5': 'multiselect' };
+            const selectedType = typeMap[typeChoice];
+            if (!selectedType) return;
+
+            const label = prompt('Назва поля у модалці:', 'Нове поле');
+            if (!label) return;
+
+            const newField = {
+                id: 'mf_' + Date.now(),
+                label: label,
+                type: selectedType,
+                default: selectedType === 'number' ? 0 : (selectedType === 'checkbox_qty' ? 'Додати' : '')
+            };
+
+            if (selectedType === 'select') {
+                newField.options = [
+                    { value: 'opt1', label: 'Варіант 1' },
+                    { value: 'opt2', label: 'Варіант 2' }
+                ];
+            }
+
+            field.modalFields.push(newField);
+            markDirty();
+            renderMatrix();
+        }
+
+        function delModalField(buttonId, idx, isP) {
+            console.log('Deleting modal field:', buttonId, 'at index:', idx, 'isProduct:', isP);
+            if (!confirm('Видалити це полем з модалки?')) return;
+
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+
+            if (field && field.modalFields) {
+                field.modalFields.splice(idx, 1);
+                markDirty();
+                renderMatrix();
+            }
+        }
+
+        function delCat(id) { if (confirm('Видалити цей розділ зі всіма процесами?')) { Schema.processes = Schema.processes.filter(p => p.category !== id); delete Schema.categories[id]; renderMatrix(); } }
+        function delProc(id) { if (confirm('Видалити цей процес?')) { Schema.processes = Schema.processes.filter(p => p.id !== id); renderMatrix(); } }
+
+        // Drag and Drop functionality
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation();
+            if (draggedElement === this) return false;
+
+            this.classList.remove('drag-over');
+
+            const draggedId = draggedElement.dataset.groupId || draggedElement.dataset.fieldId;
+            const targetId = this.dataset.groupId || this.dataset.fieldId;
+            const isProduct = draggedElement.dataset.isProduct === 'true';
+
+            if (draggedElement.dataset.groupId && this.dataset.groupId) {
+                // Reordering groups
+                reorderGroups(draggedId, targetId, isProduct);
+            } else if (draggedElement.dataset.fieldId && this.dataset.fieldId) {
+                // Reordering fields
+                reorderFields(draggedId, targetId, isProduct);
+            }
+
+            return false;
+        }
+
+        function reorderGroups(draggedId, targetId, isProduct) {
+            const groups = isProduct ? Schema.products.groups : Schema.groups;
+            const draggedIndex = groups.findIndex(g => g.id === draggedId);
+            const targetIndex = groups.findIndex(g => g.id === targetId);
+
+            if (draggedIndex === -1 || targetIndex === -1) return;
+
+            const [removed] = groups.splice(draggedIndex, 1);
+            groups.splice(targetIndex, 0, removed);
+
+            markDirty();
+            renderMatrix();
+        }
+
+        function reorderFields(draggedId, targetId, isProduct) {
+            const fields = isProduct ? Schema.products.fields : Schema.fields;
+            const draggedIndex = fields.findIndex(f => f.id === draggedId);
+            const targetIndex = fields.findIndex(f => f.id === targetId);
+
+            if (draggedIndex === -1 || targetIndex === -1) return;
+
+            const [removed] = fields.splice(draggedIndex, 1);
+            fields.splice(targetIndex, 0, removed);
+
+            markDirty();
+            renderMatrix();
+        }
+
+
+        function renderMatrix() {
+            const cont = document.getElementById('matrixContainer'); cont.innerHTML = '';
+            const table = document.createElement('table'); table.className = 'matrix-table';
+            const valid = Schema.processes.filter(p => Schema.categories[p.category]);
+
+            // CALCULATE TOTALS
+            const procTotals = {};
+            const safeAdd = (pid, v) => {
+                const n = parseFloat(v);
+                if (!isNaN(n)) procTotals[pid] = (procTotals[pid] || 0) + n;
+            };
+            (Schema.fields || []).forEach(f => {
+                if (['number', 'checkbox', 'checkbox_qty'].includes(f.type)) {
+                    const r = Schema.rules[f.id];
+                    if (r) Object.keys(r).forEach(pid => { if (typeof r[pid] === 'number' || (typeof r[pid] === 'string' && !r[pid].startsWith('='))) safeAdd(pid, r[pid]); });
+                } else if ((f.type === 'action_button' || f.type === 'select_modal') && f.modalFields) {
+                    f.modalFields.forEach(mf => {
+                        if (['number', 'checkbox', 'checkbox_qty'].includes(mf.type)) {
+                            const key = `${f.id}_${mf.id}`;
+                            const r = Schema.modalFieldRules ? Schema.modalFieldRules[key] : null;
+                            if (r) Object.keys(r).forEach(pid => { if (typeof r[pid] === 'number' || (typeof r[pid] === 'string' && !r[pid].startsWith('='))) safeAdd(pid, r[pid]); });
+                        }
+                    });
+                }
+            });
+
+            let totalCols = 0;
+            Object.keys(Schema.categories).forEach(cid => {
+                if (UIState.collapsed.includes(cid)) totalCols++;
+                else {
+                    const ps = valid.filter(p => p.category === cid);
+                    totalCols += Math.max(1, ps.length) + 2; // +1 for Sigma, +1 for Raw
+                }
+            });
+
+            // HEADER 1
+            const h1 = document.createElement('tr'); h1.className = 'sticky-h1';
+            const s1 = document.createElement('th'); s1.className = 'col-sticky th-cat'; s1.innerText = 'Параметри / Процеси'; h1.appendChild(s1);
+            Object.keys(Schema.categories).forEach(cid => {
+                const isC = UIState.collapsed.includes(cid); const ps = valid.filter(p => p.category === cid);
+                // ColSpan: if open, processes + 2 for (final/formula + raw sum); if collapsed, 1 for sum
+                const th = document.createElement('th'); th.className = 'th-cat'; th.colSpan = isC ? 1 : Math.max(1, ps.length) + 2;
+
+                const isHighlighted = UIState.highlightedCat === cid;
+                th.style.background = isHighlighted ? '#fde047' : (Schema.categories[cid].color || '#f1f5f9');
+                th.style.borderTop = isHighlighted ? '4px solid #fde047' : 'none';
+                th.style.boxShadow = isHighlighted ? '0 0 10px rgba(250, 204, 21, 0.5)' : 'none';
+
+                th.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; gap:8px">
+                    <button class="btn-mini" onclick="event.stopPropagation(); toggleCat('${cid}')">${isC ? '[+]' : '[-]'} </button>
+                    <span style="cursor:pointer; font-weight:700" onclick="event.stopPropagation(); highlightCat('${cid}')">${Schema.categories[cid].name}</span>
+                    ${!isC ? `<button class="btn-mini" onclick="event.stopPropagation(); openActionModal('ADD_PROC', '${cid}')">+</button>` : ''}
+                    <button class="btn-mini" onclick="event.stopPropagation(); delCat('${cid}')" style="color:red">&times;</button>
+                </div>`;
+                h1.appendChild(th);
+            });
+            const abTh = document.createElement('th'); abTh.className = 'th-cat'; abTh.innerHTML = `<button class="btn-mini" onclick="openActionModal('ADD_CAT')">+ РОЗДІЛ</button>`; h1.appendChild(abTh);
+            table.appendChild(h1);
+
+            // HEADER 2
+            const h2 = document.createElement('tr'); h2.className = 'sticky-h2';
+            const s2 = document.createElement('th'); s2.className = 'col-sticky th-proc'; s2.innerText = 'Назва дії'; h2.appendChild(s2);
+            Object.keys(Schema.categories).forEach(cid => {
+                const isC = UIState.collapsed.includes(cid); const ps = valid.filter(p => p.category === cid);
+                if (isC) {
+                    // Collapsed: Show Sum Header
+                    const th = document.createElement('th'); th.className = 'th-proc td-total-column'; th.style.width = '70px'; th.innerText = 'Σ'; h2.appendChild(th);
+                }
+                else if (ps.length === 0) {
+                    // Empty category: Total then Placeholder
+                    const thTotal = document.createElement('th'); thTotal.className = 'th-proc td-total-column'; thTotal.innerText = 'Σ'; thTotal.style.width = '70px'; thTotal.style.minWidth = '70px'; h2.appendChild(thTotal);
+                    const thRaw = document.createElement('th'); thRaw.className = 'th-proc td-raw-column'; thRaw.innerText = 'Raw'; thRaw.style.width = '70px'; thRaw.style.minWidth = '70px'; h2.appendChild(thRaw);
+                    h2.appendChild(Object.assign(document.createElement('th'), { className: 'th-proc', innerHTML: '<div style="text-align:center; opacity:0.3">(пусто)</div>' }));
+                }
+                else {
+                    // Category Sum Headers
+                    const thTotal = document.createElement('th'); thTotal.className = 'th-proc td-total-column'; thTotal.innerText = 'Σ'; thTotal.title = 'Підсумкове значення (з формулою)';
+                    thTotal.style.width = '70px'; thTotal.style.minWidth = '70px';
+                    h2.appendChild(thTotal);
+
+                    const thRaw = document.createElement('th'); thRaw.className = 'th-proc td-raw-column'; thRaw.innerText = 'Raw'; thRaw.title = 'Сума процесів у рядку';
+                    thRaw.style.width = '70px'; thRaw.style.minWidth = '70px';
+                    h2.appendChild(thRaw);
+
+                    ps.forEach(p => {
+                        const isCore = ['pr_design', 'pr_construction', 'pr_assembly', 'pr_install'].includes(p.id);
+                        const delBtn = isCore ? '' : `<button class="btn-mini" onclick="delProc('${p.id}')" style="opacity:0.2;border:none">&times;</button>`;
+                        const th = document.createElement('th'); th.className = 'th-proc';
+                        th.style.width = '60px'; th.style.minWidth = '60px';
+                        th.innerHTML = `
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:2px">
+                                <div style="display:flex; align-items:center; justify-content:center; gap:4px">
+                                    <span style="cursor:pointer" onclick="openActionModal('RENAME_PROC', '${p.id}')">${p.name}</span>${delBtn}
+                                </div>
+                            </div>`;
+                        h2.appendChild(th);
+                    });
+                }
+            });
+            // Removed Global Total Header
+            h2.appendChild(document.createElement('th')); table.appendChild(h2);
+
+            const renderGroup = (g, fSrc, isP) => {
+                const grRow = document.createElement('tr');
+                grRow.className = 'group-row draggable-row';
+                grRow.id = `group-${g.id}`;
+                grRow.draggable = true;
+                grRow.dataset.groupId = g.id;
+                grRow.dataset.isProduct = isP;
+
+                // Group Name Cell
+                const nameTd = document.createElement('td');
+                nameTd.className = 'col-sticky';
+                const isCollapsed = UIState.collapsedGroups.includes(g.id);
+                nameTd.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px">
+                        <span class="drag-handle" draggable="true" ondragstart="handleRowDragStart(event)" title="Перетягнути групу" style="opacity:0.2; cursor:grab">☰</span>
+                        <span class="collapse-btn" onclick="toggleGroup('${g.id}')">${isCollapsed ? '▶' : '▼'}</span>
+                        <span style="cursor:pointer; flex:1" onclick="openActionModal('RENAME_GROUP', '${g.id}', ${isP})">${g.title}</span>
+                    </div>
+                `;
+                grRow.appendChild(nameTd);
+
+                // Group Total Calculation PER CATEGORY
+                Object.keys(Schema.categories).forEach(cid => {
+                    const isC = UIState.collapsed.includes(cid);
+                    const ps = valid.filter(p => p.category === cid);
+
+                    // Calculate Sum for this Category
+                    let catSum = 0;
+                    // iterate all processes in category to get total sum
+                    valid.filter(p => p.category === cid).forEach(p => {
+                        fSrc.filter(f => f.groupId === g.id).forEach(f => {
+                            let val = 0;
+                            if (['number', 'checkbox', 'checkbox_qty'].includes(f.type)) {
+                                val = getVal(f.id, p.id);
+                            } else if ((f.type === 'action_button' || f.type === 'select_modal') && f.modalFields) {
+                                f.modalFields.forEach(mf => {
+                                    if (['number', 'checkbox', 'checkbox_qty'].includes(mf.type)) {
+                                        let v = getModalFieldVal(f.id, mf.id, p.id);
+                                        val += Number(v) || 0;
+                                    }
+                                });
+                            }
+                            if (typeof val === 'number') catSum += val;
+                            else if (typeof val === 'string' && !val.startsWith('=')) catSum += Number(val) || 0;
+                        });
+                    });
+
+                    if (isC) {
+                        // Collapsed: Empty sum
+                        grRow.appendChild(Object.assign(document.createElement('td'), { style: 'background:#f8fafc' }));
+                    }
+                    else if (ps.length === 0) {
+                        // Empty Cat: Total then Raw then Placeholder
+                        grRow.appendChild(Object.assign(document.createElement('td'), { style: 'background:#fef2f2' })); // Σ
+                        grRow.appendChild(Object.assign(document.createElement('td'), { style: 'background:#f8fafc' })); // Raw
+                        grRow.appendChild(document.createElement('td'));
+                    }
+                    else {
+                        // Open: Empty Total and Raw for Group Rows
+                        grRow.appendChild(Object.assign(document.createElement('td'), { style: 'background:#fff1f2' })); // Σ
+                        grRow.appendChild(Object.assign(document.createElement('td'), { style: 'background:#f8fafc' })); // Raw
+
+                        // Then Processes
+                        ps.forEach(p => {
+                            const td = document.createElement('td');
+                            td.innerHTML = '';
+                            grRow.appendChild(td);
+                        });
+                    }
+                });
+
+                // Delete Button Cell
+                const delTd = document.createElement('td');
+                delTd.innerHTML = `<button onclick="delGroup('${g.id}',${isP})" style="background:none; border:none; color:var(--danger); cursor:pointer">🗑</button>`;
+                grRow.appendChild(delTd);
+
+                // Drag events for groups
+                grRow.onmouseenter = () => grRow.querySelector('.drag-handle').style.opacity = '1';
+                grRow.onmouseleave = () => grRow.querySelector('.drag-handle').style.opacity = '0.1';
+
+                table.appendChild(grRow);
+
+                if (isCollapsed) return;
+
+                fSrc.filter(f => f.groupId === g.id).forEach(f => {
+                    const fRow = document.createElement('tr');
+                    fRow.className = 'row-field draggable-row';
+                    fRow.dataset.fieldId = f.id;
+                    fRow.dataset.isProduct = isP;
+
+                    fRow.addEventListener('dragover', handleDragOver);
+                    fRow.addEventListener('drop', handleDrop);
+                    fRow.addEventListener('dragleave', handleDragLeave);
+
+                    // Row Label with drag handle
+                    const labelTd = document.createElement('td');
+                    labelTd.className = 'col-sticky';
+                    labelTd.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:6px; width:100%">
+                            <span class="drag-handle" draggable="true" ondragstart="handleRowDragStart(event)" title="Перетягнути рядок">☰</span>
+                            <span style="font-size:8px; opacity:0.3; min-width:20px">${f.type.substring(0, 3)}</span>
+                            <input class="cell-input" style="text-align:left; font-weight:700; flex:1; width:0; min-width:50px" value="${f.label}" onfocus="this.select()" onchange="updFLab('${f.id}',this.value,${isP})">
+                            <button onclick="event.stopPropagation(); openFModal('${f.id}',${isP})" class="gear-btn" title="Налаштування">⚙️</button>
+                            <button onclick="event.stopPropagation(); delField('${f.id}',${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; padding:2px 6px; transition:0.2s" onmouseover="this.style.color='#dc2626'; this.style.transform='scale(1.2)'" onmouseout="this.style.color='#ef4444'; this.style.transform='scale(1)'" title="Видалити поле">❌</button>
+                        </div>`;
+                    fRow.appendChild(labelTd);
+
+                    Object.keys(Schema.categories).forEach(cid => {
+                        const isC = UIState.collapsed.includes(cid); const ps = valid.filter(p => p.category === cid);
+
+                        // Calculate sum for this field in this category
+                        let catSum = 0;
+                        valid.filter(p => p.category === cid).forEach(p => {
+                            let val = 0;
+                            if (['number', 'checkbox', 'checkbox_qty'].includes(f.type)) {
+                                val = getVal(f.id, p.id);
+                            } else if ((f.type === 'action_button' || f.type === 'select_modal') && f.modalFields) {
+                                f.modalFields.forEach(mf => {
+                                    if (['number', 'checkbox', 'checkbox_qty'].includes(mf.type)) {
+                                        let v = getModalFieldVal(f.id, mf.id, p.id);
+                                        val += Number(v) || 0;
+                                    }
+                                });
+                            }
+                            if (typeof val === 'number') catSum += val;
+                            else if (typeof val === 'string' && !val.startsWith('=')) catSum += Number(val) || 0;
+                        });
+
+                        if (isC) {
+                            // Collapsed: Show only Total
+                            const td = document.createElement('td');
+                            td.className = 'td-total-column'; td.style.textAlign = 'center'; td.style.color = '#3b82f6'; td.style.fontWeight = '600';
+                            td.innerText = catSum > 0 ? catSum.toLocaleString() : '';
+                            fRow.appendChild(td);
+                        } else {
+                            // Open Category
+
+                            // 1. Total (Formula) Cell
+                            const tdTotal = renderTotalCell(f.id, cid, catSum, null, isP);
+                            fRow.appendChild(tdTotal);
+
+                            // 2. Raw Sum Cell
+                            const tdRaw = document.createElement('td');
+                            tdRaw.className = 'td-raw-column';
+                            tdRaw.style.textAlign = 'center';
+                            tdRaw.style.fontSize = '10px';
+                            tdRaw.style.color = '#64748b';
+                            tdRaw.innerText = catSum > 0 ? catSum.toLocaleString() : '0';
+                            fRow.appendChild(tdRaw);
+
+                            if (ps.length === 0) {
+                                // Placeholder for empty category
+                                fRow.appendChild(Object.assign(document.createElement('td'), { innerHTML: '' }));
+                            } else {
+                                // Then Processes
+                                ps.forEach(p => {
+                                    const td = document.createElement('td');
+                                    td.dataset.fieldId = f.id;
+                                    td.dataset.processId = p.id;
+                                    td.dataset.isModal = 'false';
+
+                                    const rawVal = (Schema.rules && Schema.rules[f.id] && Schema.rules[f.id][p.id]);
+                                    if (f.type === 'action_button' || f.type === 'select_modal') {
+                                        td.innerHTML = `<div style="text-align:center; color:#ccc; font-size:10px">—</div>`;
+                                    } else if (f.type === 'select') {
+                                        td.innerHTML = `<div style="text-align:center; color:#ccc; font-size:10px">ABC</div>`;
+                                    } else {
+                                        const cellInp = renderCellInput(
+                                            rawVal,
+                                            (newVal) => updRule(f.id, p.id, null, newVal),
+                                            () => openFormulaModal(`Поле: "${f.label}" | Процес: "${p.name}"`, rawVal, (newVal) => updRule(f.id, p.id, null, newVal)),
+                                            (isOnce) => updRule(f.id, p.id, null, isOnce, true)
+                                        );
+                                        td.appendChild(cellInp);
+                                    }
+
+                                    // Ensure selection highlight even for non-input cells
+                                    const isSel = UIState.selectedCells.some(c => c.fId === f.id && c.pId === p.id && !c.oV && !c.mfId);
+                                    if (isSel) {
+                                        td.classList.add('selected-cell');
+                                        td.style.backgroundColor = '#10b981';
+                                        td.style.color = '#ffffff';
+                                        const inp = td.querySelector('input');
+                                        if (inp) inp.style.color = '#ffffff';
+                                    }
+
+                                    fRow.appendChild(td);
+                                });
+                            }
+                        }
+                    });
+
+                    // NO Global Total Cell
+                    fRow.appendChild(document.createElement('td'));
+                    table.appendChild(fRow);
+
+                    if (f.type === 'select') {
+                        if (f.options) {
+                            f.options.forEach(o => {
+                                const oRow = document.createElement('tr'); const olc = document.createElement('td'); olc.className = 'col-sticky'; olc.style.paddingLeft = '30px'; olc.style.background = '#fff';
+                                olc.innerHTML = `∟ <input class="cell-input" style="width:auto; text-align:left" value="${o.label}" onfocus="this.select()" onchange="updOLab('${f.id}','${o.value}',this.value,${isP})"><button onclick="delOpt('${f.id}','${o.value}',${isP})" style="opacity:0.2; background:none; border:none">&times;</button>`;
+                                oRow.appendChild(olc);
+                                Object.keys(Schema.categories).forEach(cid => {
+                                    const isC = UIState.collapsed.includes(cid); const ps = valid.filter(p => p.category === cid);
+
+                                    // Calculate Total for this option in this category
+                                    let catSum = 0;
+                                    valid.filter(p => p.category === cid).forEach(p => {
+                                        const val = getVal(f.id, p.id, o.value);
+                                        if (typeof val === 'number') catSum += val;
+                                        else if (typeof val === 'string' && !val.startsWith('=')) catSum += Number(val) || 0;
+                                    });
+
+                                    if (isC) {
+                                        // Collapsed: Show only Total
+                                        const td = document.createElement('td');
+                                        td.style.background = '#f8fafc';
+                                        td.style.textAlign = 'center';
+                                        td.style.color = '#3b82f6';
+                                        td.style.fontWeight = '600';
+                                        td.innerText = catSum > 0 ? catSum.toLocaleString() : '';
+                                        oRow.appendChild(td);
+                                    } else if (ps.length === 0) {
+                                        // Empty Cat: Total then Raw then Placeholder
+                                        oRow.appendChild(document.createElement('td'));
+                                        oRow.appendChild(document.createElement('td'));
+                                        oRow.appendChild(document.createElement('td'));
+                                    } else {
+                                        // Open: Total FIRST, then Raw, then processes
+                                        const tdTotal = renderTotalCell(f.id, cid, catSum, o.value, isP);
+                                        oRow.appendChild(tdTotal);
+
+                                        const tdRaw = document.createElement('td');
+                                        tdRaw.style.background = '#f8fafc';
+                                        tdRaw.style.textAlign = 'center';
+                                        tdRaw.style.fontSize = '10px';
+                                        tdRaw.style.color = '#64748b';
+                                        tdRaw.innerText = catSum > 0 ? catSum.toLocaleString() : '0';
+                                        oRow.appendChild(tdRaw);
+
+                                        ps.forEach(p => {
+                                            const td = document.createElement('td');
+                                            td.dataset.fieldId = f.id;
+                                            td.dataset.processId = p.id;
+                                            td.dataset.optionValue = o.value;
+                                            td.dataset.isModal = 'false';
+
+                                            const isSel = UIState.selectedCells.some(c => c.fId === f.id && c.pId === p.id && c.oV === o.value && !c.mfId);
+                                            if (isSel) {
+                                                td.classList.add('selected-cell');
+                                                td.style.backgroundColor = '#10b981';
+                                                td.style.color = '#ffffff';
+                                                const inp = td.querySelector('input');
+                                                if (inp) inp.style.color = '#ffffff';
+                                            }
+
+                                            const val = getVal(f.id, p.id, o.value);
+                                            const cellInp = renderCellInput(
+                                                val,
+                                                (newVal) => updRule(f.id, p.id, o.value, newVal),
+                                                () => openFormulaModal(`Поле: "${f.label}" | Варіант: "${o.label}" | Процес: "${p.name}"`, val, (newVal) => updRule(f.id, p.id, o.value, newVal))
+                                            );
+                                            td.appendChild(cellInp);
+                                            oRow.appendChild(td);
+                                        });
+                                    }
+                                });
+                                oRow.appendChild(document.createElement('td')); table.appendChild(oRow);
+                            });
+                        }
+                        const optAdd = document.createElement('tr');
+                        optAdd.innerHTML = `<td class="col-sticky" style="padding-left:45px"><div class="add-row-hint" onclick="addOpt('${f.id}',${isP})">+ Додати варіант вибору</div></td><td colspan="${totalCols}"></td><td></td>`;
+                        table.appendChild(optAdd);
+                    }
+
+
+                    // Add modalFields as full rows with process columns
+                    if (f.type === 'action_button' || f.type === 'select_modal') {
+                        // Header row for modal fields section
+                        const modalHeaderRow = document.createElement('tr');
+                        const modalHeaderTd = document.createElement('td');
+                        modalHeaderTd.className = 'col-sticky';
+                        modalHeaderTd.colSpan = totalCols + 2;
+                        modalHeaderTd.style.background = '#f0f9ff';
+                        modalHeaderTd.style.padding = '8px 20px';
+                        modalHeaderTd.style.borderTop = '2px solid #0ea5e9';
+                        modalHeaderTd.innerHTML = `<div style="font-size:11px; font-weight:600; color:#0284c7">📊 ПОЛЯ МОДАЛКИ для "${f.label || f.default}"</div>`;
+                        modalHeaderRow.appendChild(modalHeaderTd);
+                        table.appendChild(modalHeaderRow);
+
+                        // Render each modal field if they exist
+                        if (f.modalFields && f.modalFields.length > 0) {
+                            f.modalFields.forEach((mf, mfIdx) => {
+                                const mfRow = document.createElement('tr');
+                                mfRow.style.background = '#fff';
+
+                                const mfLc = document.createElement('td');
+                                mfLc.className = 'col-sticky';
+                                mfLc.style.paddingLeft = '40px';
+                                mfLc.style.background = '#fff';
+                                const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'checkbox_qty': '☑️', 'checkbox': '✅' }[mf.type] || '🎯';
+                                mfLc.innerHTML = `<div style="display:flex; align-items:center; gap:6px; width:100%"><span style="font-size:10px; opacity:0.6; cursor:pointer" onclick="changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" title="Змінити тип поля">${typeIcon}</span><input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})"><button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button></div>`;
+                                mfRow.appendChild(mfLc);
+
+                                // Add process columns for modal field (WITH TOTALS)
+                                Object.keys(Schema.categories).forEach(cid => {
+                                    const isC = UIState.collapsed.includes(cid);
+                                    const ps = valid.filter(p => p.category === cid);
+
+                                    // Calculate Total for this Modal Field in this Category
+                                    let catSum = 0;
+                                    valid.filter(p => p.category === cid).forEach(p => {
+                                        const val = getModalFieldVal(f.id, mf.id, p.id);
+                                        if (typeof val === 'number') catSum += val;
+                                        else if (typeof val === 'string' && !val.startsWith('=')) catSum += Number(val) || 0;
+                                    });
+
+                                    if (isC) {
+                                        // Collapsed: Show only Total
+                                        const td = document.createElement('td');
+                                        td.style.background = '#f8fafc';
+                                        td.style.textAlign = 'center';
+                                        td.style.color = '#3b82f6';
+                                        td.style.fontWeight = '600';
+                                        td.innerText = catSum > 0 ? catSum.toLocaleString() : '';
+                                        mfRow.appendChild(td);
+                                    } else {
+                                        // Open Category Summary
+                                        const tdTotal = renderTotalCell(f.id, cid, catSum, null, isP, true); // true for isModal
+                                        mfRow.appendChild(tdTotal);
+
+                                        const tdRaw = document.createElement('td');
+                                        tdRaw.style.background = '#f8fafc';
+                                        tdRaw.style.textAlign = 'center';
+                                        tdRaw.style.fontSize = '10px';
+                                        tdRaw.style.color = '#64748b';
+                                        tdRaw.innerText = catSum > 0 ? catSum.toLocaleString() : '0';
+                                        mfRow.appendChild(tdRaw);
+
+                                        if (ps.length === 0) {
+                                            mfRow.appendChild(Object.assign(document.createElement('td'), { innerHTML: '' }));
+                                        } else {
+                                            // Then Process inputs
+                                            ps.forEach(p => {
+                                                const td = document.createElement('td');
+                                                td.dataset.fieldId = f.id;
+                                                td.dataset.mfId = mf.id;
+                                                td.dataset.processId = p.id;
+                                                td.dataset.isModal = 'true';
+
+                                                const isSel = UIState.selectedCells.some(c => c.fId === f.id && c.pId === p.id && c.mfId === mf.id);
+                                                if (isSel) {
+                                                    td.classList.add('selected-cell');
+                                                    td.style.backgroundColor = '#10b981';
+                                                    td.style.color = '#ffffff';
+                                                    const inp = td.querySelector('input');
+                                                    if (inp) inp.style.color = '#ffffff';
+                                                }
+
+                                                const val = getModalFieldVal(f.id, mf.id, p.id);
+                                                const cellInp = renderCellInput(
+                                                    val,
+                                                    (newVal) => updModalFieldRule(f.id, mf.id, p.id, newVal, isP),
+                                                    () => openFormulaModal(`Поле модалки: "${mf.label}" | Процес: "${p.name}"`, val, (newVal) => updModalFieldRule(f.id, mf.id, p.id, newVal, isP)),
+                                                    (isOnce) => updModalFieldRule(f.id, mf.id, p.id, isOnce, isP, true)
+                                                );
+                                                td.appendChild(cellInp);
+                                                mfRow.appendChild(td);
+                                            });
+                                        }
+                                    }
+                                });
+
+                                mfRow.appendChild(document.createElement('td'));
+                                table.appendChild(mfRow);
+
+                                // Add option rows for select and multiselect type modal fields
+                                if (mf.type === 'select' || mf.type === 'multiselect') {
+                                    if (mf.options) {
+                                        mf.options.forEach((opt, optIdx) => {
+                                            const optRow = document.createElement('tr');
+                                            optRow.style.background = '#fafbff';
+                                            const optLc = document.createElement('td');
+                                            optLc.className = 'col-sticky';
+                                            optLc.style.paddingLeft = '60px';
+                                            optLc.style.background = '#fafafa';
+                                            optLc.innerHTML = `∟ <input class="cell-input" style="width:auto; text-align:left" value="${opt.label}" onfocus="this.select()" onchange="updModalFieldOptionLabel('${f.id}', ${mfIdx}, '${opt.value}', this.value, ${isP})"><button onclick="delModalFieldOption('${f.id}', ${mfIdx}, '${opt.value}', ${isP})" style="opacity:0.2; background:none; border:none; cursor:pointer">&times;</button>`;
+                                            optRow.appendChild(optLc);
+
+                                            // Add process columns for option (WITH TOTALS)
+                                            Object.keys(Schema.categories).forEach(cid => {
+                                                const isC = UIState.collapsed.includes(cid);
+                                                const ps = valid.filter(p => p.category === cid);
+
+                                                // Calculate Total for this Option
+                                                let catSum = 0;
+                                                valid.filter(p => p.category === cid).forEach(p => {
+                                                    const val = getModalFieldOptionVal(f.id, mf.id, opt.value, p.id);
+                                                    if (typeof val === 'number') catSum += val;
+                                                    else if (typeof val === 'string' && !val.startsWith('=')) catSum += Number(val) || 0;
+                                                });
+
+                                                if (isC) {
+                                                    const td = document.createElement('td');
+                                                    td.style.background = '#f8fafc'; td.style.textAlign = 'center'; td.style.color = '#3b82f6'; td.style.fontWeight = '600';
+                                                    td.innerText = catSum > 0 ? catSum.toLocaleString() : '';
+                                                    optRow.appendChild(td);
+                                                } else {
+                                                    // Total First, then Raw
+                                                    const tdTotal = renderTotalCell(f.id, cid, catSum, opt.value, isP, true);
+                                                    optRow.appendChild(tdTotal);
+
+                                                    const tdRaw = document.createElement('td');
+                                                    tdRaw.style.background = '#f8fafc';
+                                                    tdRaw.style.textAlign = 'center';
+                                                    tdRaw.style.fontSize = '10px';
+                                                    tdRaw.style.color = '#64748b';
+                                                    tdRaw.innerText = catSum > 0 ? catSum.toLocaleString() : '0';
+                                                    optRow.appendChild(tdRaw);
+
+                                                    if (ps.length === 0) {
+                                                        optRow.appendChild(Object.assign(document.createElement('td'), { innerHTML: '' }));
+                                                    } else {
+                                                        ps.forEach(p => {
+                                                            const td = document.createElement('td');
+                                                            td.dataset.fieldId = f.id;
+                                                            td.dataset.mfId = mf.id;
+                                                            td.dataset.optionValue = opt.value;
+                                                            td.dataset.processId = p.id;
+                                                            td.dataset.isModal = 'true';
+
+                                                            const isSel = UIState.selectedCells.some(c => c.fId === f.id && c.pId === p.id && c.mfId === mf.id && c.oV === opt.value);
+                                                            if (isSel) {
+                                                                td.classList.add('selected-cell');
+                                                                td.style.backgroundColor = '#10b981';
+                                                                td.style.color = '#ffffff';
+                                                                const inp = td.querySelector('input');
+                                                                if (inp) inp.style.color = '#ffffff';
+                                                            }
+
+                                                            const val = getModalFieldOptionVal(f.id, mf.id, opt.value, p.id);
+                                                            const cellInp = renderCellInput(
+                                                                val,
+                                                                (newVal) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, newVal, isP),
+                                                                () => openFormulaModal(`Поле модалки: "${mf.label}" | Варіант: "${opt.label}" | Процес: "${p.name}"`, val, (newVal) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, newVal, isP)),
+                                                                (isOnce) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, isOnce, isP, true)
+                                                            );
+                                                            td.appendChild(cellInp);
+                                                            optRow.appendChild(td);
+                                                        });
+                                                    }
+                                                }
+                                            }); // End categories forEach
+                                            optRow.appendChild(document.createElement('td'));
+                                            table.appendChild(optRow);
+                                        }); // End options forEach
+                                    }
+
+                                    // Add option button
+                                    const addOptRow = document.createElement('tr');
+                                    addOptRow.innerHTML = `<td class="col-sticky" style="padding-left:75px; background:#fafbff"><div class="add-row-hint" onclick="addModalFieldOption('${f.id}', ${mfIdx}, ${isP})">+ Додати варіант вибору</div></td><td colspan="${totalCols + 1}"></td>`;
+                                    table.appendChild(addOptRow);
+                                } // End if select/multiselect
+                            }); // End modalFields.forEach
+                        } // End if modalFields exists
+
+                        // Add button row for adding new modal fields
+                        const addMfRow = document.createElement('tr');
+                        addMfRow.innerHTML = `<td class="col-sticky" style="padding:10px 40px; background:#f0f9ff"><div class="add-row-hint" onclick="addModalField('${f.id}', ${isP})" style="background:#e0f2fe; border:1px dashed #0ea5e9; color:#0284c7; text-align:center; padding:10px">+ Додати поле в модалку</div></td><td colspan="${totalCols + 1}"></td>`;
+                        table.appendChild(addMfRow);
+                    } // End if action_button
+                }); // End fields.forEach
+
+                const addFRow = document.createElement('tr');
+                addFRow.innerHTML = `<td class="col-sticky"><div class="add-row-hint" style="background:#f1f5f9; border:1px dashed #cbd5e1; margin:5px" onclick="addF('${g.id}',${isP})">+ Додати нове поле (дію) у групу "${g.title}"</div></td><td colspan="${totalCols}"></td><td></td>`;
+                table.appendChild(addFRow);
+            }; // End renderGroup
+
+            // Actually render all groups
+            Schema.groups.forEach(g => renderGroup(g, Schema.fields, false));
+            if (Schema.products) Schema.products.groups.forEach(g => renderGroup(g, Schema.products.fields, true));
+
+            // Add global selection listeners
+            table.onmousedown = (e) => startSelection(e);
+            table.onmouseover = (e) => continueSelection(e);
+            window.onmouseup = (e) => endSelection(e);
+
+            cont.appendChild(table);
+        } // End renderMatrix
+
+        function startSelection(e) {
+            // [FIX] Ignore clicks on interactive elements to let them handle their own events
+            const isInteractive = e.target.closest('button') ||
+                e.target.closest('.btn-mini') ||
+                e.target.closest('.formula-btn') ||
+                e.target.closest('.gear-btn') ||
+                e.target.closest('.collapse-btn') ||
+                e.target.closest('.add-row-hint') ||
+                e.target.closest('.drag-hint') ||
+                e.target.closest('.drag-handle');
+            if (isInteractive) return;
+
+            const td = e.target.closest('td');
+            const isInput = e.target.closest('input');
+            const isCtrl = e.ctrlKey || e.metaKey;
+
+            if (!td || !td.dataset.fieldId) {
+                if (!isCtrl && UIState.selectedCells.length > 0) {
+                    UIState.selectedCells = [];
+                    renderMatrix();
+                }
+                return;
+            }
+
+            const isAlreadySelected = UIState.selectedCells.some(c =>
+                c.fId === td.dataset.fieldId &&
+                c.pId === td.dataset.processId &&
+                c.oV === (td.dataset.optionValue || null) &&
+                c.mfId === (td.dataset.mfId || null)
+            );
+
+            if (!isInput) document.body.style.userSelect = 'none';
+
+            // Якщо Ctrl НЕ натиснуто — скидаємо все виділення
+            if (!isCtrl) {
+                const wasEmpty = UIState.selectedCells.length === 0;
+                UIState.selectedCells = [];
+
+                // [FIX] Ручне очищення стилів, якщо ми не перемальовуємо матрицю (наприклад, при кліку в інпут)
+                if (!wasEmpty) {
+                    document.querySelectorAll('.selected-cell').forEach(td => {
+                        td.classList.remove('selected-cell');
+                        td.style.backgroundColor = '';
+                        td.style.color = '';
+                        const inp = td.querySelector('input');
+                        if (inp) {
+                            inp.style.backgroundColor = '';
+                            inp.style.color = '';
+                        }
+                    });
+                }
+
+                if (!wasEmpty && !isInput) renderMatrix();
+                UIState.isSelecting = false; // Без Ctrl режим "малювання" виділення НЕ вмикається
+            } else {
+                UIState.isSelecting = true;
+                toggleCellSelection(td);
+            }
+        }
+
+        function continueSelection(e) {
+            if (!UIState.isSelecting) return;
+            const td = e.target.closest('td');
+            if (td && td.dataset.fieldId) toggleCellSelection(td, true);
+        }
+
+        function endSelection(e) {
+            if (!UIState.isSelecting) return;
+            UIState.isSelecting = false;
+            document.body.style.userSelect = ''; // Re-enable selection
+        }
+
+        function toggleCellSelection(td, forceAdd = false) {
+            const cell = {
+                fId: td.dataset.fieldId,
+                pId: td.dataset.processId,
+                oV: td.dataset.optionValue || null,
+                mfId: td.dataset.mfId || null,
+                isModal: td.dataset.isModal === 'true'
+            };
+            const idx = UIState.selectedCells.findIndex(c => c.fId === cell.fId && c.pId === cell.pId && c.oV === cell.oV && c.mfId === cell.mfId);
+
+            if (idx === -1) {
+                UIState.selectedCells.push(cell);
+                td.classList.add('selected-cell');
+                // Force inline style as last resort
+                td.style.backgroundColor = '#10b981';
+                td.style.color = '#ffffff';
+                const inp = td.querySelector('input');
+                if (inp) {
+                    inp.style.backgroundColor = 'transparent';
+                    inp.style.color = '#ffffff';
+                }
+            } else if (!forceAdd) {
+                UIState.selectedCells.splice(idx, 1);
+                td.classList.remove('selected-cell');
+                td.style.backgroundColor = '';
+                td.style.color = '';
+                const inp = td.querySelector('input');
+                if (inp) {
+                    inp.style.backgroundColor = '';
+                    inp.style.color = '';
+                }
+            }
+        }
+
+        function handleRowDragStart(e) {
+            const row = e.target.closest('tr');
+            handleDragStart({ target: row, dataTransfer: e.dataTransfer });
+        }
+
+
+        function highlightCat(cid) {
+            if (UIState.highlightedCat === cid) UIState.highlightedCat = null;
+            else UIState.highlightedCat = cid;
+            renderMatrix();
+        }
+
+        function toggleCat(cid) {
+            const idx = UIState.collapsed.indexOf(cid);
+            if (idx === -1) UIState.collapsed.push(cid);
+            else UIState.collapsed.splice(idx, 1);
+            renderMatrix();
+        }
+        function openFormulaModal(title, val, saveFn) {
+            document.getElementById('formulaDesc').innerText = title;
+            document.getElementById('formulaInput').value = val || '';
+            document.getElementById('formulaTemplate').value = '';
+            formulaSaveFn = saveFn;
+            document.getElementById('formulaModal').style.display = 'flex';
+            updateFormulaPreview();
+            setTimeout(() => document.getElementById('formulaInput').focus(), 100);
+        }
+
+        function applyFormulaTemplate(val) {
+            const input = document.getElementById('formulaInput');
+            const templates = {
+                'linear': '=@qty * 5',
+                'maxlimit': '=min(@qty, 2) * 15',
+                'base_plus': '=10 + (@qty * 0.5)',
+                'tiered': '=@qty <= 5 ? @qty * 10 : 5 * 10 + (@qty - 5) * 8',
+                'fixed': '=50 + (@qty - 1) * 20',
+                'percent': '=@sum_zbira * 0.15'
+            };
+            if (templates[val]) {
+                input.value = templates[val];
+                updateFormulaPreview();
+            }
+        }
+
+        function updateFormulaPreview() {
+            const formula = document.getElementById('formulaInput').value;
+            const testValues = [1, 5, 10, 20];
+
+            if (!formula.startsWith('=')) {
+                testValues.forEach(qty => {
+                    document.getElementById(`prev_${qty}`).innerText = '-';
+                    document.getElementById(`prev_${qty}`).style.color = '#94a3b8';
+                });
+                return;
+            }
+
+            testValues.forEach(qty => {
+                try {
+                    const result = evaluateFormulaPreview(formula, qty);
+                    document.getElementById(`prev_${qty}`).innerText = result;
+                    document.getElementById(`prev_${qty}`).style.color = '#10b981';
+                    document.getElementById(`prev_${qty}`).style.fontWeight = '700';
+                } catch (e) {
+                    document.getElementById(`prev_${qty}`).innerText = 'Помилка';
+                    document.getElementById(`prev_${qty}`).style.color = '#ef4444';
+                }
+            });
+        }
+
+        function evaluateFormulaPreview(formula, qty) {
+            let expr = formula.substring(1).trim();
+            if (!expr) return 0;
+
+            // Replacing variables. Order matters! 
+            // Longest first to avoid partial replacements (e.g. @sum_ vs @sum)
+
+            // 1. Handle @sum_cat... or @sum_konst... (Global category sums)
+            expr = expr.replace(/@sum_[a-z0-9_]+/g, '1000');
+
+            // 2. Handle @raw (Raw points of this row)
+            expr = expr.replace(/@raw/g, '1000');
+
+            // 3. Handle @sum (Points of row * qty)
+            expr = expr.replace(/@sum/g, (1000 * qty).toString());
+
+            // 4. Handle @qty / val
+            expr = expr.replace(/@qty/g, qty);
+            expr = expr.replace(/\bval\b/g, qty);
+
+            // Replace common math functions
+            expr = expr.replace(/min\(/g, 'Math.min(').replace(/max\(/g, 'Math.max(');
+            expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(');
+
+            // Safe evaluation via Function constructor
+            try {
+                const res = new Function(`return (${expr})`)();
+                return isNaN(res) ? 0 : Number(res.toFixed(2));
+            } catch (err) {
+                throw err;
+            }
+        }
+
+        function saveFormula() {
+            const val = document.getElementById('formulaInput').value.trim();
+            if (formulaSaveFn) formulaSaveFn(val);
+            closeModal('formulaModal');
+        }
+
+        function getVal(fI, pI, oV) {
+            const r = Schema.rules[fI];
+            if (!r) return 0;
+            let v = 0;
+            if (oV) v = (r[oV] && r[oV][pI] !== undefined) ? r[oV][pI] : 0;
+            else v = r[pI] !== undefined ? r[pI] : 0;
+            if (v && typeof v === 'object' && v.v !== undefined) return v.v;
+            return v;
+        }
+        function markDirty() { document.getElementById('unsavedHint').style.display = 'inline-block'; document.getElementById('mainSaveBtn').style.boxShadow = '0 0 15px rgba(220, 38, 38, 0.4)'; }
+        function markClean() { document.getElementById('unsavedHint').style.display = 'none'; document.getElementById('mainSaveBtn').style.boxShadow = 'none'; }
+        async function updRule(fI, pI, oV, v, isOnceUpdate = false) {
+            if (UIState.isBulkUpdating) return;
+            pushHistory();
+            if (!isOnceUpdate) {
+                v = String(v).trim();
+                if (!isNaN(v) && !v.startsWith('=')) v = Number(v);
+            }
+
+            const isInSelection = UIState.selectedCells.some(c => c.fId === fI && c.pId === pI && c.oV === (oV || null) && !c.mfId);
+
+            if (isInSelection && UIState.selectedCells.length > 1) {
+                UIState.isBulkUpdating = true;
+                for (const cell of UIState.selectedCells) {
+                    if (cell.mfId) continue;
+                    applyRuleUpdate(cell.fId, cell.pId, cell.oV, v, isOnceUpdate);
+                }
+                UIState.isBulkUpdating = false;
+                UIState.selectedCells = [];
+            } else {
+                applyRuleUpdate(fI, pI, oV, v, isOnceUpdate);
+            }
+            if (UIState.clearSelectionOnNextUpdate) {
+                UIState.selectedCells = [];
+                UIState.clearSelectionOnNextUpdate = false;
+            }
+            renderMatrix();
+        }
+
+        function applyRuleUpdate(fId, pId, oV, v, isOnceUpdate) {
+            if (!Schema.rules[fId]) Schema.rules[fId] = {};
+            let rules = Schema.rules[fId];
+            if (oV) {
+                if (!rules[oV]) rules[oV] = {};
+                rules = rules[oV];
+            }
+            let cur = rules[pId];
+            if (isOnceUpdate) {
+                if (typeof cur === 'object' && cur !== null && cur.v !== undefined) {
+                    cur.once = !!v;
+                    if (!cur.once && !isNaN(cur.v)) rules[pId] = cur.v;
+                } else if (v) {
+                    rules[pId] = { v: cur || 0, once: true };
+                }
+            } else {
+                if (typeof cur === 'object' && cur !== null && cur.v !== undefined) {
+                    cur.v = v;
+                    if (!cur.once && !isNaN(v)) rules[pId] = v;
+                } else {
+                    rules[pId] = v;
+                }
+            }
+        }
+
+        function toggleGroup(id) {
+            const idx = UIState.collapsedGroups.indexOf(id);
+            if (idx === -1) UIState.collapsedGroups.push(id);
+            else UIState.collapsedGroups.splice(idx, 1);
+            renderMatrix();
+        }
+
+        // ModalFields helpers
+        function getModalFieldVal(buttonId, mfId, pI) {
+            if (!Schema.modalFieldRules) Schema.modalFieldRules = {};
+            const key = `${buttonId}_${mfId}`;
+            const r = Schema.modalFieldRules[key];
+            if (!r || r[pI] === undefined) return 0;
+            let v = r[pI];
+            if (v && typeof v === 'object' && v.v !== undefined) return v.v;
+            return v;
+        }
+        async function updModalFieldRule(buttonId, mfId, pI, v, isP, isOnceUpdate = false) {
+            if (UIState.isBulkUpdating) return;
+            pushHistory();
+            if (!isOnceUpdate) {
+                v = String(v).trim();
+                if (!isNaN(v) && !v.startsWith('=')) v = Number(v);
+            }
+
+            const key = `${buttonId}_${mfId}`;
+            const isInSelection = UIState.selectedCells.some(c => c.fId === buttonId && c.pId === pI && c.mfId === mfId && !c.oV);
+
+            if (isInSelection && UIState.selectedCells.length > 1) {
+                UIState.isBulkUpdating = true;
+                for (const cell of UIState.selectedCells) {
+                    if (!cell.mfId || cell.oV) continue;
+                    applyModalFieldUpdate(cell.fId, cell.mfId, null, cell.pId, v, isOnceUpdate);
+                }
+                UIState.isBulkUpdating = false;
+                UIState.selectedCells = [];
+            } else {
+                applyModalFieldUpdate(buttonId, mfId, null, pI, v, isOnceUpdate);
+            }
+            if (UIState.clearSelectionOnNextUpdate) {
+                UIState.selectedCells = [];
+                UIState.clearSelectionOnNextUpdate = false;
+            }
+            renderMatrix();
+        }
+
+        function applyModalFieldUpdate(buttonId, mfId, optVal, pI, v, isOnceUpdate) {
+            if (!Schema.modalFieldRules) Schema.modalFieldRules = {};
+            const key = `${buttonId}_${mfId}`;
+            if (!Schema.modalFieldRules[key]) Schema.modalFieldRules[key] = {};
+            let rules = Schema.modalFieldRules[key];
+            if (optVal) {
+                if (!rules[optVal]) rules[optVal] = {};
+                rules = rules[optVal];
+            }
+            let cur = rules[pId];
+            if (isOnceUpdate) {
+                if (typeof cur === 'object' && cur !== null && cur.v !== undefined) {
+                    cur.once = !!v;
+                    if (!cur.once && !isNaN(cur.v)) rules[pId] = cur.v;
+                } else if (v) {
+                    rules[pId] = { v: cur || 0, once: true };
+                }
+            } else {
+                if (typeof cur === 'object' && cur !== null && cur.v !== undefined) {
+                    cur.v = v;
+                    if (!cur.once && !isNaN(v)) rules[pId] = v;
+                } else {
+                    rules[pId] = v;
+                }
+            }
+        }
+        function updModalFieldLabel(buttonId, idx, v, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[idx]) { field.modalFields[idx].label = v; markDirty(); } }
+
+        // ModalField options helpers
+        function addModalFieldOption(buttonId, mfIdx, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[mfIdx]) { const mf = field.modalFields[mfIdx]; if (!mf.options) mf.options = []; mf.options.push({ value: 'opt' + Date.now(), label: 'Варіант' }); markDirty(); renderMatrix(); } }
+        function delModalFieldOption(buttonId, mfIdx, optVal, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[mfIdx]) { const mf = field.modalFields[mfIdx]; mf.options = mf.options.filter(o => o.value !== optVal); markDirty(); renderMatrix(); } }
+        function updModalFieldOptionLabel(buttonId, mfIdx, optVal, newLabel, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[mfIdx]) { const opt = field.modalFields[mfIdx].options.find(o => o.value === optVal); if (opt) { opt.label = newLabel; markDirty(); } } }
+        function getModalFieldOptionVal(buttonId, mfId, optVal, pI) {
+            if (!Schema.modalFieldRules) Schema.modalFieldRules = {};
+            const key = `${buttonId}_${mfId}`;
+            const r = Schema.modalFieldRules[key];
+            if (!r || !r[optVal] || r[optVal][pI] === undefined) return 0;
+            let v = r[optVal][pI];
+            if (v && typeof v === 'object' && v.v !== undefined) return v.v;
+            return v;
+        }
+        async function updModalFieldOptionRule(buttonId, mfId, optVal, pI, v, isP, isOnceUpdate = false) {
+            if (UIState.isBulkUpdating) return;
+            pushHistory();
+            if (!isOnceUpdate) {
+                v = String(v).trim();
+                if (!isNaN(v) && !v.startsWith('=')) v = Number(v);
+            }
+
+            const key = `${buttonId}_${mfId}`;
+            const isInSelection = UIState.selectedCells.some(c => c.fId === buttonId && c.pId === pI && c.mfId === mfId && c.oV === optVal);
+
+            if (isInSelection && UIState.selectedCells.length > 1) {
+                UIState.isBulkUpdating = true;
+                for (const cell of UIState.selectedCells) {
+                    if (!cell.mfId || !cell.oV) continue;
+                    applyModalFieldUpdate(cell.fId, cell.mfId, cell.oV, cell.pId, v, isOnceUpdate);
+                }
+                UIState.isBulkUpdating = false;
+                UIState.selectedCells = [];
+            } else {
+                applyModalFieldUpdate(buttonId, mfId, optVal, pI, v, isOnceUpdate);
+            }
+            if (UIState.clearSelectionOnNextUpdate) {
+                UIState.selectedCells = [];
+                UIState.clearSelectionOnNextUpdate = false;
+            }
+            renderMatrix();
+        }
+
+        function changeModalFieldType(buttonId, mfIdx, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (!field || !field.modalFields[mfIdx]) return;
+            const mf = field.modalFields[mfIdx];
+            const typeChoice = prompt('Змінити тип поля для "' + mf.label + '":\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - 📑 Множинний вибір (multiselect)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - ✅ Чекбокс (checkbox)', '1');
+            const typeMap = { '1': 'number', '2': 'select', '3': 'multiselect', '4': 'checkbox_qty', '5': 'checkbox' };
+            const selectedType = typeMap[typeChoice];
+            if (selectedType && selectedType !== mf.type) {
+                mf.type = selectedType;
+                if ((selectedType === 'select' || selectedType === 'multiselect') && !mf.options) mf.options = [{ value: 'opt1', label: 'Варіант 1' }];
+                markDirty(); renderMatrix();
+            }
+        }
+
+        function updFLab(id, v, isP) { (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id).label = v; markDirty(); renderSidebar(); }
+        function updOLab(fI, oV, v, isP) { (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI).options.find(o => o.value === oV).label = v; markDirty(); }
+        function addF(gI, isP) { (isP ? Schema.products.fields : Schema.fields).push({ id: 'f' + Date.now(), groupId: gI, label: 'Нова дія', type: 'number' }); markDirty(); renderMatrix(); }
+        function addOpt(fI, isP) { const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI); if (!f.options) f.options = []; f.options.push({ value: 'o' + Date.now(), label: 'Варіант' }); markDirty(); renderMatrix(); }
+        function delOpt(fI, oV, isP) { const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI); f.options = f.options.filter(o => o.value !== oV); markDirty(); renderMatrix(); }
+        function delGroup(id, isP) { if (confirm('Видалити всю групу?')) { if (isP) Schema.products.groups = Schema.products.groups.filter(g => g.id !== id); else Schema.groups = Schema.groups.filter(g => g.id !== id); markDirty(); refresh(); } }
+
+        function delField(id, isP) {
+            console.log('Deleting field:', id, 'isProduct:', isP);
+            if (confirm('Видалити це поле?')) {
+                if (isP) Schema.products.fields = Schema.products.fields.filter(f => f.id !== id);
+                else Schema.fields = Schema.fields.filter(f => f.id !== id);
+
+                // Also clear selection to avoid stale refs
+                UIState.selectedCells = [];
+
+                markDirty();
+                renderMatrix();
+            }
+        }
+
+        async function saveData() { if ('showSaveFilePicker' in window) { try { const h = await window.showSaveFilePicker({ suggestedName: 'schema.js', types: [{ accept: { 'text/javascript': ['.js'] } }] }); const w = await h.createWritable(); await w.write(`const Schema = ${JSON.stringify(Schema, null, 4)};\n\nwindow.Schema = Schema;`); await w.close(); markClean(); alert('💾 Збережено!'); } catch (e) { if (e.name !== 'AbortError') alert(e.message); } } else { alert('Збереження недоступне.'); console.log(Schema); } }
+
+        function openFModal(id, isP) {
+            const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id);
+            document.getElementById('fId').value = id;
+            document.getElementById('fType').value = f.type;
+            document.getElementById('fHelp').value = f.helpContent || '';
+            document.getElementById('fDefault').value = f.default || '';
+            document.getElementById('fPlaceholder').value = f.placeholderText || '';
+            document.getElementById('fLabelYes').value = f.labelYes || '';
+            document.getElementById('fLabelNo').value = f.labelNo || '';
+            document.getElementById('fieldModal').dataset.mode = isP ? 'prod' : 'calc';
+            toggleFieldSettings(f.type);
+            document.getElementById('fieldModal').style.display = 'flex';
+        }
+        function toggleFieldSettings(type) {
+            document.getElementById('btnTextInput').style.display = (type === 'action_button' || type === 'checkbox_qty' || type === 'select_modal') ? 'block' : 'none';
+            document.getElementById('selectLabels').style.display = (type === 'select_modal') ? 'block' : 'none';
+            document.getElementById('selectPlaceholder').style.display = (type === 'select' || type === 'select_modal') ? 'block' : 'none';
+
+            const btnLabel = document.getElementById('btnTextLabel');
+            if (type === 'select_modal') btnLabel.innerText = 'Заголовок модалки (для "Так")';
+            else if (type === 'action_button') btnLabel.innerText = 'Текст на кнопці';
+            else btnLabel.innerText = 'За замовчуванням';
+        }
+        function saveFModal() {
+            const id = document.getElementById('fId').value;
+            const isP = document.getElementById('fieldModal').dataset.mode === 'prod';
+            const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id);
+            f.type = document.getElementById('fType').value;
+            f.helpContent = document.getElementById('fHelp').value;
+            if (f.type === 'action_button' || f.type === 'checkbox_qty' || f.type === 'select_modal') {
+                f.default = document.getElementById('fDefault').value;
+            }
+            if (f.type === 'select' || f.type === 'select_modal') {
+                f.placeholderText = document.getElementById('fPlaceholder').value;
+            }
+            if (f.type === 'select_modal') {
+                f.labelYes = document.getElementById('fLabelYes').value;
+                f.labelNo = document.getElementById('fLabelNo').value;
+            }
+            closeModal('fieldModal');
+            renderMatrix();
+        }
+
+        function togglePreview(show) { if (!show) return closeModal('prodModal'); renderPView(); document.getElementById('prodModal').style.display = 'flex'; }
+        let currentPreviewButtonId = null;
+
+        function renderPView() {
+            const b = document.getElementById('prodBody');
+            b.innerHTML = '';
+
+            // Find all fields with modalFields
+            const fieldsWithModals = Schema.fields.filter(f => (f.type === 'action_button' || f.type === 'select_modal') && f.modalFields && f.modalFields.length > 0);
+
+            if (fieldsWithModals.length === 0) {
+                b.innerHTML = '<div style="text-align:center; padding:20px; color:#94a3b8">Немає полів з модальними вікнами.</div>';
+                return;
+            }
+
+            // Render each field's modal preview
+            fieldsWithModals.forEach(button => {
+                // Wrapper for this button's preview
+                const wrapper = document.createElement('div');
+                wrapper.style.marginBottom = '30px';
+                wrapper.style.border = '1px solid #e2e8f0';
+                wrapper.style.borderRadius = '8px';
+                wrapper.style.padding = '15px';
+                wrapper.style.background = '#fff';
+
+                wrapper.innerHTML = `<div style="font-weight:700; border-bottom:1px solid #eee; padding-bottom:5px; color:#1e293b; margin-bottom:10px">📦 ${button.label || button.default || 'Кнопка'} <span style="font-weight:400; color:#94a3b8; font-size:11px">(ID: ${button.id})</span></div>`;
+
+                // Content Container for fields
+                const content = document.createElement('div');
+                content.id = `preview_content_${button.id}`;
+
+                button.modalFields.forEach(f => {
+                    const row = document.createElement('div');
+                    row.style.marginBottom = '12px';
+
+                    if (f.type === 'select') {
+                        const opts = (f.options || []).map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><select class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="select" style="padding:6px 10px; font-size:12px; width:100%" onchange="recalcPreviewTotal('${button.id}')">${opts}</select>`;
+                    }
+                    else if (f.type === 'multiselect') {
+                        const opts = (f.options || []).map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><select multiple class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="multiselect" style="padding:6px 10px; font-size:12px; width:100%; height:80px" onchange="recalcPreviewTotal('${button.id}')">${opts}</select>`;
+                    }
+                    else if (f.type === 'checkbox') {
+                        row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox" style="width:18px; height:18px" onchange="recalcPreviewTotal('${button.id}')"><label style="font-size:12px; font-weight:500">${f.label}</label></div>`;
+                    }
+                    else if (f.type === 'checkbox_qty') {
+                        row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox_qty_check" style="width:18px; height:18px" onchange="recalcPreviewTotal('${button.id}')"><label style="flex:1; font-size:12px; font-weight:500">${f.label}</label><input type="number" value="1" class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox_qty_qty" style="width:60px; padding:4px 8px" oninput="recalcPreviewTotal('${button.id}')"></div>`;
+                    }
+                    else if (f.type === 'number') {
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><input type="number" class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="number" value="${f.default || 0}" style="width:100%; padding:6px 10px; font-size:12px" oninput="recalcPreviewTotal('${button.id}')">`;
+                    }
+                    content.appendChild(row);
+                });
+
+                wrapper.appendChild(content);
+
+                // Total display for this button preview
+                const totalEl = document.createElement('div');
+                totalEl.id = `preview_total_${button.id}`;
+                totalEl.style.marginTop = '15px';
+                totalEl.style.padding = '10px';
+                totalEl.style.background = '#f8fafc';
+                totalEl.style.borderTop = '1px solid #eee';
+                totalEl.style.color = '#3b82f6';
+                totalEl.style.fontWeight = '700';
+                totalEl.style.textAlign = 'right';
+                totalEl.innerHTML = 'Всього: 0';
+                wrapper.appendChild(totalEl);
+
+                b.appendChild(wrapper);
+            });
+        }
+
+        function recalcPreviewTotal(btnId) {
+            let total = 0;
+            const container = document.getElementById(`preview_content_${btnId}`);
+            if (!container) return;
+
+            // Gather inputs
+            const inputs = container.querySelectorAll('.preview-input');
+            const button = Schema.fields.find(f => f.id === btnId);
+            if (!button || !button.modalFields) return;
+
+            // Process each field in button.modalFields to avoid double counting inputs
+            button.modalFields.forEach(f => {
+                let isActive = false;
+                let multiplier = 1;
+
+                if (f.type === 'checkbox') {
+                    const chk = container.querySelector(`input[data-fid="${f.id}"][data-type="checkbox"]`);
+                    if (chk && chk.checked) isActive = true;
+                }
+                else if (f.type === 'checkbox_qty') {
+                    const chk = container.querySelector(`input[data-fid="${f.id}"][data-type="checkbox_qty_check"]`);
+                    const qty = container.querySelector(`input[data-fid="${f.id}"][data-type="checkbox_qty_qty"]`);
+                    if (chk && chk.checked) {
+                        isActive = true;
+                        multiplier = Math.max(0, parseInt(qty?.value || 1));
+                    }
+                }
+                else if (f.type === 'number') {
+                    const inp = container.querySelector(`input[data-fid="${f.id}"][data-type="number"]`);
+                    if (inp) {
+                        isActive = true;
+                        multiplier = parseFloat(inp.value) || 0;
+                    }
+                }
+                else if (f.type === 'select') {
+                    // For selects, changing options might imply points if options had points, but here rules are on the FIELD.
+                    // The rule for a select field is usually map: option_value -> points_per_process.
+                    // But in this system, 'val' in Schama.modalFieldRules is typically just a number or formula.
+                    // Wait, for Select, does Schema.modalFieldRules store by option?
+                    // Let's check getModalFieldOptionVal logic. Yes, for options it's different.
+                }
+
+                if (isActive) {
+                    // Sum up points for this active field across all processes
+                    const ruleKey = `${btnId}_${f.id}`;
+
+                    // Iterate all processes
+                    Schema.processes.forEach(p => {
+                        let val = 0;
+                        // Check rules
+                        if (Schema.modalFieldRules && Schema.modalFieldRules[ruleKey] && Schema.modalFieldRules[ruleKey][p.id]) {
+                            val = Number(Schema.modalFieldRules[ruleKey][p.id]) || 0;
+                        }
+                        total += val * multiplier;
+                    });
+                }
+
+                // Handle Select/Multiselect Options separately as they have their own rows in matrix
+                if (f.type === 'select' || f.type === 'multiselect') {
+                    const sel = container.querySelector(`select[data-fid="${f.id}"]`);
+                    if (sel) {
+                        const selectedOpts = Array.from(sel.selectedOptions).map(o => o.value);
+                        selectedOpts.forEach(optVal => {
+                            // Look for option rules
+                            // Rule Key format for options: `${fId}_${mfId}_${optVal}` ? No, looking at admin.html:
+                            // getModalFieldOptionVal uses key `${f.id}_${mf.id}_${val}`
+                            const optRuleKey = `${btnId}_${f.id}`; // The key for the modal field itself
+                            Schema.processes.forEach(p => {
+                                let val = 0;
+                                // Check rules for the specific option within the modal field's rules
+                                if (Schema.modalFieldRules && Schema.modalFieldRules[optRuleKey] && Schema.modalFieldRules[optRuleKey][optVal] && Schema.modalFieldRules[optRuleKey][optVal][p.id]) {
+                                    val = Number(Schema.modalFieldRules[optRuleKey][optVal][p.id]) || 0;
+                                }
+                                total += val; // Multiplier is 1 for selected option
+                            });
+                        });
+                    }
+                }
+            });
+
+            const totalEl = document.getElementById(`preview_total_${btnId}`);
+            if (totalEl) totalEl.innerText = `Всього: ${total.toLocaleString()}`;
+        }
+        function handleCSV(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { e.target.result.split('\n').forEach(l => { const c = l.split(';'); if (c[1] && c[1].length > 2) Schema.fields.push({ id: 'f_csv_' + Math.random().toString(36).substr(2, 5), groupId: Schema.groups[0].id, label: c[1], type: 'number' }); }); renderMatrix(); }; r.readAsText(f, 'windows-1251'); }
+    </script>
+</body>
+
+</html>
