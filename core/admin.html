@@ -114,19 +114,31 @@
                     "rules": {}
                 };
                 const fileContent = `const Schema = ${JSON.stringify(defaultSchema, null, 4)};\nwindow.Schema = Schema;`;
-                try {
-                    const response = await fetch('http://localhost:5005', {
-                        method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ filename: filename, content: fileContent })
-                    });
-                    if (response.ok) {
-                        alert('✅ Файл успішно створено!');
+                
+                if ('showSaveFilePicker' in window) {
+                    try {
+                        const handle = await window.showSaveFilePicker({
+                            suggestedName: filename.split('/').pop(),
+                            types: [{ accept: { 'text/javascript': ['.js'] } }]
+                        });
+                        const writable = await handle.createWritable();
+                        await writable.write(fileContent);
+                        await writable.close();
+                        alert('✅ Файл створено успішно! Перезавантажте сторінку.');
                         location.reload();
-                    } else {
-                        alert('❌ Помилка сервера при створенні файлу.');
+                    } catch (e) {
+                         if (e.name !== 'AbortError') alert('Помилка збереження: ' + e.message);
                     }
-                } catch (e) {
-                    alert('❌ Локальний сервер (Python) не запущено! Будь ласка, запустіть local_saver.py.');
+                } else {
+                     // Fallback for browsers without File System Access API (simple download)
+                    const blob = new Blob([fileContent], { type: 'text/javascript' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = filename.split('/').pop();
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    alert('⚠️ Файл завантажено. Будь ласка, перемістіть його в папку data/ вручну, якщо це необхідно, та перезавантажте сторінку.');
                 }
             };
             document.head.appendChild(script);
