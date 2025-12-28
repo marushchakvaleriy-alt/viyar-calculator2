@@ -9,7 +9,7 @@ window.CalculatorConfig = [
     {
         "id": "schema_kgjhg_1766770771600",
         "title": "kgjhg",
-        "icon": "📊",
+        "icon": "images/кухня.png",
         "file": "data/schema_kgjhg_1766770771600.js",
         "desc": "Новий калькулятор"
     }
