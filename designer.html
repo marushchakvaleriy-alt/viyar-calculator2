@@ -1179,12 +1179,66 @@
         }
 
         async function saveLayout() {
+            const fileContent = `const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`;
+            // Try to find filename from URL or default
+            const params = new URLSearchParams(window.location.search);
+            let filename = params.get('config');
+            const defaultName = filename ? filename.split('/').pop() : 'schema.js';
+            if (!filename) filename = 'data/schema.js';
+
+            if (filename.startsWith('../')) filename = filename.replace('../', '');
+
+            // 1. Try Automatic Save via Local Server
             try {
-                const handle = await window.showSaveFilePicker({ suggestedName: 'schema.js', types: [{ accept: { 'text/javascript': ['.js'] } }] });
+                const response = await fetch('http://localhost:5005', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename, content: fileContent })
+                });
+
+                if (response.ok) {
+                    console.log("✅ Автоматично збережено через Local Saver");
+                    // Show a temporary success toast
+                    const toast = document.createElement('div');
+                    toast.style.cssText = 'position:fixed; bottom:20px; right:20px; background:#10b981; color:white; padding:12px 24px; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.1); z-index:9999; animation:fadeIn 0.3s; font-weight:600';
+                    toast.innerText = '✅ Дизайн збережено!';
+                    document.body.appendChild(toast);
+                    setTimeout(() => {
+                        toast.style.opacity = '0';
+                        setTimeout(() => toast.remove(), 300);
+                    }, 2000);
+                    return;
+                }
+            } catch (e) {
+                console.warn("Local server unreachable:", e);
+            }
+
+            // 2. Fallback
+            try {
+                const handle = await window.showSaveFilePicker({ suggestedName: defaultName, types: [{ accept: { 'text/javascript': ['.js'] } }] });
                 const writ = await handle.createWritable();
-                await writ.write(`const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`);
-                await writ.close(); alert('✅ Збережено!');
-            } catch (e) { if (e.name !== 'AbortError') console.error(e); }
+                await writ.write(fileContent);
+                await writ.close();
+                alert('✅ Збережено!');
+            } catch (e) {
+                if (e.name === 'SecurityError' || e.message.includes('user gesture') || e.name === 'NotAllowedError') {
+                    if (confirm('Автоматичне збереження не вдалося. Зберегти файл вручну?')) {
+                        try {
+                            const handle = await window.showSaveFilePicker({ suggestedName: defaultName, types: [{ accept: { 'text/javascript': ['.js'] } }] });
+                            const writ = await handle.createWritable();
+                            await writ.write(fileContent);
+                            await writ.close();
+                            alert('✅ Збережено!');
+                        } catch (retryE) {
+                            if (retryE.name !== 'AbortError') alert('Помилка: ' + retryE.message);
+                        }
+                    }
+                } else if (e.name !== 'AbortError') {
+                    console.error(e);
+                    alert('Помилка збереження: ' + e.message);
+                }
+            }
         }
     </script>
 </body>
