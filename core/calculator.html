@@ -7,6 +7,19 @@
     <title>Viyar Calculator V2.1 - Унікальні Модалки</title>
     <!-- Dynamic Schema Loader -->
     <script>
+        // Global initialization helper to prevent race conditions
+        window.tryInitEngine = function () {
+            if (window.Engine && window.Schema && !window.engineInitialized) {
+                window.engineInitialized = true;
+                console.log("🚀 Engine Initializing...");
+                Engine.init('formContainer', 'productsList', 'totalScore');
+            } else if (!window.Engine) {
+                console.log("⏳ Waiting for Engine...");
+            } else if (!window.Schema) {
+                console.log("⏳ Waiting for Schema...");
+            }
+        };
+
         (function () {
             const params = new URLSearchParams(window.location.search);
             const configFile = params.get('config') || '../data/schema_kitchen.js'; // Default for backward compatibility
@@ -18,11 +31,8 @@
             }
             script.src = cfgPath + '?v=' + new Date().getTime(); // Prevent caching
             script.onload = function () {
-                console.log('Schema loaded:', configFile);
-                // Initialize Engine only after Schema is loaded
-                if (window.Engine && window.Schema) {
-                    Engine.init('formContainer', 'productsList', 'totalScore');
-                }
+                console.log('✅ Schema loaded:', configFile);
+                window.tryInitEngine(); // Try init when schema arrives
             };
             script.onerror = function () {
                 document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:50px">Помилка: Не вдалося завантажити конфігурацію (' + configFile + ')</h1>';
@@ -30,7 +40,8 @@
             document.head.appendChild(script);
         })();
     </script>
-    <script src="engine.js?v=2.2"></script>
+    <!-- Load Engine and try init on load -->
+    <script src="engine.js?v=2.2" onload="window.tryInitEngine()"></script>
     <style>
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
