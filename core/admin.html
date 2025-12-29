@@ -2957,9 +2957,17 @@
             window.saveData = async function () {
                 const defaultName = window.currentConfigFile ? window.currentConfigFile.split('/').pop() : 'schema.js';
                 const fileContent = `const Schema = ${JSON.stringify(Schema, null, 4)};\nwindow.Schema = Schema;`;
-                const filename = window.currentConfigFile ? window.currentConfigFile : 'data/' + defaultName;
+                
+                // Construct the path relative to the root "data/" folder if possible
+                let filename = window.currentConfigFile;
+                if (!filename) {
+                    filename = 'data/' + defaultName;
+                } else if (filename.startsWith('../')) {
+                    // Normalize ../data/xyz.js -> data/xyz.js
+                    filename = filename.replace('../', '');
+                }
 
-                // Спроба автоматичного збереження через локальний сервер
+                // 1. Try Automatic Save via Local Server
                 try {
                     const response = await fetch('http://localhost:5005', {
                         method: 'POST',
@@ -2967,17 +2975,32 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ filename: filename, content: fileContent })
                     });
+                    
                     if (response.ok) {
                         document.getElementById('unsavedHint').style.display = 'none';
                         markClean();
                         console.log("✅ Автоматично збережено через Local Saver");
-                        alert('✅ Файл збережено автоматично!');
+                        
+                        // Show a temporary success toast instead of a blocking alert
+                        const toast = document.createElement('div');
+                        toast.style.cssText = 'position:fixed; bottom:20px; right:20px; background:#10b981; color:white; padding:12px 24px; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.1); z-index:9999; animation:fadeIn 0.3s; font-weight:600';
+                        toast.innerText = '✅ Файл успішно збережено!';
+                        document.body.appendChild(toast);
+                        setTimeout(() => {
+                            toast.style.opacity = '0';
+                            setTimeout(() => toast.remove(), 300);
+                        }, 2000);
                         return;
                     }
                 } catch (e) {
-                    console.log("Локальний сервер не запущено, використовуємо стандартне збереження.");
+                    console.warn("Local server unreachable, falling back to manual save:", e);
                 }
 
+                // 2. Fallback to File Picker (Manual)
+                // We use a confirm dialog to ensure we have a FRESH user gesture if the fetch took too long
+                // However, since we are already in a click handler, often it's fine, but if fetch is slow (>5s), it might fail.
+                // To be safe, we just try it, and if it fails, we catch it.
+                
                 try {
                     const handle = await window.showSaveFilePicker({ suggestedName: defaultName, types: [{ accept: { 'text/javascript': ['.js'] } }] });
                     const writ = await handle.createWritable();
@@ -2987,7 +3010,24 @@
                     markClean();
                     alert('✅ Конфігурацію збережено!');
                 } catch (e) {
-                    if (e.name !== 'AbortError') alert('Помилка збереження: ' + e.message);
+                    if (e.name === 'SecurityError' || e.message.includes('user gesture')) {
+                         // Re-acquire gesture
+                         if(confirm('Автоматичне збереження не вдалося (сервер не запущено). Зберегти файл вручну?')) {
+                             try {
+                                const handle = await window.showSaveFilePicker({ suggestedName: defaultName, types: [{ accept: { 'text/javascript': ['.js'] } }] });
+                                const writ = await handle.createWritable();
+                                await writ.write(fileContent);
+                                await writ.close();
+                                document.getElementById('unsavedHint').style.display = 'none';
+                                markClean();
+                                alert('✅ Конфігурацію збережено!');
+                             } catch(retryE) {
+                                 if (retryE.name !== 'AbortError') alert('Помилка збереження: ' + retryE.message);
+                             }
+                         }
+                    } else if (e.name !== 'AbortError') {
+                        alert('Помилка збереження: ' + e.message);
+                    }
                 }
             };
         } else {

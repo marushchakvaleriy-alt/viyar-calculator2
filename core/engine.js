@@ -1100,3 +1100,43 @@ const Engine = {
 };
 
 window.Engine = Engine;
+
+// --- GLOBAL FORMULA HELPERS ---
+window.GET = function(fieldId, processId) {
+    // 1. Get Field Value
+    const val = Engine.state[fieldId];
+    
+    // 2. Get Rule Definition
+    const ruleSet = Schema.rules[fieldId];
+    if (!ruleSet) return 0;
+    
+    let ruleVal = ruleSet[processId];
+    if (ruleVal === undefined) return 0;
+    
+    // 3. Handle 'once' object style
+    if (typeof ruleVal === 'object' && ruleVal.v !== undefined) {
+        ruleVal = ruleVal.v;
+    }
+    
+    // 4. Calculate Contribution
+    // Similar logic to applyPoints:
+    // If it's a checkbox/number, we multiply rule value by the input value (qty or 0/1)
+    
+    const fieldDef = Schema.fields.find(f => f.id === fieldId);
+    let multiplier = 1;
+    
+    if (fieldDef) {
+         if (fieldDef.type === 'checkbox') {
+             multiplier = val ? 1 : 0;
+         } else if (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty') {
+             // For checkbox_qty, val might be { checked: bool, qty: number }
+             if (fieldDef.type === 'checkbox_qty') {
+                  multiplier = (val && val.checked) ? (Number(val.qty) || 0) : 0;
+             } else {
+                  multiplier = Number(val) || 0;
+             }
+         }
+    }
+    
+    return Number(ruleVal) * multiplier;
+};

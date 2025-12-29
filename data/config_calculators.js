@@ -1,16 +1,9 @@
 window.CalculatorConfig = [
     {
-        "id": "schema_default",
-        "title": "Демо Калькулятор",
+        "id": "schema_kukhni_454",
+        "title": "Кухні",
         "icon": "images/кухня.png",
-        "file": "data/schema_default.js",
-        "desc": "Приклад калькулятора для демонстрації"
-    },
-    {
-        "id": "schema_kgjhg_1766770771600",
-        "title": "kgjhg",
-        "icon": "images/кухня.png",
-        "file": "data/schema_kgjhg_1766770771600.js",
-        "desc": "Новий калькулятор"
+        "file": "data/schema_kukhni_454.js",
+        "desc": "Опис нового калькулятора"
     }
 ]; 

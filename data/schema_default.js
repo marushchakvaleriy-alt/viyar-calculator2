@@ -292,10 +292,13 @@ const Schema = {
             "pr_c3": 10,
             "pr_c5": 10,
             "pr_c11": 10,
-            "_total_cat_construction": "=GET('f1766947986888', 'pr_c11')+GET('f1766947986251', 'pr_c12')"
+            "_total_cat_construction": ""
         },
         "f1766947986251": {
             "pr_c12": 10
+        },
+        "f1766947984630": {
+            "pr_c1": 10
         }
     }
 };
