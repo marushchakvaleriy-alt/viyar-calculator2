@@ -7,22 +7,33 @@
     <title>Viyar Calculator V2.1 - Унікальні Модалки</title>
     <!-- Dynamic Schema Loader -->
     <script>
+        window.isEngineInitialized = false;
+
+        function tryInitCalculator() {
+            if (window.isEngineInitialized) return;
+
+            if (window.Engine && window.Schema) {
+                console.log('🚀 All dependencies loaded. Initializing Engine...');
+                Engine.init('formContainer', 'resultsContainer', 'totalScore'); // Fixed ID 'resultsContainer' (was productsList in previous code, checking body...)
+                window.isEngineInitialized = true;
+            } else {
+                console.log('⏳ Waiting for dependencies... (Engine: ' + !!window.Engine + ', Schema: ' + !!window.Schema + ')');
+            }
+        }
+
         (function () {
             const params = new URLSearchParams(window.location.search);
-            const configFile = params.get('config') || '../data/schema_kitchen.js'; // Default for backward compatibility
+            const configFile = params.get('config') || '../data/schema_kitchen.js';
 
             const script = document.createElement('script');
             let cfgPath = configFile;
             if (cfgPath.startsWith('data/')) {
                 cfgPath = '../' + cfgPath;
             }
-            script.src = cfgPath + '?v=' + new Date().getTime(); // Prevent caching
+            script.src = cfgPath + '?v=' + new Date().getTime();
             script.onload = function () {
-                console.log('Schema loaded:', configFile);
-                // Initialize Engine only after Schema is loaded
-                if (window.Engine && window.Schema) {
-                    Engine.init('formContainer', 'productsList', 'totalScore');
-                }
+                console.log('✅ Schema loaded:', configFile);
+                tryInitCalculator();
             };
             script.onerror = function () {
                 document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:50px">Помилка: Не вдалося завантажити конфігурацію (' + configFile + ')</h1>';
@@ -30,7 +41,7 @@
             document.head.appendChild(script);
         })();
     </script>
-    <script src="engine.js?v=2.2"></script>
+    <script src="engine.js?v=2.3" onload="console.log('✅ Engine loaded'); tryInitCalculator();"></script>
     <style>
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
