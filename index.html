@@ -370,6 +370,18 @@
         </div>
     </div>
 
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePassModal">
+        <div class="modal-box">
+            <h3>🆕 Новий пароль</h3>
+            <p style="font-size:12px; color:#666; margin-bottom:10px">Введіть новий пароль і збережіть файл</p>
+            <input type="text" id="newAdminPass" class="modal-input" placeholder="Новий пароль">
+            <button class="modal-btn" style="background:#f59e0b" onclick="saveNewPassword()">💾 Зберегти пароль</button>
+            <div style="margin-top:10px; font-size:12px; cursor:pointer; color:#666"
+                onclick="document.getElementById('changePassModal').style.display='none'">Скасувати</div>
+        </div>
+    </div>
+
     <!-- File Selection Modal -->
     <div class="modal-overlay" id="fileSelectModal">
         <div class="modal-box" style="width: 400px;">
@@ -679,7 +691,9 @@
             passBtn.style.background = '#f59e0b'; // Amber
             passBtn.style.color = 'white';
             passBtn.innerHTML = `🔐 Змінити пароль`;
-            passBtn.onclick = changePassword;
+            passBtn.onclick = function () {
+                document.getElementById('changePassModal').style.display = 'flex';
+            };
             list.appendChild(passBtn);
 
             // Manual Input
@@ -693,9 +707,12 @@
             document.getElementById('fileSelectModal').style.display = 'flex';
         }
 
-        async function changePassword() {
-            const newPass = prompt("Введіть новий пароль адміністратора:");
-            if (!newPass) return; // Cancelled
+        async function saveNewPassword() {
+            const newPass = document.getElementById('newAdminPass').value;
+            if (!newPass) {
+                alert('Введіть пароль!');
+                return;
+            }
 
             if (!window.DashboardConfig) window.DashboardConfig = {};
             window.DashboardConfig.adminPassword = newPass;
@@ -711,7 +728,8 @@
                 await writable.write(fileContent);
                 await writable.close();
 
-                alert('✅ Пароль змінено! Не забудьте зберегти файл у папку data.');
+                alert('✅ Пароль успішно змінено!');
+                document.getElementById('changePassModal').style.display = 'none';
             } catch (e) {
                 console.error(e);
                 if (e.name !== 'AbortError') alert('Помилка: ' + e.message);
