@@ -9,39 +9,58 @@
     <script>
         window.isEngineInitialized = false;
 
-        function tryInitCalculator() {
+        function checkDependencies() {
             if (window.isEngineInitialized) return;
 
             if (window.Engine && window.Schema) {
-                console.log('🚀 All dependencies loaded. Initializing Engine...');
-                Engine.init('formContainer', 'resultsContainer', 'totalScore'); // Fixed ID 'resultsContainer' (was productsList in previous code, checking body...)
+                console.log('🚀 Dependencies ready. Initializing Engine via Polling...');
+                // Correct arguments: formContainer, productsList, totalScore
+                Engine.init('formContainer', 'productsList', 'totalScore');
                 window.isEngineInitialized = true;
-            } else {
-                console.log('⏳ Waiting for dependencies... (Engine: ' + !!window.Engine + ', Schema: ' + !!window.Schema + ')');
+
+                if (window.initInterval) clearInterval(window.initInterval);
             }
         }
 
+        // Start polling immediately
+        window.initInterval = setInterval(checkDependencies, 50);
+
         (function () {
             const params = new URLSearchParams(window.location.search);
-            const configFile = params.get('config') || '../data/schema_kitchen.js';
+            // Default to a safe existing file if param is missing
+            const configFile = params.get('config') || '../data/schema_novyy_kal_kulyator_733.js';
 
             const script = document.createElement('script');
             let cfgPath = configFile;
+            // Handle relative path adjustment
             if (cfgPath.startsWith('data/')) {
                 cfgPath = '../' + cfgPath;
             }
+
+            // Log path for debugging
+            console.log('Attempting to load schema from:', cfgPath);
+
             script.src = cfgPath + '?v=' + new Date().getTime();
+
             script.onload = function () {
-                console.log('✅ Schema loaded:', configFile);
-                tryInitCalculator();
+                console.log('✅ Schema script loaded');
+                checkDependencies();
             };
+
             script.onerror = function () {
-                document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:50px">Помилка: Не вдалося завантажити конфігурацію (' + configFile + ')</h1>';
+                console.error('❌ Failed to load schema:', cfgPath);
+                document.body.innerHTML = '<div style="text-align:center; padding:50px;">' +
+                    '<h1 style="color:#ef4444">Помилка завантаження</h1>' +
+                    '<p>Не вдалося знайти файл конфігурації: <b>' + configFile + '</b></p>' +
+                    '<p>Перевірте, чи існує цей файл у папці data.</p>' +
+                    '</div>';
+                if (window.initInterval) clearInterval(window.initInterval);
             };
+
             document.head.appendChild(script);
         })();
     </script>
-    <script src="engine.js?v=2.3" onload="console.log('✅ Engine loaded'); tryInitCalculator();"></script>
+    <script src="engine.js?v=2.4"></script>
     <style>
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
