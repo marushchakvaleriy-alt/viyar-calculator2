@@ -31,7 +31,7 @@ if %ERRORLEVEL% NEQ 0 (
     pause
     exit /b
 )
-python auto_push.py initial_sync_on_start
+python tools\auto_push.py initial_sync_on_start
 echo.
 
 :: Перевірка, чи вже запущений local_saver.py
@@ -45,12 +45,12 @@ if "%ERRORLEVEL%"=="0" (
         taskkill /FI "WINDOWTITLE eq Local Saver*" /F >nul 2>&1
         timeout /t 1 /nobreak >nul
         echo 📡 Запуск заново...
-        start "Local Saver - Port 5005" /MIN python local_saver.py
+        start "Local Saver - Port 5005" /MIN python tools\local_saver.py
         echo ✅ Local Saver перезапущено
     )
 ) else (
     echo 📡 Запуск Local Saver у фоновому вікні...
-    start "Local Saver - Port 5005" /MIN python local_saver.py
+    start "Local Saver - Port 5005" /MIN python tools\local_saver.py
     timeout /t 2 /nobreak >nul
     echo ✅ Local Saver запущено
 )

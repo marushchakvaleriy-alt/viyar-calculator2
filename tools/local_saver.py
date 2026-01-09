@@ -54,7 +54,7 @@ class SaveHandler(BaseHTTPRequestHandler):
                 try:
                     print("🌐 Запуск auto_push на GitHub...")
                     result = subprocess.run(
-                        ["python", "auto_push.py", f"Auto-save: {filename}"],
+                        ["python", "tools/auto_push.py", f"Auto-save: {filename}"],
                         capture_output=True, text=True, timeout=60
                     )
                     # Показуємо вивід у консолі Local Saver
