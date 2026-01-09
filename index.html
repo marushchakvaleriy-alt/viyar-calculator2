@@ -811,7 +811,9 @@
 
         function checkLogin() {
             const pass = document.getElementById('adminPass').value;
-            if (pass === 'admin') {
+            const configPass = (window.DashboardConfig && window.DashboardConfig.adminPassword) ? window.DashboardConfig.adminPassword : 'admin';
+
+            if (pass === configPass) {
                 sessionStorage.setItem('isAdmin', 'true');
                 // clear local storage legacy if exists
                 localStorage.removeItem('isAdmin');
