@@ -32,6 +32,5 @@ window.DashboardConfig = {
     "illus2Scale": 1.2,
     "headerBgColor": "#2189e5",
     "headerOpacity": 0.15,
-    "headerBlur": 31,
-    "adminPassword": "2702"
+    "headerBlur": 31
 };
