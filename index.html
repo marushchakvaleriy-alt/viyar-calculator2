@@ -816,7 +816,25 @@
                 rules: {}
             };
             const fileContent = `const Schema = ${JSON.stringify(newSchema, null, 4)};\nwindow.Schema = Schema;`;
+            const fileName = `data/${newCalcData.fileId}.js`;
 
+            // 1. Try Auto-Save (Local Server)
+            try {
+                const response = await fetch('http://localhost:5005', {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: fileName, content: fileContent })
+                });
+                if (response.ok) {
+                    newCalcData.finalFileName = `${newCalcData.fileId}.js`;
+                    console.log("✅ Auto-saved schema");
+                    showAddWizard_Step3();
+                    return;
+                }
+            } catch (e) {
+                console.warn("Local Saver skipped", e);
+            }
+
+            // 2. Fallback
             try {
                 const handle = await window.showSaveFilePicker({
                     suggestedName: `${newCalcData.fileId}.js`,
@@ -848,20 +866,37 @@
         }
 
         async function saveConfigFile() {
+            const newEntry = {
+                id: newCalcData.fileId,
+                title: newCalcData.title,
+                icon: newCalcData.icon,
+                file: `data/${newCalcData.finalFileName}`,
+                desc: newCalcData.desc
+            };
+
+            if (!window.CalculatorConfig) window.CalculatorConfig = [];
+            window.CalculatorConfig.push(newEntry);
+
+            const configContent = `window.CalculatorConfig = ${JSON.stringify(window.CalculatorConfig, null, 4)};`;
+
+            // 1. Try Auto-Save (Local Server)
             try {
-                const newEntry = {
-                    id: newCalcData.fileId,
-                    title: newCalcData.title,
-                    icon: newCalcData.icon,
-                    file: `data/${newCalcData.finalFileName}`,
-                    desc: newCalcData.desc
-                };
+                const response = await fetch('http://localhost:5005', {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: 'data/config_calculators.js', content: configContent })
+                });
+                if (response.ok) {
+                    alert('✅ Все готово! (Автозбереження)');
+                    closeFileSelect();
+                    renderCalculators();
+                    return;
+                }
+            } catch (e) {
+                console.warn("Local Saver skipped", e);
+            }
 
-                if (!window.CalculatorConfig) window.CalculatorConfig = [];
-                window.CalculatorConfig.push(newEntry);
-
-                const configContent = `window.CalculatorConfig = ${JSON.stringify(window.CalculatorConfig, null, 4)};`;
-
+            // 2. Fallback
+            try {
                 const handle = await window.showSaveFilePicker({
                     suggestedName: 'config_calculators.js',
                     types: [{ accept: { 'text/javascript': ['.js'] } }]
