@@ -253,9 +253,38 @@ const Schema = {
         {
             "id": "g_main",
             "title": "Основні параметри"
+        },
+        {
+            "id": "g1767979235638",
+            "title": "віраліовра"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "id": "f1767979205612",
+            "groupId": "g_main",
+            "label": "шафи",
+            "type": "number"
+        },
+        {
+            "id": "f1767979207066",
+            "groupId": "g_main",
+            "label": "інфо",
+            "type": "number"
+        },
+        {
+            "id": "f1767979208322",
+            "groupId": "g_main",
+            "label": "гунда",
+            "type": "number"
+        },
+        {
+            "id": "f1767979243578",
+            "groupId": "g1767979235638",
+            "label": "Нова дія",
+            "type": "number"
+        }
+    ],
     "products": {
         "groups": [],
         "fields": []
