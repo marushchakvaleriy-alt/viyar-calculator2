@@ -363,7 +363,8 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <h3>🔐 Вхід для адміністратора</h3>
-            <input type="password" id="adminPass" class="modal-input" placeholder="Пароль">
+            <input type="password" id="adminPass" class="modal-input" placeholder="Пароль"
+                onkeydown="if(event.key==='Enter') checkLogin()">
             <button class="modal-btn" onclick="checkLogin()">Увійти</button>
             <div style="margin-top:10px; font-size:12px; cursor:pointer; color:#666" onclick="closeLogin()">Скасувати
             </div>
@@ -375,7 +376,8 @@
         <div class="modal-box">
             <h3>🆕 Новий пароль</h3>
             <p style="font-size:12px; color:#666; margin-bottom:10px">Введіть новий пароль і збережіть файл</p>
-            <input type="text" id="newAdminPass" class="modal-input" placeholder="Новий пароль">
+            <input type="text" id="newAdminPass" class="modal-input" placeholder="Новий пароль"
+                onkeydown="if(event.key==='Enter') saveNewPassword()">
             <button class="modal-btn" style="background:#f59e0b" onclick="saveNewPassword()">💾 Зберегти пароль</button>
             <div style="margin-top:10px; font-size:12px; cursor:pointer; color:#666"
                 onclick="document.getElementById('changePassModal').style.display='none'">Скасувати</div>
@@ -624,6 +626,7 @@
                 return;
             }
             document.getElementById('loginModal').style.display = 'flex';
+            setTimeout(() => document.getElementById('adminPass').focus(), 100);
         }
 
         function closeLogin() {
@@ -694,6 +697,7 @@
             passBtn.onclick = function () {
                 closeFileSelect();
                 document.getElementById('changePassModal').style.display = 'flex';
+                setTimeout(() => document.getElementById('newAdminPass').focus(), 100);
             };
             list.appendChild(passBtn);
 
