@@ -264,7 +264,11 @@ const Schema = {
             "id": "f1767979205612",
             "groupId": "g_main",
             "label": "шафи",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "placeholder": "паврпа",
+                "helpImg": "images/hints/Screenshot_2.jpg"
+            }
         },
         {
             "id": "f1767979207066",
