@@ -720,6 +720,25 @@
 
             const fileContent = `window.DashboardConfig = ${JSON.stringify(window.DashboardConfig, null, 4)};`;
 
+            // 1. Try Automatic Save (Local Server)
+            try {
+                const response = await fetch('http://localhost:5005', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: 'data/config_dashboard.js', content: fileContent })
+                });
+
+                if (response.ok) {
+                    alert('✅ Пароль успішно змінено (Автозбереження)!');
+                    document.getElementById('changePassModal').style.display = 'none';
+                    return; // Stop here if successful
+                }
+            } catch (e) {
+                console.warn("Local Saver not detected, switching to manual mode.");
+            }
+
+            // 2. Fallback to File Picker
             try {
                 const handle = await window.showSaveFilePicker({
                     suggestedName: 'config_dashboard.js',
