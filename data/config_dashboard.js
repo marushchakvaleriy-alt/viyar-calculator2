@@ -33,5 +33,5 @@ window.DashboardConfig = {
     "headerBgColor": "#2189e5",
     "headerOpacity": 0.15,
     "headerBlur": 31,
-    "adminPassword": "1212"
+    "adminPassword": "9702"
 };
