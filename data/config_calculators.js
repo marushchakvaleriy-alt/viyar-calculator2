@@ -9,7 +9,7 @@ window.CalculatorConfig = [
     {
         "id": "schema_shafy_170",
         "title": "шафи",
-        "icon": "📦",
+        "icon": "images/шафа.png",
         "file": "data/schema_shafy_170.js",
         "desc": "Опис нового калькулятора"
     }
