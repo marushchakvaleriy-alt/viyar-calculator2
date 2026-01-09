@@ -321,6 +321,14 @@ const Schema = {
             "pr_c2": 10
         }
     },
-    "modalFieldRules": {}
+    "modalFieldRules": {
+        "f1767987131252_mf_1767987337619": {
+            "pr_c1": 10,
+            "pr_c2": 10
+        },
+        "f1767987131252_mf_1767987351323": {
+            "pr_c2": 10
+        }
+    }
 };
 window.Schema = Schema;
