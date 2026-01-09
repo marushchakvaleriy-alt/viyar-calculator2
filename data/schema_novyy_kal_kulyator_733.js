@@ -253,13 +253,47 @@ const Schema = {
         {
             "id": "g_main",
             "title": "Основні параметри"
+        },
+        {
+            "id": "g1767963732768",
+            "title": "рооро"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "id": "f1767963691670",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1767963693179",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1767963695152",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1767963696506",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        }
+    ],
     "products": {
         "groups": [],
         "fields": []
     },
-    "rules": {}
+    "rules": {
+        "f1767963693179": {
+            "pr_c1": 10,
+            "pr_c2": 10
+        }
+    }
 };
 window.Schema = Schema;
