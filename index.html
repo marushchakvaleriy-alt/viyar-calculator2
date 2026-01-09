@@ -672,6 +672,16 @@
             addBtn.onclick = showAddWizard_Step1;
             list.appendChild(addBtn);
 
+            // CHANGE PASSWORD BUTTON
+            const passBtn = document.createElement('button');
+            passBtn.className = 'modal-btn';
+            passBtn.style.marginTop = '10px';
+            passBtn.style.background = '#f59e0b'; // Amber
+            passBtn.style.color = 'white';
+            passBtn.innerHTML = `🔐 Змінити пароль`;
+            passBtn.onclick = changePassword;
+            list.appendChild(passBtn);
+
             // Manual Input
             const manualDetails = document.createElement('div');
             manualDetails.style.marginTop = '10px';
@@ -681,6 +691,31 @@
             list.appendChild(manualDetails);
 
             document.getElementById('fileSelectModal').style.display = 'flex';
+        }
+
+        async function changePassword() {
+            const newPass = prompt("Введіть новий пароль адміністратора:");
+            if (!newPass) return; // Cancelled
+
+            if (!window.DashboardConfig) window.DashboardConfig = {};
+            window.DashboardConfig.adminPassword = newPass;
+
+            const fileContent = `window.DashboardConfig = ${JSON.stringify(window.DashboardConfig, null, 4)};`;
+
+            try {
+                const handle = await window.showSaveFilePicker({
+                    suggestedName: 'config_dashboard.js',
+                    types: [{ accept: { 'text/javascript': ['.js'] } }]
+                });
+                const writable = await handle.createWritable();
+                await writable.write(fileContent);
+                await writable.close();
+
+                alert('✅ Пароль змінено! Не забудьте зберегти файл у папку data.');
+            } catch (e) {
+                console.error(e);
+                if (e.name !== 'AbortError') alert('Помилка: ' + e.message);
+            }
         }
 
         // --- WIZARD LOGIC (Fix for User Gesture) ---
