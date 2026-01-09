@@ -19,5 +19,12 @@ window.CalculatorConfig = [
         "icon": "images/інші меблі.png",
         "file": "data/schema_inshi_mebli_526.js",
         "desc": "Опис нового калькулятора"
+    },
+    {
+        "id": "schema_jfgjdfhgj_194",
+        "title": "jfgjdfhgj",
+        "icon": "📦",
+        "file": "data/schema_jfgjdfhgj_194.js",
+        "desc": "Опис нового калькулятора"
     }
 ]; 
