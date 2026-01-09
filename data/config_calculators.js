@@ -14,10 +14,10 @@ window.CalculatorConfig = [
         "desc": "Опис нового калькулятора"
     },
     {
-        "id": "schema_inshi_mebli_298",
+        "id": "schema_inshi_mebli_526",
         "title": "інші меблі",
         "icon": "📦",
-        "file": "data/schema_inshi_mebli_298.js",
+        "file": "data/schema_inshi_mebli_526.js",
         "desc": "Опис нового калькулятора"
     }
 ]; 
