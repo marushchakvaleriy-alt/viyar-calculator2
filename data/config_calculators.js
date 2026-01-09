@@ -23,7 +23,7 @@ window.CalculatorConfig = [
     {
         "id": "schema_jfgjdfhgj_194",
         "title": "jfgjdfhgj",
-        "icon": "📦",
+        "icon": "images/гардеробні системи.png",
         "file": "data/schema_jfgjdfhgj_194.js",
         "desc": "Опис нового калькулятора"
     }
