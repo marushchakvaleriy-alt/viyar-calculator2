@@ -286,7 +286,11 @@ const Schema = {
             "id": "f1767963696506",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "placeholder": "опис",
+                "helpImg": "images/hints/ph66424.jpg"
+            }
         },
         {
             "id": "f1767987131252",
