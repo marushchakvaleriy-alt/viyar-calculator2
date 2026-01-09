@@ -16,7 +16,7 @@ window.CalculatorConfig = [
     {
         "id": "schema_inshi_mebli_526",
         "title": "інші меблі",
-        "icon": "📦",
+        "icon": "images/інші меблі.png",
         "file": "data/schema_inshi_mebli_526.js",
         "desc": "Опис нового калькулятора"
     }
