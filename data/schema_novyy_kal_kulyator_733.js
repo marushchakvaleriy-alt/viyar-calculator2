@@ -257,6 +257,10 @@ const Schema = {
         {
             "id": "g1767963732768",
             "title": "рооро"
+        },
+        {
+            "id": "g1767987129232",
+            "title": "праовлоа"
         }
     ],
     "fields": [
@@ -283,6 +287,28 @@ const Schema = {
             "groupId": "g_main",
             "label": "Нова дія",
             "type": "number"
+        },
+        {
+            "id": "f1767987131252",
+            "groupId": "g1767987129232",
+            "label": "Нова дія",
+            "type": "action_button",
+            "helpContent": "",
+            "default": "",
+            "modalFields": [
+                {
+                    "id": "mf_1767987337619",
+                    "label": "аюьтмпвл",
+                    "type": "checkbox_qty",
+                    "default": "Додати"
+                },
+                {
+                    "id": "mf_1767987351323",
+                    "label": "йцйцй",
+                    "type": "multiselect",
+                    "default": ""
+                }
+            ]
         }
     ],
     "products": {
@@ -294,6 +320,7 @@ const Schema = {
             "pr_c1": 10,
             "pr_c2": 10
         }
-    }
+    },
+    "modalFieldRules": {}
 };
 window.Schema = Schema;
