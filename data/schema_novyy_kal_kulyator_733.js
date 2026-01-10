@@ -268,19 +268,28 @@ const Schema = {
             "id": "f1767963691670",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "inpBorder": "#0d0d0d"
+            }
         },
         {
             "id": "f1767963693179",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "inpBorder": "#0d0d0d"
+            }
         },
         {
             "id": "f1767963695152",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "inpBorder": "#0d0d0d"
+            }
         },
         {
             "id": "f1767963696506",
