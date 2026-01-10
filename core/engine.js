@@ -1069,24 +1069,36 @@ const Engine = {
     },
 
     saveToCloud() {
+        console.log("🔥 saveToCloud TRIGGERED " + new Date().toISOString());
+        console.log("Auth Object:", window.Auth);
+
         if (!window.Auth || !window.Auth.user) {
-            alert("Будь ласка, увійдіть в систему (кнопка зверху), щоб зберегти розрахунок.");
+            console.warn("User not logged in");
+            const doLogin = confirm("Для збереження розрахунку потрібно увійти в систему. Увійти через Google зараз?");
+            if (doLogin && window.Auth) window.Auth.login();
             return;
         }
 
-        const calculationData = {
-            title: Schema.layout?.title || 'Мій розрахунок',
-            totalCost: parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0'),
-            date: new Date().toISOString(),
-            schemaId: Schema.id || 'unknown',
+        try {
+            console.log("Gathering data...");
+            const calculationData = {
+                title: Schema.layout?.title || 'Мій розрахунок',
+                totalCost: parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0'),
+                date: new Date().toISOString(),
+                schemaId: Schema.id || 'unknown',
 
-            // State
-            state: this.state,
-            addedProducts: this.addedProducts,
-            activeCategories: Array.from(this.activeCategories)
-        };
+                // State
+                state: this.state || {},
+                addedProducts: this.addedProducts || [],
+                activeCategories: this.activeCategories ? Array.from(this.activeCategories) : []
+            };
 
-        window.Auth.saveCalculation(calculationData);
+            console.log("Saving payload:", calculationData);
+            window.Auth.saveCalculation(calculationData);
+        } catch (error) {
+            console.error("Save Crash:", error);
+            alert("Помилка під час збору даних: " + error.message + "\nПеревірте консоль (F12) для деталей.");
+        }
     },
 
     renderResults(points, catSums) {

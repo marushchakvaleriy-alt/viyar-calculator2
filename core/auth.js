@@ -83,20 +83,30 @@ window.Auth = {
     // --- DATABASE METHODS ---
 
     saveCalculation: async function (data) {
-        if (!this.user || !this.db) return alert("Спочатку увійдіть в систему!");
+        console.log("🔥 saveCalculation CALLED with data:", data);
+        if (!this.user || !this.db) {
+            console.error("🔥 No user or db!", this.user, this.db);
+            return alert("Спочатку увійдіть в систему!");
+        }
 
         const calcId = `calc_${Date.now()}`;
-        // Compat SDK uses chaining
+        console.log("🔥 Generating ID:", calcId);
+        console.log("🔥 Writing to Firestore...");
+
         try {
+            // Check network
+            if (!navigator.onLine) throw new Error("Відсутнє з'єднання з інтернетом!");
+
             await this.db.collection("users").doc(this.user.uid).collection("calculations").doc(calcId).set({
                 ...data,
                 savedAt: new Date().toISOString(),
                 id: calcId
             });
+            console.log("🔥 Firestore Write SUCCESS!");
             alert("✅ Розрахунок збережено в хмару!");
         } catch (e) {
-            console.error(e);
-            alert("Помилка збереження: " + e.message);
+            console.error("🔥 Firestore Write FAILED:", e);
+            alert("Помилка збереження: " + e.message + "\nКод: " + (e.code || 'N/A'));
         }
     },
 
