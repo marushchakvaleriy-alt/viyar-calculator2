@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visual Designer - Viyar Pro</title>
     <!-- Dynamic Schema Loader -->
-    <script src="../data/config_calculators.js?v=2"></script>
-    <script src="../data/config_dashboard.js?v=2"></script>
+    <!-- Dynamic Schema Loader -->
+    <script>
+        document.write('<script src="../data/config_calculators.js?v=' + Date.now() + '"><\/script>');
+        document.write('<script src="../data/config_dashboard.js?v=' + Date.now() + '"><\/script>');
+    </script>
     <script>
         (function () {
             const params = new URLSearchParams(window.location.search);
