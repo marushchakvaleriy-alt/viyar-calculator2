@@ -65,6 +65,7 @@ const Engine = {
                 color: inherit;
                 outline: none;
                 font-size: 14px;
+                box-sizing: border-box;
             }
             
             /* Light Theme Overrides */
