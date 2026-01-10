@@ -1141,7 +1141,10 @@ const Engine = {
             `;
             btn.onmouseover = () => btn.style.transform = 'translateY(-2px)';
             btn.onmouseout = () => btn.style.transform = 'translateY(0)';
-            btn.onclick = () => this.saveToCloud();
+            btn.onclick = () => {
+                console.log("🔘 Button 'Save' Clicked!");
+                this.saveToCloud();
+            };
 
             // Insert after the total score block
             totalContainer.parentElement.appendChild(btn);
