@@ -1068,6 +1068,27 @@ const Engine = {
         });
     },
 
+    saveToCloud() {
+        if (!window.Auth || !window.Auth.user) {
+            alert("Будь ласка, увійдіть в систему (кнопка зверху), щоб зберегти розрахунок.");
+            return;
+        }
+
+        const calculationData = {
+            title: Schema.layout?.title || 'Мій розрахунок',
+            totalCost: parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0'),
+            date: new Date().toISOString(),
+            schemaId: Schema.id || 'unknown',
+
+            // State
+            state: this.state,
+            addedProducts: this.addedProducts,
+            activeCategories: Array.from(this.activeCategories)
+        };
+
+        window.Auth.saveCalculation(calculationData);
+    },
+
     renderResults(points, catSums) {
         // Render to UI
         let grandTotal = 0;
@@ -1097,6 +1118,34 @@ const Engine = {
 
         const totalScoreEl = document.getElementById('totalScore');
         if (totalScoreEl) totalScoreEl.innerText = `${Math.round(grandTotal).toLocaleString()} грн`;
+
+        // Inject Save Button
+        const totalContainer = totalScoreEl?.parentElement;
+        if (totalContainer && !document.getElementById('btnSaveCloud')) {
+            const btn = document.createElement('button');
+            btn.id = 'btnSaveCloud';
+            btn.innerHTML = '☁️ Зберегти';
+            btn.style.cssText = `
+                display: block;
+                width: 100%;
+                margin-top: 15px;
+                padding: 10px;
+                background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+                transition: all 0.2s;
+            `;
+            btn.onmouseover = () => btn.style.transform = 'translateY(-2px)';
+            btn.onmouseout = () => btn.style.transform = 'translateY(0)';
+            btn.onclick = () => this.saveToCloud();
+
+            // Insert after the total score block
+            totalContainer.parentElement.appendChild(btn);
+        }
     }
 };
 
