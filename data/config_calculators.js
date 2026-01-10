@@ -11,6 +11,6 @@ window.CalculatorConfig = [
         "title": "Новий калькулятор",
         "icon": "images/інші меблі.png",
         "file": "data/schema_novyy_kal_kulyator_177.js",
-        "desc": "Опис нового калькулятора"
+        "desc": "тититиьтирири"
     }
 ]; 
