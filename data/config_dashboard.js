@@ -10,7 +10,7 @@ window.DashboardConfig = {
     "glassOpacity": 0.1,
     "cardMinWidth": 330,
     "cardPadding": 33,
-    "cardIconSize": 60,
+    "cardIconSize": 100,
     "cardTitleSize": 25,
     "cardTitleColor": "#000000",
     "cardDescSize": 16,
