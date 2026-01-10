@@ -426,8 +426,14 @@
 
     <!-- Auth Module (Standard Script) -->
     <script src="core/auth.js"></script>
-    </script>
+
     <script>
+        // Global Error Handler for Debugging
+        window.onerror = function (msg, url, line, col, error) {
+            console.error(msg, url, line, col, error);
+            // alert("Script Error: " + msg + "\nLine: " + line); // Uncomment for debugging
+        };
+
         function hexToRgba(hex, alpha) {
             if (!hex || hex[0] !== '#') return `rgba(255, 255, 255, ${alpha})`;
             const r = parseInt(hex.slice(1, 3), 16);
