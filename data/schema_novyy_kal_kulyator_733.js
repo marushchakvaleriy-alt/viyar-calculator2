@@ -335,7 +335,7 @@ const Schema = {
         },
         "f1767963691670": {
             "pr_c1": 0,
-            "_total_cat_construction": "= val <= 5 ? 5 : val <= 10 ? 7 : val <= 15 ? 9 : 11"
+            "_total_cat_construction": "= val == 0 ? 0 : val <= 5 ? 5 : val <= 10 ? 7 : val <= 15 ? 9 : 11"
         },
         "f1767963695152": {
             "pr_c1": 10
