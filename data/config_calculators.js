@@ -11,13 +11,14 @@ window.CalculatorConfig = [
         "title": "тьтьть",
         "icon": "📦",
         "file": "data/schema_t_t_t__564.js",
-        "desc": "Опис нового калькулятора"
+        "desc": "Опис нового калькулятора",
+        "isPlaceholder": true
     },
     {
-        "id": "schema_novyy_kal_kulyator_925",
+        "id": "schema_novyy_kal_kulyator_448",
         "title": "Новий калькулятор",
         "icon": "📦",
-        "file": "data/schema_novyy_kal_kulyator_925.js",
+        "file": "data/schema_novyy_kal_kulyator_448.js",
         "desc": "Опис нового калькулятора"
     }
 ]; 
