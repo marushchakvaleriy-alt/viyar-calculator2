@@ -331,8 +331,11 @@
         }
     </style>
     <!-- Dynamic config loading to prevent caching -->
+    <!-- Dynamic config loading to prevent caching -->
     <script>
         document.write('<script src="data/config_calculators.js?v=' + Date.now() + '"><\/script>');
+        document.write('<script src="data/config_dashboard.js?v=' + Date.now() + '"><\/script>');
+        document.write('<script src="data/config_firebase.js?v=' + Date.now() + '"><\/script>');
     </script>
 </head>
 
