@@ -431,7 +431,7 @@
         // Global Error Handler for Debugging
         window.onerror = function (msg, url, line, col, error) {
             console.error(msg, url, line, col, error);
-            // alert("Script Error: " + msg + "\nLine: " + line); // Uncomment for debugging
+            alert("Script Error: " + msg + "\nLine: " + line + "\nURL: " + url);
         };
 
         function hexToRgba(hex, alpha) {
