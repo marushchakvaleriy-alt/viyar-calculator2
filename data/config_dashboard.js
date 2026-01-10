@@ -12,7 +12,7 @@ window.DashboardConfig = {
     "cardPadding": 33,
     "cardIconSize": 100,
     "cardTitleSize": 25,
-    "cardTitleColor": "#000000",
+    "cardTitleColor": "#a53131",
     "cardDescSize": 16,
     "cardDescColor": "#000000",
     "siteTitleSize": 67,
