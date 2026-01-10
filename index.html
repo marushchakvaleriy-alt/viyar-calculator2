@@ -345,8 +345,25 @@
             <img id="header-illustration2"
                 style="position:absolute; right:180px; top:-30px; height:140px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
 
-            <div class="auth-controls">
-                <button class="logout-btn" id="logoutBtn" onclick="doLogout()">Вийти</button>
+            <div class="auth-controls" style="display:flex; align-items:center; gap:10px;">
+                <!-- Firebase Auth (User) -->
+                <button id="authLoginBtn" onclick="window.Auth.login()"
+                    style="background:#fff; color:#333; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                    <span>G</span> Увійти
+                </button>
+
+                <div id="authUserArea" style="display:none; align-items:center; gap:10px;">
+                    <img id="authUserAvatar" src=""
+                        style="width:32px; height:32px; border-radius:50%; border:2px solid white;">
+                    <div style="text-align:right; line-height:1.2">
+                        <div id="authUserName" style="font-size:13px; font-weight:700;">User</div>
+                        <div style="font-size:10px; opacity:0.8; cursor:pointer; text-decoration:underline"
+                            onclick="window.Auth.logout()">Вийти</div>
+                    </div>
+                </div>
+
+                <!-- Admin Auth (System) -->
+                <button class="logout-btn" id="logoutBtn" onclick="doLogout()">Admin Exit</button>
                 <button class="settings-btn" onclick="openLogin()">⚙️</button>
             </div>
         </div>
@@ -399,6 +416,16 @@
     <script>
         document.write('<script src="data/config_calculators.js?v=' + Date.now() + '"><\/script>');
         document.write('<script src="data/config_dashboard.js?v=' + Date.now() + '"><\/script>');
+        document.write('<script src="data/config_firebase.js?v=' + Date.now() + '"><\/script>');
+    </script>
+
+    <!-- Firebase Compat (Required for file:// protocol) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- Auth Module (Standard Script) -->
+    <script src="core/auth.js"></script>
     </script>
     <script>
         function hexToRgba(hex, alpha) {

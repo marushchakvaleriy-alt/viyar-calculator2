@@ -1,8 +1,8 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 import json
 import os
 
-class SaveHandler(BaseHTTPRequestHandler):
+class SaveHandler(SimpleHTTPRequestHandler):
     def do_OPTIONS(self):
         # Налаштування CORS, щоб браузер дозволив запит
         self.send_response(200)
