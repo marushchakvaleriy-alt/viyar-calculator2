@@ -331,17 +331,27 @@ const Schema = {
     "rules": {
         "f1767963693179": {
             "pr_c1": 10,
-            "pr_c2": 0
+            "pr_c2": 0,
+            "pr_a1": 10,
+            "pr_a2": 10,
+            "pr_i1": 10
         },
         "f1767963691670": {
             "pr_c1": 0,
-            "_total_cat_construction": "= val == 0 ? 0 : val <= 5 ? 5 : val <= 10 ? 7 : val <= 15 ? 9 : 11"
+            "_total_cat_construction": "= val == 0 ? 0 : val <= 5 ? 5 : val <= 10 ? 7 : val <= 15 ? 9 : 11",
+            "pr_a1": 10,
+            "pr_a3": 10,
+            "pr_i1": 10
         },
         "f1767963695152": {
-            "pr_c1": 10
+            "pr_c1": 10,
+            "pr_a1": 10,
+            "pr_i1": 10
         },
         "f1767963696506": {
-            "pr_c1": 10
+            "pr_c1": 10,
+            "pr_a1": 10,
+            "pr_i1": 10
         }
     },
     "modalFieldRules": {
