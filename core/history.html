@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Історія розрахунків | Vpoint</title>
+
+    <!-- Firebase Logic -->
+    <script src="../data/config_firebase.js?v=2"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="auth.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .btn-home {
+            text-decoration: none;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #4b5563;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .history-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .h-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .h-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .h-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="title">📜 Мої розрахунки</div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <!-- Auth UI Container -->
+                <div id="authUserArea"
+                    style="display:none; align-items:center; gap:10px; background:white; padding:4px 12px 4px 4px; border-radius:30px; margin-right: 15px;">
+                    <img id="authUserAvatar" src="" style="width:28px; height:28px; border-radius:50%;">
+                    <div id="authUserName" style="font-size:12px; font-weight:700;">...</div>
+                </div>
+
+                <a href="../index.html" class="btn-home">🏠 На головну</a>
+                <button id="authLoginBtn" onclick="window.Auth.login()"
+                    style="display:none; padding:8px 16px; border-radius:20px; border:none; background:#2563eb; color:white; cursor:pointer;">U
+                    Login</button>
+            </div>
+        </div>
+
+        <div id="historyList" class="history-list">
+            <div class="loading">Завантаження...</div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for Auth to init
+        const checkAuth = setInterval(() => {
+            if (window.Auth && window.Auth.db) {
+                clearInterval(checkAuth);
+                loadHistory();
+            } else if (window.Auth && window.Auth.user === null && window.firebase) {
+                // Auth loaded but no user
+                clearInterval(checkAuth);
+                document.getElementById('historyList').innerHTML = '<div class="loading">Будь ласка, увійдіть в систему, щоб побачити історію.</div>';
+            }
+        }, 500);
+
+        async function loadHistory() {
+            if (!window.Auth.user) {
+                document.getElementById('historyList').innerHTML = '<div class="loading">Авторизуйтесь...</div>';
+                return;
+            }
+
+            const list = await window.Auth.getHistory();
+            renderList(list);
+        }
+
+        function renderList(list) {
+            const container = document.getElementById('historyList');
+            if (list.length === 0) {
+                container.innerHTML = '<div class="loading">Історія порожня. Зробіть свій перший розрахунок!</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            list.forEach(item => {
+                const date = new Date(item.savedAt).toLocaleString('uk-UA');
+                const cost = (item.totalCost || 0).toLocaleString();
+
+                const el = document.createElement('div');
+                el.className = 'history-item';
+                el.innerHTML = `
+                    <div class="h-info">
+                        <h4>${item.title || 'Розрахунок без назви'}</h4>
+                        <div class="h-date">${date}</div>
+                        <div style="font-size:11px; color:#6b7280; margin-top:4px;">${Object.keys(item.state || {}).length} змінних</div>
+                    </div>
+                    <div>
+                        <div class="h-total">${cost} грн</div>
+                        <button onclick="loadCalculation('${item.id}')" style="margin-top:5px; padding:4px 8px; font-size:11px; border:1px solid #d1d5db; background:white; cursor:pointer; border-radius:4px;">👁️ Переглянути</button>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function loadCalculation(id) {
+            alert("Функція завантаження в розробці... (ID: " + id + ")");
+        }
+    </script>
+</body>
+
+</html>

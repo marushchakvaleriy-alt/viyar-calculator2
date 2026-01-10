@@ -72,7 +72,7 @@ window.Auth = {
         if (user) {
             loginBtn.style.display = 'none';
             userArea.style.display = 'flex';
-            if (userName) userName.textContent = user.displayName;
+            if (userName) userName.innerHTML = `${user.displayName} <br> <a href="history.html" style="font-size:10px; color:#2563eb;">📜 Мої розрахунки</a>`;
             if (avatar) avatar.src = user.photoURL || 'https://ui-avatars.com/api/?name=' + user.displayName;
         } else {
             loginBtn.style.display = 'flex';
