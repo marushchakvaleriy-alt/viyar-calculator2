@@ -272,7 +272,8 @@ const Schema = {
             "layout": {
                 "inpBorder": "#0d0d0d",
                 "placeholder": "ввести 0 або значення",
-                "inputWidth": 30
+                "inputWidth": 100,
+                "width": "w-50"
             }
         },
         {
