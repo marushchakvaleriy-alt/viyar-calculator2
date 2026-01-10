@@ -113,7 +113,7 @@
 
                 <a href="../index.html" class="btn-home">🏠 На головну</a>
                 <button id="authLoginBtn" onclick="window.Auth.login()"
-                    style="display:none; padding:8px 16px; border-radius:20px; border:none; background:#2563eb; color:white; cursor:pointer;">U
+                    style="display:none; padding:8px 16px; border-radius:20px; border:none; background:#2563eb; color:white; cursor:pointer;">
                     Login</button>
             </div>
         </div>
@@ -126,11 +126,12 @@
     <script>
         // Wait for connection and listen to Auth state
         const checkAuth = setInterval(() => {
-            if (window.Auth && window.firebase) {
+            // Check if Auth.auth is initialized (meaning init() has run and app is created)
+            if (window.Auth && window.Auth.auth) {
                 clearInterval(checkAuth);
 
-                // Subscribe to real auth updates
-                firebase.auth().onAuthStateChanged(user => {
+                // Subscribe to real auth updates (using the initialized instance)
+                window.Auth.auth.onAuthStateChanged(user => {
                     if (user) {
                         window.Auth.user = user; // Ensure global sync
                         loadHistory();
@@ -143,7 +144,7 @@
 
         async function loadHistory() {
             if (!window.Auth.user) return;
-            // ... (rest of logic handles fetching)
+
             const list = await window.Auth.getHistory();
             renderList(list);
         }

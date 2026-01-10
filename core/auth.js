@@ -142,7 +142,7 @@ window.Auth = {
             return list.sort((a, b) => b.savedAt.localeCompare(a.savedAt)); // Newest first
         } catch (e) {
             console.error(e);
-            return [];
+            throw e; // Let UI handle the error
         }
     }
 };
