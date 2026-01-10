@@ -1998,6 +1998,14 @@
             document.getElementById('dbOpacity').value = cfg.glassOpacity ?? 0.1;
 
             // New Card Styles
+            document.getElementById('dbCardWidth').value = cfg.cardMinWidth ?? 280;
+            document.getElementById('dbCardPadding').value = cfg.cardPadding ?? 30;
+            document.getElementById('dbCardIconSize').value = cfg.cardIconSize ?? 64;
+            document.getElementById('dbCardTitleSize').value = cfg.cardTitleSize ?? 24;
+            document.getElementById('dbCardTitleColor').value = cfg.cardTitleColor || '#ffffff';
+            document.getElementById('dbCardDescSize').value = cfg.cardDescSize ?? 14;
+            document.getElementById('dbCardDescColor').value = cfg.cardDescColor || '#9ca3af';
+
             // Premium Styles
             document.getElementById('dbTitleSize').value = cfg.siteTitleSize ?? 48;
             document.getElementById('dbHeaderIllustration').value = cfg.headerIllustration || '';
