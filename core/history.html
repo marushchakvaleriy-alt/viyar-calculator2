@@ -145,13 +145,27 @@
         async function loadHistory() {
             if (!window.Auth.user) return;
 
-            const list = await window.Auth.getHistory();
-            renderList(list);
+            try {
+                // Timeout race (10s)
+                const timeout = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Timeout: Failed to fetch history (Network/Auth issue)")), 10000));
+
+                // Ensure getHistory throws nicely or returns valid data
+                const list = await Promise.race([
+                    window.Auth.getHistory(),
+                    timeout
+                ]);
+
+                renderList(list);
+            } catch (e) {
+                document.getElementById('historyList').innerHTML =
+                    `<div class="loading" style="color:red">Помилка завантаження: ${e.message}<br><br><button onclick="location.reload()" style="padding:10px; cursor:pointer;">Спробувати ще раз</button></div>`;
+            }
         }
 
         function renderList(list) {
             const container = document.getElementById('historyList');
-            if (list.length === 0) {
+            if (!list || list.length === 0) {
                 container.innerHTML = '<div class="loading">Історія порожня. Зробіть свій перший розрахунок!</div>';
                 return;
             }
