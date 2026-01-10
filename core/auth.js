@@ -29,8 +29,21 @@ window.Auth = {
         }
 
         // Initialize Auth and Firestore
+        // Initialize Auth and Firestore
         this.auth = firebase.auth();
         this.db = firebase.firestore();
+
+        // Force Long Polling to avoid WebSocket issues
+        try {
+            this.db.settings({
+                experimentalForceLongPolling: true,
+                experimentalAutoDetectLongPolling: false
+            });
+            console.log("🔥 Firestore settings applied: Long Polling ON");
+        } catch (e) {
+            console.warn("Could not set Firestore settings:", e);
+        }
+
         this.provider = new firebase.auth.GoogleAuthProvider();
 
         // Listen for auth state
@@ -83,30 +96,40 @@ window.Auth = {
     // --- DATABASE METHODS ---
 
     saveCalculation: async function (data) {
-        console.log("🔥 saveCalculation CALLED with data:", data);
         if (!this.user || !this.db) {
-            console.error("🔥 No user or db!", this.user, this.db);
             return alert("Спочатку увійдіть в систему!");
         }
 
         const calcId = `calc_${Date.now()}`;
-        console.log("🔥 Generating ID:", calcId);
-        console.log("🔥 Writing to Firestore...");
+        console.log("Saving to Firestore (Timeout 10s)...");
 
         try {
             // Check network
             if (!navigator.onLine) throw new Error("Відсутнє з'єднання з інтернетом!");
 
-            await this.db.collection("users").doc(this.user.uid).collection("calculations").doc(calcId).set({
-                ...data,
-                savedAt: new Date().toISOString(),
-                id: calcId
+            // Create a timeout promise
+            const timeout = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error("Timeout: З'єднання з базою даних надто повільне")), 10000);
             });
-            console.log("🔥 Firestore Write SUCCESS!");
+
+            // Race the save op against the timeout
+            await Promise.race([
+                this.db.collection("users").doc(this.user.uid).collection("calculations").doc(calcId).set({
+                    ...data,
+                    savedAt: new Date().toISOString(),
+                    id: calcId
+                }),
+                timeout
+            ]);
+
+            console.log("Firestore Write SUCCESS!");
             alert("✅ Розрахунок збережено в хмару!");
         } catch (e) {
-            console.error("🔥 Firestore Write FAILED:", e);
-            alert("Помилка збереження: " + e.message + "\nКод: " + (e.code || 'N/A'));
+            console.error("Firestore Write FAILED:", e);
+            let msg = e.message;
+            if (e.code === 'permission-denied') msg = "Доступ заборонено (Перевірте налаштування Firebase Rules)";
+            if (e.code === 'unavailable') msg = "Сервіс тимчасово недоступний (Офлайн)";
+            alert("Помилка збереження: " + msg);
         }
     },
 

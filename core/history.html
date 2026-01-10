@@ -124,24 +124,26 @@
     </div>
 
     <script>
-        // Wait for Auth to init
+        // Wait for connection and listen to Auth state
         const checkAuth = setInterval(() => {
-            if (window.Auth && window.Auth.db) {
+            if (window.Auth && window.firebase) {
                 clearInterval(checkAuth);
-                loadHistory();
-            } else if (window.Auth && window.Auth.user === null && window.firebase) {
-                // Auth loaded but no user
-                clearInterval(checkAuth);
-                document.getElementById('historyList').innerHTML = '<div class="loading">Будь ласка, увійдіть в систему, щоб побачити історію.</div>';
+
+                // Subscribe to real auth updates
+                firebase.auth().onAuthStateChanged(user => {
+                    if (user) {
+                        window.Auth.user = user; // Ensure global sync
+                        loadHistory();
+                    } else {
+                        document.getElementById('historyList').innerHTML = '<div class="loading">Будь ласка, увійдіть в систему, щоб побачити історію. <br><br> <button onclick="window.Auth.login()" style="padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:6px; cursor:pointer;">Увійти через Google</button></div>';
+                    }
+                });
             }
-        }, 500);
+        }, 100);
 
         async function loadHistory() {
-            if (!window.Auth.user) {
-                document.getElementById('historyList').innerHTML = '<div class="loading">Авторизуйтесь...</div>';
-                return;
-            }
-
+            if (!window.Auth.user) return;
+            // ... (rest of logic handles fetching)
             const list = await window.Auth.getHistory();
             renderList(list);
         }
