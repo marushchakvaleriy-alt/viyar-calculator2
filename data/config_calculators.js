@@ -12,5 +12,12 @@ window.CalculatorConfig = [
         "icon": "📦",
         "file": "data/schema_t_t_t__564.js",
         "desc": "Опис нового калькулятора"
+    },
+    {
+        "id": "schema_novyy_kal_kulyator_925",
+        "title": "Новий калькулятор",
+        "icon": "📦",
+        "file": "data/schema_novyy_kal_kulyator_925.js",
+        "desc": "Опис нового калькулятора"
     }
 ]; 
