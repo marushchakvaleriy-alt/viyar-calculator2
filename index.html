@@ -330,7 +330,10 @@
             }
         }
     </style>
-    <script src="data/config_calculators.js?v=1"></script>
+    <!-- Dynamic config loading to prevent caching -->
+    <script>
+        document.write('<script src="data/config_calculators.js?v=' + Date.now() + '"><\/script>');
+    </script>
 </head>
 
 <body>
@@ -666,13 +669,13 @@
 
                 let badgeHtml = '';
                 if (conf.isPlaceholder) {
-                    badgeHtml = `<div class="badge" style="background:#d97706">${placeholderBadge}</div>`;
+                    badgeHtml = `<div class="badge" style="background:${dbCfg.themeColor || '#1e88e5'}">${placeholderBadge}</div>`;
                 } else if (conf.badge) {
-                    badgeHtml = `<div class="badge">${conf.badge}</div>`;
+                    badgeHtml = `<div class="badge" style="background:${dbCfg.themeColor || '#1e88e5'}">${conf.badge}</div>`;
                 }
 
                 const isImage = (conf.icon && (conf.icon.includes('/') || conf.icon.includes('.')));
-                const iconHtml = isImage ? `<img src="${encodeURI(conf.icon)}" style="height:${cardIconSize}px; display:block; margin: 0 auto 20px; object-fit: contain;">` : `<div class="card-icon" style="font-size:${cardIconSize}px">${conf.icon}</div>`;
+                const iconHtml = isImage ? `<img src="${encodeURI(conf.icon)}" style="height:${cardIconSize}px; display:block; margin: 0 auto 20px; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px; margin-bottom: 20px;">${conf.icon}</div>`;
 
                 a.innerHTML = `
                     <div style="flex-grow: 1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align: center;">
@@ -684,7 +687,12 @@
                         <div class="card-desc" style="font-size:${cardDescSize}px; color:${conf.isPlaceholder ? 'inherit' : cardDescColor}; opacity:0.8; line-height: 1.4; max-width: 250px;">${conf.desc || ''}</div>
                     </div>
                 `;
-                if (!conf.isPlaceholder) a.classList.add('glass-card');
+                if (!conf.isPlaceholder) {
+                    a.classList.add('glass-card');
+                    // Ensure css variables are set for glass card
+                    a.style.setProperty('--glass-bg', `rgba(255, 255, 255, ${dbCfg.glassOpacity || 0.1})`);
+                    a.style.setProperty('--glass-blur', `${dbCfg.glassBlur || 10}px`);
+                }
                 grid.appendChild(a);
             });
 
