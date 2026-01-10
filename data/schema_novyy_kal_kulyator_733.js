@@ -270,7 +270,9 @@ const Schema = {
             "label": "Нова дія",
             "type": "number",
             "layout": {
-                "inpBorder": "#0d0d0d"
+                "inpBorder": "#0d0d0d",
+                "placeholder": "ввести 0 або значення",
+                "inputWidth": 30
             }
         },
         {
@@ -279,7 +281,9 @@ const Schema = {
             "label": "Нова дія",
             "type": "number",
             "layout": {
-                "inpBorder": "#0d0d0d"
+                "inpBorder": "#0d0d0d",
+                "placeholder": "ввести 0 або значення",
+                "inputWidth": 30
             }
         },
         {
@@ -288,7 +292,9 @@ const Schema = {
             "label": "Нова дія",
             "type": "number",
             "layout": {
-                "inpBorder": "#0d0d0d"
+                "inpBorder": "#0d0d0d",
+                "placeholder": "ввести 0 або значення",
+                "inputWidth": 30
             }
         },
         {
