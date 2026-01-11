@@ -533,6 +533,16 @@ const Engine = {
         } else if (field.type === 'select_yes_no') {
             const select = document.createElement('select');
 
+            // Default placeholder
+            const optDefault = document.createElement('option');
+            optDefault.value = "";
+            optDefault.textContent = "-- Виберіть --";
+            optDefault.disabled = true;
+            if (!field.default && field.default !== 0) {
+                optDefault.selected = true;
+            }
+            select.appendChild(optDefault);
+
             const optNo = document.createElement('option');
             optNo.value = "0";
             optNo.textContent = field.labelNo || "Ні";
@@ -544,14 +554,27 @@ const Engine = {
             select.appendChild(optYes);
 
             // Set Initial State
-            // If default is truthy (like 1 or "1"), select Yes
-            const isChecked = field.default == 1;
-            select.value = isChecked ? "1" : "0";
-            this.state[field.id] = isChecked ? 1 : 0;
+            if (field.default === 1 || field.default === '1') {
+                select.value = "1";
+                this.state[field.id] = 1;
+            } else if (field.default === 0 || field.default === '0') {
+                select.value = "0";
+                this.state[field.id] = 0;
+            } else {
+                // No default set, so it stays on placeholder
+                select.value = "";
+                this.state[field.id] = 0; // Default to 0 points if nothing selected
+            }
+
+            // Important: Handle change to update state
+            select.onchange = (e) => {
+                this.state[field.id] = Number(e.target.value) || 0;
+                this.calculate();
+            };
 
             applyStyleToInput(select);
-            inputElement = select;
-            inputWrapper.appendChild(inputElement);
+            inputElement = null; // We handled onchange manually
+            inputWrapper.appendChild(select);
 
         } else {
             const input = document.createElement('input');

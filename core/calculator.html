@@ -60,7 +60,9 @@
             document.head.appendChild(script);
         })();
     </script>
-    <script src="engine.js?v=2.4"></script>
+    <script>
+        document.write('<script src="engine.js?v=' + Date.now() + '"><\/script>');
+    </script>
 
     <!-- Firebase Logic -->
     <script src="../data/config_firebase.js?v=2"></script>

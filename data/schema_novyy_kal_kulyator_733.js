@@ -310,7 +310,7 @@ const Schema = {
         {
             "id": "f1767963696506",
             "groupId": "g_main",
-            "label": "Нова дія",
+            "label": "Нестандартна геометрія приміщення",
             "type": "select_yes_no",
             "layout": {
                 "placeholder": "опис",
