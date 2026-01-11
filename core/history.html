@@ -193,7 +193,34 @@
         }
 
         function loadCalculation(id) {
-            alert("Функція завантаження в розробці... (ID: " + id + ")");
+            // Redirect to calculator with ID param
+            // We need to know which calculator config to use. 
+            // Ideally, the saved state should include the config filename.
+            // For now, let's assume we redirect and the Engine will figure it out 
+            // OR we store config in saved data.
+            // Let's rely on stored config file name if available, otherwise just pass ID and hope Engine handles defaults.
+
+            // Wait, we need to know the config file to load the Calculator page correctly?
+            // Actually calculator.html needs ?config=... to load the schema.
+            // If we only pass ?id=..., calculator.html might not know which schema to load.
+            // We should peek into the item's data in the list rendering, or fetch it.
+            // But renderList already has the item. config file should be saved in the item.
+
+            // Let's assume the saved item has 'config' property.
+            // If not, we might have an issue.
+
+            // Re-finding the item in memory would be complex without passing it.
+            // For now, let's just pass ID. Engine will have to fetch the doc, read the 'config' field from it (if we saved it), and THEN init the schema.
+            // BUT calculator.html loads the config BEFORE Engine init.
+
+            // FIX: We will just redirect to calculator.html?id=ID.
+            // The calculator.html script needs to handle "load by ID" logic:
+            // 1. Fetch data by ID.
+            // 2. Read config file from data.
+            // 3. Load that config.
+            // 4. Init Engine.
+
+            window.location.href = `calculator.html?id=${id}`;
         }
     </script>
 </body>

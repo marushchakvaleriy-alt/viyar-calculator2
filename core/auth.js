@@ -147,14 +147,35 @@ window.Auth = {
     getHistory: async function () {
         if (!this.user || !this.db) return [];
         try {
-            const snap = await this.db.collection("users").doc(this.user.uid).collection("calculations").get();
+            const snap = await this.db.collection("users").doc(this.user.uid).collection("calculations").orderBy("savedAt", "desc").limit(20).get();
             const list = [];
             snap.forEach(doc => list.push(doc.data()));
-            return list.sort((a, b) => b.savedAt.localeCompare(a.savedAt)); // Newest first
+            return list;
         } catch (e) {
-            console.error(e);
-            throw e; // Let UI handle the error
+            console.error("Fetch History Error:", e);
+            throw e;
         }
+    },
+
+    getCalculation: async function (id) {
+        if (!this.user || !this.db) throw new Error("Спочатку увійдіть в систему!");
+        try {
+            const doc = await this.db.collection("users").doc(this.user.uid).collection("calculations").doc(id).get();
+            if (doc.exists) {
+                return doc.data();
+            } else {
+                return null;
+            }
+        } catch (e) {
+            console.error("Fetch Calc Error:", e);
+            throw e;
+        }
+    },
+    return list.sort((a, b) => b.savedAt.localeCompare(a.savedAt)); // Newest first
+} catch (e) {
+    console.error(e);
+    throw e; // Let UI handle the error
+}
     }
 };
 

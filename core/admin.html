@@ -874,8 +874,8 @@
                     <label class="form-label">Тип Поля</label>
                     <select id="fType" class="form-input" onchange="toggleFieldSettings(this.value)">
                         <option value="number">Число / Кількість</option>
-                        <option value="select">Випадаючий список</option>
-                        <option value="checkbox">Галочка (Так/Ні)</option>
+                        <option value="select">Випадаючий список (Рядки)</option>
+                        <option value="select_yes_no">Випадаючий список (Так/Ні)</option>
                         <option value="checkbox_qty">Галочка + Кількість</option>
                         <option value="action_button">Кнопка виклику форми (Модалка)</option>
                         <option value="select_modal">Список (Так/Ні) + Модалка</option>
@@ -1305,7 +1305,7 @@
             return td;
         }
 
-        function renderCellInput(val, onUpdate, onFormulaOpen, onToggleOnce) {
+        function renderCellInput(val, onUpdate, onFormulaOpen, onToggleOnce, fieldType) {
             const wrapper = document.createElement('div');
             wrapper.className = 'cell-wrapper';
 
@@ -1314,6 +1314,28 @@
             if (val && typeof val === 'object' && val.v !== undefined) {
                 dVal = val.v;
                 isOnce = !!val.once;
+            }
+
+            if (fieldType === 'select_yes_no') {
+                const sel = document.createElement('select');
+                sel.className = 'cell-input';
+                sel.style.appearance = 'none'; // remove arrow if desired, or keep it
+                sel.style.padding = '0px 2px';
+                sel.innerHTML = `<option value="0" ${!dVal || dVal == 0 ? 'selected' : ''}>Ні</option><option value="1" ${dVal == 1 ? 'selected' : ''}>Так</option>`;
+                if (dVal && dVal != 0 && dVal != 1) { // If formula
+                    // Show formula or something? Select doesn't support random text easily.
+                    // Append an option for formula
+                    sel.innerHTML += `<option value="${dVal}" selected>${dVal}</option>`;
+                    sel.classList.add('has-formula');
+                } else if (dVal == 1) {
+                    sel.classList.add('has-val');
+                    sel.style.background = '#dcfce7';
+                    sel.style.color = '#166534';
+                }
+
+                sel.onchange = (e) => onUpdate(e.target.value);
+                wrapper.appendChild(sel);
+                return wrapper;
             }
 
             const inp = document.createElement('input');
@@ -1384,9 +1406,9 @@
             }
             if (!field.modalFields) field.modalFields = [];
 
-            const typeChoice = prompt('Виберіть тип поля для модалки:\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - ✅ Чекбокс (checkbox)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - 📑 Множинний вибір (multiselect)', '1');
+            const typeChoice = prompt('Виберіть тип поля для модалки:\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - 🔽 Вибір Так/Ні (select_yes_no)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - 📑 Множинний вибір (multiselect)', '1');
 
-            const typeMap = { '1': 'number', '2': 'select', '3': 'checkbox', '4': 'checkbox_qty', '5': 'multiselect' };
+            const typeMap = { '1': 'number', '2': 'select', '3': 'select_yes_no', '4': 'checkbox_qty', '5': 'multiselect' };
             const selectedType = typeMap[typeChoice];
             if (!selectedType) return;
 
@@ -1556,12 +1578,12 @@
                 if (!isNaN(n)) procTotals[pid] = (procTotals[pid] || 0) + n;
             };
             (Schema.fields || []).forEach(f => {
-                if (['number', 'checkbox', 'checkbox_qty'].includes(f.type)) {
+                if (['number', 'checkbox', 'checkbox_qty', 'select_yes_no'].includes(f.type)) {
                     const r = Schema.rules[f.id];
                     if (r) Object.keys(r).forEach(pid => { if (typeof r[pid] === 'number' || (typeof r[pid] === 'string' && !r[pid].startsWith('='))) safeAdd(pid, r[pid]); });
                 } else if ((f.type === 'action_button' || f.type === 'select_modal') && f.modalFields) {
                     f.modalFields.forEach(mf => {
-                        if (['number', 'checkbox', 'checkbox_qty'].includes(mf.type)) {
+                        if (['number', 'checkbox', 'checkbox_qty', 'select_yes_no'].includes(mf.type)) {
                             const key = `${f.id}_${mf.id}`;
                             const r = Schema.modalFieldRules ? Schema.modalFieldRules[key] : null;
                             if (r) Object.keys(r).forEach(pid => { if (typeof r[pid] === 'number' || (typeof r[pid] === 'string' && !r[pid].startsWith('='))) safeAdd(pid, r[pid]); });
@@ -1694,7 +1716,7 @@
                     valid.filter(p => p.category === cid).forEach(p => {
                         fSrc.filter(f => f.groupId === g.id).forEach(f => {
                             let val = 0;
-                            if (['number', 'checkbox', 'checkbox_qty'].includes(f.type)) {
+                            if (['number', 'checkbox', 'checkbox_qty', 'select_yes_no'].includes(f.type)) {
                                 val = getVal(f.id, p.id);
                             } else if ((f.type === 'action_button' || f.type === 'select_modal') && f.modalFields) {
                                 f.modalFields.forEach(mf => {
@@ -1779,7 +1801,7 @@
                         let catSum = 0;
                         valid.filter(p => p.category === cid).forEach(p => {
                             let val = 0;
-                            if (['number', 'checkbox', 'checkbox_qty'].includes(f.type)) {
+                            if (['number', 'checkbox', 'checkbox_qty', 'select_yes_no'].includes(f.type)) {
                                 val = getVal(f.id, p.id);
                             } else if ((f.type === 'action_button' || f.type === 'select_modal') && f.modalFields) {
                                 f.modalFields.forEach(mf => {
@@ -1836,7 +1858,8 @@
                                             rawVal,
                                             (newVal) => updRule(f.id, p.id, null, newVal),
                                             () => openFormulaModal(`Поле: "${f.label}" | Процес: "${p.name}"`, rawVal, (newVal) => updRule(f.id, p.id, null, newVal)),
-                                            (isOnce) => updRule(f.id, p.id, null, isOnce, true)
+                                            (isOnce) => updRule(f.id, p.id, null, isOnce, true),
+                                            f.type
                                         );
                                         td.appendChild(cellInp);
                                     }
@@ -1925,7 +1948,9 @@
                                             const cellInp = renderCellInput(
                                                 val,
                                                 (newVal) => updRule(f.id, p.id, o.value, newVal),
-                                                () => openFormulaModal(`Поле: "${f.label}" | Варіант: "${o.label}" | Процес: "${p.name}"`, val, (newVal) => updRule(f.id, p.id, o.value, newVal))
+                                                () => openFormulaModal(`Поле: "${f.label}" | Варіант: "${o.label}" | Процес: "${p.name}"`, val, (newVal) => updRule(f.id, p.id, o.value, newVal)),
+                                                null,
+                                                f.type
                                             );
                                             td.appendChild(cellInp);
                                             oRow.appendChild(td);
@@ -1965,7 +1990,7 @@
                                 mfLc.className = 'col-sticky';
                                 mfLc.style.paddingLeft = '40px';
                                 mfLc.style.background = '#fff';
-                                const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'checkbox_qty': '☑️', 'checkbox': '✅' }[mf.type] || '🎯';
+                                const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'checkbox_qty': '☑️', 'checkbox': '✅', 'select_yes_no': '🔽' }[mf.type] || '🎯';
                                 mfLc.innerHTML = `<div style="display:flex; align-items:center; gap:6px; width:100%"><span style="font-size:10px; opacity:0.6; cursor:pointer" onclick="changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" title="Змінити тип поля">${typeIcon}</span><input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})"><button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button></div>`;
                                 mfRow.appendChild(mfLc);
 
@@ -2029,7 +2054,8 @@
                                                     val,
                                                     (newVal) => updModalFieldRule(f.id, mf.id, p.id, newVal, isP),
                                                     () => openFormulaModal(`Поле модалки: "${mf.label}" | Процес: "${p.name}"`, val, (newVal) => updModalFieldRule(f.id, mf.id, p.id, newVal, isP)),
-                                                    (isOnce) => updModalFieldRule(f.id, mf.id, p.id, isOnce, isP, true)
+                                                    (isOnce) => updModalFieldRule(f.id, mf.id, p.id, isOnce, isP, true),
+                                                    mf.type
                                                 );
                                                 td.appendChild(cellInp);
                                                 mfRow.appendChild(td);
@@ -2110,7 +2136,8 @@
                                                                 val,
                                                                 (newVal) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, newVal, isP),
                                                                 () => openFormulaModal(`Поле модалки: "${mf.label}" | Варіант: "${opt.label}" | Процес: "${p.name}"`, val, (newVal) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, newVal, isP)),
-                                                                (isOnce) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, isOnce, isP, true)
+                                                                (isOnce) => updModalFieldOptionRule(f.id, mf.id, opt.value, p.id, isOnce, isP, true),
+                                                                mf.type
                                                             );
                                                             td.appendChild(cellInp);
                                                             optRow.appendChild(td);
@@ -2561,8 +2588,8 @@
             const field = fields.find(f => f.id === buttonId);
             if (!field || !field.modalFields[mfIdx]) return;
             const mf = field.modalFields[mfIdx];
-            const typeChoice = prompt('Змінити тип поля для "' + mf.label + '":\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - 📑 Множинний вибір (multiselect)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - ✅ Чекбокс (checkbox)', '1');
-            const typeMap = { '1': 'number', '2': 'select', '3': 'multiselect', '4': 'checkbox_qty', '5': 'checkbox' };
+            const typeChoice = prompt('Змінити тип поля для "' + mf.label + '":\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - 📑 Множинний вибір (multiselect)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - 🔽 Вибір Так/Ні (select_yes_no)', '1');
+            const typeMap = { '1': 'number', '2': 'select', '3': 'multiselect', '4': 'checkbox_qty', '5': 'select_yes_no' };
             const selectedType = typeMap[typeChoice];
             if (selectedType && selectedType !== mf.type) {
                 mf.type = selectedType;
