@@ -326,12 +326,28 @@ const Schema = {
         {
             "id": "f1768127632277",
             "groupId": "g_main",
-            "label": "Нова дія",
-            "type": "number",
+            "label": "Заміри",
+            "type": "select",
             "layout": {
                 "width": "w-50",
                 "inpBorder": "#0f0f0f"
-            }
+            },
+            "helpContent": "",
+            "placeholderText": "",
+            "options": [
+                {
+                    "value": "o1768134080487",
+                    "label": "Без замірів"
+                },
+                {
+                    "value": "o1768134108853",
+                    "label": "Замір ручний по фото"
+                },
+                {
+                    "value": "o1768134116972",
+                    "label": "Замір 3D по фото"
+                }
+            ]
         }
     ],
     "products": {
@@ -375,6 +391,17 @@ const Schema = {
             "pr_c1": 10,
             "pr_a1": 10,
             "pr_i1": 10
+        },
+        "f1768127632277": {
+            "o1768134080487": {
+                "pr_c1": 10
+            },
+            "o1768134108853": {
+                "pr_c1": 10
+            },
+            "o1768134116972": {
+                "pr_c1": 10
+            }
         }
     },
     "modalFieldRules": {

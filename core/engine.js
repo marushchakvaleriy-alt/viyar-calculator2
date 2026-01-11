@@ -910,7 +910,7 @@ const Engine = {
             if (fDef.type === 'select') {
                 const active = ruleSet[val];
                 if (active) this.applyPoints(active, points, null, catSums, fDef);
-            } else if (fDef.type === 'number' || fDef.type === 'checkbox') {
+            } else if (fDef.type === 'number' || fDef.type === 'checkbox' || fDef.type === 'select_yes_no') {
                 this.applyPoints(ruleSet, points, val, catSums, fDef);
             } else if (fDef.type === 'checkbox_qty') {
                 if (val && val.checked) this.applyPoints(ruleSet, points, val.qty, catSums, fDef);
@@ -931,6 +931,7 @@ const Engine = {
             const ruleSet = Schema.rules[fId];
             if (!fDef || !ruleSet) return;
 
+            // For select_yes_no, we treat it like a number/checkbox (ruleSet is the object), not like 'select' (where ruleSet is a map of values)
             const targetRules = (fDef.type === 'select') ? ruleSet[fVal] : ruleSet;
             if (!targetRules) return;
 
@@ -1007,12 +1008,12 @@ const Engine = {
             } else {
                 // Determine multiplier
                 let multiplier = 1;
-                console.log(`[CalcDebug] Field: ${fieldId} (${fieldDef?.type}), Val: ${contextVal}, RuleVal: ${val}`);
+                console.error(`[CalcDebug] Field: ${fieldDef?.id} (${fieldDef?.type}), Val: ${contextVal}, RuleVal: ${val}`);
                 if (!isOnce && fieldDef) {
                     if (fieldDef.type === 'checkbox') multiplier = contextVal ? 1 : 0;
                     else if (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty' || fieldDef.type === 'select_yes_no') multiplier = Number(contextVal) || 0;
                 }
-                console.log(`[CalcDebug] Multiplier: ${multiplier}`);
+                console.error(`[CalcDebug] Multiplier: ${multiplier}`);
                 val = Number(val) * multiplier;
             }
 
