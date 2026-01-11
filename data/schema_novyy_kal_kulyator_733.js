@@ -412,6 +412,9 @@ const Schema = {
         "f1767987131252_mf_1767987351323": {
             "pr_c2": 10
         }
+    },
+    "layout": {
+        "title": "Кухні"
     }
 };
 window.Schema = Schema;
