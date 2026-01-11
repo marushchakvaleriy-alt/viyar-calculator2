@@ -318,7 +318,8 @@ const Schema = {
                 "placeholder": "опис",
                 "helpImg": "images/hints/Gemini_Generated_Image_vp3maavp3maavp3m.png",
                 "help": "наявність колон, вентюшахт, балок, виступів тощо",
-                "width": "w-50"
+                "width": "w-50",
+                "inpBorder": "#0f0f0f"
             },
             "helpContent": ""
         },
@@ -328,7 +329,8 @@ const Schema = {
             "label": "Нова дія",
             "type": "number",
             "layout": {
-                "width": "w-50"
+                "width": "w-50",
+                "inpBorder": "#0f0f0f"
             }
         }
     ],
