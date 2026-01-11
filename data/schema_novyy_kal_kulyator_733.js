@@ -298,13 +298,14 @@ const Schema = {
         {
             "id": "f1767963695152",
             "groupId": "g_main",
-            "label": "Нова дія",
-            "type": "number",
+            "label": "Наявність острова",
+            "type": "select_yes_no",
             "layout": {
                 "inpBorder": "#0d0d0d",
                 "placeholder": "ввести 0 або значення",
                 "inputWidth": 30
-            }
+            },
+            "helpContent": ""
         },
         {
             "id": "f1767963696506",

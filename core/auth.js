@@ -171,12 +171,7 @@ window.Auth = {
             throw e;
         }
     },
-    return list.sort((a, b) => b.savedAt.localeCompare(a.savedAt)); // Newest first
-} catch (e) {
-    console.error(e);
-    throw e; // Let UI handle the error
-}
-    }
+
 };
 
 // Auto-init
