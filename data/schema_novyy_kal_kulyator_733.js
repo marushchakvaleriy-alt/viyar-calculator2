@@ -275,7 +275,7 @@ const Schema = {
                 "inputWidth": 30
             },
             "helpContent": "",
-            "placeholderText": "",
+            "placeholderText": "--Виберіть--",
             "options": [
                 {
                     "value": "o1768126302128",
