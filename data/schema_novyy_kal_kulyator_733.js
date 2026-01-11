@@ -311,33 +311,18 @@ const Schema = {
             "id": "f1767963696506",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number",
+            "type": "select_yes_no",
             "layout": {
                 "placeholder": "опис",
                 "helpImg": "images/hints/ph66424.jpg"
-            }
+            },
+            "helpContent": ""
         },
         {
-            "id": "f1767987131252",
-            "groupId": "g1767987129232",
+            "id": "f1768127632277",
+            "groupId": "g_main",
             "label": "Нова дія",
-            "type": "action_button",
-            "helpContent": "",
-            "default": "",
-            "modalFields": [
-                {
-                    "id": "mf_1767987337619",
-                    "label": "аюьтмпвл",
-                    "type": "checkbox_qty",
-                    "default": "Додати"
-                },
-                {
-                    "id": "mf_1767987351323",
-                    "label": "йцйцй",
-                    "type": "multiselect",
-                    "default": ""
-                }
-            ]
+            "type": "number"
         }
     ],
     "products": {
