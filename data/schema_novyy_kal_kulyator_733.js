@@ -314,7 +314,7 @@ const Schema = {
             "type": "select_yes_no",
             "layout": {
                 "placeholder": "опис",
-                "helpImg": "images/hints/ph66424.jpg"
+                "helpImg": "images/hints/Gemini_Generated_Image_vp3maavp3maavp3m.png"
             },
             "helpContent": ""
         },
