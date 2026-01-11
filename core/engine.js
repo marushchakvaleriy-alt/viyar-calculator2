@@ -1009,7 +1009,7 @@ const Engine = {
                 let multiplier = 1;
                 if (!isOnce && fieldDef) {
                     if (fieldDef.type === 'checkbox') multiplier = contextVal ? 1 : 0;
-                    else if (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty') multiplier = Number(contextVal) || 0;
+                    else if (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty' || fieldDef.type === 'select_yes_no') multiplier = Number(contextVal) || 0;
                 }
                 val = Number(val) * multiplier;
             }
