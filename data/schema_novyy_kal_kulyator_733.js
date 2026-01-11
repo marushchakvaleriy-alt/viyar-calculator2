@@ -326,7 +326,7 @@ const Schema = {
         {
             "id": "f1768127632277",
             "groupId": "g_main",
-            "label": "Заміри",
+            "label": "Заміри                                         ",
             "type": "select",
             "layout": {
                 "width": "w-50",
