@@ -530,6 +530,29 @@ const Engine = {
             qty.oninput = update;
 
             inputWrapper.appendChild(row);
+        } else if (field.type === 'select_yes_no') {
+            const select = document.createElement('select');
+
+            const optNo = document.createElement('option');
+            optNo.value = "0";
+            optNo.textContent = field.labelNo || "Ні";
+            select.appendChild(optNo);
+
+            const optYes = document.createElement('option');
+            optYes.value = "1";
+            optYes.textContent = field.labelYes || "Так";
+            select.appendChild(optYes);
+
+            // Set Initial State
+            // If default is truthy (like 1 or "1"), select Yes
+            const isChecked = field.default == 1;
+            select.value = isChecked ? "1" : "0";
+            this.state[field.id] = isChecked ? 1 : 0;
+
+            applyStyleToInput(select);
+            inputElement = select;
+            inputWrapper.appendChild(inputElement);
+
         } else {
             const input = document.createElement('input');
             input.type = field.type === 'number' ? 'number' : 'text';
