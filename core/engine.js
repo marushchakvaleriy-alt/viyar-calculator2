@@ -1007,10 +1007,12 @@ const Engine = {
             } else {
                 // Determine multiplier
                 let multiplier = 1;
+                console.log(`[CalcDebug] Field: ${fieldId} (${fieldDef?.type}), Val: ${contextVal}, RuleVal: ${val}`);
                 if (!isOnce && fieldDef) {
                     if (fieldDef.type === 'checkbox') multiplier = contextVal ? 1 : 0;
                     else if (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty' || fieldDef.type === 'select_yes_no') multiplier = Number(contextVal) || 0;
                 }
+                console.log(`[CalcDebug] Multiplier: ${multiplier}`);
                 val = Number(val) * multiplier;
             }
 
