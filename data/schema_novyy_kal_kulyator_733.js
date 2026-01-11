@@ -272,7 +272,8 @@ const Schema = {
             "layout": {
                 "inpBorder": "#0d0d0d",
                 "placeholder": "ввести 0 або значення",
-                "inputWidth": 30
+                "inputWidth": 100,
+                "width": "w-50"
             },
             "helpContent": "",
             "placeholderText": "--Виберіть--",
@@ -303,7 +304,8 @@ const Schema = {
             "layout": {
                 "inpBorder": "#0d0d0d",
                 "placeholder": "ввести 0 або значення",
-                "inputWidth": 30
+                "inputWidth": 100,
+                "width": "w-50"
             },
             "helpContent": ""
         },
@@ -315,7 +317,8 @@ const Schema = {
             "layout": {
                 "placeholder": "опис",
                 "helpImg": "images/hints/Gemini_Generated_Image_vp3maavp3maavp3m.png",
-                "help": "наявність колон, вентюшахт, балок, виступів тощо"
+                "help": "наявність колон, вентюшахт, балок, виступів тощо",
+                "width": "w-50"
             },
             "helpContent": ""
         },
@@ -323,7 +326,10 @@ const Schema = {
             "id": "f1768127632277",
             "groupId": "g_main",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "width": "w-50"
+            }
         }
     ],
     "products": {
