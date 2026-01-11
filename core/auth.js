@@ -55,12 +55,23 @@ window.Auth = {
     },
 
     login: async function () {
+        if (window.location.protocol === 'file:') {
+            alert("⚠️ Google Вхід не працює при відкритті файлу напряму.\n\nБудь ласка, запустіть файл 'START.bat' або 'START.exe' для роботи з хмарним збереженням.\n\nЗараз ви працюєте в автономному режимі.");
+            return;
+        }
+
         if (!this.auth) return alert("Система ще завантажується...");
         try {
             await this.auth.signInWithPopup(this.provider);
         } catch (error) {
             console.error("Login Error:", error);
-            alert("Помилка входу: " + error.message);
+            if (error.code === 'auth/operation-not-supported-in-this-environment') {
+                alert("⚠️ Помилка оточення: Google Вхід вимагає HTTP/HTTPS сервера.\nЗапустіть START.bat.");
+            } else if (error.code === 'auth/popup-closed-by-user') {
+                // Ignore, user just closed it
+            } else {
+                alert("Помилка входу: " + error.message);
+            }
         }
     },
 
