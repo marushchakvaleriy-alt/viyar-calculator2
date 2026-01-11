@@ -265,27 +265,35 @@ const Schema = {
     ],
     "fields": [
         {
-            "id": "f1767963691670",
-            "groupId": "g_main",
-            "label": "Нова дія",
-            "type": "number",
-            "layout": {
-                "inpBorder": "#0d0d0d",
-                "placeholder": "ввести 0 або значення",
-                "inputWidth": 100,
-                "width": "w-50"
-            }
-        },
-        {
             "id": "f1767963693179",
             "groupId": "g_main",
-            "label": "Нова дія",
-            "type": "number",
+            "label": "Форма кухні",
+            "type": "select",
             "layout": {
                 "inpBorder": "#0d0d0d",
                 "placeholder": "ввести 0 або значення",
                 "inputWidth": 30
-            }
+            },
+            "helpContent": "",
+            "placeholderText": "",
+            "options": [
+                {
+                    "value": "o1768126302128",
+                    "label": "Пряма"
+                },
+                {
+                    "value": "o1768126358353",
+                    "label": "Г-подібна"
+                },
+                {
+                    "value": "o1768126364753",
+                    "label": " П-подібна"
+                },
+                {
+                    "value": "o1768126371016",
+                    "label": "G-подібна (по периметру)"
+                }
+            ]
         },
         {
             "id": "f1767963695152",
