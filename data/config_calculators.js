@@ -14,10 +14,10 @@ window.CalculatorConfig = [
         "desc": "тититиьтирири"
     },
     {
-        "id": "schema_iiviv_390",
-        "title": "іівів",
+        "id": "schema_ivaiv_564",
+        "title": "іваів",
         "icon": "📦",
-        "file": "data/schema_iiviv_390.js",
+        "file": "data/schema_ivaiv_564.js",
         "desc": "Опис нового калькулятора"
     }
 ]; 
