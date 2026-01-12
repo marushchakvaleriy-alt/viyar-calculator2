@@ -387,9 +387,9 @@
             <div class="logo" id="site-logo"><span>V</span>point</div>
             <div class="subtitle" id="site-subtitle">Розраховуй і створюй — легко, швидко, зручно</div>
             <img id="header-illustration"
-                style="position:absolute; right:80px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
+                style="position:absolute; left:50%; top:-20px; right:auto; height:120px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
             <img id="header-illustration2"
-                style="position:absolute; right:150px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
+                style="position:absolute; left:50%; top:-20px; right:auto; height:120px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
             <div class="auth-controls" style="display:flex; align-items:center; gap:10px;">
                 <!-- Firebase Auth (User) -->
                 <button id="authLoginBtn" onclick="window.Auth.login()"
@@ -534,7 +534,7 @@
                 const i1X = cfg.illus1X ?? 0;
                 const i1Y = cfg.illus1Y ?? 0;
                 const i1S = cfg.illus1Scale ?? 1;
-                illus.style.transform = `translate(${i1X}px, ${i1Y}px) scale(${i1S})`;
+                illus.style.transform = `translateX(-50%) translate(${i1X}px, ${i1Y}px) scale(${i1S})`;
             } else if (illus) {
                 illus.style.display = 'none';
             }
@@ -555,7 +555,7 @@
                 const i2X = cfg.illus2X ?? 0;
                 const i2Y = cfg.illus2Y ?? 0;
                 const i2S = cfg.illus2Scale ?? 1;
-                illus2.style.transform = `translate(${i2X}px, ${i2Y}px) scale(${i2S})`;
+                illus2.style.transform = `translateX(-50%) translate(${i2X}px, ${i2Y}px) scale(${i2S})`;
             } else if (illus2) {
                 illus2.style.display = 'none';
             }

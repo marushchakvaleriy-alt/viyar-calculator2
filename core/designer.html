@@ -1258,9 +1258,9 @@
 
                     <!-- Premium Illustrations -->
                     <img id="prevHeaderIllustration"
-                        style="position:absolute; right:80px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s;">
+                        style="position:absolute; left:50%; top:-20px; right:auto; height:120px; display:none; object-fit:contain; transition: transform 0.1s;">
                     <img id="prevHeaderIllustration2"
-                        style="position:absolute; right:150px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s;">
+                        style="position:absolute; left:50%; top:-20px; right:auto; height:120px; display:none; object-fit:contain; transition: transform 0.1s;">
 
                     <div class="auth-controls-preview">
                         <button class="logout-btn-preview">Вийти</button>
@@ -2116,7 +2116,7 @@
                 const finalSrc1 = (src1.startsWith('blob:') || src1.startsWith('data:')) ? src1 : encodeURI(src1);
                 prevIllus.src = finalSrc1;
                 prevIllus.style.display = 'block';
-                prevIllus.style.transform = `translate(${i1X}px, ${i1Y}px) scale(${i1S})`;
+                prevIllus.style.transform = `translateX(-50%) translate(${i1X}px, ${i1Y}px) scale(${i1S})`;
             } else {
                 prevIllus.style.display = 'none';
             }
@@ -2132,7 +2132,7 @@
                 const finalSrc2 = (src2.startsWith('blob:') || src2.startsWith('data:')) ? src2 : encodeURI(src2);
                 prevIllus2.src = finalSrc2;
                 prevIllus2.style.display = 'block';
-                prevIllus2.style.transform = `translate(${i2X}px, ${i2Y}px) scale(${i2S})`;
+                prevIllus2.style.transform = `translateX(-50%) translate(${i2X}px, ${i2Y}px) scale(${i2S})`;
             } else {
                 prevIllus2.style.display = 'none';
             }
