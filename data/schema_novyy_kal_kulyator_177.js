@@ -262,7 +262,7 @@ const Schema = {
     },
     "rules": {},
     "layout": {
-        "version": "1"
+        "version": "v1"
     }
 };
 window.Schema = Schema;
