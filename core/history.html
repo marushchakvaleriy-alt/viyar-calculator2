@@ -156,8 +156,10 @@
 
         /* Updated */
             {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            justify-self: center;
         }
 
         .badge-ver {
@@ -270,6 +272,19 @@
             padding: 60px;
             color: #6b7280;
         }
+
+        /* Explicit Header Classes */
+        .header-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
     </style>
 </head>
 
@@ -308,14 +323,14 @@
         <!-- TABLE HEADER -->
         <div class="history-table">
             <div class="history-header">
-                <div style="justify-self:center"><input type="checkbox" id="selectAllBox" class="custom-checkbox"
+                <div class="header-center"><input type="checkbox" id="selectAllBox" class="custom-checkbox"
                         onchange="toggleSelectAll()"></div>
                 <div>Назва Проекту</div>
                 <div>Калькулятор</div>
-                <div>Версія</div>
-                <div>Поінти</div>
-                <div>Оновлено</div>
-                <div style="text-align:right">Дії</div>
+                <div class="header-center">Версія</div>
+                <div class="header-center">Поінти</div>
+                <div class="header-center">Оновлено</div>
+                <div class="header-right">Дії</div>
             </div>
 
             <!-- LIST -->

@@ -356,7 +356,8 @@ const Schema = {
             "type": "number",
             "helpContent": "",
             "layout": {
-                "inpBorder": "#0c0d0d"
+                "inpBorder": "#0c0d0d",
+                "width": "w-25"
             }
         },
         {
@@ -366,7 +367,8 @@ const Schema = {
             "type": "select_yes_no",
             "helpContent": "",
             "layout": {
-                "inpBorder": "#0c0d0d"
+                "inpBorder": "#0c0d0d",
+                "width": "w-25"
             }
         },
         {
@@ -376,7 +378,8 @@ const Schema = {
             "type": "select_yes_no",
             "helpContent": "",
             "layout": {
-                "inpBorder": "#0c0d0d"
+                "inpBorder": "#0c0d0d",
+                "width": "w-25"
             }
         },
         {
@@ -385,7 +388,8 @@ const Schema = {
             "label": "Окремі елементи з підсвітко ",
             "type": "number",
             "layout": {
-                "inpBorder": "#0c0d0d"
+                "inpBorder": "#0c0d0d",
+                "width": "w-25"
             }
         }
     ],
