@@ -935,6 +935,7 @@
                         <option value="maxlimit">Максимальний ліміт: min(@qty, 2) * 15</option>
                         <option value="base_plus">База + приріст: 10 + (@qty * 0.5)</option>
                         <option value="tiered">Ступінчаста ціна: @qty <= 5 ? @qty*10 : 5*10+(@qty-5)*8</option>
+                        <option value="grad_5_7_9">Градація (0-5-10-15): 0→0, ≤5→5, ≤10→7, ≤15→9...</option>
                         <option value="fixed">Фіксована + змінна: 50 + (@qty-1)*20</option>
                         <option value="percent">Відсоток від іншої категорії: @sum_zbira * 0.15</option>
                     </select>
@@ -2307,7 +2308,9 @@
                 'linear': '=@qty * 5',
                 'maxlimit': '=min(@qty, 2) * 15',
                 'base_plus': '=10 + (@qty * 0.5)',
+                'base_plus': '=10 + (@qty * 0.5)',
                 'tiered': '=@qty <= 5 ? @qty * 10 : 5 * 10 + (@qty - 5) * 8',
+                'grad_5_7_9': '= val == 0 ? 0 : val <= 5 ? 5 : val <= 10 ? 7 : val <= 15 ? 9 : 11',
                 'fixed': '=50 + (@qty - 1) * 20',
                 'percent': '=@sum_zbira * 0.15'
             };
