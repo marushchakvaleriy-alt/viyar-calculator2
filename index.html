@@ -18,7 +18,7 @@
             align-items: flex-start;
             min-height: 100vh;
             color: #fff;
-            padding-top: 60px;
+            padding-top: 20px;
         }
 
         .container {
@@ -30,7 +30,7 @@
 
         /* HEADER */
         .header {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             position: relative;
         }
 
@@ -386,19 +386,15 @@
         <div class="header" style="position:relative;">
             <div class="logo" id="site-logo"><span>V</span>point</div>
             <div class="subtitle" id="site-subtitle">Розраховуй і створюй — легко, швидко, зручно</div>
-
             <img id="header-illustration"
-                style="position:absolute; right:100px; top:-30px; height:140px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
+                style="position:absolute; right:80px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
             <img id="header-illustration2"
-                style="position:absolute; right:180px; top:-30px; height:140px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
-
+                style="position:absolute; right:150px; top:-20px; height:120px; display:none; object-fit:contain; transition: transform 0.1s; pointer-events: none;">
             <div class="auth-controls" style="display:flex; align-items:center; gap:10px;">
                 <!-- Firebase Auth (User) -->
                 <button id="authLoginBtn" onclick="window.Auth.login()"
-                    style="background:#fff; color:#333; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
-                    <span>G</span> Увійти
-                </button>
-
+                    style="background:#fff; color:#333; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; box-shadow:0 2px 5px rgba(0,0,0,0.2);"><span>G</span>
+                    Увійти</button>
                 <div id="authUserArea" style="display:none; align-items:center; gap:10px;">
                     <img id="authUserAvatar" src=""
                         style="width:32px; height:32px; border-radius:50%; border:2px solid white;">
@@ -408,7 +404,6 @@
                             onclick="window.Auth.logout()">Вийти</div>
                     </div>
                 </div>
-
                 <!-- Admin Auth (System) -->
                 <button class="logout-btn" id="logoutBtn" onclick="doLogout()">Admin Exit</button>
                 <button class="settings-btn" onclick="openLogin()">⚙️</button>
