@@ -262,7 +262,8 @@ const Schema = {
     },
     "rules": {},
     "layout": {
-        "version": "v1"
+        "version": "v1",
+        "title": "Шафи та гардероби"
     }
 };
 window.Schema = Schema;
