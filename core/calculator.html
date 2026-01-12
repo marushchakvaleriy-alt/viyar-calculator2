@@ -25,10 +25,51 @@
         // Start polling immediately
         window.initInterval = setInterval(checkDependencies, 50);
 
-        (function () {
+        (async function () {
             const params = new URLSearchParams(window.location.search);
+            const calcId = params.get('id');
             // Default to a safe existing file if param is missing
-            const configFile = params.get('config') || '../data/schema_novyy_kal_kulyator_733.js';
+            let configFile = params.get('config') || '../data/schema_novyy_kal_kulyator_733.js';
+            window.currentConfigFile = configFile; // GLOBAL for Save
+
+            if (calcId) {
+                console.log("☁️ Cloud Load Mode: Waiting for Auth...");
+                // Show loading overlay
+                const overlay = document.createElement('div');
+                overlay.id = 'cloudLoader';
+                overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:sans-serif;';
+                overlay.innerHTML = '<div style="font-size:40px; margin-bottom:20px; animation:bounce 1s infinite">☁️</div><div style="font-size:18px; color:#4b5563; font-weight:600">Завантаження розрахунку...</div>';
+                document.body.appendChild(overlay);
+
+                // Wait for Auth to be ready (it's loaded async)
+                let attempts = 0;
+                while (!window.Auth && attempts < 50) {
+                    await new Promise(r => setTimeout(r, 100));
+                    attempts++;
+                }
+
+                if (window.Auth) {
+                    try {
+                        const doc = await window.Auth.getCalculation(calcId);
+                        if (doc) {
+                            console.log("✅ Cloud data loaded:", doc);
+                            if (doc.configPath) {
+                                configFile = doc.configPath;
+                            }
+                            window.cloudDataToImport = doc; // Save for Engine to use
+                        } else {
+                            alert("❌ Розрахунок не знайдено або у вас немає доступу.");
+                        }
+                    } catch (err) {
+                        console.error("Cloud load error:", err);
+                        alert("Помилка завантаження: " + err.message);
+                    }
+                } else {
+                    alert("❌ Помилка ініціалізації системи авторизації.");
+                }
+
+                if (document.getElementById('cloudLoader')) document.getElementById('cloudLoader').remove();
+            }
 
             const script = document.createElement('script');
             let cfgPath = configFile;
@@ -45,6 +86,17 @@
             script.onload = function () {
                 console.log('✅ Schema script loaded');
                 checkDependencies();
+
+                // If we have cloud data, import it after Engine is ready
+                if (window.cloudDataToImport) {
+                    const checkEngine = setInterval(() => {
+                        if (window.isEngineInitialized && window.Engine) {
+                            clearInterval(checkEngine);
+                            console.log("🔄 Importing state into Engine...");
+                            Engine.importState(window.cloudDataToImport);
+                        }
+                    }, 100);
+                }
             };
 
             script.onerror = function () {

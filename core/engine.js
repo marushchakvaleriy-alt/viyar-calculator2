@@ -1117,36 +1117,83 @@ const Engine = {
         });
     },
 
-    saveToCloud() {
-        console.log("🔥 saveToCloud TRIGGERED " + new Date().toISOString());
-        console.log("Auth Object:", window.Auth);
+    importState: function (doc) {
+        try {
+            if (!doc) return;
+            console.log("📥 Importing State:", doc);
 
+            // 1. Restore State
+            if (doc.state) {
+                this.state = typeof doc.state === 'string' ? JSON.parse(doc.state) : doc.state;
+            }
+
+            // 2. Restore Added Products
+            if (doc.addedProducts) {
+                this.addedProducts = typeof doc.addedProducts === 'string' ? JSON.parse(doc.addedProducts) : doc.addedProducts;
+            } else {
+                this.addedProducts = [];
+            }
+
+            // 3. Restore Categories
+            if (doc.activeCategories) {
+                // Convert array back to Set if needed, or handle array
+                if (Array.isArray(doc.activeCategories)) {
+                    this.activeCategories = new Set(doc.activeCategories);
+                } else {
+                    this.activeCategories = doc.activeCategories;
+                }
+
+                // Update UI toggles
+                this.renderCategoryToggles();
+            }
+
+            // 4. Re-render everything
+            this.renderForm();
+            this.renderAddedProducts();
+            this.calculate();
+
+        } catch (err) {
+            console.error("Import Error:", err);
+            alert("Помилка відновлення стану: " + err.message);
+        }
+    },
+
+    saveToCloud: async function () {
+        console.log("🔥 saveToCloud TRIGGERED " + new Date().toISOString());
+
+        if (!alert) alert = window.alert; // Fallback
         if (!window.Auth || !window.Auth.user) {
             console.warn("User not logged in");
-            const doLogin = confirm("Для збереження розрахунку потрібно увійти в систему. Увійти через Google зараз?");
-            if (doLogin && window.Auth) window.Auth.login();
+            // Try to login
+            window.Auth.login();
             return;
         }
 
         try {
             console.log("Gathering data...");
-            const calculationData = {
+            const stateStr = JSON.stringify(this.state);
+            const productsStr = JSON.stringify(this.addedProducts);
+            const total = parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0');
+
+            const payload = {
                 title: Schema.layout?.title || 'Мій розрахунок',
-                totalCost: parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0'),
+                totalPrice: total,
+                currency: 'UAH',
                 date: new Date().toISOString(),
                 schemaId: Schema.id || 'unknown',
+                configPath: window.currentConfigFile || 'data/schema_kitchen.js', // Include Config Path!
 
                 // State
-                state: this.state || {},
-                addedProducts: this.addedProducts || [],
+                state: stateStr,
+                addedProducts: productsStr,
                 activeCategories: this.activeCategories ? Array.from(this.activeCategories) : []
             };
 
-            console.log("Saving payload:", calculationData);
-            window.Auth.saveCalculation(calculationData);
+            console.log("Saving payload:", payload);
+            await window.Auth.saveCalculation(payload);
         } catch (error) {
             console.error("Save Crash:", error);
-            alert("Помилка під час збору даних: " + error.message + "\nПеревірте консоль (F12) для деталей.");
+            alert("Помилка збереження: " + error.message);
         }
     },
 

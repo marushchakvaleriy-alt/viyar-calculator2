@@ -1241,7 +1241,7 @@
 
         </div><!-- end calculatorEditor -->
         <div class="sidebar-footer">
-            <a href="admin.html" class="nav-btn-back"
+            <a href="admin.html" id="matrixLinkBtn" class="nav-btn-back"
                 style="background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border);">Матриця</a>
             <button class="btn-save" onclick="handleGlobalSave()"
                 style="background: #10b981; color: white;">Зберегти</button>
@@ -1332,13 +1332,41 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', renderDesigner);
+        // Explicitly update the link as soon as possible
+        function updateMatrixLink() {
+            const matrixBtn = document.getElementById('matrixLinkBtn');
+            if (matrixBtn) {
+                console.log('Update Matrix Link. Mode:', window.currentMode, 'Config:', window.currentConfigFile);
+                if (window.currentMode === 'dashboard') {
+                    matrixBtn.href = '../index.html';
+                    matrixBtn.innerHTML = '🏠 На головну';
+                } else if (window.currentConfigFile) {
+                    matrixBtn.href = 'admin.html?config=' + encodeURIComponent(window.currentConfigFile);
+                }
+            } else {
+                console.error('Matrix button not found!');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateMatrixLink();
+            renderDesigner();
+        });
+
+        // Also try running it immediately just in case
+        updateMatrixLink();
 
         function renderDesigner() {
             if (typeof Schema === 'undefined') return;
             const container = document.getElementById('designerCanvas');
             if (!container) return;
             container.innerHTML = '';
+
+            // FIX: Update Back to Matrix Link
+            const matrixBtn = document.querySelector('a.nav-btn-back');
+            if (matrixBtn && window.currentConfigFile) {
+                matrixBtn.href = 'admin.html?config=' + window.currentConfigFile;
+            }
 
             // Sync Global Inputs
             const title = Schema.layout?.title || Schema.meta?.title || '';
