@@ -12,5 +12,12 @@ window.CalculatorConfig = [
         "icon": "images/інші меблі.png",
         "file": "data/schema_novyy_kal_kulyator_177.js",
         "desc": "тититиьтирири"
+    },
+    {
+        "id": "schema_iiviv_390",
+        "title": "іівів",
+        "icon": "📦",
+        "file": "data/schema_iiviv_390.js",
+        "desc": "Опис нового калькулятора"
     }
 ]; 
