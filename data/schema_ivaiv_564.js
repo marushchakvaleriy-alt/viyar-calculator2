@@ -253,9 +253,74 @@ const Schema = {
         {
             "id": "g_main",
             "title": "Основні параметри"
+        },
+        {
+            "id": "g1768211354941",
+            "title": "іваів"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "id": "f1768211348333",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1768211349933",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1768211350677",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1768211351541",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1768211356237",
+            "groupId": "g1768211354941",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1768211356869",
+            "groupId": "g1768211354941",
+            "label": "Нова дія",
+            "type": "select",
+            "helpContent": "",
+            "placeholderText": "",
+            "options": [
+                {
+                    "value": "o1768211366533",
+                    "label": "Варіант"
+                },
+                {
+                    "value": "o1768211367373",
+                    "label": "Варіант"
+                }
+            ]
+        },
+        {
+            "id": "f1768211357605",
+            "groupId": "g1768211354941",
+            "label": "Нова дія",
+            "type": "number"
+        },
+        {
+            "id": "f1768211358269",
+            "groupId": "g1768211354941",
+            "label": "Нова дія",
+            "type": "number"
+        }
+    ],
     "products": {
         "groups": [],
         "fields": []
