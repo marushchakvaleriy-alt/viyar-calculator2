@@ -15,9 +15,10 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             color: #fff;
+            padding-top: 60px;
         }
 
         .container {
@@ -402,7 +403,7 @@
                     <img id="authUserAvatar" src=""
                         style="width:32px; height:32px; border-radius:50%; border:2px solid white;">
                     <div style="text-align:right; line-height:1.2">
-                        <div id="authUserName" style="font-size:13px; font-weight:700;">User</div>
+                        <div id="authUserName" style="font-size:13px; font-weight:700;"></div>
                         <div style="font-size:10px; opacity:0.8; cursor:pointer; text-decoration:underline"
                             onclick="window.Auth.logout()">Вийти</div>
                     </div>

@@ -16,7 +16,7 @@ window.DashboardConfig = {
     "cardDescSize": 16,
     "cardDescColor": "#000000",
     "siteTitleSize": 67,
-    "headerIllustration": "images/ui/logo3.svg",
+    "headerIllustration": "",
     "cardTitleWeight": "800",
     "placeholderBg": "#cbd5e1",
     "placeholderBadgeText": "Скоро",

@@ -389,7 +389,11 @@ const Engine = {
                 select.appendChild(option);
             });
             applyStyleToInput(select);
-            this.state[field.id] = "";
+            if (this.state[field.id] !== undefined) {
+                select.value = this.state[field.id];
+            } else {
+                this.state[field.id] = "";
+            }
             inputElement = select;
             inputWrapper.appendChild(inputElement);
 
@@ -402,8 +406,12 @@ const Engine = {
             chk.type = 'checkbox';
             chk.style.width = '20px';
             chk.style.height = '20px';
-            chk.checked = Boolean(field.default);
-            this.state[field.id] = chk.checked ? 1 : 0;
+            if (this.state[field.id] !== undefined) {
+                chk.checked = (this.state[field.id] == 1);
+            } else {
+                chk.checked = Boolean(field.default);
+                this.state[field.id] = chk.checked ? 1 : 0;
+            }
 
             checkboxContainer.appendChild(chk);
             inputElement = chk;
@@ -521,7 +529,12 @@ const Engine = {
             row.appendChild(chk);
             row.appendChild(qty);
 
-            this.state[field.id] = { checked: false, qty: 1 };
+            if (this.state[field.id]) {
+                chk.checked = this.state[field.id].checked;
+                qty.value = this.state[field.id].qty;
+            } else {
+                this.state[field.id] = { checked: false, qty: 1 };
+            }
             const update = () => {
                 this.state[field.id] = { checked: chk.checked, qty: Number(qty.value) || 0 };
                 this.calculate();
@@ -554,16 +567,20 @@ const Engine = {
             select.appendChild(optYes);
 
             // Set Initial State
-            if (field.default === 1 || field.default === '1') {
-                select.value = "1";
-                this.state[field.id] = 1;
-            } else if (field.default === 0 || field.default === '0') {
-                select.value = "0";
-                this.state[field.id] = 0;
+            if (this.state[field.id] !== undefined) {
+                select.value = String(this.state[field.id]);
             } else {
-                // No default set, so it stays on placeholder
-                select.value = "";
-                this.state[field.id] = 0; // Default to 0 points if nothing selected
+                if (field.default === 1 || field.default === '1') {
+                    select.value = "1";
+                    this.state[field.id] = 1;
+                } else if (field.default === 0 || field.default === '0') {
+                    select.value = "0";
+                    this.state[field.id] = 0;
+                } else {
+                    // No default set, so it stays on placeholder
+                    select.value = "";
+                    this.state[field.id] = 0; // Default to 0 points if nothing selected
+                }
             }
 
             // Important: Handle change to update state
@@ -579,9 +596,13 @@ const Engine = {
         } else {
             const input = document.createElement('input');
             input.type = field.type === 'number' ? 'number' : 'text';
-            input.value = field.default || '';
+            if (this.state[field.id] !== undefined) {
+                input.value = this.state[field.id];
+            } else {
+                input.value = field.default || '';
+                this.state[field.id] = field.type === 'number' ? (Number(input.value) || 0) : input.value;
+            }
             applyStyleToInput(input);
-            this.state[field.id] = field.type === 'number' ? (Number(input.value) || 0) : input.value;
             inputElement = input;
             inputWrapper.appendChild(inputElement);
         }
@@ -1008,12 +1029,10 @@ const Engine = {
             } else {
                 // Determine multiplier
                 let multiplier = 1;
-                console.error(`[CalcDebug] Field: ${fieldDef?.id} (${fieldDef?.type}), Val: ${contextVal}, RuleVal: ${val}`);
                 if (!isOnce && fieldDef) {
                     if (fieldDef.type === 'checkbox') multiplier = contextVal ? 1 : 0;
                     else if (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty' || fieldDef.type === 'select_yes_no') multiplier = Number(contextVal) || 0;
                 }
-                console.error(`[CalcDebug] Multiplier: ${multiplier}`);
                 val = Number(val) * multiplier;
             }
 
@@ -1177,7 +1196,7 @@ const Engine = {
 
             const payload = {
                 title: Schema.layout?.title || 'Мій розрахунок',
-                totalPrice: total,
+                totalCost: total,
                 currency: 'UAH',
                 date: new Date().toISOString(),
                 schemaId: Schema.id || 'unknown',

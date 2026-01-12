@@ -25,7 +25,7 @@
         // Start polling immediately
         window.initInterval = setInterval(checkDependencies, 50);
 
-        (async function () {
+        window.addEventListener('DOMContentLoaded', async function () {
             const params = new URLSearchParams(window.location.search);
             const calcId = params.get('id');
             // Default to a safe existing file if param is missing
@@ -49,20 +49,40 @@
                 }
 
                 if (window.Auth) {
-                    try {
-                        const doc = await window.Auth.getCalculation(calcId);
-                        if (doc) {
-                            console.log("✅ Cloud data loaded:", doc);
-                            if (doc.configPath) {
-                                configFile = doc.configPath;
+                    // Check if User is logged in
+                    if (!window.Auth.user) {
+                        const doLogin = confirm("🔒 Цей розрахунок збережено в хмарі.\nДля доступу до нього потрібно увійти в свій Google акаунт.\n\nУвійти зараз?");
+                        if (doLogin) {
+                            window.Auth.login();
+                            // Wait for user to actually login (polling)
+                            let loginAttempts = 0;
+                            while (!window.Auth.user && loginAttempts < 600) { // Wait up to 60s
+                                await new Promise(r => setTimeout(r, 100));
+                                loginAttempts++;
                             }
-                            window.cloudDataToImport = doc; // Save for Engine to use
-                        } else {
-                            alert("❌ Розрахунок не знайдено або у вас немає доступу.");
                         }
-                    } catch (err) {
-                        console.error("Cloud load error:", err);
-                        alert("Помилка завантаження: " + err.message);
+                    }
+
+                    if (window.Auth.user) {
+                        try {
+                            const doc = await window.Auth.getCalculation(calcId);
+                            if (doc) {
+                                console.log("✅ Cloud data loaded:", doc);
+                                if (doc.configPath) {
+                                    configFile = doc.configPath;
+                                }
+                                window.cloudDataToImport = doc; // Save for Engine to use
+                            } else {
+                                alert("❌ Розрахунок не знайдено або у вас немає доступу.");
+                            }
+                        } catch (err) {
+                            console.error("Cloud load error:", err);
+                            alert("Помилка завантаження: " + err.message);
+                        }
+                    } else {
+                        console.warn("User declined login or login failed.");
+                        // Proceed to load default empty calc? Or stay on overlay?
+                        // Let's remove overlay so they can at least use empty calc
                     }
                 } else {
                     alert("❌ Помилка ініціалізації системи авторизації.");
@@ -110,7 +130,7 @@
             };
 
             document.head.appendChild(script);
-        })();
+        });
     </script>
     <script>
         document.write('<script src="engine.js?v=' + Date.now() + '"><\/script>');
