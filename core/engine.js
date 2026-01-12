@@ -769,7 +769,7 @@ const Engine = {
                             <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:6px;">${chipsHtml}</div>
                         </div>
                         <div style="text-align:right;">
-                            <div style="font-weight:800; color:#2563eb; font-size:15px;">${totalCost} грн</div>
+                            <div style="font-weight:800; color:#2563eb; font-size:15px;">${totalCost} ViPoint</div>
                         </div>
                     </div>
                     <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #f3f4f6; padding-top:8px; margin-top:4px;">
@@ -1180,40 +1180,95 @@ const Engine = {
     saveToCloud: async function () {
         console.log("🔥 saveToCloud TRIGGERED " + new Date().toISOString());
 
-        if (!alert) alert = window.alert; // Fallback
         if (!window.Auth || !window.Auth.user) {
             console.warn("User not logged in");
-            // Try to login
             window.Auth.login();
             return;
         }
 
         try {
             console.log("Gathering data...");
-            const stateStr = JSON.stringify(this.state);
-            const productsStr = JSON.stringify(this.addedProducts);
-            const total = parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0');
 
-            const payload = {
-                title: Schema.layout?.title || 'Мій розрахунок',
-                totalCost: total,
-                currency: 'UAH',
-                date: new Date().toISOString(),
-                schemaId: Schema.id || 'unknown',
-                configPath: window.currentConfigFile || 'data/schema_kitchen.js', // Include Config Path!
+            // Open the enhanced save modal
+            const modal = document.getElementById('saveModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                // Pre-fill date/time or existing title if loaded
+                const titleInput = document.getElementById('saveTitle');
+                if (titleInput && !titleInput.value) {
+                    const now = new Date();
+                    const dateStr = now.toLocaleDateString('uk-UA') + ' ' + now.toLocaleTimeString('uk-UA').slice(0, 5);
+                    titleInput.value = `Проект ${dateStr}`;
+                }
+            } else {
+                console.error("Save modal not found!");
+                alert("Помилка інтерфейсу: вікно збереження не знайдено.");
+            }
+        } catch (e) {
+            console.error("Save Error:", e);
+        }
+    },
 
-                // State
-                state: stateStr,
-                addedProducts: productsStr,
-                activeCategories: this.activeCategories ? Array.from(this.activeCategories) : []
-            };
+    finalizeSave: function () {
+        // Gather data from modal
+        const title = document.getElementById('saveTitle').value || 'Без назви';
+        const manager = document.getElementById('saveManager').value || '';
+        const product = document.getElementById('saveProduct').value || '';
+        const comment = document.getElementById('saveComment').value || '';
 
-            console.log("Saving payload:", payload);
-            await window.Auth.saveCalculation(payload);
-        } catch (error) {
+        // Collect State
+        const total = parseInt(document.getElementById('totalScore')?.innerText.replace(/\D/g, '') || '0');
+        // Helper to find name from Config List
+        let bestName = 'Невідомий калькулятор';
+
+        // 1. Try to find in CalculatorConfig (Global list)
+        if (window.CalculatorConfig && window.currentConfigFile) {
+            // Normalize paths for comparison (remove 'data/' prefix if needed or match partial)
+            const found = window.CalculatorConfig.find(c => window.currentConfigFile.includes(c.file) || c.file.includes(window.currentConfigFile));
+            if (found && found.title) bestName = found.title;
+        }
+
+        // 2. Fallback to Schema internal titles if not found in list
+        if (bestName === 'Невідомий калькулятор') {
+            if (window.Schema && window.Schema.layout && window.Schema.layout.title) bestName = window.Schema.layout.title;
+            else if (window.Schema && window.Schema.title) bestName = window.Schema.title;
+            else if (window.Schema && window.Schema.meta && window.Schema.meta.title) bestName = window.Schema.meta.title;
+        }
+
+        const data = {
+            title: title,
+            totalCost: total,
+            state: this.state, // Pass object directly, Auth will handle stringify if needed or Firestore supports objects
+            addedProducts: this.addedProducts,
+            activeCategories: Array.from(this.activeCategories),
+            configPath: window.currentConfigFile, // Save which config was used
+
+            // New Metadata
+            metadata: {
+                manager: manager,
+                productName: product,
+                comment: comment,
+                calcName: bestName,
+                calcVersion: (window.Schema && window.Schema.meta && window.Schema.meta.version)
+                    ? window.Schema.meta.version
+                    : (window.Schema && window.Schema.version) ? window.Schema.version : 'v1'
+            }
+        };
+
+        // Call Auth
+        window.Auth.saveCalculation(data).then(() => {
+            document.getElementById('saveModal').style.display = 'none';
+            // alert("✅ Розрахунок успішно збережено!");
+        }).catch(error => {
             console.error("Save Crash:", error);
             alert("Помилка збереження: " + error.message);
-        }
+        });
+    },
+
+    // Global helper for close button
+    closeSaveModal: function () {
+        const modal = document.getElementById('saveModal');
+        if (modal) modal.style.display = 'none';
     },
 
     renderResults(points, catSums) {
@@ -1239,12 +1294,12 @@ const Engine = {
                 filter: ${isActive ? 'none' : 'grayscale(1)'};
                 text-decoration: ${isActive ? 'none' : 'line-through'};
             `;
-            row.innerHTML = `<span>${Schema.categories[cid].name}</span> <span style="font-weight:600; color:${isActive ? '#3b82f6' : '#9ca3af'}">${sum.toLocaleString()} грн</span>`;
+            row.innerHTML = `<span>${Schema.categories[cid].name}</span> <span style="font-weight:600; color:${isActive ? '#3b82f6' : '#9ca3af'}">${sum.toLocaleString()} ViPoint</span>`;
             resultsPanel.appendChild(row);
         });
 
         const totalScoreEl = document.getElementById('totalScore');
-        if (totalScoreEl) totalScoreEl.innerText = `${Math.round(grandTotal).toLocaleString()} грн`;
+        if (totalScoreEl) totalScoreEl.innerText = `${Math.round(grandTotal).toLocaleString()} ViPoint`;
 
         // Inject Save Button
         const totalContainer = totalScoreEl?.parentElement;

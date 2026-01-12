@@ -11,19 +11,20 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="auth.js"></script>
+    <script src="auth.js?v=4"></script>
 
     <style>
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
-            background: #f3f4f6;
+            background: #f9fafb;
             margin: 0;
             padding: 20px;
             color: #1f2937;
+            padding-bottom: 80px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -35,8 +36,9 @@
         }
 
         .title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 800;
+            color: #111827;
         }
 
         .btn-home {
@@ -46,53 +48,199 @@
             border-radius: 20px;
             color: #4b5563;
             font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
             display: flex;
             align-items: center;
             gap: 5px;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .history-item {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             transition: 0.2s;
         }
 
-        .history-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .btn-home:hover {
+            background: #f3f4f6;
         }
 
-        .h-info h4 {
-            margin: 0 0 5px 0;
+        /* TABLE LAYOUT */
+        .history-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-header {
+            display: grid;
+            grid-template-columns: 40px 2fr 1.5fr 0.8fr 1fr 1fr 0.5fr;
+            padding: 12px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            align-items: center;
+        }
+
+        .history-row {
+            display: grid;
+            grid-template-columns: 40px 2fr 1.5fr 0.8fr 1fr 1fr 0.5fr;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            align-items: center;
+            transition: 0.1s;
+        }
+
+        .history-row:hover {
+            background: #fdfdfd;
+        }
+
+        .history-row.selected {
+            background: #eff6ff;
+        }
+
+        .col-check {
+            display: flex;
+            align-items: center;
+        }
+
+        .col-project {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .col-calc {
+            font-size: 13px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .col-ver {}
+
+        .col-points {}
+
+        .col-date {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .col-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .badge-ver {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .points-pill {
+            background: #ecfdf5;
+            color: #059669;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        .meta-tag {
+            font-size: 11px;
+            color: #9ca3af;
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 5px;
+            display: inline-block;
+        }
+
+        /* Checkbox Style */
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+
+        /* Actions */
+        .action-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            opacity: 0.6;
+            transition: 0.2s;
             font-size: 16px;
         }
 
-        .h-date {
-            font-size: 12px;
-            color: #9ca3af;
+        .action-icon:hover {
+            opacity: 1;
+            background: #f3f4f6;
         }
 
-        .h-total {
-            font-size: 18px;
-            font-weight: 700;
+        .ico-view {
             color: #2563eb;
+        }
+
+        .ico-del {
+            color: #ef4444;
+        }
+
+        /* Bulk Action Bar */
+        #bulkBar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #111827;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        #bulkBar.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .bulk-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .bulk-cancel {
+            background: transparent;
+            color: #9ca3af;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 13px;
         }
 
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 60px;
             color: #6b7280;
         }
     </style>
@@ -101,42 +249,76 @@
 <body>
 
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
-            <div class="title">📜 Мої розрахунки</div>
-            <div style="display:flex; gap:10px; align-items:center;">
-                <!-- Auth UI Container -->
+            <div>
+                <div class="title">Історія розрахунків</div>
+                <div style="color:#6b7280; font-size:14px; margin-top:5px">Перегляд та управління вашими збереженими
+                    розрахунками</div>
+            </div>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <!-- Auth UI -->
                 <div id="authUserArea"
-                    style="display:none; align-items:center; gap:10px; background:white; padding:4px 12px 4px 4px; border-radius:30px; margin-right: 15px;">
+                    style="display:none; align-items:center; gap:10px; background:white; padding:4px 12px 4px 4px; border-radius:30px; border:1px solid #e5e7eb;">
                     <img id="authUserAvatar" src="" style="width:28px; height:28px; border-radius:50%;">
                     <div id="authUserName" style="font-size:12px; font-weight:700;"></div>
                 </div>
 
                 <a href="../index.html" class="btn-home">🏠 На головну</a>
                 <button id="authLoginBtn" onclick="window.Auth.login()"
-                    style="display:none; padding:8px 16px; border-radius:20px; border:none; background:#2563eb; color:white; cursor:pointer;">
-                    Login</button>
+                    style="display:none; padding:8px 16px; border-radius:20px; border:none; background:#2563eb; color:white; cursor:pointer; font-weight:600">
+                    Увійти</button>
             </div>
         </div>
 
-        <div id="historyList" class="history-list">
-            <div class="loading">Завантаження...</div>
+        <!-- SEARCH / TOOLBAR -->
+        <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center">
+            <input type="text" placeholder="🔍 Пошук за назвою проекту або примітками..."
+                oninput="filterHistory(this.value)"
+                style="width:100%; max-width:500px; padding:12px 20px; border:1px solid #e5e7eb; border-radius:10px; outline:none; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+        </div>
+
+        <!-- TABLE HEADER -->
+        <div class="history-table">
+            <div class="history-header">
+                <div style="justify-self:center"><input type="checkbox" id="selectAllBox" class="custom-checkbox"
+                        onchange="toggleSelectAll()"></div>
+                <div>Назва Проекту</div>
+                <div>Калькулятор</div>
+                <div>Версія</div>
+                <div>Поінти</div>
+                <div>Оновлено</div>
+                <div style="text-align:right">Дії</div>
+            </div>
+
+            <!-- LIST -->
+            <div id="historyList">
+                <div class="loading">Завантаження...</div>
+            </div>
         </div>
     </div>
 
+    <!-- BULK BAR -->
+    <div id="bulkBar">
+        <span id="bulkCount" style="font-weight:700; font-size:13px">0 вибрано</span>
+        <button class="bulk-btn" onclick="deleteSelected()">🗑️ Видалити</button>
+        <button class="bulk-cancel" onclick="clearSelection()">Скасувати</button>
+    </div>
+
     <script>
-        // Wait for connection and listen to Auth state
+        let fullList = [];
+        let currentList = [];
+        let selectedIds = new Set();
+
         const checkAuth = setInterval(() => {
-            // Check if Auth.auth is initialized (meaning init() has run and app is created)
             if (window.Auth && window.Auth.auth) {
                 clearInterval(checkAuth);
-
-                // Subscribe to real auth updates (using the initialized instance)
                 window.Auth.auth.onAuthStateChanged(user => {
                     if (user) {
-                        window.Auth.user = user; // Ensure global sync
+                        window.Auth.user = user;
                         loadHistory();
                     } else {
-                        document.getElementById('historyList').innerHTML = '<div class="loading">Будь ласка, увійдіть в систему, щоб побачити історію. <br><br> <button onclick="window.Auth.login()" style="padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:6px; cursor:pointer;">Увійти через Google</button></div>';
+                        document.getElementById('historyList').innerHTML = '<div class="loading">Будь ласка, увійдіть в систему, щоб побачити історію.<br><br><button onclick="window.Auth.login()" style="padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:6px; cursor:pointer;">Увійти</button></div>';
                     }
                 });
             }
@@ -144,82 +326,151 @@
 
         async function loadHistory() {
             if (!window.Auth.user) return;
+            selectedIds.clear();
+            updateBulkBar();
 
             try {
-                // Timeout race (10s)
-                const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error("Timeout: Failed to fetch history (Network/Auth issue)")), 10000));
-
-                // Ensure getHistory throws nicely or returns valid data
-                const list = await Promise.race([
-                    window.Auth.getHistory(),
-                    timeout
-                ]);
-
-                renderList(list);
+                const list = await window.Auth.getHistory();
+                fullList = list;
+                currentList = list;
+                renderList(currentList);
             } catch (e) {
                 document.getElementById('historyList').innerHTML =
-                    `<div class="loading" style="color:red">Помилка завантаження: ${e.message}<br><br><button onclick="location.reload()" style="padding:10px; cursor:pointer;">Спробувати ще раз</button></div>`;
+                    `<div class="loading" style="color:#ef4444">Помилка завантаження: ${e.message}<br><button onclick="location.reload()">Оновити</button></div>`;
             }
+        }
+
+        function filterHistory(query) {
+            if (!query) {
+                currentList = fullList;
+            } else {
+                const q = query.toLowerCase();
+                currentList = fullList.filter(item => {
+                    const title = (item.title || '').toLowerCase();
+                    const meta = item.metadata || {};
+                    const mgr = (meta.manager || '').toLowerCase();
+                    const prod = (meta.productName || '').toLowerCase();
+                    const cmt = (meta.comment || '').toLowerCase();
+                    return title.includes(q) || mgr.includes(q) || prod.includes(q) || cmt.includes(q);
+                });
+            }
+            renderList(currentList);
         }
 
         function renderList(list) {
             const container = document.getElementById('historyList');
+
             if (!list || list.length === 0) {
-                container.innerHTML = '<div class="loading">Історія порожня. Зробіть свій перший розрахунок!</div>';
+                container.innerHTML = '<div class="loading">Нічого не знайдено 🤷‍♂️</div>';
                 return;
             }
 
             container.innerHTML = '';
+
             list.forEach(item => {
-                const date = new Date(item.savedAt).toLocaleString('uk-UA');
-                const cost = (item.totalCost || 0).toLocaleString();
+                const date = new Date(item.savedAt).toLocaleString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const cost = (item.totalCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2 });
+                const isSelected = selectedIds.has(item.id);
+
+                const meta = item.metadata || {};
+                const calcName = meta.calcName || 'Мій Калькулятор';
+                const calcVer = meta.calcVersion || 'v1';
+
+                // Fallback for old records
+                const manager = meta.manager ? `<span class="meta-tag">👤 ${meta.manager}</span>` : '';
+                const product = meta.productName ? `<span class="meta-tag">🪑 ${meta.productName}</span>` : '';
 
                 const el = document.createElement('div');
-                el.className = 'history-item';
+                el.className = `history-row ${isSelected ? 'selected' : ''}`;
+                el.onclick = (e) => {
+                    if (e.target.closest('button') || e.target.closest('input')) return;
+                    toggleSelection(item.id);
+                };
+
                 el.innerHTML = `
-                    <div class="h-info">
-                        <h4>${item.title || 'Розрахунок без назви'}</h4>
-                        <div class="h-date">${date}</div>
-                        <div style="font-size:11px; color:#6b7280; margin-top:4px;">${Object.keys(item.state || {}).length} змінних</div>
+                    <div class="col-check" style="justify-content:center">
+                        <input type="checkbox" class="custom-checkbox" 
+                            ${isSelected ? 'checked' : ''} 
+                            onclick="event.stopPropagation(); toggleSelection('${item.id}')">
                     </div>
-                    <div>
-                        <div class="h-total">${cost} грн</div>
-                        <button onclick="loadCalculation('${item.id}')" style="margin-top:5px; padding:4px 8px; font-size:11px; border:1px solid #d1d5db; background:white; cursor:pointer; border-radius:4px;">👁️ Переглянути</button>
+                    <div class="col-project">
+                        <div style="font-weight:600; font-size:14px; color:#111827">${item.title || 'Без назви'}</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:4px">
+                            ${manager} ${product}
+                        </div>
+                        ${meta.comment ? `<div style="font-size:11px; color:#6b7280; font-style:italic; max-width:90%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${meta.comment}">${meta.comment}</div>` : ''}
+                    </div>
+                    <div class="col-calc">${calcName}</div>
+                    <div class="col-ver"><span class="badge-ver">${calcVer}</span></div>
+                    <div class="col-points"><span class="points-pill">${cost} ViPoint</span></div>
+                    <div class="col-date">${date}</div>
+                    <div class="col-actions">
+                         <button class="action-icon ico-view" onclick="loadCalculation('${item.id}')" title="Переглянути">👁️ Переглянути</button>
+                         <button class="action-icon ico-del" onclick="deleteSingle('${item.id}', event)" title="Видалити">🗑️</button>
                     </div>
                 `;
                 container.appendChild(el);
             });
+
+            const allBox = document.getElementById('selectAllBox');
+            if (allBox) allBox.checked = list.length > 0 && selectedIds.size === list.length;
+        }
+
+        function toggleSelection(id) {
+            if (selectedIds.has(id)) selectedIds.delete(id);
+            else selectedIds.add(id);
+            renderList(currentList);
+            updateBulkBar();
+        }
+
+        function toggleSelectAll() {
+            const allBox = document.getElementById('selectAllBox');
+            if (allBox.checked) {
+                currentList.forEach(item => selectedIds.add(item.id));
+            } else {
+                selectedIds.clear();
+            }
+            renderList(currentList);
+            updateBulkBar();
+        }
+
+        function clearSelection() {
+            selectedIds.clear();
+            renderList(currentList);
+            updateBulkBar();
+        }
+
+        function updateBulkBar() {
+            const bar = document.getElementById('bulkBar');
+            const count = document.getElementById('bulkCount');
+            if (selectedIds.size > 0) {
+                bar.classList.add('visible');
+                count.innerText = `${selectedIds.size} вибрано`;
+            } else {
+                bar.classList.remove('visible');
+            }
+        }
+
+        async function deleteSingle(id, e) {
+            e.stopPropagation();
+            if (!confirm('Видалити цей розрахунок?')) return;
+            try {
+                await window.Auth.deleteCalculation(id);
+                loadHistory();
+            } catch (e) { alert(e.message); }
+        }
+
+        async function deleteSelected() {
+            if (selectedIds.size === 0) return;
+            if (!confirm(`Видалити вибрані розрахунки (${selectedIds.size} шт)?`)) return;
+            try {
+                const ids = Array.from(selectedIds);
+                await window.Auth.deleteCalculations(ids);
+                loadHistory();
+            } catch (e) { alert(e.message); }
         }
 
         function loadCalculation(id) {
-            // Redirect to calculator with ID param
-            // We need to know which calculator config to use. 
-            // Ideally, the saved state should include the config filename.
-            // For now, let's assume we redirect and the Engine will figure it out 
-            // OR we store config in saved data.
-            // Let's rely on stored config file name if available, otherwise just pass ID and hope Engine handles defaults.
-
-            // Wait, we need to know the config file to load the Calculator page correctly?
-            // Actually calculator.html needs ?config=... to load the schema.
-            // If we only pass ?id=..., calculator.html might not know which schema to load.
-            // We should peek into the item's data in the list rendering, or fetch it.
-            // But renderList already has the item. config file should be saved in the item.
-
-            // Let's assume the saved item has 'config' property.
-            // If not, we might have an issue.
-
-            // Re-finding the item in memory would be complex without passing it.
-            // For now, let's just pass ID. Engine will have to fetch the doc, read the 'config' field from it (if we saved it), and THEN init the schema.
-            // BUT calculator.html loads the config BEFORE Engine init.
-
-            // FIX: We will just redirect to calculator.html?id=ID.
-            // The calculator.html script needs to handle "load by ID" logic:
-            // 1. Fetch data by ID.
-            // 2. Read config file from data.
-            // 3. Load that config.
-            // 4. Init Engine.
-
             window.location.href = `calculator.html?id=${id}`;
         }
     </script>

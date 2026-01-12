@@ -260,6 +260,9 @@ const Schema = {
         "groups": [],
         "fields": []
     },
-    "rules": {}
+    "rules": {},
+    "layout": {
+        "version": "1"
+    }
 };
 window.Schema = Schema;

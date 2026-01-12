@@ -96,7 +96,9 @@ window.Auth = {
         if (user) {
             loginBtn.style.display = 'none';
             userArea.style.display = 'flex';
-            if (userName) userName.innerHTML = `${user.displayName} <br> <a href="history.html" style="font-size:10px; color:#2563eb;">📜 Мої розрахунки</a>`;
+            const path = window.location.pathname;
+            const linkPrefix = path.includes('/core/') ? '' : 'core/';
+            if (userName) userName.innerHTML = `${user.displayName} <br> <a href="${linkPrefix}history.html" style="font-size:10px; color:#2563eb;">📜 Мої розрахунки</a>`;
             if (avatar) avatar.src = user.photoURL || 'https://ui-avatars.com/api/?name=' + user.displayName;
         } else {
             loginBtn.style.display = 'flex';
@@ -120,7 +122,7 @@ window.Auth = {
 
             // Create a timeout promise
             const timeout = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error("Timeout: З'єднання з базою даних надто повільне")), 10000);
+                setTimeout(() => reject(new Error("Timeout: З'єднання з базою даних надто повільне")), 30000);
             });
 
             // Race the save op against the timeout
@@ -168,6 +170,36 @@ window.Auth = {
             }
         } catch (e) {
             console.error("Fetch Calc Error:", e);
+            throw e;
+        }
+    },
+
+    deleteCalculation: async function (id) {
+        if (!this.user || !this.db) throw new Error("Спочатку увійдіть в систему!");
+        try {
+            await this.db.collection("users").doc(this.user.uid).collection("calculations").doc(id).delete();
+            return true;
+        } catch (e) {
+            console.error("Delete Error:", e);
+            throw e;
+        }
+    },
+
+    deleteCalculations: async function (ids) {
+        if (!this.user || !this.db) throw new Error("Спочатку увійдіть в систему!");
+        if (!ids || ids.length === 0) return;
+
+        const batch = this.db.batch();
+        ids.forEach(id => {
+            const ref = this.db.collection("users").doc(this.user.uid).collection("calculations").doc(id);
+            batch.delete(ref);
+        });
+
+        try {
+            await batch.commit();
+            return true;
+        } catch (e) {
+            console.error("Batch Delete Error:", e);
             throw e;
         }
     },
