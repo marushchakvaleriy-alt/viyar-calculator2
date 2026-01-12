@@ -354,27 +354,39 @@ const Schema = {
             "groupId": "g1767963732768",
             "label": "Модулі з підсвіткою",
             "type": "number",
-            "helpContent": ""
+            "helpContent": "",
+            "layout": {
+                "inpBorder": "#0c0d0d"
+            }
         },
         {
             "id": "f1768216216136",
             "groupId": "g1767963732768",
             "label": "підсвітка робочої зони",
             "type": "select_yes_no",
-            "helpContent": ""
+            "helpContent": "",
+            "layout": {
+                "inpBorder": "#0c0d0d"
+            }
         },
         {
             "id": "f1768216347896",
             "groupId": "g1767963732768",
             "label": "Підсвітка цоколя",
             "type": "select_yes_no",
-            "helpContent": ""
+            "helpContent": "",
+            "layout": {
+                "inpBorder": "#0c0d0d"
+            }
         },
         {
             "id": "f1768216371104",
             "groupId": "g1767963732768",
             "label": "Окремі елементи з підсвітко ",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "inpBorder": "#0c0d0d"
+            }
         }
     ],
     "products": {
