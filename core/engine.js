@@ -1249,9 +1249,11 @@ const Engine = {
                 productName: product,
                 comment: comment,
                 calcName: bestName,
-                calcVersion: (window.Schema && window.Schema.meta && window.Schema.meta.version)
-                    ? window.Schema.meta.version
-                    : (window.Schema && window.Schema.version) ? window.Schema.version : 'v1'
+                calcVersion: (window.Schema && window.Schema.layout && window.Schema.layout.version)
+                    ? window.Schema.layout.version
+                    : (window.Schema && window.Schema.meta && window.Schema.meta.version)
+                        ? window.Schema.meta.version
+                        : (window.Schema && window.Schema.version) ? window.Schema.version : 'v1'
             }
         };
 

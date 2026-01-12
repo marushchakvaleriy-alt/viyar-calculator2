@@ -8,7 +8,7 @@ window.CalculatorConfig = [
     },
     {
         "id": "schema_novyy_kal_kulyator_177",
-        "title": "Новий калькулятор",
+        "title": "Шафита гардероби",
         "icon": "images/інші меблі.png",
         "file": "data/schema_novyy_kal_kulyator_177.js",
         "desc": "тититиьтирири"
