@@ -68,29 +68,29 @@
             overflow: hidden;
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
+            /* Ensures column widths are respected */
         }
 
-        .history-header {
-            display: grid;
-            grid-template-columns: 40px 2fr 1.5fr 0.8fr 1fr 1fr 0.5fr;
+        .history-table th,
+        .history-table td {
             padding: 12px 20px;
-            background: #f9fafb;
             border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        .history-table th {
+            background: #f9fafb;
             font-size: 11px;
             font-weight: 700;
             color: #6b7280;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            align-items: center;
+            height: 48px;
         }
 
-        .history-row {
-            display: grid;
-            grid-template-columns: 40px 2fr 1.5fr 0.8fr 1fr 1fr 0.5fr;
-            padding: 16px 20px;
-            border-bottom: 1px solid #f3f4f6;
-            align-items: center;
-            transition: 0.1s;
+        .history-table tr:last-child td {
+            border-bottom: none;
         }
 
         .history-row:hover {
@@ -101,6 +101,7 @@
             background: #eff6ff;
         }
 
+        /* Column specific styling inside cells */
         .col-check {
             display: flex;
             align-items: center;
@@ -113,54 +114,25 @@
             gap: 4px;
         }
 
-        .col-calc {
-            font-size: 13px;
-            color: #374151;
-            font-weight: 500;
+        /* Alignment Classes */
+        .text-left {
+            text-align: left;
         }
 
-        .col-ver {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .col-points {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .col-date {
-            font-size: 12px;
-            color: #6b7280;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .col-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        /* HEADER ALIGNMENT */
-        .history-header>div:nth-child(1),
-        /* Checkbox */
-        .history-header>div:nth-child(4),
-        /* Version */
-        .history-header>div:nth-child(5),
-        /* Points */
-        .history-header>div:nth-child(6)
-
-        /* Updated */
-            {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .text-center {
             text-align: center;
         }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
 
         .badge-ver {
             background: #e0e7ff;
@@ -272,19 +244,6 @@
             padding: 60px;
             color: #6b7280;
         }
-
-        /* Explicit Header Classes */
-        .header-center {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .header-right {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
     </style>
 </head>
 
@@ -320,24 +279,27 @@
                 style="width:100%; max-width:500px; padding:12px 20px; border:1px solid #e5e7eb; border-radius:10px; outline:none; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
         </div>
 
-        <!-- TABLE HEADER -->
-        <div class="history-table">
-            <div class="history-header">
-                <div class="header-center"><input type="checkbox" id="selectAllBox" class="custom-checkbox"
-                        onchange="toggleSelectAll()"></div>
-                <div>Назва Проекту</div>
-                <div>Калькулятор</div>
-                <div class="header-center">Версія</div>
-                <div class="header-center">Поінти</div>
-                <div class="header-center">Оновлено</div>
-                <div class="header-right">Дії</div>
-            </div>
-
-            <!-- LIST -->
-            <div id="historyList">
-                <div class="loading">Завантаження...</div>
-            </div>
-        </div>
+        <!-- TABLE -->
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th style="width: 40px" class="text-center">
+                        <input type="checkbox" id="selectAllBox" class="custom-checkbox" onchange="toggleSelectAll()">
+                    </th>
+                    <th class="text-left">Назва Проекту</th>
+                    <th style="width: 25%" class="text-left">Калькулятор</th>
+                    <th style="width: 80px" class="text-center">Версія</th>
+                    <th style="width: 120px" class="text-center">Поінти</th>
+                    <th style="width: 130px" class="text-center">Оновлено</th>
+                    <th style="width: 150px" class="text-center">Дії</th>
+                </tr>
+            </thead>
+            <tbody id="historyList">
+                <tr>
+                    <td colspan="7" class="loading">Завантаження...</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- BULK BAR -->
@@ -360,7 +322,7 @@
                         window.Auth.user = user;
                         loadHistory();
                     } else {
-                        document.getElementById('historyList').innerHTML = '<div class="loading">Будь ласка, увійдіть в систему, щоб побачити історію.<br><br><button onclick="window.Auth.login()" style="padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:6px; cursor:pointer;">Увійти</button></div>';
+                        document.getElementById('historyList').innerHTML = '<tr><td colspan="7" class="loading">Будь ласка, увійдіть в систему, щоб побачити історію.<br><br><button onclick="window.Auth.login()" style="padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:6px; cursor:pointer;">Увійти</button></td></tr>';
                     }
                 });
             }
@@ -378,7 +340,7 @@
                 renderList(currentList);
             } catch (e) {
                 document.getElementById('historyList').innerHTML =
-                    `<div class="loading" style="color:#ef4444">Помилка завантаження: ${e.message}<br><button onclick="location.reload()">Оновити</button></div>`;
+                    `<tr><td colspan="7" class="loading" style="color:#ef4444">Помилка завантаження: ${e.message}<br><button onclick="location.reload()">Оновити</button></td></tr>`;
             }
         }
 
@@ -403,7 +365,7 @@
             const container = document.getElementById('historyList');
 
             if (!list || list.length === 0) {
-                container.innerHTML = '<div class="loading">Нічого не знайдено 🤷‍♂️</div>';
+                container.innerHTML = '<tr><td colspan="7" class="loading">Нічого не знайдено 🤷‍♂️</td></tr>';
                 return;
             }
 
@@ -422,7 +384,7 @@
                 const manager = meta.manager ? `<span class="meta-tag">👤 ${meta.manager}</span>` : '';
                 const product = meta.productName ? `<span class="meta-tag">🪑 ${meta.productName}</span>` : '';
 
-                const el = document.createElement('div');
+                const el = document.createElement('tr');
                 el.className = `history-row ${isSelected ? 'selected' : ''}`;
                 el.onclick = (e) => {
                     if (e.target.closest('button') || e.target.closest('input')) return;
@@ -430,26 +392,32 @@
                 };
 
                 el.innerHTML = `
-                    <div class="col-check" style="justify-content:center">
-                        <input type="checkbox" class="custom-checkbox" 
-                            ${isSelected ? 'checked' : ''} 
-                            onclick="event.stopPropagation(); toggleSelection('${item.id}')">
-                    </div>
-                    <div class="col-project">
-                        <div style="font-weight:600; font-size:14px; color:#111827">${item.title || 'Без назви'}</div>
-                        <div style="display:flex; flex-wrap:wrap; gap:4px">
-                            ${manager} ${product}
+                    <td class="text-center">
+                        <div class="col-check">
+                            <input type="checkbox" class="custom-checkbox" 
+                                ${isSelected ? 'checked' : ''} 
+                                onclick="event.stopPropagation(); toggleSelection('${item.id}')">
                         </div>
-                        ${meta.comment ? `<div style="font-size:11px; color:#6b7280; font-style:italic; max-width:90%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${meta.comment}">${meta.comment}</div>` : ''}
-                    </div>
-                    <div class="col-calc">${calcName}</div>
-                    <div class="col-ver"><span class="badge-ver">${calcVer}</span></div>
-                    <div class="col-points"><span class="points-pill">${cost} ViPoint</span></div>
-                    <div class="col-date">${date}</div>
-                    <div class="col-actions">
-                         <button class="action-icon ico-view" onclick="loadCalculation('${item.id}')" title="Переглянути">👁️ Переглянути</button>
-                         <button class="action-icon ico-del" onclick="deleteSingle('${item.id}', event)" title="Видалити">🗑️</button>
-                    </div>
+                    </td>
+                    <td>
+                        <div class="col-project">
+                            <div style="font-weight:600; font-size:14px; color:#111827">${item.title || 'Без назви'}</div>
+                            <div style="display:flex; flex-wrap:wrap; gap:4px">
+                                ${manager} ${product}
+                            </div>
+                            ${meta.comment ? `<div style="font-size:11px; color:#6b7280; font-style:italic; max-width:90%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${meta.comment}">${meta.comment}</div>` : ''}
+                        </div>
+                    </td>
+                    <td class="text-left" style="font-weight:500; font-size:13px; color:#374151">${calcName}</td>
+                    <td class="text-center"><span class="badge-ver">${calcVer}</span></td>
+                    <td class="text-center"><span class="points-pill">${cost} ViPoint</span></td>
+                    <td class="text-center" style="font-size:12px; color:#6b7280">${date}</td>
+                    <td class="text-center">
+                        <div class="flex-center" style="gap:8px">
+                             <button class="action-icon ico-view" onclick="loadCalculation('${item.id}')" title="Переглянути">👁️ Переглянути</button>
+                             <button class="action-icon ico-del" onclick="deleteSingle('${item.id}', event)" title="Видалити">🗑️</button>
+                        </div>
+                    </td>
                 `;
                 container.appendChild(el);
             });
