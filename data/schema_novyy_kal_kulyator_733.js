@@ -2,7 +2,13 @@ const Schema = {
     "meta": {
         "version": "2.2",
         "title": "Новий калькулятор",
-        "lastUpdated": "2026-01-09"
+        "lastUpdated": "2026-01-09",
+        "markup": {
+            "cat_construction": 10,
+            "cat_design": 0,
+            "cat_assembly": 0,
+            "cat_installation": 0
+        }
     },
     "categories": {
         "cat_construction": {
