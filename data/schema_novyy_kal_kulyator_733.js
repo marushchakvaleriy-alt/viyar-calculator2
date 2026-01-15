@@ -5,9 +5,9 @@ const Schema = {
         "lastUpdated": "2026-01-09",
         "markup": {
             "cat_construction": 10,
-            "cat_design": 0,
-            "cat_assembly": 0,
-            "cat_installation": 0
+            "cat_design": 10,
+            "cat_assembly": 10,
+            "cat_installation": 10
         }
     },
     "categories": {

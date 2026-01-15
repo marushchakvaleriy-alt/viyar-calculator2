@@ -917,7 +917,20 @@ const Engine = {
         // PASS 2: Category Total Formulas (Override sums if formula exists)
         this.processPass2(points, catSums);
 
-        this.renderResults(points, catSums);
+        // --- MARKUP LOGIC (PASS 3) ---
+        const originalCatSums = { ...catSums };
+
+        if (Schema.meta && Schema.meta.markup) {
+            Object.keys(Schema.categories).forEach(cid => {
+                const markupPercent = Schema.meta.markup[cid] || 0;
+                if (markupPercent > 0) {
+                    const original = catSums[cid] || 0;
+                    catSums[cid] = original * (1 + markupPercent / 100);
+                }
+            });
+        }
+
+        this.renderResults(points, catSums, originalCatSums);
     },
 
     processPass1(points, catSums) {
@@ -1273,7 +1286,7 @@ const Engine = {
         if (modal) modal.style.display = 'none';
     },
 
-    renderResults(points, catSums) {
+    renderResults(points, catSums, originalCatSums = null) {
         // Render to UI
         let grandTotal = 0;
         const resultsPanel = document.getElementById('resultsContainer') || document.querySelector('.results-panel div[style*="border-bottom"]');
@@ -1282,8 +1295,21 @@ const Engine = {
         resultsPanel.innerHTML = '';
         Object.keys(Schema.categories).forEach(cid => {
             const isActive = this.activeCategories.has(cid);
-            const sum = Math.round(catSums[cid] || 0);
+            const sum = Math.round(catSums[cid] || 0); // Final Sum (with Markup)
             if (isActive) grandTotal += sum;
+
+            let markupHtml = '';
+            // Only show markup info if there is a markup and potential for points
+            if (originalCatSums && Schema.meta && Schema.meta.markup) {
+                const markup = Schema.meta.markup[cid] || 0;
+                // Check if this category has points (based on originalCatSums)
+                if (markup > 0 && originalCatSums[cid] > 0) {
+                    const orig = Math.round(originalCatSums[cid]);
+                    markupHtml = `<div style="font-size:10px; color:#64748b; text-align:right; margin-top:2px;">
+                        Оригінал: ${orig.toLocaleString()} (+${markup}%)
+                     </div>`;
+                }
+            }
 
             const row = document.createElement('div');
             row.style.cssText = `
@@ -1296,7 +1322,14 @@ const Engine = {
                 filter: ${isActive ? 'none' : 'grayscale(1)'};
                 text-decoration: ${isActive ? 'none' : 'line-through'};
             `;
-            row.innerHTML = `<span>${Schema.categories[cid].name}</span> <span style="font-weight:600; color:${isActive ? '#3b82f6' : '#9ca3af'}">${sum.toLocaleString()} ViPoint</span>`;
+
+            row.innerHTML = `
+                <span>${Schema.categories[cid].name}</span> 
+                <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                    <span style="font-weight:600; color:${isActive ? '#3b82f6' : '#9ca3af'}">${sum.toLocaleString()} ViPoint</span>
+                    ${markupHtml}
+                </div>
+            `;
             resultsPanel.appendChild(row);
         });
 
