@@ -391,6 +391,25 @@ const Schema = {
                 "inpBorder": "#0c0d0d",
                 "width": "w-25"
             }
+        },
+        {
+            "id": "f1768471062862",
+            "groupId": "g1767987129232",
+            "label": "укцук",
+            "type": "select_yes_no",
+            "helpContent": ""
+        },
+        {
+            "id": "f1768471064143",
+            "groupId": "g1767987129232",
+            "label": "цукцук",
+            "type": "number"
+        },
+        {
+            "id": "f1768471066582",
+            "groupId": "g1767987129232",
+            "label": "Нова дія",
+            "type": "number"
         }
     ],
     "products": {
@@ -444,10 +463,14 @@ const Schema = {
                 "pr_c1": 10
             },
             "o1768134108853": {
-                "pr_c1": 10
+                "pr_c1": 10,
+                "pr_c5": 10,
+                "pr_c6": 10,
+                "pr_c7": 10
             },
             "o1768134116972": {
-                "pr_c1": 10
+                "pr_c1": 10,
+                "pr_c4": 10
             }
         },
         "f1768216195464": {
