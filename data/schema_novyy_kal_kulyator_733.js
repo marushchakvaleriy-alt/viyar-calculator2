@@ -445,7 +445,12 @@ const Schema = {
                     "value": "o1768471245257",
                     "label": "Варіант"
                 }
-            ]
+            ],
+            "layout": {
+                "placeholder": "ава",
+                "helpImg": "images/hints/ph66424.jpg",
+                "inpBorder": "#0b66ef"
+            }
         }
     ],
     "products": {
