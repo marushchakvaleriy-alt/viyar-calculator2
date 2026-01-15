@@ -28,8 +28,8 @@ window.DashboardConfig = {
     "illus1Scale": 0.7,
     "headerIllustration2": "images/hints/hlopchyk.png",
     "illus2X": 535,
-    "illus2Y": 40,
-    "illus2Scale": 0.7,
+    "illus2Y": 55,
+    "illus2Scale": 0.8,
     "headerBgColor": "#2189e5",
     "headerOpacity": 0.15,
     "headerBlur": 31
