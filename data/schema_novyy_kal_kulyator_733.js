@@ -397,19 +397,33 @@ const Schema = {
             "groupId": "g1767987129232",
             "label": "укцук",
             "type": "select_yes_no",
-            "helpContent": ""
+            "helpContent": "",
+            "layout": {
+                "inpBorder": "#0c0d0d",
+                "placeholder": "авпапав",
+                "helpImg": "images/hints/ph66424.jpg"
+            },
+            "hidden": true
         },
         {
             "id": "f1768471064143",
             "groupId": "g1767987129232",
             "label": "цукцук",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "inpBorder": "#0c0d0d"
+            },
+            "hidden": true
         },
         {
             "id": "f1768471066582",
             "groupId": "g1767987129232",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "layout": {
+                "inpBorder": "#0c0d0d"
+            },
+            "hidden": true
         }
     ],
     "products": {
