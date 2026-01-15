@@ -449,7 +449,9 @@ const Schema = {
             "layout": {
                 "placeholder": "ава",
                 "helpImg": "images/hints/ph66424.jpg",
-                "inpBorder": "#0b66ef"
+                "inpBorder": "#0b66ef",
+                "width": "w-50",
+                "inputWidth": 66
             }
         }
     ],
