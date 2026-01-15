@@ -424,6 +424,12 @@ const Schema = {
                 "inpBorder": "#0c0d0d"
             },
             "hidden": true
+        },
+        {
+            "id": "f1768471219330",
+            "groupId": "g1767987129232",
+            "label": "454545",
+            "type": "number"
         }
     ],
     "products": {
