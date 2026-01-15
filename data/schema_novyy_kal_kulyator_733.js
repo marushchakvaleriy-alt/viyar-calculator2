@@ -401,7 +401,8 @@ const Schema = {
             "layout": {
                 "inpBorder": "#0c0d0d",
                 "placeholder": "авпапав",
-                "helpImg": "images/hints/ph66424.jpg"
+                "helpImg": "images/hints/ph66424.jpg",
+                "width": "w-66"
             },
             "hidden": true
         },
@@ -411,7 +412,8 @@ const Schema = {
             "label": "цукцук",
             "type": "number",
             "layout": {
-                "inpBorder": "#0c0d0d"
+                "inpBorder": "#0c0d0d",
+                "width": "w-66"
             },
             "hidden": true
         },
@@ -421,7 +423,8 @@ const Schema = {
             "label": "Нова дія",
             "type": "number",
             "layout": {
-                "inpBorder": "#0c0d0d"
+                "inpBorder": "#0c0d0d",
+                "width": "w-66"
             },
             "hidden": true
         },
@@ -474,7 +477,15 @@ const Schema = {
                     "value": "o1768471513597",
                     "label": "Варіант"
                 }
-            ]
+            ],
+            "layout": {
+                "inpBorder": "#e60a57",
+                "inputWidth": 83,
+                "width": "w-66",
+                "placeholder": "авіа",
+                "help": "ваі",
+                "helpImg": "images/hints/ph66424.jpg"
+            }
         }
     ],
     "products": {
