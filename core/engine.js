@@ -1336,6 +1336,35 @@ const Engine = {
         const totalScoreEl = document.getElementById('totalScore');
         if (totalScoreEl) totalScoreEl.innerText = `${Math.round(grandTotal).toLocaleString()} ViPoint`;
 
+        // Render Details Button
+        const headerContainer = document.querySelector('.results-header');
+        if (headerContainer && !document.getElementById('detailsBtn')) {
+            const btn = document.createElement('button');
+            btn.id = 'detailsBtn';
+            btn.innerText = '📋 Деталізація';
+            btn.style.cssText = `
+                display: block;
+                width: 100%;
+                margin-top: 10px;
+                padding: 8px;
+                background: white;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                color: #64748b;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.2s;
+            `;
+            btn.onmouseover = () => { btn.style.background = '#f1f5f9'; btn.style.color = '#3b82f6'; };
+            btn.onmouseout = () => { btn.style.background = 'white'; btn.style.color = '#64748b'; };
+            btn.onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
+            headerContainer.appendChild(btn);
+        } else if (document.getElementById('detailsBtn')) {
+            // Update click handler with new data
+            document.getElementById('detailsBtn').onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
+        }
+
         // Inject Save Button
         const totalContainer = totalScoreEl?.parentElement;
         if (totalContainer && !document.getElementById('btnSaveCloud')) {
@@ -1366,6 +1395,118 @@ const Engine = {
             // Insert after the total score block
             totalContainer.parentElement.appendChild(btn);
         }
+    },
+
+    showProcessDetails(points, catSums, originalCatSums) {
+        // Collect all active processes with points > 0
+        const details = [];
+
+        Object.keys(points).forEach(pid => {
+            const pts = points[pid];
+            if (pts > 0 && pid !== '_catSums') {
+                const proc = Schema.processes.find(p => p.id === pid);
+                if (proc) {
+                    details.push({
+                        category: proc.category,
+                        name: proc.name,
+                        points: pts
+                    });
+                }
+            }
+        });
+
+        // Add Product-specific points (if not captured in pass 1/2)
+        this.addedProducts.forEach(prod => {
+            if (prod.points) {
+                Object.keys(prod.points).forEach(pid => {
+                    if (pid === '_catSums') return;
+                    const pts = prod.points[pid];
+                    if (pts > 0) {
+                        const proc = Schema.processes.find(p => p.id === pid);
+                        if (proc) {
+                            details.push({
+                                category: proc.category,
+                                name: `[${prod.name}] ${proc.name}`,
+                                points: pts
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        // Sort by Category then Name
+        details.sort((a, b) => {
+            if (a.category !== b.category) return a.category.localeCompare(b.category);
+            return a.name.localeCompare(b.name);
+        });
+
+        // Build HTML
+        let html = `
+            <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                <thead>
+                    <tr style="background:#f8fafc; text-align:left; color:#64748b;">
+                        <th style="padding:8px; border-bottom:1px solid #e2e8f0;">Категорія</th>
+                        <th style="padding:8px; border-bottom:1px solid #e2e8f0;">Процес</th>
+                        <th style="padding:8px; border-bottom:1px solid #e2e8f0; text-align:right;">Бали</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        let totalPoints = 0;
+        details.forEach(d => {
+            const catName = Schema.categories[d.category] ? Schema.categories[d.category].name : d.category;
+            const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[d.category] || 0) : 0;
+            const finalPts = d.points * (1 + markup / 100);
+            totalPoints += finalPts;
+
+            html += `
+                <tr style="border-bottom:1px solid #f1f5f9;">
+                    <td style="padding:8px; color:#94a3b8;">${catName}</td>
+                    <td style="padding:8px; font-weight:500;">${d.name}</td>
+                    <td style="padding:8px; text-align:right;">
+                        ${Math.round(finalPts).toLocaleString()} 
+                        ${markup > 0 ? `<span style="font-size:10px; color:#64748b">(${Math.round(d.points)} + ${markup}%)</span>` : ''}
+                    </td>
+                </tr>
+            `;
+        });
+
+        html += `
+                <tr style="background:#f0f9ff; font-weight:700;">
+                    <td colspan="2" style="padding:10px; text-align:right;">ВСЬОГО:</td>
+                    <td style="padding:10px; text-align:right; color:#3b82f6;">${Math.round(totalPoints).toLocaleString()}</td>
+                </tr>
+            </tbody>
+        </table>`;
+
+        // Create or Reuse Modal
+        let modal = document.getElementById('detailsModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'detailsModal';
+            modal.className = 'modal';
+            modal.style.display = 'none';
+            modal.innerHTML = `
+                <div class="modal-box" style="width: 600px;">
+                    <div class="modal-header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                        <h3>📋 Деталізація Розрахунку</h3>
+                        <button class="modal-close" onclick="document.getElementById('detailsModal').style.display='none'">&times;</button>
+                    </div>
+                    <div class="modal-body" style="padding:0">
+                        <div id="detailsContent" style="padding:24px;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="document.getElementById('detailsModal').style.display='none'">Закрити</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        document.getElementById('detailsContent').innerHTML = html;
+        modal.style.display = 'flex';
     }
 };
 
