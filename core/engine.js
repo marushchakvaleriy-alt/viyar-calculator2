@@ -1336,33 +1336,67 @@ const Engine = {
         const totalScoreEl = document.getElementById('totalScore');
         if (totalScoreEl) totalScoreEl.innerText = `${Math.round(grandTotal).toLocaleString()} ViPoint`;
 
-        // Render Details Button
+        // Render Action Buttons (Details + PDF)
         const headerContainer = document.querySelector('.results-header');
-        if (headerContainer && !document.getElementById('detailsBtn')) {
-            const btn = document.createElement('button');
-            btn.id = 'detailsBtn';
-            btn.innerText = '📋 Деталізація';
-            btn.style.cssText = `
-                display: block;
-                width: 100%;
-                margin-top: 10px;
-                padding: 8px;
-                background: white;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                color: #64748b;
-                font-size: 12px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: 0.2s;
-            `;
-            btn.onmouseover = () => { btn.style.background = '#f1f5f9'; btn.style.color = '#3b82f6'; };
-            btn.onmouseout = () => { btn.style.background = 'white'; btn.style.color = '#64748b'; };
-            btn.onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
-            headerContainer.appendChild(btn);
-        } else if (document.getElementById('detailsBtn')) {
-            // Update click handler with new data
-            document.getElementById('detailsBtn').onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
+        if (headerContainer) {
+            // Container for buttons
+            let btnContainer = document.getElementById('resBtnContainer');
+            if (!btnContainer) {
+                btnContainer = document.createElement('div');
+                btnContainer.id = 'resBtnContainer';
+                btnContainer.style.cssText = 'display:flex; gap:10px; margin-top:10px';
+                headerContainer.appendChild(btnContainer);
+            }
+
+            // Details Button
+            if (!document.getElementById('detailsBtn')) {
+                const btn = document.createElement('button');
+                btn.id = 'detailsBtn';
+                btn.innerText = '📋 Деталі';
+                btn.style.cssText = `
+                    flex: 1;
+                    padding: 8px;
+                    background: white;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    color: #64748b;
+                    font-size: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: 0.2s;
+                `;
+                btn.onmouseover = () => { btn.style.background = '#f1f5f9'; btn.style.color = '#3b82f6'; };
+                btn.onmouseout = () => { btn.style.background = 'white'; btn.style.color = '#64748b'; };
+                btn.onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
+                btnContainer.appendChild(btn);
+            } else {
+                document.getElementById('detailsBtn').onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
+            }
+
+            // PDF Button
+            if (!document.getElementById('pdfBtn')) {
+                const btn = document.createElement('button');
+                btn.id = 'pdfBtn';
+                btn.innerText = '📄 PDF';
+                btn.style.cssText = `
+                    flex: 1;
+                    padding: 8px;
+                    background: white;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    color: #ef4444;
+                    font-size: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: 0.2s;
+                `;
+                btn.onmouseover = () => { btn.style.background = '#fef2f2'; btn.style.color = '#dc2626'; };
+                btn.onmouseout = () => { btn.style.background = 'white'; btn.style.color = '#ef4444'; };
+                btn.onclick = () => this.generatePDF(points, catSums, originalCatSums);
+                btnContainer.appendChild(btn);
+            } else {
+                document.getElementById('pdfBtn').onclick = () => this.generatePDF(points, catSums, originalCatSums);
+            }
         }
 
         // Inject Save Button
@@ -1397,25 +1431,85 @@ const Engine = {
         }
     },
 
-    showProcessDetails(points, catSums, originalCatSums) {
-        // Collect all active processes with points > 0
-        const details = [];
+    async generatePDF(points, catSums, originalCatSums) {
+        if (!window.jspdf) {
+            alert('Бібліотека PDF ще не завантажилась. Спробуйте через секунду.');
+            return;
+        }
 
+        const clientName = prompt("Введіть ім'я клієнта для КП:", "Клієнт");
+        if (clientName === null) return; // Users cancelled
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Load Roboto Font for Cyrillic
+        try {
+            document.body.style.cursor = 'wait';
+            // Using a reliable CDN for Roboto Regular
+            const fontUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf';
+            const fontBytes = await fetch(fontUrl).then(res => res.arrayBuffer());
+
+            // Add font to VFS
+            doc.addFileToVFS('Roboto-Regular.ttf', btoa(new Uint8Array(fontBytes).reduce((data, byte) => data + String.fromCharCode(byte), '')));
+            doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
+            doc.setFont('Roboto');
+        } catch (e) {
+            console.error('Font load error:', e);
+            alert('Не вдалося завантажити шрифт для кирилиці. PDF може бути некоректним (спробуйте ще раз).');
+        } finally {
+            document.body.style.cursor = 'default';
+        }
+
+        // --- PDF CONTENT ---
+
+        // Header
+        doc.setFontSize(22);
+        doc.setTextColor(37, 99, 235); // Blue
+        const title = (Schema.meta && Schema.meta.title) ? Schema.meta.title : 'Viyar Calculator';
+        doc.text(title, 14, 20);
+
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Дата: ${new Date().toLocaleDateString()}`, 14, 26);
+
+        // Info Box
+        doc.setDrawColor(226, 232, 240);
+        doc.setFillColor(248, 250, 252);
+        doc.rect(14, 32, 182, 24, 'FD');
+
+        doc.setFontSize(10);
+        doc.setTextColor(51);
+        doc.text(`👤 Клієнт: ${clientName}`, 18, 41);
+        doc.text(`📑 Проект: ${document.getElementById('saveTitle')?.value || 'Новий проект'}`, 18, 48);
+
+        // Prepare Table Data
+        const rows = [];
+        let grandTotal = 0;
+
+        // Group by Category (Reuse Logic)
+        const categories = {};
+        Object.keys(Schema.categories).forEach(cid => {
+            categories[cid] = { meta: Schema.categories[cid], items: [] };
+        });
+
+        // Collect Items
         Object.keys(points).forEach(pid => {
             const pts = points[pid];
             if (pts > 0 && pid !== '_catSums') {
                 const proc = Schema.processes.find(p => p.id === pid);
-                if (proc) {
-                    details.push({
-                        category: proc.category,
-                        name: proc.name,
-                        points: pts
+                if (proc && categories[proc.category]) {
+                    const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[proc.category] || 0) : 0;
+                    const cost = pts * (1 + markup / 100);
+                    categories[proc.category].items.push({
+                        proc: proc.name,
+                        cost: cost
                     });
                 }
             }
         });
 
-        // Add Product-specific points (if not captured in pass 1/2)
+        // Products
         this.addedProducts.forEach(prod => {
             if (prod.points) {
                 Object.keys(prod.points).forEach(pid => {
@@ -1423,9 +1517,107 @@ const Engine = {
                     const pts = prod.points[pid];
                     if (pts > 0) {
                         const proc = Schema.processes.find(p => p.id === pid);
-                        if (proc) {
-                            details.push({
-                                category: proc.category,
+                        if (proc && categories[proc.category]) {
+                            const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[proc.category] || 0) : 0;
+                            const cost = pts * (1 + markup / 100);
+                            categories[proc.category].items.push({
+                                proc: `[${prod.name}] ${proc.name}`,
+                                cost: cost
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        // Build Rows for AutoTable
+        Object.keys(categories).forEach(cid => {
+            const cat = categories[cid];
+            if (cat.items.length > 0) {
+                // Sort
+                cat.items.sort((a, b) => a.proc.localeCompare(b.proc));
+
+                // Category Header per section or just grouping in table? AutoTable 'grouping' is complex.
+                // We will manually add header rows.
+                rows.push([{ content: cat.meta.name.toUpperCase(), colSpan: 2, styles: { fillColor: [241, 245, 249], fontStyle: 'bold', textColor: 50 } }]);
+
+                let catTotal = 0;
+                cat.items.forEach(item => {
+                    rows.push([item.proc, Math.round(item.cost).toLocaleString()]);
+                    catTotal += item.cost;
+                });
+                grandTotal += catTotal;
+
+                // Category Subtotal
+                rows.push([{ content: 'Разом за категорією:', styles: { halign: 'right', fontStyle: 'bold' } }, { content: Math.round(catTotal).toLocaleString(), styles: { fontStyle: 'bold' } }]);
+            }
+        });
+
+        // Generate Table
+        doc.autoTable({
+            startY: 65,
+            head: [['Процес / Найменування', 'Вартість (ViPoint)']],
+            body: rows,
+            styles: { font: 'Roboto', fontStyle: 'normal' },
+            headStyles: { fillColor: [59, 130, 246] },
+            columnStyles: {
+                0: { cellWidth: 'auto' },
+                1: { cellWidth: 40, halign: 'right' }
+            }
+        });
+
+        // Final Total
+        const finalY = (doc.lastAutoTable && doc.lastAutoTable.finalY) ? doc.lastAutoTable.finalY + 10 : 80;
+        doc.setFontSize(14);
+        doc.setTextColor(37, 99, 235);
+        doc.text(`ВСЬОГО: ${Math.round(grandTotal).toLocaleString()} ViPoint`, 196, finalY, { align: 'right' });
+
+        // Footer Sign
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text('__________________________ (Підпис)', 14, finalY + 20);
+
+        // Save
+        const fileName = `${clientName}_Calculation.pdf`;
+        doc.save(fileName);
+    },
+
+    showProcessDetails(points, catSums, originalCatSums) {
+        // Prepare Data grouped by Category
+        const grouped = {};
+        Object.keys(Schema.categories).forEach(cid => {
+            grouped[cid] = {
+                meta: Schema.categories[cid],
+                items: [],
+                totalPoints: 0,
+                totalCost: 0
+            };
+        });
+
+        // 1. Collect Process Points
+        Object.keys(points).forEach(pid => {
+            const pts = points[pid];
+            if (pts > 0 && pid !== '_catSums') {
+                const proc = Schema.processes.find(p => p.id === pid);
+                if (proc && grouped[proc.category]) {
+                    grouped[proc.category].items.push({
+                        name: proc.name,
+                        points: pts
+                    });
+                }
+            }
+        });
+
+        // 2. Collect Product Points
+        this.addedProducts.forEach(prod => {
+            if (prod.points) {
+                Object.keys(prod.points).forEach(pid => {
+                    if (pid === '_catSums') return;
+                    const pts = prod.points[pid];
+                    if (pts > 0) {
+                        const proc = Schema.processes.find(p => p.id === pid);
+                        if (proc && grouped[proc.category]) {
+                            grouped[proc.category].items.push({
                                 name: `[${prod.name}] ${proc.name}`,
                                 points: pts
                             });
@@ -1435,77 +1627,86 @@ const Engine = {
             }
         });
 
-        // Sort by Category then Name
-        details.sort((a, b) => {
-            if (a.category !== b.category) return a.category.localeCompare(b.category);
-            return a.name.localeCompare(b.name);
-        });
+        // HTML Builder for Columns
+        let columnsHtml = '';
+        let grandTotal = 0;
 
-        // Build HTML
-        let html = `
-            <table style="width:100%; border-collapse:collapse; font-size:12px;">
-                <thead>
-                    <tr style="background:#f8fafc; text-align:left; color:#64748b;">
-                        <th style="padding:8px; border-bottom:1px solid #e2e8f0;">Категорія</th>
-                        <th style="padding:8px; border-bottom:1px solid #e2e8f0;">Процес</th>
-                        <th style="padding:8px; border-bottom:1px solid #e2e8f0; text-align:right;">Бали</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
+        Object.keys(grouped).forEach(cid => {
+            const group = grouped[cid];
+            if (group.items.length === 0) return; // Skip empty categories
 
-        let totalPoints = 0;
-        details.forEach(d => {
-            const catName = Schema.categories[d.category] ? Schema.categories[d.category].name : d.category;
-            const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[d.category] || 0) : 0;
-            const finalPts = d.points * (1 + markup / 100);
-            totalPoints += finalPts;
+            // Calculate Totals
+            const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[cid] || 0) : 0;
+            group.items.forEach(item => {
+                group.totalPoints += item.points;
+            });
+            group.totalCost = group.totalPoints * (1 + markup / 100);
+            grandTotal += group.totalCost;
 
-            html += `
-                <tr style="border-bottom:1px solid #f1f5f9;">
-                    <td style="padding:8px; color:#94a3b8;">${catName}</td>
-                    <td style="padding:8px; font-weight:500;">${d.name}</td>
-                    <td style="padding:8px; text-align:right;">
-                        ${Math.round(finalPts).toLocaleString()} 
-                        ${markup > 0 ? `<span style="font-size:10px; color:#64748b">(${Math.round(d.points)} + ${markup}%)</span>` : ''}
-                    </td>
-                </tr>
+            // Sort items by name
+            group.items.sort((a, b) => a.name.localeCompare(b.name));
+
+            // Build Column HTML
+            let itemsHtml = group.items.map(item => {
+                const itemCost = item.points * (1 + markup / 100);
+                return `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:11px; border-bottom:1px dashed #e2e8f0; padding-bottom:2px;">
+                        <span style="color:#334155; padding-right:5px;">${item.name}</span>
+                        <span style="white-space:nowrap; font-weight:600; color:#475569;">
+                            ${Math.round(itemCost).toLocaleString()}
+                            ${markup > 0 ? `<span style="font-size:9px; color:#94a3b8">(${Math.round(item.points)})</span>` : ''}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+
+            columnsHtml += `
+                <div style="flex:1; min-width:220px; border-right:1px solid #e2e8f0; display:flex; flex-direction:column; background:white;">
+                    <div style="padding:12px; background:${group.meta.color || '#f1f5f9'}; border-bottom:1px solid rgba(0,0,0,0.05); text-align:center;">
+                        <div style="font-weight:700; font-size:13px; color:#1e293b; text-transform:uppercase; letter-spacing:0.05em;">${group.meta.name}</div>
+                        ${markup > 0 ? `<div style="font-size:10px; color:#64748b; margin-top:2px;">Націнка: +${markup}%</div>` : ''}
+                    </div>
+                    <div style="padding:12px; flex:1; overflow-y:auto; max-height:400px;">
+                        ${itemsHtml}
+                    </div>
+                    <div style="padding:12px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:right;">
+                        <div style="font-size:10px; color:#64748b;">Разом за категорією</div>
+                        <div style="font-size:16px; font-weight:700; color:#3b82f6;">${Math.round(group.totalCost).toLocaleString()}</div>
+                        ${markup > 0 ? `<div style="font-size:10px; color:#94a3b8; margin-top:2px;">Оригінал: ${Math.round(group.totalPoints).toLocaleString()}</div>` : ''}
+                    </div>
+                </div>
             `;
         });
 
-        html += `
-                <tr style="background:#f0f9ff; font-weight:700;">
-                    <td colspan="2" style="padding:10px; text-align:right;">ВСЬОГО:</td>
-                    <td style="padding:10px; text-align:right; color:#3b82f6;">${Math.round(totalPoints).toLocaleString()}</td>
-                </tr>
-            </tbody>
-        </table>`;
-
-        // Create or Reuse Modal
+        // Create or Reuse Modal (Update Width)
         let modal = document.getElementById('detailsModal');
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'detailsModal';
             modal.className = 'modal';
             modal.style.display = 'none';
-            modal.innerHTML = `
-                <div class="modal-box" style="width: 600px;">
-                    <div class="modal-header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                        <h3>📋 Деталізація Розрахунку</h3>
-                        <button class="modal-close" onclick="document.getElementById('detailsModal').style.display='none'">&times;</button>
-                    </div>
-                    <div class="modal-body" style="padding:0">
-                        <div id="detailsContent" style="padding:24px;"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" onclick="document.getElementById('detailsModal').style.display='none'">Закрити</button>
-                    </div>
-                </div>
-            `;
             document.body.appendChild(modal);
         }
 
-        document.getElementById('detailsContent').innerHTML = html;
+        modal.innerHTML = `
+            <div class="modal-box" style="width: 90%; max-width: 1200px; height: 80vh; display:flex; flex-direction:column;">
+                <div class="modal-header" style="background: white; border-bottom:1px solid #e2e8f0; padding: 15px 25px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <h3 style="margin:0; color:#1e293b; font-size:18px;">📋 Деталізація Розрахунку</h3>
+                        <span style="background:#eff6ff; color:#3b82f6; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700;">
+                            ВСЬОГО: ${Math.round(grandTotal).toLocaleString()} ViPoint
+                        </span>
+                    </div>
+                    <button class="modal-close" onclick="document.getElementById('detailsModal').style.display='none'" style="color:#64748b; font-size:28px; line-height:1;">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:0; flex:1; overflow:hidden; background:#f8fafc;">
+                    <div style="display:flex; height:100%; overflow-x:auto;">
+                        ${columnsHtml || '<div style="padding:40px; text-align:center; color:#94a3b8; width:100%">Немає активних процесів</div>'}
+                    </div>
+                </div>
+            </div>
+        `;
+
         modal.style.display = 'flex';
     }
 };
