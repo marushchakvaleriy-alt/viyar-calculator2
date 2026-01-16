@@ -1350,7 +1350,7 @@
 
             wrapper.appendChild(inp);
 
-            if (onToggleOnce && dVal && !isF && !isNaN(dVal)) {
+            if (onToggleOnce && fieldType === 'number' && !isF) {
                 const tick = document.createElement('div');
                 tick.className = 'once-tick' + (isOnce ? ' active' : '');
                 tick.title = isOnce ? 'Враховується 1 раз (фіксовано)' : 'Множиться на кількість';

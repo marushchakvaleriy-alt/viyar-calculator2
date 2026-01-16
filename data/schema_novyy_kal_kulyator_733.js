@@ -556,7 +556,10 @@ const Schema = {
             }
         },
         "f1768216195464": {
-            "pr_c1": 10,
+            "pr_c1": {
+                "v": 10,
+                "once": true
+            },
             "_total_cat_construction": "= val == 0 ? 0 : val <= 5 ? 10 : val <= 10 ? 15 : val <= 15 ? 20 : 21",
             "pr_d1": 100
         },
