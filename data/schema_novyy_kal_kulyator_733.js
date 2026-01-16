@@ -465,40 +465,6 @@ const Schema = {
             }
         },
         {
-            "id": "f1768471497645",
-            "groupId": "g1767987129232",
-            "label": "вапапва",
-            "type": "select",
-            "helpContent": "",
-            "placeholderText": "вавав",
-            "options": [
-                {
-                    "value": "o1768471511981",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768471512757",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768471513597",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768559461547",
-                    "label": "Варіант"
-                }
-            ],
-            "layout": {
-                "inpBorder": "#e60a57",
-                "inputWidth": 83,
-                "width": "w-66",
-                "placeholder": "авіа",
-                "help": "ваі",
-                "helpImg": "images/hints/ph66424.jpg"
-            }
-        },
-        {
             "id": "f1768559493803",
             "groupId": "g1767987129232",
             "label": "Нова дія",
@@ -553,6 +519,40 @@ const Schema = {
             "placeholderText": "",
             "labelYes": "",
             "labelNo": ""
+        },
+        {
+            "id": "f1768471497645",
+            "groupId": "g1767987129232",
+            "label": "вапапва",
+            "type": "select",
+            "helpContent": "",
+            "placeholderText": "вавав",
+            "options": [
+                {
+                    "value": "o1768471511981",
+                    "label": "Варіант"
+                },
+                {
+                    "value": "o1768471512757",
+                    "label": "Варіант"
+                },
+                {
+                    "value": "o1768471513597",
+                    "label": "Варіант"
+                },
+                {
+                    "value": "o1768559461547",
+                    "label": "Варіант"
+                }
+            ],
+            "layout": {
+                "inpBorder": "#e60a57",
+                "inputWidth": 83,
+                "width": "w-66",
+                "placeholder": "авіа",
+                "help": "ваі",
+                "helpImg": "images/hints/ph66424.jpg"
+            }
         }
     ],
     "products": {

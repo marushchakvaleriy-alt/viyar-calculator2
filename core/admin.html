@@ -1361,7 +1361,7 @@
 
             wrapper.appendChild(inp);
 
-            if (onToggleOnce && fieldType === 'number' && !isF) {
+            if (onToggleOnce && (fieldType === 'number' || fieldType === 'checkbox_qty') && !isF) {
                 const tick = document.createElement('div');
                 tick.className = 'once-tick' + (isOnce ? ' active' : '');
                 tick.title = isOnce ? 'Враховується 1 раз (фіксовано)' : 'Множиться на кількість';
@@ -1401,32 +1401,70 @@
             }
             if (!field.modalFields) field.modalFields = [];
 
-            const typeChoice = prompt('Виберіть тип поля для модалки:\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - 🔽 Вибір Так/Ні (select_yes_no)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - 📑 Множинний вибір (multiselect)', '1');
+            // Create mini-modal for adding new modal field
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
 
-            const typeMap = { '1': 'number', '2': 'select', '3': 'select_yes_no', '4': 'checkbox_qty', '5': 'multiselect' };
-            const selectedType = typeMap[typeChoice];
-            if (!selectedType) return;
+            const modal = document.createElement('div');
+            modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:320px';
+            modal.innerHTML = `
+                <h4 style="margin:0 0 20px 0;font-size:16px;color:#334155">➕ Нове поле в модалку</h4>
+                <div style="margin-bottom:15px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Назва поля</label>
+                    <input id="mfNewName" type="text" value="Нове поле" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;box-sizing:border-box">
+                </div>
+                <div style="margin-bottom:20px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Тип поля</label>
+                    <select id="mfNewType" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px">
+                        <option value="number">🔢 Число (number)</option>
+                        <option value="select">📋 Випадаючий список (select)</option>
+                        <option value="select_yes_no">🔽 Вибір Так/Ні (select_yes_no)</option>
+                        <option value="checkbox">✅ Чекбокс (checkbox)</option>
+                        <option value="checkbox_qty">☑️ Чекбокс з кількістю (checkbox_qty)</option>
+                        <option value="multiselect">📑 Множинний вибір (multiselect)</option>
+                    </select>
+                </div>
+                <div style="display:flex;gap:10px;justify-content:flex-end">
+                    <button id="mfNewCancelBtn" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                    <button id="mfNewSaveBtn" style="padding:10px 20px;border:none;background:#10b981;color:white;border-radius:6px;cursor:pointer;font-weight:600">Додати</button>
+                </div>
+            `;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
 
-            const label = prompt('Назва поля у модалці:', 'Нове поле');
-            if (!label) return;
+            document.getElementById('mfNewName').focus();
+            document.getElementById('mfNewName').select();
 
-            const newField = {
-                id: 'mf_' + Date.now(),
-                label: label,
-                type: selectedType,
-                default: selectedType === 'number' ? 0 : (selectedType === 'checkbox_qty' ? 'Додати' : '')
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.getElementById('mfNewCancelBtn').onclick = () => overlay.remove();
+            document.getElementById('mfNewSaveBtn').onclick = () => {
+                const label = document.getElementById('mfNewName').value.trim();
+                const selectedType = document.getElementById('mfNewType').value;
+
+                if (!label) {
+                    alert('Введіть назву поля');
+                    return;
+                }
+
+                const newField = {
+                    id: 'mf_' + Date.now(),
+                    label: label,
+                    type: selectedType,
+                    default: selectedType === 'number' ? 0 : (selectedType === 'checkbox_qty' ? 'Додати' : '')
+                };
+
+                if (selectedType === 'select' || selectedType === 'multiselect') {
+                    newField.options = [
+                        { value: 'opt1', label: 'Варіант 1' },
+                        { value: 'opt2', label: 'Варіант 2' }
+                    ];
+                }
+
+                field.modalFields.push(newField);
+                markDirty();
+                renderMatrix();
+                overlay.remove();
             };
-
-            if (selectedType === 'select') {
-                newField.options = [
-                    { value: 'opt1', label: 'Варіант 1' },
-                    { value: 'opt2', label: 'Варіант 2' }
-                ];
-            }
-
-            field.modalFields.push(newField);
-            markDirty();
-            renderMatrix();
         }
 
         function delModalField(buttonId, idx, isP) {
@@ -1986,7 +2024,7 @@
                                 mfLc.style.paddingLeft = '40px';
                                 mfLc.style.background = '#fff';
                                 const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'checkbox_qty': '☑️', 'checkbox': '✅', 'select_yes_no': '🔽' }[mf.type] || '🎯';
-                                mfLc.innerHTML = `<div style="display:flex; align-items:center; gap:6px; width:100%"><span style="font-size:10px; opacity:0.6; cursor:pointer" onclick="changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" title="Змінити тип поля">${typeIcon}</span><input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})"><button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button></div>`;
+                                mfLc.innerHTML = `<div style="display:flex; align-items:center; gap:6px; width:100%"><span style="font-size:10px; opacity:0.6" title="${mf.type}">${typeIcon}</span><input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})"><button onclick="event.stopPropagation(); changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" class="gear-btn" title="Налаштування" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; opacity:0.4" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">⚙️</button><button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button></div>`;
                                 mfRow.appendChild(mfLc);
 
                                 // Add process columns for modal field (WITH TOTALS)
@@ -2539,7 +2577,51 @@
         function updModalFieldLabel(buttonId, idx, v, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[idx]) { field.modalFields[idx].label = v; markDirty(); } }
 
         // ModalField options helpers
-        function addModalFieldOption(buttonId, mfIdx, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[mfIdx]) { const mf = field.modalFields[mfIdx]; if (!mf.options) mf.options = []; mf.options.push({ value: 'opt' + Date.now(), label: 'Варіант' }); markDirty(); renderMatrix(); } }
+        function addModalFieldOption(buttonId, mfIdx, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (field && field.modalFields && field.modalFields[mfIdx]) {
+                const mf = field.modalFields[mfIdx];
+                if (!mf.options) mf.options = [];
+
+                // Create mini-modal for adding new option
+                const overlay = document.createElement('div');
+                overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+                const modal = document.createElement('div');
+                modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:300px';
+                modal.innerHTML = `
+                    <h4 style="margin:0 0 20px 0;font-size:16px;color:#334155">➕ Новий варіант для "${mf.label}"</h4>
+                    <div style="margin-bottom:20px">
+                        <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Назва варіанту</label>
+                        <input id="mfOptNewName" type="text" value="Варіант ${mf.options.length + 1}" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;box-sizing:border-box">
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end">
+                        <button id="mfOptNewCancelBtn" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                        <button id="mfOptNewSaveBtn" style="padding:10px 20px;border:none;background:#10b981;color:white;border-radius:6px;cursor:pointer;font-weight:600">Додати</button>
+                    </div>
+                `;
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                document.getElementById('mfOptNewName').focus();
+                document.getElementById('mfOptNewName').select();
+
+                overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+                document.getElementById('mfOptNewCancelBtn').onclick = () => overlay.remove();
+                document.getElementById('mfOptNewSaveBtn').onclick = () => {
+                    const label = document.getElementById('mfOptNewName').value.trim();
+                    if (!label) {
+                        alert('Введіть назву варіанту');
+                        return;
+                    }
+                    mf.options.push({ value: 'opt' + Date.now(), label: label });
+                    markDirty();
+                    renderMatrix();
+                    overlay.remove();
+                };
+            }
+        }
         function delModalFieldOption(buttonId, mfIdx, optVal, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[mfIdx]) { const mf = field.modalFields[mfIdx]; mf.options = mf.options.filter(o => o.value !== optVal); markDirty(); renderMatrix(); } }
         function updModalFieldOptionLabel(buttonId, mfIdx, optVal, newLabel, isP) { const fields = isP ? Schema.products.fields : Schema.fields; const field = fields.find(f => f.id === buttonId); if (field && field.modalFields && field.modalFields[mfIdx]) { const opt = field.modalFields[mfIdx].options.find(o => o.value === optVal); if (opt) { opt.label = newLabel; markDirty(); } } }
         function getModalFieldOptionVal(buttonId, mfId, optVal, pI) {
@@ -2585,20 +2667,157 @@
             const field = fields.find(f => f.id === buttonId);
             if (!field || !field.modalFields[mfIdx]) return;
             const mf = field.modalFields[mfIdx];
-            const typeChoice = prompt('Змінити тип поля для "' + mf.label + '":\n\n1 - 🔢 Число (number)\n2 - 📋 Випадаючий список (select)\n3 - 📑 Множинний вибір (multiselect)\n4 - ☑️ Чекбокс з кількістю (checkbox_qty)\n5 - 🔽 Вибір Так/Ні (select_yes_no)', '1');
-            const typeMap = { '1': 'number', '2': 'select', '3': 'multiselect', '4': 'checkbox_qty', '5': 'select_yes_no' };
-            const selectedType = typeMap[typeChoice];
-            if (selectedType && selectedType !== mf.type) {
-                mf.type = selectedType;
-                if ((selectedType === 'select' || selectedType === 'multiselect') && !mf.options) mf.options = [{ value: 'opt1', label: 'Варіант 1' }];
-                markDirty(); renderMatrix();
-            }
+
+            // Create mini-modal with select
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+            const modal = document.createElement('div');
+            modal.style.cssText = 'background:white;padding:20px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:280px';
+            modal.innerHTML = `
+                <h4 style="margin:0 0 15px 0;font-size:14px;color:#334155">Тип поля для "${mf.label}"</h4>
+                <select id="mfTypeSelect" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:15px">
+                    <option value="number" ${mf.type === 'number' ? 'selected' : ''}>🔢 Число (number)</option>
+                    <option value="select" ${mf.type === 'select' ? 'selected' : ''}>📋 Випадаючий список (select)</option>
+                    <option value="select_yes_no" ${mf.type === 'select_yes_no' ? 'selected' : ''}>🔽 Вибір Так/Ні (select_yes_no)</option>
+                    <option value="checkbox" ${mf.type === 'checkbox' ? 'selected' : ''}>✅ Чекбокс (checkbox)</option>
+                    <option value="checkbox_qty" ${mf.type === 'checkbox_qty' ? 'selected' : ''}>☑️ Чекбокс з кількістю (checkbox_qty)</option>
+                    <option value="multiselect" ${mf.type === 'multiselect' ? 'selected' : ''}>📑 Множинний вибір (multiselect)</option>
+                </select>
+                <div style="display:flex;gap:10px;justify-content:flex-end">
+                    <button id="mfTypeCancelBtn" style="padding:8px 16px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                    <button id="mfTypeSaveBtn" style="padding:8px 16px;border:none;background:#3b82f6;color:white;border-radius:6px;cursor:pointer;font-weight:600">Зберегти</button>
+                </div>
+            `;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.getElementById('mfTypeCancelBtn').onclick = () => overlay.remove();
+            document.getElementById('mfTypeSaveBtn').onclick = () => {
+                const selectedType = document.getElementById('mfTypeSelect').value;
+                if (selectedType !== mf.type) {
+                    mf.type = selectedType;
+                    if ((selectedType === 'select' || selectedType === 'multiselect') && !mf.options) {
+                        mf.options = [{ value: 'opt1', label: 'Варіант 1' }];
+                    }
+                    markDirty();
+                    renderMatrix();
+                }
+                overlay.remove();
+            };
         }
 
         function updFLab(id, v, isP) { (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id).label = v; markDirty(); renderSidebar(); }
         function updOLab(fI, oV, v, isP) { (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI).options.find(o => o.value === oV).label = v; markDirty(); }
-        function addF(gI, isP) { (isP ? Schema.products.fields : Schema.fields).push({ id: 'f' + Date.now(), groupId: gI, label: 'Нова дія', type: 'number' }); markDirty(); renderMatrix(); }
-        function addOpt(fI, isP) { const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI); if (!f.options) f.options = []; f.options.push({ value: 'o' + Date.now(), label: 'Варіант' }); markDirty(); renderMatrix(); }
+        function addF(gI, isP) {
+            // Create mini-modal for adding new field
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+            const modal = document.createElement('div');
+            modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:320px';
+            modal.innerHTML = `
+                <h4 style="margin:0 0 20px 0;font-size:16px;color:#334155">➕ Нове поле (дія)</h4>
+                <div style="margin-bottom:15px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Назва поля</label>
+                    <input id="fieldNewName" type="text" value="Нова дія" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;box-sizing:border-box">
+                </div>
+                <div style="margin-bottom:20px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Тип поля</label>
+                    <select id="fieldNewType" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px">
+                        <option value="number">🔢 Число (number)</option>
+                        <option value="select">📋 Випадаючий список (select)</option>
+                        <option value="select_yes_no">🔽 Вибір Так/Ні (select_yes_no)</option>
+                        <option value="checkbox">✅ Чекбокс (checkbox)</option>
+                        <option value="checkbox_qty">☑️ Чекбокс з кількістю (checkbox_qty)</option>
+                        <option value="action_button">🔘 Кнопка модалки (action_button)</option>
+                        <option value="select_modal">📋 Список + Модалка (select_modal)</option>
+                    </select>
+                </div>
+                <div style="display:flex;gap:10px;justify-content:flex-end">
+                    <button id="fieldNewCancelBtn" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                    <button id="fieldNewSaveBtn" style="padding:10px 20px;border:none;background:#10b981;color:white;border-radius:6px;cursor:pointer;font-weight:600">Додати</button>
+                </div>
+            `;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            document.getElementById('fieldNewName').focus();
+            document.getElementById('fieldNewName').select();
+
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.getElementById('fieldNewCancelBtn').onclick = () => overlay.remove();
+            document.getElementById('fieldNewSaveBtn').onclick = () => {
+                const label = document.getElementById('fieldNewName').value.trim();
+                const selectedType = document.getElementById('fieldNewType').value;
+
+                if (!label) {
+                    alert('Введіть назву поля');
+                    return;
+                }
+
+                const newField = {
+                    id: 'f' + Date.now(),
+                    groupId: gI,
+                    label: label,
+                    type: selectedType
+                };
+
+                if (selectedType === 'select') {
+                    newField.options = [
+                        { value: 'opt1', label: 'Варіант 1' },
+                        { value: 'opt2', label: 'Варіант 2' }
+                    ];
+                }
+
+                (isP ? Schema.products.fields : Schema.fields).push(newField);
+                markDirty();
+                renderMatrix();
+                overlay.remove();
+            };
+        }
+        function addOpt(fI, isP) {
+            const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI);
+            if (!f.options) f.options = [];
+
+            // Create mini-modal for adding new option
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+            const modal = document.createElement('div');
+            modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:300px';
+            modal.innerHTML = `
+                <h4 style="margin:0 0 20px 0;font-size:16px;color:#334155">➕ Новий варіант вибору</h4>
+                <div style="margin-bottom:20px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Назва варіанту</label>
+                    <input id="optNewName" type="text" value="Варіант ${f.options.length + 1}" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;box-sizing:border-box">
+                </div>
+                <div style="display:flex;gap:10px;justify-content:flex-end">
+                    <button id="optNewCancelBtn" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                    <button id="optNewSaveBtn" style="padding:10px 20px;border:none;background:#10b981;color:white;border-radius:6px;cursor:pointer;font-weight:600">Додати</button>
+                </div>
+            `;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            document.getElementById('optNewName').focus();
+            document.getElementById('optNewName').select();
+
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.getElementById('optNewCancelBtn').onclick = () => overlay.remove();
+            document.getElementById('optNewSaveBtn').onclick = () => {
+                const label = document.getElementById('optNewName').value.trim();
+                if (!label) {
+                    alert('Введіть назву варіанту');
+                    return;
+                }
+                f.options.push({ value: 'o' + Date.now(), label: label });
+                markDirty();
+                renderMatrix();
+                overlay.remove();
+            };
+        }
         function delOpt(fI, oV, isP) { const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI); f.options = f.options.filter(o => o.value !== oV); markDirty(); renderMatrix(); }
         function delGroup(id, isP) { if (confirm('Видалити всю групу?')) { if (isP) Schema.products.groups = Schema.products.groups.filter(g => g.id !== id); else Schema.groups = Schema.groups.filter(g => g.id !== id); markDirty(); refresh(); } }
 
