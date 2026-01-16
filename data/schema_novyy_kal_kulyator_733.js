@@ -406,10 +406,11 @@ const Schema = {
             "type": "select_yes_no",
             "helpContent": "",
             "layout": {
-                "inpBorder": "#0c0d0d",
+                "inpBorder": "#050505",
                 "placeholder": "авпапав",
                 "helpImg": "images/hints/ph66424.jpg",
-                "width": "w-66"
+                "width": "w-66",
+                "glass": true
             },
             "hidden": true
         },
@@ -419,8 +420,9 @@ const Schema = {
             "label": "цукцук",
             "type": "number",
             "layout": {
-                "inpBorder": "#0c0d0d",
-                "width": "w-66"
+                "inpBorder": "#050505",
+                "width": "w-66",
+                "glass": true
             },
             "hidden": true
         },
@@ -430,8 +432,9 @@ const Schema = {
             "label": "Нова дія",
             "type": "number",
             "layout": {
-                "inpBorder": "#0c0d0d",
-                "width": "w-66"
+                "inpBorder": "#050505",
+                "width": "w-66",
+                "glass": true
             },
             "hidden": true
         },
@@ -514,7 +517,9 @@ const Schema = {
                 }
             ],
             "layout": {
-                "width": "w-50"
+                "width": "w-50",
+                "inpBorder": "#050505",
+                "glass": true
             },
             "placeholderText": "",
             "labelYes": "",
@@ -546,12 +551,13 @@ const Schema = {
                 }
             ],
             "layout": {
-                "inpBorder": "#e60a57",
+                "inpBorder": "#050505",
                 "inputWidth": 83,
                 "width": "w-66",
                 "placeholder": "авіа",
                 "help": "ваі",
-                "helpImg": "images/hints/ph66424.jpg"
+                "helpImg": "images/hints/ph66424.jpg",
+                "glass": true
             }
         }
     ],
