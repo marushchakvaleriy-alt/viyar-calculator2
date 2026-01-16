@@ -598,7 +598,7 @@ const Engine = {
             input.type = field.type === 'number' ? 'number' : 'text';
             if (field.type === 'number') {
                 input.min = 0; // All number fields are non-negative
-                input.step = field.allowDecimal ? 0.01 : 1;
+                input.step = field.allowDecimal ? 0.1 : 1; // Max 1 decimal place
             }
             if (this.state[field.id] !== undefined) {
                 input.value = this.state[field.id];

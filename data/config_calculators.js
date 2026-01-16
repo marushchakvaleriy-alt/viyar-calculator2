@@ -19,6 +19,6 @@ window.CalculatorConfig = [
         "icon": "images/гардеробні системи.png",
         "file": "data/schema_garderobni_systemy_673.js",
         "desc": "Опис нового калькулятора",
-        "isPlaceholder": true
+        "isPlaceholder": false
     }
 ]; 
