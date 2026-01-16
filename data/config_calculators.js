@@ -14,13 +14,6 @@ window.CalculatorConfig = [
         "desc": "тититиьтирири"
     },
     {
-        "id": "schema_ivaiv_564",
-        "title": "іваів",
-        "icon": "📦",
-        "file": "data/schema_ivaiv_564.js",
-        "desc": "Опис нового калькулятора"
-    },
-    {
         "id": "schema_garderobni_systemy_673",
         "title": "Гардеробні системи",
         "icon": "📦",
