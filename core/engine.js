@@ -43,12 +43,14 @@ const Engine = {
             .group-body { 
                 display: grid !important; 
                 grid-template-columns: repeat(12, 1fr); 
-                gap: 15px; 
+                gap: 15px;
+                align-items: stretch; /* Equal height for all fields in row */
             }
             .field { 
                 grid-column: span 12; 
                 display: flex;
                 flex-direction: column;
+                justify-content: space-between; /* Push input to bottom */
                 border-radius: 8px;
                 transition: all 0.2s ease;
             }
