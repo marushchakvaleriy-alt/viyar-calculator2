@@ -499,29 +499,10 @@ const Schema = {
             }
         },
         {
-            "id": "f1768559464276",
-            "groupId": "g1767987129232",
-            "label": "Нова дія",
-            "type": "action_button",
-            "helpContent": "",
-            "default": "",
-            "modalFields": [
-                {
-                    "id": "mf_1768559477355",
-                    "label": "Нове поле",
-                    "type": "number",
-                    "default": 0
-                }
-            ],
-            "layout": {
-                "width": "w-50"
-            }
-        },
-        {
             "id": "f1768559493803",
             "groupId": "g1767987129232",
             "label": "Нова дія",
-            "type": "action_button",
+            "type": "select_modal",
             "helpContent": "",
             "default": "",
             "modalFields": [
@@ -540,11 +521,38 @@ const Schema = {
                             "label": "Варіант 2"
                         }
                     ]
+                },
+                {
+                    "id": "mf_1768576261659",
+                    "label": "авпав",
+                    "type": "checkbox_qty",
+                    "default": "Додати"
+                },
+                {
+                    "id": "mf_1768576274002",
+                    "label": "Нове поле",
+                    "type": "select_yes_no",
+                    "default": ""
+                },
+                {
+                    "id": "mf_1768576309962",
+                    "label": "Нове поле",
+                    "type": "number",
+                    "default": 0
+                },
+                {
+                    "id": "mf_1768576336731",
+                    "label": "Нове поле",
+                    "type": "number",
+                    "default": 0
                 }
             ],
             "layout": {
                 "width": "w-50"
-            }
+            },
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
         }
     ],
     "products": {

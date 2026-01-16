@@ -48,16 +48,20 @@ const Engine = {
             }
             .field { 
                 grid-column: span 12; 
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between; /* Push input to bottom */
+                display: flex !important;
+                flex-direction: column !important;
                 border-radius: 8px;
                 transition: all 0.2s ease;
+                height: 100%; /* Fill grid cell height */
             }
             .field label { 
                 margin-bottom: 8px;
                 font-weight: 600;
                 font-size: 14px;
+                flex-shrink: 0; /* Label doesn't shrink */
+            }
+            .field > div { 
+                margin-top: auto !important; /* Push input container to bottom */
             }
             .field input, .field select {
                 padding: 10px 12px;
@@ -343,7 +347,7 @@ const Engine = {
         const inputContainer = document.createElement('div');
         inputContainer.style.flex = '1';
         inputContainer.style.display = 'flex';
-        inputContainer.style.alignItems = 'center';
+        inputContainer.style.alignItems = 'flex-end'; // Align input at the BOTTOM of container
         inputContainer.style.justifyContent = 'flex-start';
         inputContainer.style.width = '100%';
         inputContainer.style.minWidth = '0'; // Prevent flex items from expanding
@@ -351,6 +355,7 @@ const Engine = {
         if (field.type === 'action_button' || field.type === 'select_modal') {
             inputContainer.style.position = 'relative';
             inputContainer.style.zIndex = '10';
+            inputContainer.style.alignItems = 'flex-start'; // Keep buttons at TOP for modal fields
         }
 
         const inputWrapper = document.createElement('div');
@@ -423,8 +428,10 @@ const Engine = {
             const btnContainer = document.createElement('div');
             btnContainer.style.display = 'flex';
             btnContainer.style.flexDirection = 'column';
+            btnContainer.style.justifyContent = 'flex-start'; // Keep button at TOP
             btnContainer.style.gap = '8px';
             btnContainer.style.width = '100%';
+            btnContainer.style.height = '100%'; // Fill available height
 
             const btn = document.createElement('button');
             btn.textContent = field.default || '+ Додати виріб';
