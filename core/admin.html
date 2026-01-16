@@ -911,6 +911,17 @@
                     <textarea id="fHelp" class="form-input" rows="4"
                         placeholder="Текст, який з'явиться при наведенні на [?]"></textarea>
                 </div>
+                <div class="form-group" id="numberSettings" style="display:none">
+                    <label
+                        style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:10px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0">
+                        <input type="checkbox" id="fAllowDecimal" style="width:18px; height:18px">
+                        <div>
+                            <span style="font-weight:600">Дозволити дробові числа</span>
+                            <div style="font-size:11px; color:#64748b">Можна вводити 1.5, 2,7 тощо. Округлення вверх.
+                            </div>
+                        </div>
+                    </label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn" style="background:none" onclick="closeModal('fieldModal')">Скасувати</button>
@@ -2616,6 +2627,7 @@
             document.getElementById('fPlaceholder').value = f.placeholderText || '';
             document.getElementById('fLabelYes').value = f.labelYes || '';
             document.getElementById('fLabelNo').value = f.labelNo || '';
+            document.getElementById('fAllowDecimal').checked = !!f.allowDecimal;
             document.getElementById('fieldModal').dataset.mode = isP ? 'prod' : 'calc';
             toggleFieldSettings(f.type);
             document.getElementById('fieldModal').style.display = 'flex';
@@ -2624,6 +2636,7 @@
             document.getElementById('btnTextInput').style.display = (type === 'action_button' || type === 'checkbox_qty' || type === 'select_modal') ? 'block' : 'none';
             document.getElementById('selectLabels').style.display = (type === 'select_modal') ? 'block' : 'none';
             document.getElementById('selectPlaceholder').style.display = (type === 'select' || type === 'select_modal') ? 'block' : 'none';
+            document.getElementById('numberSettings').style.display = (type === 'number') ? 'block' : 'none';
 
             const btnLabel = document.getElementById('btnTextLabel');
             if (type === 'select_modal') btnLabel.innerText = 'Заголовок модалки (для "Так")';
@@ -2646,6 +2659,12 @@
                 f.labelYes = document.getElementById('fLabelYes').value;
                 f.labelNo = document.getElementById('fLabelNo').value;
             }
+            if (f.type === 'number') {
+                f.allowDecimal = document.getElementById('fAllowDecimal').checked;
+            } else {
+                delete f.allowDecimal;
+            }
+            markDirty();
             closeModal('fieldModal');
             renderMatrix();
         }

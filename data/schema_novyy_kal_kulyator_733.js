@@ -364,7 +364,8 @@ const Schema = {
             "layout": {
                 "inpBorder": "#0c0d0d",
                 "width": "w-25"
-            }
+            },
+            "allowDecimal": true
         },
         {
             "id": "f1768216216136",

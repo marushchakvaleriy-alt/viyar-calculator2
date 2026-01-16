@@ -596,6 +596,10 @@ const Engine = {
         } else {
             const input = document.createElement('input');
             input.type = field.type === 'number' ? 'number' : 'text';
+            if (field.type === 'number') {
+                input.min = 0; // All number fields are non-negative
+                input.step = field.allowDecimal ? 0.01 : 1;
+            }
             if (this.state[field.id] !== undefined) {
                 input.value = this.state[field.id];
             } else {
@@ -611,7 +615,11 @@ const Engine = {
         if (inputElement) {
             inputElement.addEventListener('input', (e) => {
                 let val = e.target.value;
-                if (field.type === 'number') val = Number(val) || 0;
+                if (field.type === 'number') {
+                    // Normalize comma to dot for decimal input
+                    val = String(val).replace(',', '.');
+                    val = Math.max(0, Number(val) || 0); // Ensure non-negative
+                }
                 if (field.type === 'checkbox') val = e.target.checked ? 1 : 0;
                 this.state[field.id] = val;
                 this.calculate();
@@ -945,7 +953,12 @@ const Engine = {
                 const active = ruleSet[val];
                 if (active) this.applyPoints(active, points, null, catSums, fDef);
             } else if (fDef.type === 'number' || fDef.type === 'checkbox' || fDef.type === 'select_yes_no') {
-                this.applyPoints(ruleSet, points, val, catSums, fDef);
+                // Apply Math.ceil() for decimal fields
+                let processedVal = val;
+                if (fDef.type === 'number' && fDef.allowDecimal) {
+                    processedVal = Math.ceil(Number(val) || 0);
+                }
+                this.applyPoints(ruleSet, points, processedVal, catSums, fDef);
             } else if (fDef.type === 'checkbox_qty') {
                 if (val && val.checked) this.applyPoints(ruleSet, points, val.qty, catSums, fDef);
             }
