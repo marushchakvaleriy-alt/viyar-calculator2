@@ -559,6 +559,18 @@ const Schema = {
                 "helpImg": "images/hints/ph66424.jpg",
                 "glass": true
             }
+        },
+        {
+            "id": "f1768578177179",
+            "groupId": "g1767987129232",
+            "label": "Нова дія",
+            "type": "checkbox_qty",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "allowDecimal": true
         }
     ],
     "products": {
