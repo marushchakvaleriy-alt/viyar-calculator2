@@ -1664,7 +1664,7 @@ const Engine = {
                 <div style="flex:1; min-width:220px; border-right:1px solid #e2e8f0; display:flex; flex-direction:column; background:white;">
                     <div style="padding:12px; background:${group.meta.color || '#f1f5f9'}; border-bottom:1px solid rgba(0,0,0,0.05); text-align:center;">
                         <div style="font-weight:700; font-size:13px; color:#1e293b; text-transform:uppercase; letter-spacing:0.05em;">${group.meta.name}</div>
-                        ${markup > 0 ? `<div style="font-size:10px; color:#64748b; margin-top:2px;">Націнка: +${markup}%</div>` : ''}
+                        ${markup > 0 ? `<div style="font-size:10px; color:#64748b; margin-top:2px;">Кор. коеф.: +${markup}%</div>` : ''}
                     </div>
                     <div style="padding:12px; flex:1; overflow-y:auto; max-height:400px;">
                         ${itemsHtml}
