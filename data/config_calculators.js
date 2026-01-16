@@ -19,5 +19,12 @@ window.CalculatorConfig = [
         "icon": "📦",
         "file": "data/schema_ivaiv_564.js",
         "desc": "Опис нового калькулятора"
+    },
+    {
+        "id": "schema_garderobni_systemy_673",
+        "title": "Гардеробні системи",
+        "icon": "📦",
+        "file": "data/schema_garderobni_systemy_673.js",
+        "desc": "Опис нового калькулятора"
     }
 ]; 
