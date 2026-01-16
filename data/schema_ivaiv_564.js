@@ -288,7 +288,8 @@ const Schema = {
             "id": "f1768211356237",
             "groupId": "g1768211354941",
             "label": "Нова дія",
-            "type": "number"
+            "type": "number",
+            "helpContent": ""
         },
         {
             "id": "f1768211356869",
@@ -325,6 +326,21 @@ const Schema = {
         "groups": [],
         "fields": []
     },
-    "rules": {}
+    "rules": {
+        "f1768211356869": {
+            "o1768211366533": {
+                "pr_c1": 1,
+                "pr_c2": 1,
+                "pr_c3": 1,
+                "pr_c4": 11,
+                "pr_c5": 11,
+                "pr_c6": 11,
+                "pr_c8": 11
+            },
+            "o1768211367373": {
+                "pr_c7": 11
+            }
+        }
+    }
 };
 window.Schema = Schema;
