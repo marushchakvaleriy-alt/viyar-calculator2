@@ -512,7 +512,10 @@ const Schema = {
                     "type": "number",
                     "default": 0
                 }
-            ]
+            ],
+            "layout": {
+                "width": "w-50"
+            }
         },
         {
             "id": "f1768559493803",
@@ -538,7 +541,10 @@ const Schema = {
                         }
                     ]
                 }
-            ]
+            ],
+            "layout": {
+                "width": "w-50"
+            }
         }
     ],
     "products": {
