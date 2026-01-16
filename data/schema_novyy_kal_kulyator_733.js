@@ -482,6 +482,10 @@ const Schema = {
                 {
                     "value": "o1768471513597",
                     "label": "Варіант"
+                },
+                {
+                    "value": "o1768559461547",
+                    "label": "Варіант"
                 }
             ],
             "layout": {
@@ -492,6 +496,48 @@ const Schema = {
                 "help": "ваі",
                 "helpImg": "images/hints/ph66424.jpg"
             }
+        },
+        {
+            "id": "f1768559464276",
+            "groupId": "g1767987129232",
+            "label": "Нова дія",
+            "type": "action_button",
+            "helpContent": "",
+            "default": "",
+            "modalFields": [
+                {
+                    "id": "mf_1768559477355",
+                    "label": "Нове поле",
+                    "type": "number",
+                    "default": 0
+                }
+            ]
+        },
+        {
+            "id": "f1768559493803",
+            "groupId": "g1767987129232",
+            "label": "Нова дія",
+            "type": "action_button",
+            "helpContent": "",
+            "default": "",
+            "modalFields": [
+                {
+                    "id": "mf_1768559510172",
+                    "label": "віаів",
+                    "type": "select",
+                    "default": "",
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Варіант 1"
+                        },
+                        {
+                            "value": "opt2",
+                            "label": "Варіант 2"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "products": {
@@ -609,7 +655,8 @@ const Schema = {
             "pr_c1": 10
         },
         "f1768471066582": {
-            "pr_c1": 10
+            "pr_c1": 10,
+            "pr_c7": 0
         },
         "f1768471062862": {
             "pr_c1": 10
@@ -622,6 +669,14 @@ const Schema = {
         },
         "f1767987131252_mf_1767987351323": {
             "pr_c2": 10
+        },
+        "f1768559493803_mf_1768559510172": {
+            "opt2": {
+                "pr_c1": 10
+            },
+            "opt1": {
+                "pr_c1": 10
+            }
         }
     },
     "layout": {
