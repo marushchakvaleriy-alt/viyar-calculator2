@@ -30,9 +30,18 @@ const Engine = {
         const style = document.createElement('style');
         style.id = 'engine-grid-styles';
         style.innerHTML = `
+            *, *::before, *::after { box-sizing: border-box; }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                font-family: 'Inter', sans-serif;
+            }
             .group {
-                margin-bottom: 40px;
+                margin-bottom: 0; /* Let gap handle spacing */
                 padding: 15px;
+                background: rgba(255,255,255,0.03);
             }
             .group-header {
                 font-size: 18px;
@@ -196,7 +205,30 @@ const Engine = {
             const groupEl = document.createElement('div');
             groupEl.className = 'group';
 
+            // Ensure container allows wrapping
+            if (!container.style.display) {
+                container.style.display = 'flex';
+                container.style.flexWrap = 'wrap';
+                container.style.gap = (Schema.layout?.groupGap !== undefined ? Schema.layout.groupGap : 20) + 'px';
+                container.style.alignItems = 'flex-start'; // Prevent stretching height
+            }
+
             // Apply group styling
+            if (gl.width) {
+                groupEl.style.width = gl.width;
+                // If using flex, flex-basis is better
+                groupEl.style.flex = `0 0 ${gl.width}`;
+
+                // Safer calcs for sub-pixel rounding
+                if (gl.width === '50%') groupEl.style.flex = `0 0 calc(50% - 11px)`;
+                else if (gl.width === '33.33%') groupEl.style.flex = `0 0 calc(33.33% - 14px)`;
+                else if (gl.width === '25%') groupEl.style.flex = `0 0 calc(25% - 16px)`;
+                else groupEl.style.flex = `0 0 100%`;
+            } else {
+                groupEl.style.flex = '0 0 100%';
+                groupEl.style.width = '100%';
+            }
+
             if (gl.background) {
                 groupEl.style.background = gl.background;
             } else if (theme === 'light') {
@@ -211,9 +243,22 @@ const Engine = {
 
             const header = document.createElement('div');
             header.className = 'group-header';
+            // Apply font size and weight with !important
+            let titleStyles = '';
+            if (gl.titleSize) titleStyles += `font-size: ${gl.titleSize}px !important; `;
+            if (gl.titleWeight) titleStyles += `font-weight: ${gl.titleWeight} !important;`;
+            if (gl.headerColor) titleStyles += `color: ${gl.headerColor} !important;`;
+            // For Engine, we usually don't use badge style background unless requested, 
+            // but if user set it in Designer, we might as well show it to keep consistency.
+            // However, Engine style '.group-header' is block-level.
+            // Let's apply it if present.
+            if (gl.headerBg) {
+                titleStyles += `background-color: ${gl.headerBg} !important;`;
+                titleStyles += `padding: 4px 10px; border-radius: 6px; display: inline-block;`;
+            }
+            if (titleStyles) header.style.cssText = titleStyles;
 
-            const numPrefix = gl.showNumbering ? `${idx + 1}. ` : '';
-            header.textContent = numPrefix + group.title;
+            header.textContent = (gl.showNumbering ? `${idx + 1}. ` : '') + (group.title || 'Group');
             groupEl.appendChild(header);
 
             const body = document.createElement('div');
@@ -223,6 +268,16 @@ const Engine = {
             const fields = Schema.fields.filter(f => f.groupId === group.id && !f.hidden);
             fields.forEach(field => {
                 const fieldEl = this.createFieldElement(field);
+
+                // Apply group-level field label styles if set
+                if (gl.fieldSize || gl.fieldWeight) {
+                    const label = fieldEl.querySelector('label');
+                    if (label) {
+                        if (gl.fieldSize) label.style.fontSize = gl.fieldSize + 'px';
+                        if (gl.fieldWeight) label.style.fontWeight = gl.fieldWeight;
+                    }
+                }
+
                 body.appendChild(fieldEl);
             });
 
@@ -242,9 +297,9 @@ const Engine = {
 
         // Apply wrapper-level styling
         if (l.flexDirection) {
-            wrapper.style.flexDirection = l.flexDirection;
+            wrapper.style.setProperty('flex-direction', l.flexDirection, 'important');
             if (l.flexDirection === 'row') {
-                wrapper.style.display = 'flex';
+                wrapper.style.setProperty('display', 'flex', 'important');
                 wrapper.style.alignItems = 'center';
             }
         }
@@ -273,7 +328,8 @@ const Engine = {
         label.style.gap = '5px';
         label.textContent = field.label;
 
-        if (l.help || l.helpImg) {
+        const helpText = field.helpContent || l.help;
+        if (helpText || l.helpImg) {
             const helpContainer = document.createElement('span');
             helpContainer.className = 'help-container';
 
@@ -311,9 +367,9 @@ const Engine = {
                 tooltip.appendChild(img);
             }
 
-            if (l.help) {
+            if (helpText) {
                 const text = document.createElement('div');
-                text.textContent = l.help;
+                text.textContent = helpText;
                 tooltip.appendChild(text);
             }
 
@@ -333,6 +389,8 @@ const Engine = {
         if (l.color) label.style.color = l.color;
         if (l.uppercase) label.style.textTransform = 'uppercase';
         if (l.spaced) label.style.letterSpacing = '1px';
+        if (l.lineHeight) label.style.lineHeight = l.lineHeight;
+        if (l.fontStyle) label.style.fontStyle = l.fontStyle;
 
         if (l.textAlign) {
             label.style.textAlign = l.textAlign;
@@ -602,6 +660,47 @@ const Engine = {
             inputElement = null; // We handled onchange manually
             inputWrapper.appendChild(select);
 
+        } else if (field.type === 'multiselect') {
+            const list = document.createElement('div');
+            list.style.cssText = 'display:flex; flex-direction:column; gap:6px; margin-top:5px; width:100%';
+
+            // Ensure state is array
+            if (!Array.isArray(this.state[field.id])) {
+                this.state[field.id] = [];
+            }
+
+            (field.options || []).forEach(opt => {
+                const item = document.createElement('label');
+                item.style.cssText = 'display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px; padding:4px 0; color:inherit;';
+
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.value = opt.value;
+                chk.style.width = '18px';
+                chk.style.height = '18px';
+                chk.style.accentColor = '#2563eb';
+                chk.checked = this.state[field.id].includes(opt.value);
+
+                chk.onchange = (e) => {
+                    if (e.target.checked) {
+                        if (!this.state[field.id].includes(opt.value)) this.state[field.id].push(opt.value);
+                    } else {
+                        this.state[field.id] = this.state[field.id].filter(v => v !== opt.value);
+                    }
+                    this.calculate();
+                };
+
+                const span = document.createElement('span');
+                span.textContent = opt.label;
+
+                item.appendChild(chk);
+                item.appendChild(span);
+                list.appendChild(item);
+            });
+
+            inputElement = null; // Handled manually
+            inputWrapper.appendChild(list);
+
         } else {
             const input = document.createElement('input');
             input.type = field.type === 'number' ? 'number' : 'text';
@@ -762,7 +861,6 @@ const Engine = {
                     animation: slideIn 0.3s ease-out; 
                     transition: 0.2s;
                     width: ${bl.prodWidth || '100%'};
-                    min-width: fit-content;
                     z-index: 101;
                 `;
 
@@ -970,6 +1068,13 @@ const Engine = {
                 this.applyPoints(ruleSet, points, processedVal, catSums, fDef);
             } else if (fDef.type === 'checkbox_qty') {
                 if (val && val.checked) this.applyPoints(ruleSet, points, val.qty, catSums, fDef);
+            } else if (fDef.type === 'multiselect') {
+                if (Array.isArray(val)) {
+                    val.forEach(v => {
+                        const active = ruleSet[v];
+                        if (active) this.applyPoints(active, points, null, catSums, fDef);
+                    });
+                }
             }
         });
     },
@@ -987,42 +1092,72 @@ const Engine = {
             const ruleSet = Schema.rules[fId];
             if (!fDef || !ruleSet) return;
 
-            // For select_yes_no, we treat it like a number/checkbox (ruleSet is the object), not like 'select' (where ruleSet is a map of values)
-            const targetRules = (fDef.type === 'select') ? ruleSet[fVal] : ruleSet;
-            if (!targetRules) return;
+            let ruleObjects = [];
+            if (fDef.type === 'multiselect') {
+                if (Array.isArray(fVal)) ruleObjects = fVal.map(v => ruleSet[v]).filter(Boolean);
+            } else if (fDef.type === 'select') {
+                if (ruleSet[fVal]) ruleObjects = [ruleSet[fVal]];
+            } else {
+                ruleObjects = [ruleSet];
+            }
 
-            Object.keys(Schema.categories).forEach(cid => {
-                const valInSigma = targetRules[`_total_${cid}`];
-                if (!valInSigma) return;
+            ruleObjects.forEach(targetRules => {
+                Object.keys(Schema.categories).forEach(cid => {
+                    const valInSigma = targetRules[`_total_${cid}`];
+                    if (!valInSigma) return;
 
-                // 1. Calculate Row Sums
-                const rowSums = {};
-                const rawSums = {};
-                Object.keys(Schema.categories).forEach(c => { rowSums[c] = 0; rawSums[c] = 0; });
+                    // 1. Calculate Row Sums
+                    const rowSums = {};
+                    const rawSums = {};
+                    Object.keys(Schema.categories).forEach(c => { rowSums[c] = 0; rawSums[c] = 0; });
 
-                this.applyPoints(targetRules, null, fVal, rowSums, fDef);
-                this.applyPoints(targetRules, null, 1, rawSums, fDef);
+                    // contextVal: For multiselect/select, the rule is active so multiplier is 1 or whatever applyPoints does?
+                    // applyPoints generic logic:
+                    // if fieldDef is multiselect/select, contextVal is usually null?
+                    // In processPass1 for select: applyPoints(active, points, null...)
+                    // But here we might need contextVal for formulas using @qty?
+                    // For select/multiselect, @qty is usually 1 (it's "is selected").
+                    // For number inputs, fVal is the number.
 
-                const currentSum = rowSums[cid] || 0;
-                const rawSum = rawSums[cid] || 0;
+                    // Let's determine correct contextVal for this iteration
+                    let contextVal = fVal;
+                    if (fDef.type === 'multiselect' || fDef.type === 'select') contextVal = 1;
+                    // Actually, in the original code: applyPoints(targetRules, null, fVal, rowSums, fDef);
+                    // For select, fVal is the string value (e.g. "opt1"). applyPoints treats it as multiplier=1 because logic matches "if fieldDef...". 
+                    // Wait, applyPoints line 1069:
+                    // if (fieldDef.type === 'number'...) multiplier = Number(contextVal)
+                    // if select, it falls through to val = Number(val) * 1. 
 
-                // 2. Evaluate formula or fixed number
-                let result = 0;
-                if (String(valInSigma).startsWith('=')) {
-                    // Formula replaces the sum unless @sum is used
-                    // Provide @raw (points in row) and @sum (raw * qty)
-                    result = this.evaluateFormulaExtended(valInSigma, fVal, {
-                        ...globalVars,
-                        '@sum': currentSum,
-                        '@raw': rawSum
-                    });
-                } else if (!isNaN(valInSigma)) {
-                    // Raw number in Sigma means "Add this to the sum"
-                    result = currentSum + Number(valInSigma);
-                }
+                    // So for select/multiselect, we should pass ONE (1) or the value?
+                    // If I pass "opt1" to Number(), it is NaN. 
+                    // applyPoints checks "if (typeof val === 'string' ... formula ...)"
+                    // If generic number point: val * multiplier.
 
-                // Apply difference to the global total
-                adjustments[cid] += (result - currentSum);
+                    // Safe bet: For multiselect/select, the "quantity" of that option is 1.
+
+                    const effectiveVal = (fDef.type === 'multiselect' || fDef.type === 'select') ? 1 : fVal;
+
+                    this.applyPoints(targetRules, null, effectiveVal, rowSums, fDef);
+                    this.applyPoints(targetRules, null, 1, rawSums, fDef);
+
+                    const currentSum = rowSums[cid] || 0;
+                    const rawSum = rawSums[cid] || 0;
+
+                    // 2. Evaluate formula or fixed number
+                    let result = 0;
+                    if (String(valInSigma).startsWith('=')) {
+                        result = this.evaluateFormulaExtended(valInSigma, effectiveVal, {
+                            ...globalVars,
+                            '@sum': currentSum,
+                            '@raw': rawSum
+                        });
+                    } else if (!isNaN(valInSigma)) {
+                        result = currentSum + Number(valInSigma);
+                    }
+
+                    // Apply difference to the global total
+                    adjustments[cid] += (result - currentSum);
+                });
             });
         });
 

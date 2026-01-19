@@ -1,0 +1,762 @@
+window.Catalog_GlassMirror = [
+  {
+    "id": "64090",
+    "vendor": "AGC",
+    "name": "Скло Stopsol Classic графіт 4мм",
+    "article": "64090",
+    "price": "2867.58",
+    "image": "https://viyar.ua/store/Items/photos/ph64090.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "68338",
+    "vendor": "AGC",
+    "name": "Скло Imagin Raywall 45 4мм",
+    "article": "68338",
+    "price": "2128.74",
+    "image": "https://viyar.ua/store/Items/photos/ph68338.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "64091",
+    "vendor": "AGC",
+    "name": "Скло Stopsol Classic бронзове 4мм",
+    "article": "64091",
+    "price": "2651.46",
+    "image": "https://viyar.ua/store/Items/photos/ph64091.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "74258",
+    "vendor": "AGC",
+    "name": "Скло сатин білий на діаманті 4мм",
+    "article": "74258",
+    "price": "1783.68",
+    "image": "https://viyar.ua/store/Items/photos/ph74258.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "63996",
+    "vendor": "AGC",
+    "name": "Скло фасадне 4мм Lacomat White 1456",
+    "article": "63996",
+    "price": "1516.68",
+    "image": "https://viyar.ua/store/Items/photos/ph63996.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "68337",
+    "vendor": "AGC",
+    "name": "Скло Planibel Dark Grey 4мм",
+    "article": "68337",
+    "price": "2422.38",
+    "image": "https://viyar.ua/store/Items/photos/ph68337.jpg",
+    "thickness": "4",
+    "color": "Сірий"
+  },
+  {
+    "id": "64089",
+    "vendor": "AGC",
+    "name": "Скло Stopsol Classic прозоре 4мм",
+    "article": "64089",
+    "price": "1996.14",
+    "image": "https://viyar.ua/store/Items/photos/ph64089.jpg",
+    "thickness": "4",
+    "color": "Прозорий"
+  },
+  {
+    "id": "47778",
+    "vendor": "AGC",
+    "name": "Скло Lacobel Light Beige 1015 4мм",
+    "article": "47778",
+    "price": "1883.16",
+    "image": "https://viyar.ua/store/Items/photos/ph47778.jpg",
+    "thickness": "4",
+    "color": "Бежевий"
+  },
+  {
+    "id": "95978",
+    "vendor": "AGC",
+    "name": "Скло фасадне 4 мм Сатин бронза",
+    "article": "95978",
+    "price": "2048.04",
+    "image": "https://viyar.ua/store/Items/photos/ph95978.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "60593",
+    "vendor": "AGC",
+    "name": "Скло фасадне  4мм Matelac White Pure 9003",
+    "article": "60593",
+    "price": "3130.86",
+    "image": "https://viyar.ua/store/Items/photos/ph60593.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "116669",
+    "vendor": "AGC",
+    "name": "Скло сатин білий двосторонній на діаманті 4мм",
+    "article": "116669",
+    "price": "2169.84",
+    "image": "https://viyar.ua/store/Items/photos/ph116669.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "176275",
+    "vendor": "AGC",
+    "name": "Скло Planibel Bronze 8 мм",
+    "article": "176275",
+    "price": "3684.66",
+    "image": "https://viyar.ua/store/Items/photos/ph176275.jpg",
+    "thickness": "8",
+    "color": "Бронза"
+  },
+  {
+    "id": "197257",
+    "vendor": "Україна",
+    "name": "Скло тоноване графіт (Україна) 4 мм",
+    "article": "197257",
+    "price": "1154.88",
+    "image": "https://viyar.ua/store/Items/photos/ph197257.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "213741",
+    "vendor": "MADRAS",
+    "name": "Скло Strip бронза",
+    "article": "213741",
+    "price": "7647.96",
+    "image": "https://viyar.ua/store/Items/photos/ph213741_ZBnuo.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "47779",
+    "vendor": "AGC",
+    "name": "Скло Lacobel Light Brown 1236 4мм",
+    "article": "47779",
+    "price": "1700.70",
+    "image": "https://viyar.ua/store/Items/photos/ph47779.jpg",
+    "thickness": "4",
+    "color": "Коричневий"
+  },
+  {
+    "id": "81152",
+    "vendor": "AGC",
+    "name": "Скло фасадне 4 мм Сатин білий",
+    "article": "81152",
+    "price": "1358.70",
+    "image": "https://viyar.ua/store/Items/photos/ph81152.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "168882",
+    "vendor": "Saint Gobain",
+    "name": "Скло Master Ligne 4мм Saint Gobain",
+    "article": "168882",
+    "price": "2021.10",
+    "image": "https://viyar.ua/store/Items/photos/ph168882.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "114596",
+    "vendor": "AGC",
+    "name": "Скло діамант 10 мм",
+    "article": "114596",
+    "price": "3717.18",
+    "image": "https://viyar.ua/store/Items/photos/ph114596.jpg",
+    "thickness": "10",
+    "color": "Прозорий"
+  },
+  {
+    "id": "200502",
+    "vendor": "Україна",
+    "name": "Скло тоноване бронза (Україна) 4 мм",
+    "article": "200502",
+    "price": "1118.40",
+    "image": "https://viyar.ua/store/Items/photos/ph200502.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "213742",
+    "vendor": "MADRAS",
+    "name": "Скло Strip графіт",
+    "article": "213742",
+    "price": "7647.96",
+    "image": "https://viyar.ua/store/Items/photos/ph213742_yt76p.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "30050",
+    "vendor": "AGC",
+    "name": "Скло графіт 6 мм, розмір 2750*1605",
+    "article": "30050",
+    "price": "2652.72",
+    "image": "https://viyar.ua/store/Items/photos/ph30050.jpg",
+    "thickness": "6",
+    "color": "Графіт"
+  },
+  {
+    "id": "47776",
+    "vendor": "AGC",
+    "name": "Скло Lacobel Pure White 9003 4мм",
+    "article": "47776",
+    "price": "2527.32",
+    "image": "https://viyar.ua/store/Items/photos/ph47776.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "60592",
+    "vendor": "AGC",
+    "name": "Скло фасадне 4мм Matelac Pearl White 1013",
+    "article": "60592",
+    "price": "3232.14",
+    "image": "https://viyar.ua/store/Items/photos/ph60592.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "168883",
+    "vendor": "Saint Gobain",
+    "name": "Скло Master Thela 4мм Saint Gobain",
+    "article": "168883",
+    "price": "2021.10",
+    "image": "https://viyar.ua/store/Items/photos/ph168883.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "120882",
+    "vendor": "AGC",
+    "name": "Скло Planibel Dark Grey 6 мм",
+    "article": "120882",
+    "price": "2567.94",
+    "image": "https://viyar.ua/store/Items/photos/ph120882.jpg",
+    "thickness": "6",
+    "color": "Сірий"
+  },
+  {
+    "id": "200506",
+    "vendor": "EUROGLASS",
+    "name": "Скло віконне 10 мм",
+    "article": "200506",
+    "price": "1972.02",
+    "image": "https://viyar.ua/store/Items/photos/ph200506.jpg",
+    "thickness": "10",
+    "color": "Прозорий"
+  },
+  {
+    "id": "213743",
+    "vendor": "MADRAS",
+    "name": "Скло Graffiti бронза",
+    "article": "213743",
+    "price": "7970.70",
+    "image": "https://viyar.ua/store/Items/photos/ph213743_hUTUP.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "23556",
+    "vendor": "EUROGLASS",
+    "name": "Скло віконне прозоре 6 мм, розмір 3210*2250",
+    "article": "23556",
+    "price": "1075.02",
+    "image": "https://viyar.ua/store/Items/photos/ph23556.jpg",
+    "thickness": "6",
+    "color": "Прозорий"
+  },
+  {
+    "id": "41113",
+    "vendor": "Турція",
+    "name": "Скло віконне 8 мм",
+    "article": "41113",
+    "price": "1792.02",
+    "image": "https://viyar.ua/store/Items/photos/ph41113.jpg",
+    "thickness": "8",
+    "color": "Прозорий"
+  },
+  {
+    "id": "168884",
+    "vendor": "Saint Gobain",
+    "name": "Скло Master Flex 4мм Saint Gobain",
+    "article": "168884",
+    "price": "2021.10",
+    "image": "https://viyar.ua/store/Items/photos/ph168884.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "131899",
+    "vendor": "AGC",
+    "name": "Скло діамант 5 мм",
+    "article": "131899",
+    "price": "1512.00",
+    "image": "https://viyar.ua/store/Items/photos/ph131899.jpg",
+    "thickness": "5",
+    "color": "Прозорий"
+  },
+  {
+    "id": "213747",
+    "vendor": "MADRAS",
+    "name": "Скло Ecosat матове бронза",
+    "article": "213747",
+    "price": "3080.70",
+    "image": "https://viyar.ua/store/Items/photos/ph213747_GQJYe.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "213744",
+    "vendor": "MADRAS",
+    "name": "Скло Graffiti графіт",
+    "article": "213744",
+    "price": "7970.70",
+    "image": "https://viyar.ua/store/Items/photos/ph213744_cnVNZ.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "83812",
+    "vendor": "Турція",
+    "name": "Скло фасадне 4 мм Крізет білий",
+    "article": "83812",
+    "price": "1327.50",
+    "image": "https://viyar.ua/store/Items/photos/ph83812.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "39601",
+    "vendor": "AGC",
+    "name": "Скло діамант 6 мм",
+    "article": "39601",
+    "price": "1965.24",
+    "image": "https://viyar.ua/store/Items/photos/ph20829.jpg",
+    "thickness": "6",
+    "color": ""
+  },
+  {
+    "id": "169229",
+    "vendor": "MADRAS",
+    "name": "Скло Trix графіт 4мм",
+    "article": "169229",
+    "price": "8114.94",
+    "image": "https://viyar.ua/store/Items/photos/ph169229.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "141902",
+    "vendor": "AGC",
+    "name": "Скло Planibel Dark Grey (AGC) 10 мм",
+    "article": "141902",
+    "price": "5825.64",
+    "image": "https://viyar.ua/store/Items/photos/ph141902.jpg",
+    "thickness": "10",
+    "color": "Сірий"
+  },
+  {
+    "id": "213748",
+    "vendor": "MADRAS",
+    "name": "Скло Ecosat матове графіт",
+    "article": "213748",
+    "price": "3080.70",
+    "image": "https://viyar.ua/store/Items/photos/ph213748_mzbtH.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "213745",
+    "vendor": "MADRAS",
+    "name": "Скло Fluido матове",
+    "article": "213745",
+    "price": "5960.94",
+    "image": "https://viyar.ua/store/Items/photos/ph213745_NoDsz.jpg",
+    "thickness": "4",
+    "color": "Прозорий"
+  },
+  {
+    "id": "47777",
+    "vendor": "AGC",
+    "name": "Скло Lacobel Pearl White 1013 4мм",
+    "article": "47777",
+    "price": "2100.24",
+    "image": "https://viyar.ua/store/Items/photos/ph47777.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "27125",
+    "vendor": "AGC",
+    "name": "Скло тоноване бронза 4 мм",
+    "article": "27125",
+    "price": "1598.16",
+    "image": "https://viyar.ua/store/Items/photos/ph27125.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "69539",
+    "vendor": "AGC",
+    "name": "Скло сатин графіт (розмір 3,3 * 2,14 м)",
+    "article": "69539",
+    "price": "2248.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69539.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "84795",
+    "vendor": "AGC",
+    "name": "Скло Matelac Black Classic 9005 4мм",
+    "article": "84795",
+    "price": "2468.64",
+    "image": "https://viyar.ua/store/Items/photos/ph84795.jpg",
+    "thickness": "4",
+    "color": "Чорний"
+  },
+  {
+    "id": "169230",
+    "vendor": "MADRAS",
+    "name": "Скло Trix бронза 4мм",
+    "article": "169230",
+    "price": "8276.82",
+    "image": "https://viyar.ua/store/Items/photos/ph169230.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "117103",
+    "vendor": "AGC",
+    "name": "Скло діамант 8 мм",
+    "article": "117103",
+    "price": "2838.00",
+    "image": "https://viyar.ua/store/Items/photos/ph117103.jpg",
+    "thickness": "8",
+    "color": "Прозорий"
+  },
+  {
+    "id": "213737",
+    "vendor": "MADRAS",
+    "name": "Скло Rigato прозоре",
+    "article": "213737",
+    "price": "7647.96",
+    "image": "https://viyar.ua/store/Items/photos/ph213737_pr0E5.jpg",
+    "thickness": "4",
+    "color": "Прозорий"
+  },
+  {
+    "id": "213749",
+    "vendor": "SPHINX GLASS",
+    "name": "Скло sky blue 4 мм",
+    "article": "213749",
+    "price": "1954.38",
+    "image": "https://viyar.ua/store/Items/photos/ph213749_ebNwN.jpg",
+    "thickness": "4",
+    "color": "Блакитний"
+  },
+  {
+    "id": "43489",
+    "vendor": "EUROGLASS",
+    "name": "Скло віконне прозоре 4мм",
+    "article": "43489",
+    "price": "672.30",
+    "image": "https://viyar.ua/store/Items/photos/ph43489.jpg",
+    "thickness": "4",
+    "color": "Прозорий"
+  },
+  {
+    "id": "96761",
+    "vendor": "AGC",
+    "name": "Скло фасадне Флутс прозорий 4 мм",
+    "article": "96761",
+    "price": "2736.48",
+    "image": "https://viyar.ua/store/Items/photos/ph96761.jpg",
+    "thickness": "4",
+    "color": "Прозорий"
+  },
+  {
+    "id": "78886",
+    "vendor": "EUROGLASS",
+    "name": "Скло віконне 5мм",
+    "article": "78886",
+    "price": "925.02",
+    "image": "https://viyar.ua/store/Items/photos/ph78886.jpg",
+    "thickness": "5",
+    "color": "Прозорий"
+  },
+  {
+    "id": "169231",
+    "vendor": "MADRAS",
+    "name": "Скло Trix прозоре 4мм",
+    "article": "169231",
+    "price": "7680.24",
+    "image": "https://viyar.ua/store/Items/photos/ph169231.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "187319",
+    "vendor": "ЛЕАЛ-ГЛАСС ТОВ",
+    "name": "Скло Lacobel RAL 9005 чорний 4мм (Україна)",
+    "article": "187319",
+    "price": "1226.64",
+    "image": "https://viyar.ua/store/Items/photos/ph187319.jpg",
+    "thickness": "4",
+    "color": "Чорний"
+  },
+  {
+    "id": "213738",
+    "vendor": "MADRAS",
+    "name": "Скло Rigato бронза",
+    "article": "213738",
+    "price": "7647.96",
+    "image": "https://viyar.ua/store/Items/photos/ph213738_uiDd8.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "213746",
+    "vendor": "MADRAS",
+    "name": "Скло Ecosat матове прозоре",
+    "article": "213746",
+    "price": "3080.70",
+    "image": "https://viyar.ua/store/Items/photos/ph213746_Hqr9R.jpg",
+    "thickness": "4",
+    "color": "Прозорий"
+  },
+  {
+    "id": "47775",
+    "vendor": "AGC",
+    "name": "Скло Lacobel Classic Black 9005 4мм",
+    "article": "47775",
+    "price": "1774.56",
+    "image": "https://viyar.ua/store/Items/photos/ph47775.jpg",
+    "thickness": "4",
+    "color": "Чорний"
+  },
+  {
+    "id": "30049",
+    "vendor": "AGC",
+    "name": "Скло графіт 4 мм, розмір 3210*2250",
+    "article": "30049",
+    "price": "1561.86",
+    "image": "https://viyar.ua/store/Items/photos/ph30049.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "116668",
+    "vendor": "AGC",
+    "name": "Скло сатин білий двосторонній 4мм",
+    "article": "116668",
+    "price": "1859.46",
+    "image": "https://viyar.ua/store/Items/photos/ph116668.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "176273",
+    "vendor": "AGC",
+    "name": "Скло Planibel Bronze 6 мм",
+    "article": "176273",
+    "price": "2767.98",
+    "image": "https://viyar.ua/store/Items/photos/ph176273.jpg",
+    "thickness": "6",
+    "color": "Бронза"
+  },
+  {
+    "id": "187321",
+    "vendor": "ЛЕАЛ-ГЛАСС ТОВ",
+    "name": "Скло Lacobel RAL 9003 'А' ексклюзивний білий' 4мм (Україна)",
+    "article": "187321",
+    "price": "1462.62",
+    "image": "https://viyar.ua/store/Items/photos/ph187321.jpg",
+    "thickness": "4",
+    "color": "Білий"
+  },
+  {
+    "id": "213739",
+    "vendor": "MADRAS",
+    "name": "Скло Rigato графіт",
+    "article": "213739",
+    "price": "7647.96",
+    "image": "https://viyar.ua/store/Items/photos/ph213739_EduZR.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "20829",
+    "vendor": "AGC",
+    "name": "Скло Діамант 4 мм",
+    "article": "20829",
+    "price": "1155.96",
+    "image": "https://viyar.ua/store/Items/photos/ph20829.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "51847",
+    "vendor": "AGC",
+    "name": "Скло Планібель сіре 8 мм",
+    "article": "51847",
+    "price": "3052.14",
+    "image": "https://viyar.ua/store/Items/photos/ph51847.jpg",
+    "thickness": "8",
+    "color": "Сірий"
+  },
+  {
+    "id": "75363",
+    "vendor": "AGC",
+    "name": "Дзеркало Срібло на діаманті 4мм",
+    "article": "75363",
+    "price": "2140.92",
+    "image": "https://viyar.ua/store/Items/photos/ph75363.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "91892",
+    "vendor": "AGC",
+    "name": "Дзеркало MORENA 4 мм",
+    "article": "91892",
+    "price": "3810.42",
+    "image": "https://viyar.ua/store/Items/photos/ph91892.jpg",
+    "thickness": "4",
+    "color": ""
+  },
+  {
+    "id": "127485",
+    "vendor": "AGC",
+    "name": "Дзеркало срібло вологостійке 4 мм AGC (Європа)",
+    "article": "127485",
+    "price": "1704.36",
+    "image": "https://viyar.ua/store/Items/photos/ph127485.jpg",
+    "thickness": "4",
+    "color": "Срібло"
+  },
+  {
+    "id": "91684",
+    "vendor": "AGC",
+    "name": "Дзеркало Графіт 4 мм",
+    "article": "91684",
+    "price": "2279.52",
+    "image": "https://viyar.ua/store/Items/photos/ph91684.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "138589",
+    "vendor": "Турція",
+    "name": "Дзеркало срібло Bg 4 мм",
+    "article": "138589",
+    "price": "1261.86",
+    "image": "https://viyar.ua/store/Items/photos/ph138589.jpg",
+    "thickness": "4",
+    "color": "Срібло"
+  },
+  {
+    "id": "81170",
+    "vendor": "Чехія",
+    "name": "Дзеркало Бронза 4 мм",
+    "article": "81170",
+    "price": "2089.92",
+    "image": "https://viyar.ua/store/Items/photos/ph81170.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "190378",
+    "vendor": "Україна",
+    "name": "Дзеркало сатин (Україна)",
+    "article": "190378",
+    "price": "1420.80",
+    "image": "https://viyar.ua/store/Items/photos/ph190378.jpg",
+    "thickness": "4",
+    "color": "Чорний"
+  },
+  {
+    "id": "89418",
+    "vendor": "AGC",
+    "name": "Дзеркало Сатин 4 мм",
+    "article": "89418",
+    "price": "2525.88",
+    "image": "https://viyar.ua/store/Items/photos/ph89418.jpg",
+    "thickness": "4",
+    "color": "Сатин"
+  },
+  {
+    "id": "190379",
+    "vendor": "Україна",
+    "name": "Дзеркало сатин бронза (Україна)",
+    "article": "190379",
+    "price": "2117.70",
+    "image": "https://viyar.ua/store/Items/photos/ph190379.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "69537",
+    "vendor": "AGC",
+    "name": "Дзеркало сатин бронза 4 мм",
+    "article": "69537",
+    "price": "2983.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69537.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  },
+  {
+    "id": "190380",
+    "vendor": "Україна",
+    "name": "Дзеркало сатин графіт (Україна)",
+    "article": "190380",
+    "price": "2117.70",
+    "image": "https://viyar.ua/store/Items/photos/ph190380.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "69532",
+    "vendor": "AGC",
+    "name": "Дзеркало сатин графіт 4 мм",
+    "article": "69532",
+    "price": "2983.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69532.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "195747",
+    "vendor": "Турція",
+    "name": "Дзеркало графит Bg 4 мм",
+    "article": "195747",
+    "price": "1837.92",
+    "image": "https://viyar.ua/store/Items/photos/ph195747.jpg",
+    "thickness": "4",
+    "color": "Графіт"
+  },
+  {
+    "id": "195746",
+    "vendor": "Турція",
+    "name": "Дзеркало бронза Bg 4 мм",
+    "article": "195746",
+    "price": "1726.56",
+    "image": "https://viyar.ua/store/Items/photos/ph195746.jpg",
+    "thickness": "4",
+    "color": "Бронза"
+  }
+];

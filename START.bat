@@ -1,70 +1,52 @@
 @echo off
 chcp 65001 >nul
-title Калькулятор - Запуск
+title Kalkulyator - Zapusk
 color 0A
 
-echo ═══════════════════════════════════════════════════════
-echo    🚀 Запуск калькулятора Vpoint
-echo ═══════════════════════════════════════════════════════
+echo ===================================================
+echo    Zapusk kalkulyatora Vpoint
+echo ===================================================
 echo.
 
-echo 🔄 Оновлення коду з GitHub...
+echo [INFO] Perevirka Git...
 git --version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Помилка: Git не знайдено! Переконайтеся, що Git встановлено.
-    pause
-    exit /b
+    echo [ERROR] Git ne znajdeno! Propuskayemo onovlennya.
+    goto skip_git
 )
-echo.
-echo 📥 Отримання змін (git pull --rebase)...
+
+echo [INFO] Otrimannya zmin (git pull)...
 git pull --rebase
 if %ERRORLEVEL% NEQ 0 (
-    echo ⚠️ Помилка при отриманні оновлень. Можливо, є конфлікти.
-    echo Спробуйте запустити git pull вручну в консолі.
+    echo [WARNING] Pomilka pri onovlenni. Prodovzhuyemo...
 )
 echo.
 
-echo 📡 Синхронізація локальних змін...
+:skip_git
+echo [INFO] Perevirka Python...
 python --version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Помилка: Python не знайдено! Переконайтеся, що Python встановлено.
-    pause
+    echo [ERROR] Python ne znajdeno!
+    echo Vidkrivayemo index.html napryamu...
+    start "" "index.html"
+    timeout /t 3
     exit /b
 )
-python tools\auto_push.py initial_sync_on_start
-echo.
 
-:: Перевірка, чи вже запущений local_saver.py
-echo 🔍 Перевірка сервера збереження...
-tasklist /FI "IMAGENAME eq python.exe" /V | find /I "Local Saver" >nul
-if "%ERRORLEVEL%"=="0" (
-    echo ✅ Local Saver вже запущений.
-    set /p restart="Перезапустити сервер? (y/n): "
-    if /I "%restart%"=="y" (
-        echo 🛑 Зупинка старого сервера...
-        taskkill /FI "WINDOWTITLE eq Local Saver*" /F >nul 2>&1
-        timeout /t 1 /nobreak >nul
-        echo 📡 Запуск заново...
-        start "Local Saver - Port 5005" /MIN python tools\local_saver.py
-        echo ✅ Local Saver перезапущено
-    )
-) else (
-    echo 📡 Запуск Local Saver у фоновому вікні...
-    start "Local Saver - Port 5005" /MIN python tools\local_saver.py
-    timeout /t 2 /nobreak >nul
-    echo ✅ Local Saver запущено
-)
+echo [INFO] Zapusk Local Saver servera...
+start "Local Saver - Port 5005" /MIN python tools\local_saver.py
+timeout /t 2 /nobreak >nul
 
 echo.
-echo 🌐 Відкриття калькулятора в браузері (http://localhost:5005)...
+echo [INFO] Vidkrittya brauzera (http://localhost:5005)...
 timeout /t 1 /nobreak >nul
 start "" "http://localhost:5005"
 
 echo.
-echo ═══════════════════════════════════════════════════════
-echo    ✅ Готово! Калькулятор відкрито
-echo ═══════════════════════════════════════════════════════
+echo ===================================================
+echo    Gotovo! Kalkulyator vidkrito
+echo ===================================================
 echo.
-echo 💡 Щоб зупинити Local Saver, закрийте вікно "Local Saver - Port 5005"
+echo Shchob zupinity Local Saver, zakriyte vikno "Local Saver - Port 5005"
 echo.
 timeout /t 5

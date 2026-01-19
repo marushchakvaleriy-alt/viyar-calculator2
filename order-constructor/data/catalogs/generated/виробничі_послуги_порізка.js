@@ -1,0 +1,211 @@
+window.Catalog_ВиробничіПослугиПорізка = [
+  {
+    "id": "19031",
+    "vendor": "ВіЯр",
+    "name": "Порізка стільниць",
+    "article": "19031",
+    "price": "75.96",
+    "image": "https://viyar.ua/store/Items/photos/ph19031.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "89251",
+    "vendor": "",
+    "name": "Порізка з групуванням деталей (по тектурі)",
+    "article": "89251",
+    "price": "130.74",
+    "image": "https://viyar.ua/store/Items/photos/ph89251.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "144689",
+    "vendor": "Україна",
+    "name": "Лазерна порізка (до 450 мм) ДВП",
+    "article": "144689",
+    "price": "25.98",
+    "image": "https://viyar.ua/store/Items/photos/ph144689.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "19025",
+    "vendor": "ВіЯр",
+    "name": "Порізка ДВП",
+    "article": "19025",
+    "price": "13.50",
+    "image": "https://viyar.ua/store/Items/photos/ph19025.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54103",
+    "vendor": "ВіЯр",
+    "name": "Зріз складного кута (до 1 м.п.) (МебЩит)",
+    "article": "54103",
+    "price": "43.38",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "144577",
+    "vendor": "ВіЯр",
+    "name": "Підрізка ДСП, МДФ, OSB (у розмір) (до 1 м.п.)",
+    "article": "144577",
+    "price": "34.08",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "19026",
+    "vendor": "ВіЯр",
+    "name": "Порізка ДСП, МДФ, OSB",
+    "article": "19026",
+    "price": "22.62",
+    "image": "https://viyar.ua/store/Items/photos/ph19026.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54097",
+    "vendor": "ВіЯр",
+    "name": "Порізка с групуванням деталей (по структурі) (МебЩит)",
+    "article": "54097",
+    "price": "77.82",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "79692",
+    "vendor": "ВіЯр",
+    "name": "Порізка стяжок в розмір",
+    "article": "79692",
+    "price": "39.84",
+    "image": "https://viyar.ua/store/Items/photos/ph79692.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54102",
+    "vendor": "ВіЯр",
+    "name": "Зріз складного кута (більше 1 м.п.) (МебЩит)",
+    "article": "54102",
+    "price": "33.36",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "37912",
+    "vendor": "ВіЯр",
+    "name": "Порізка (МебЩит)",
+    "article": "37912",
+    "price": "18.00",
+    "image": "https://viyar.ua/store/Items/photos/ph37912.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54099",
+    "vendor": "ВіЯр",
+    "name": "Порізка стяжок в розмір (МебЩит)",
+    "article": "54099",
+    "price": "22.20",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "12115",
+    "vendor": "ВіЯр",
+    "name": "Підрізка ДСП, МДФ, OSB (в розмір)",
+    "article": "12115",
+    "price": "35.94",
+    "image": "https://viyar.ua/store/Items/photos/ph19026.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54100",
+    "vendor": "ВіЯр",
+    "name": "Зріз під 45 гр. (більш 1 м.п.) (МебЩит)",
+    "article": "54100",
+    "price": "63.00",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "52723",
+    "vendor": "ВіЯр",
+    "name": "Порізка ДСП, МДФ, OSB, плит ВГ та ГТ",
+    "article": "52723",
+    "price": "26.64",
+    "image": "https://viyar.ua/store/Items/photos/ph19026.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54101",
+    "vendor": "ВіЯр",
+    "name": "Зріз під 45 гр. (до 1 м.п.) (МебЩит)",
+    "article": "54101",
+    "price": "45.00",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "78836",
+    "vendor": "ВіЯр",
+    "name": "Порізка крайки",
+    "article": "78836",
+    "price": "19.74",
+    "image": "https://viyar.ua/store/Items/photos/ph78836.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "42611",
+    "vendor": "ВіЯр",
+    "name": "Підрізка стільниць (в розмір)",
+    "article": "42611",
+    "price": "81.84",
+    "image": "https://viyar.ua/store/Items/photos/ph19031.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "144688",
+    "vendor": "Україна",
+    "name": "Лазерне різання ДВП",
+    "article": "144688",
+    "price": "42.00",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  }
+];

@@ -1,0 +1,2652 @@
+window.Catalog_BoardMaterials_Arpa = [
+  {
+    "id": "70843",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1909 LU 3050х1300х0,8мм",
+    "article": "70843",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70843.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70853",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2625 NKD 3050х1300х0,6мм",
+    "article": "70853",
+    "price": "1896.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70853.jpg",
+    "thickness": "0.6",
+    "color": "Фіолетовий"
+  },
+  {
+    "id": "70866",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4479 LU 3050х1300х0,8мм",
+    "article": "70866",
+    "price": "1840.32",
+    "image": "https://viyar.ua/store/Items/photos/ph70866.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69844",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4513 Aleve 4200х1300х0,6мм",
+    "article": "69844",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69844.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69856",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9150 OSL 4200х1300х0,6мм",
+    "article": "69856",
+    "price": "2716.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69856.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69865",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4606 Aleve 4200х1300х0,6мм",
+    "article": "69865",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69865.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69885",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2619 Tex 4200х1300х0,6мм",
+    "article": "69885",
+    "price": "3347.10",
+    "image": "https://viyar.ua/store/Items/photos/ph69885.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69925",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3235 Erre 4200х1300х0,6мм",
+    "article": "69925",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69925.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69936",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9240 Larix 4200х1300х0,7мм",
+    "article": "69936",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69936.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "62078",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3417 Urban 4200х1300х0,6мм",
+    "article": "62078",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph62078.jpg",
+    "thickness": "0.6",
+    "color": "Білий"
+  },
+  {
+    "id": "54211",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3329 Mika 0,6 мм",
+    "article": "54211",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph54211.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "54240",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0507 R 0,9 мм",
+    "article": "54240",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54240.jpg",
+    "thickness": "1",
+    "color": "Синій"
+  },
+  {
+    "id": "45334",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3324 Mika 0,7 мм",
+    "article": "45334",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45334.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74331",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4574 Aleve 0,7 мм",
+    "article": "74331",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74331.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "58122",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0739 R 0,9 мм",
+    "article": "58122",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58122.jpg",
+    "thickness": "1",
+    "color": "Сірий"
+  },
+  {
+    "id": "74338",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0001 Luna 0,7 мм",
+    "article": "74338",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74338.jpg",
+    "thickness": "0.7",
+    "color": "Білий"
+  },
+  {
+    "id": "69883",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3433 Luna 0,6 мм",
+    "article": "69883",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69883.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "74339",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0204 Luna 0,7 мм",
+    "article": "74339",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74339.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "45341",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4511 Aleve 4200х1300х0,6мм",
+    "article": "45341",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph45341.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70530",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9213 LU 3050х1300х0,9мм",
+    "article": "70530",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70530.jpg",
+    "thickness": "0.9",
+    "color": "Помаранчевий"
+  },
+  {
+    "id": "70540",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0605 LU 3050х1300х0,8мм",
+    "article": "70540",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70540.jpg",
+    "thickness": "0.8",
+    "color": "Фіолетовий"
+  },
+  {
+    "id": "70551",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0661 LU 3050х1300х0,8мм",
+    "article": "70551",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70551.jpg",
+    "thickness": "0.8",
+    "color": "Жовтий"
+  },
+  {
+    "id": "70562",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2211 LU 3050х1300х0,8мм",
+    "article": "70562",
+    "price": "2206.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70562.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70573",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0559 R 3050х1300х0,6мм",
+    "article": "70573",
+    "price": "1553.16",
+    "image": "https://viyar.ua/store/Items/photos/ph70573.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69925",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3235 Erre 4200х1300х0,6мм",
+    "article": "69925",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69925.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69936",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9240 Larix 4200х1300х0,7мм",
+    "article": "69936",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69936.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "62078",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3417 Urban 4200х1300х0,6мм",
+    "article": "62078",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph62078.jpg",
+    "thickness": "0.6",
+    "color": "Білий"
+  },
+  {
+    "id": "54243",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0738 R 0,9 мм",
+    "article": "54243",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54243.jpg",
+    "thickness": "1",
+    "color": "Сірий"
+  },
+  {
+    "id": "74325",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3346 Ker 0,7 мм",
+    "article": "74325",
+    "price": "6538.26",
+    "image": "https://viyar.ua/store/Items/photos/ph74325.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "45347",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4586 Aleve 0,6 мм",
+    "article": "45347",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45347.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74333",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3342 Luna 0,7 мм",
+    "article": "74333",
+    "price": "6093.66",
+    "image": "https://viyar.ua/store/Items/photos/ph74333.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "69881",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4520 Aleve 0,6 мм",
+    "article": "69881",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69912",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3398 Urban 0,6 мм",
+    "article": "69912",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69912.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74340",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0509 Luna 0,7 мм",
+    "article": "74340",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74340.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "58127",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 2629 R 0,9 мм",
+    "article": "58127",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58127.jpg",
+    "thickness": "1",
+    "color": "Коричневий"
+  },
+  {
+    "id": "45344",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4573 Aleve 4200х1300х0,6мм",
+    "article": "45344",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph45344.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70531",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9214 LU 3050х1300х0,9мм",
+    "article": "70531",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70531.jpg",
+    "thickness": "0.9",
+    "color": "Червоний"
+  },
+  {
+    "id": "70541",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0256 LU 3050х1300х0,8мм",
+    "article": "70541",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70541.jpg",
+    "thickness": "0.8",
+    "color": "Жовтий"
+  },
+  {
+    "id": "70552",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0690 LU 3050х1300х0,8мм",
+    "article": "70552",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70552.jpg",
+    "thickness": "0.8",
+    "color": "Зелений"
+  },
+  {
+    "id": "70563",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0561 COR 3050х1300х0,6мм",
+    "article": "70563",
+    "price": "1717.56",
+    "image": "https://viyar.ua/store/Items/photos/ph70563.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "70574",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0570 R 3050х1300х0,6мм",
+    "article": "70574",
+    "price": "1553.16",
+    "image": "https://viyar.ua/store/Items/photos/ph70574.jpg",
+    "thickness": "0.6",
+    "color": "Зелений"
+  },
+  {
+    "id": "70591",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1008 R 3050х1300х0,6мм",
+    "article": "70591",
+    "price": "1583.04",
+    "image": "https://viyar.ua/store/Items/photos/ph70591.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70601",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2516 LU 3050х1300х0,8мм",
+    "article": "70601",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70601.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70613",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2525 LU 3050х1300х0,8мм",
+    "article": "70613",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70613.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70844",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1911 LU 3050х1300х0,8мм",
+    "article": "70844",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70844.jpg",
+    "thickness": "0.8",
+    "color": "Червоний"
+  },
+  {
+    "id": "70856",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2624 NKD 3050х1300х0,6мм",
+    "article": "70856",
+    "price": "1896.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70856.jpg",
+    "thickness": "0.6",
+    "color": "Зелений"
+  },
+  {
+    "id": "70868",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4530 NKD 3050х1300х0,6мм",
+    "article": "70868",
+    "price": "1753.86",
+    "image": "https://viyar.ua/store/Items/photos/ph70868.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69846",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3226 Mika 4200х1300х0,7мм",
+    "article": "69846",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69846.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "69857",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3392 Luna 4200х1300х0,6мм",
+    "article": "69857",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69857.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69867",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4491 Flatting 4200х1300х0,6мм",
+    "article": "69867",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69867.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69890",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3412 Urban 4200х1300х0,6мм",
+    "article": "69890",
+    "price": "2922.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69890.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69927",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9144 OSL 4200х1300х0,6мм",
+    "article": "69927",
+    "price": "2716.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69927.jpg",
+    "thickness": "0.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "69938",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9236 Larix 4200х1300х0,6мм",
+    "article": "69938",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69938.jpg",
+    "thickness": "0.6",
+    "color": "Жовтий"
+  },
+  {
+    "id": "62079",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3419 Urban 4200х1300х0,6мм",
+    "article": "62079",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph62079.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "45346",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4585 Aleve 0,6 мм",
+    "article": "45346",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45346.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74328",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3363 Luna 0,7 мм",
+    "article": "74328",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74328.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "54235",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0736 R 0,9 мм",
+    "article": "54235",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54235.jpg",
+    "thickness": "1",
+    "color": "Сірий"
+  },
+  {
+    "id": "64883",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4605 Aleve 0,6 мм",
+    "article": "64883",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph64883.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "45335",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3325 Mika 0,7 мм",
+    "article": "45335",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45335.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "58124",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0760 R 0,9 мм",
+    "article": "58124",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58124.jpg",
+    "thickness": "1",
+    "color": "Зелений"
+  },
+  {
+    "id": "69982",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3408 Losa 0,6 мм",
+    "article": "69982",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69982.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "64497",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0735 R 0,9 мм",
+    "article": "64497",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph64497.jpg",
+    "thickness": "1",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70523",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9209 LU 3050х1300х0,9мм",
+    "article": "70523",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70523.jpg",
+    "thickness": "0.9",
+    "color": "Чорний"
+  },
+  {
+    "id": "70534",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0638 LU 3050х1300х0,8мм",
+    "article": "70534",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70534.jpg",
+    "thickness": "0.8",
+    "color": "Червоний"
+  },
+  {
+    "id": "70542",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0660 LU 3050х1300х0,8мм",
+    "article": "70542",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70542.jpg",
+    "thickness": "0.8",
+    "color": "Зелений"
+  },
+  {
+    "id": "70553",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0535 LU 3050х1300х0,8мм",
+    "article": "70553",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70553.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70564",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0509 COR 3050х1300х0,6мм",
+    "article": "70564",
+    "price": "1717.56",
+    "image": "https://viyar.ua/store/Items/photos/ph70564.jpg",
+    "thickness": "0.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "70579",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0200 R 3050х1300х0,9мм",
+    "article": "70579",
+    "price": "1553.16",
+    "image": "https://viyar.ua/store/Items/photos/ph70579.jpg",
+    "thickness": "0.9",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70592",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2558 LU 3050х1300х0,8мм",
+    "article": "70592",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70592.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70602",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2594 LU 3050х1300х0,8мм",
+    "article": "70602",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70602.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70616",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2002 RIS 3050х1300х0,8мм",
+    "article": "70616",
+    "price": "5377.92",
+    "image": "https://viyar.ua/store/Items/photos/ph70616.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70845",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1907 LU 3050х1300х0,8мм",
+    "article": "70845",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70845.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70869",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4531 NKD 3050х1300х0,6мм",
+    "article": "70869",
+    "price": "1753.86",
+    "image": "https://viyar.ua/store/Items/photos/ph70869.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69847",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3190 Erre 4200х1300х0,6мм",
+    "article": "69847",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69847.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69858",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3332 Luna 4200х1300х0,6мм",
+    "article": "69858",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69858.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69869",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3347 Luna 4200х1300х0,6мм",
+    "article": "69869",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69869.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69899",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3416 Mika 4200х1300х0,6мм",
+    "article": "69899",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69899.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69928",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9145 OSL 4200х1300х0,6мм",
+    "article": "69928",
+    "price": "2716.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69928.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "69940",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9234 Larix 4200х1300х0,6мм",
+    "article": "69940",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69940.jpg",
+    "thickness": "0.6",
+    "color": "Зелений"
+  },
+  {
+    "id": "63221",
+    "vendor": "Arpa",
+    "name": "Пластик 3415 Luna 4200х1300х0,6мм",
+    "article": "63221",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph63221.jpg",
+    "thickness": "0.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "45346",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4585 Aleve 0,6 мм",
+    "article": "45346",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45346.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "64498",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 2630 R 0,9 мм",
+    "article": "64498",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph64498.jpg",
+    "thickness": "1",
+    "color": "Чорний"
+  },
+  {
+    "id": "54242",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0028 R 0,9 мм",
+    "article": "54242",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54242.jpg",
+    "thickness": "1",
+    "color": "Білий"
+  },
+  {
+    "id": "69983",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3432 Losa 0,6 мм",
+    "article": "69983",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69983.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "74326",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3451 Ker 0,7 мм",
+    "article": "74326",
+    "price": "6538.26",
+    "image": "https://viyar.ua/store/Items/photos/ph74326.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "58128",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 2638 R 0,9 мм",
+    "article": "58128",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58128.jpg",
+    "thickness": "1",
+    "color": "Сірий"
+  },
+  {
+    "id": "58992",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0509 R 0,9 мм",
+    "article": "58992",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58992.jpg",
+    "thickness": "1",
+    "color": "Чорний"
+  },
+  {
+    "id": "69907",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4612 Aleve 0,6 мм",
+    "article": "69907",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69907.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "70524",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9204 LU 3050х1300х0,9мм",
+    "article": "70524",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70524.jpg",
+    "thickness": "0.9",
+    "color": "Зелений"
+  },
+  {
+    "id": "70535",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0561 LU 3050х1300х0,8мм",
+    "article": "70535",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70535.jpg",
+    "thickness": "0.8",
+    "color": "Червоний"
+  },
+  {
+    "id": "70543",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0701 LU 3050х1300х0,8мм",
+    "article": "70543",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70543.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70554",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0594 LU 3050х1300х0,8мм",
+    "article": "70554",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70554.jpg",
+    "thickness": "0.8",
+    "color": "Рожевий"
+  },
+  {
+    "id": "70567",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0561 R 3050х1300х0,6мм",
+    "article": "70567",
+    "price": "1546.80",
+    "image": "https://viyar.ua/store/Items/photos/ph70567.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "70580",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4493 GH 3050х1300х0,6мм",
+    "article": "70580",
+    "price": "1583.04",
+    "image": "https://viyar.ua/store/Items/photos/ph70580.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70595",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2596 LU 3050х1300х0,8мм",
+    "article": "70595",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70595.jpg",
+    "thickness": "0.8",
+    "color": "Червоний"
+  },
+  {
+    "id": "70603",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2633 LU 3050х1300х0,8мм",
+    "article": "70603",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70603.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70603",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2633 LU 3050х1300х0,8мм",
+    "article": "70603",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70603.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70617",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2002 POL 3050х1300х0,8мм",
+    "article": "70617",
+    "price": "5377.92",
+    "image": "https://viyar.ua/store/Items/photos/ph70617.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70846",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1860 LU 3050х1300х0,8мм",
+    "article": "70846",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70846.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70858",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2635 PES 3050х1300х0,6мм",
+    "article": "70858",
+    "price": "1896.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70858.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70870",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4535 NKD 3050х1300х0,6мм",
+    "article": "70870",
+    "price": "1753.86",
+    "image": "https://viyar.ua/store/Items/photos/ph70870.jpg",
+    "thickness": "0.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "69848",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3429 Mika 4200х1300х0,6мм",
+    "article": "69848",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69848.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69860",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9241 Larix 4200х1300х0,6мм",
+    "article": "69860",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69860.jpg",
+    "thickness": "0.6",
+    "color": "Фіолетовий"
+  },
+  {
+    "id": "69872",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3377 Luna 4200х1300х0,6мм",
+    "article": "69872",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69872.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69901",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3383 Luna 4200х1300х0,6мм",
+    "article": "69901",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69901.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69931",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9146 OSL 4200х1300х0,6мм",
+    "article": "69931",
+    "price": "2716.50",
+    "image": "https://viyar.ua/store/Items/photos/ph69931.jpg",
+    "thickness": "0.6",
+    "color": "Фіолетовий"
+  },
+  {
+    "id": "69950",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4492 Flatting 4200х1300х0,6мм",
+    "article": "69950",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69950.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "54220",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4587 Aleve 0,7 мм",
+    "article": "54220",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph54220.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "65664",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4539 Aleve 0,6 мм",
+    "article": "65664",
+    "price": "6974.10",
+    "image": "https://viyar.ua/store/Items/photos/ph65664.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "65283",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4611 Aleve 0,6 мм",
+    "article": "65283",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph65283.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "45343",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4548 Aleve 0,6 мм",
+    "article": "45343",
+    "price": "6974.10",
+    "image": "https://viyar.ua/store/Items/photos/ph45343.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "58129",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0001 R 0,9 мм",
+    "article": "58129",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58129.jpg",
+    "thickness": "1",
+    "color": "Білий"
+  },
+  {
+    "id": "74341",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0211 Luna 0,7 мм",
+    "article": "74341",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74341.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "63219",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3328 Mika 0,6 мм",
+    "article": "63219",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph63219.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69884",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3376 Luna 0,6 мм",
+    "article": "69884",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69884.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "58125",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0761 R 0,9 мм",
+    "article": "58125",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58125.jpg",
+    "thickness": "1",
+    "color": "Сірий"
+  },
+  {
+    "id": "70525",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9215 LU 3050х1300х0,9мм",
+    "article": "70525",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70525.jpg",
+    "thickness": "0.9",
+    "color": "Червоний"
+  },
+  {
+    "id": "70536",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0648 LU 3050х1300х0,8мм",
+    "article": "70536",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70536.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70544",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0564 LU 3050х1300х0,8мм",
+    "article": "70544",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70544.jpg",
+    "thickness": "0.8",
+    "color": "Жовтий"
+  },
+  {
+    "id": "70558",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2206 LU 3050х1300х0,8мм",
+    "article": "70558",
+    "price": "2206.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70558.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70568",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3166 LU 3050х1300х0,8мм",
+    "article": "70568",
+    "price": "1618.32",
+    "image": "https://viyar.ua/store/Items/photos/ph70568.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70581",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4495 GH 3050х1300х0,6мм",
+    "article": "70581",
+    "price": "1583.04",
+    "image": "https://viyar.ua/store/Items/photos/ph70581.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70596",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2595 LU 3050х1300х0,8мм",
+    "article": "70596",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70596.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70606",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2574 LU 3050х1300х0,8мм",
+    "article": "70606",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70606.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70619",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0934 LU 3050х1300х0,8мм",
+    "article": "70619",
+    "price": "1801.92",
+    "image": "https://viyar.ua/store/Items/photos/ph70619.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70847",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1835 LU 3050х1300х0,8мм",
+    "article": "70847",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70847.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70859",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2608 COR 3050х1300х0,6мм",
+    "article": "70859",
+    "price": "1896.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70859.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70873",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2513 NKD 3050х1300х0,6мм",
+    "article": "70873",
+    "price": "1895.82",
+    "image": "https://viyar.ua/store/Items/photos/ph70873.jpg",
+    "thickness": "0.6",
+    "color": "Рожевий"
+  },
+  {
+    "id": "69849",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3430 Mika 4200х1300х0,6мм",
+    "article": "69849",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69849.jpg",
+    "thickness": "0.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "69861",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3330 Flatting 4200х1300х0,6мм",
+    "article": "69861",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69861.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69873",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3382 Luna 4200х1300х0,6мм",
+    "article": "69873",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69873.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69906",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3426 Flatting 4200х1300х0,6мм",
+    "article": "69906",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69906.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69932",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9232 Larix 4200х1300х0,7мм",
+    "article": "69932",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69932.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69981",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3420 Losa 4200х1300х0,6мм",
+    "article": "69981",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69981.jpg",
+    "thickness": "0.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "54236",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0737 R 0,9 мм",
+    "article": "54236",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54236.jpg",
+    "thickness": "1",
+    "color": "Бежевий"
+  },
+  {
+    "id": "45339",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3395 Urban 0,6 мм",
+    "article": "45339",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45339.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "74324",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3452 Ker 0,7 мм",
+    "article": "74324",
+    "price": "6538.26",
+    "image": "https://viyar.ua/store/Items/photos/ph74324.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "69876",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3410 Losa 0,6 мм",
+    "article": "69876",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69876.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "69903",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4575 Larix 0,6 мм",
+    "article": "69903",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69903.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "74342",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4516 Larix 0,7 мм",
+    "article": "74342",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74342.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "74332",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3427 Flatting 0,7 мм",
+    "article": "74332",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74332.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "58126",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 2628 R 0,9 мм",
+    "article": "58126",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58126.jpg",
+    "thickness": "1",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69984",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3413 Urban 0,6 мм",
+    "article": "69984",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph69984.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "70526",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9208 LU 3050х1300х0,9мм",
+    "article": "70526",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70526.jpg",
+    "thickness": "0.9",
+    "color": "Сірий"
+  },
+  {
+    "id": "70537",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0264 LU 3050х1300х0,8мм",
+    "article": "70537",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70537.jpg",
+    "thickness": "0.8",
+    "color": "Синій"
+  },
+  {
+    "id": "70548",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0576 LU 3050х1300х0,8мм",
+    "article": "70548",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70548.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70559",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2207 LU 3050х1300х0,8мм",
+    "article": "70559",
+    "price": "2206.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70559.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70569",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3283 S 3050х1300х0,8мм",
+    "article": "70569",
+    "price": "1678.08",
+    "image": "https://viyar.ua/store/Items/photos/ph70569.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70586",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1886 R 3050х1300х0,6мм",
+    "article": "70586",
+    "price": "1583.04",
+    "image": "https://viyar.ua/store/Items/photos/ph70586.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70597",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2527 LU 3050х1300х0,8мм",
+    "article": "70597",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70597.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70608",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2539 LU 3050х1300х0,8мм",
+    "article": "70608",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70608.jpg",
+    "thickness": "0.8",
+    "color": "Зелений"
+  },
+  {
+    "id": "70838",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0214 PXL 3050х1300х0,6мм",
+    "article": "70838",
+    "price": "2259.84",
+    "image": "https://viyar.ua/store/Items/photos/ph70838.jpg",
+    "thickness": "0.6",
+    "color": "Зелений"
+  },
+  {
+    "id": "70848",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1834 LU 3050х1300х0,8мм",
+    "article": "70848",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70848.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70863",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4419 LU 3050х1300х0,8мм",
+    "article": "70863",
+    "price": "1840.32",
+    "image": "https://viyar.ua/store/Items/photos/ph70863.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70874",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0660 R 3050х1300х0,6мм",
+    "article": "70874",
+    "price": "1546.80",
+    "image": "https://viyar.ua/store/Items/photos/ph70874.jpg",
+    "thickness": "0.6",
+    "color": "Зелений"
+  },
+  {
+    "id": "69850",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3375 Luna 4200х1300х0,6мм",
+    "article": "69850",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69850.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69862",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3236 Top Face 4200х1300х0,6мм",
+    "article": "69862",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69862.jpg",
+    "thickness": "0.6",
+    "color": "Бежевий"
+  },
+  {
+    "id": "69874",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3418 Urban 4200х1300х0,6мм",
+    "article": "69874",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69874.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69913",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4526 Aleve 4200х1300х0,6мм",
+    "article": "69913",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69913.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69933",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9233 Larix 4200х1300х0,7мм",
+    "article": "69933",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69933.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "69985",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4490 Flatting 4200х1300х0,7мм",
+    "article": "69985",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69985.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "54238",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0758 R 0,9 мм",
+    "article": "54238",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54238.jpg",
+    "thickness": "1",
+    "color": "Коричневий"
+  },
+  {
+    "id": "45340",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3397 Urban 0,6 мм",
+    "article": "45340",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45340.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74343",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4512 Larix 0,7 мм",
+    "article": "74343",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74343.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "74329",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3331 Luna 0,7 мм",
+    "article": "74329",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74329.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "65282",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4604 Aleve 0,6 мм",
+    "article": "65282",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph65282.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "74322",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3447 Ker 0,7 мм",
+    "article": "74322",
+    "price": "6538.26",
+    "image": "https://viyar.ua/store/Items/photos/ph74322.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "58123",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0616 R 0,9 мм",
+    "article": "58123",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58123.jpg",
+    "thickness": "1",
+    "color": "Бежевий"
+  },
+  {
+    "id": "58130",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0249 R 0,9 мм",
+    "article": "58130",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph58130.jpg",
+    "thickness": "1",
+    "color": "Білий"
+  },
+  {
+    "id": "45333",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2620 Tex 4200х1300х0,6мм",
+    "article": "45333",
+    "price": "3347.10",
+    "image": "https://viyar.ua/store/Items/photos/ph45333.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70527",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9201 LU 3050х1300х0,9мм",
+    "article": "70527",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70527.jpg",
+    "thickness": "0.9",
+    "color": "Фіолетовий"
+  },
+  {
+    "id": "70538",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0619 LU 3050х1300х0,8мм",
+    "article": "70538",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70538.jpg",
+    "thickness": "0.8",
+    "color": "Синій"
+  },
+  {
+    "id": "70549",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0682 LU 3050х1300х0,8мм",
+    "article": "70549",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70549.jpg",
+    "thickness": "0.8",
+    "color": "Помаранчевий"
+  },
+  {
+    "id": "70560",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2209 LU 3050х1300х0,8мм",
+    "article": "70560",
+    "price": "2206.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70560.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "70571",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0690 R 3050х1300х0,6мм",
+    "article": "70571",
+    "price": "1553.16",
+    "image": "https://viyar.ua/store/Items/photos/ph70571.jpg",
+    "thickness": "0.6",
+    "color": "Зелений"
+  },
+  {
+    "id": "70587",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1834 R 3050х1300х0,6мм",
+    "article": "70587",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70587.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70598",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2569 LU 3050х1300х0,8мм",
+    "article": "70598",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70598.jpg",
+    "thickness": "0.8",
+    "color": "Рожевий"
+  },
+  {
+    "id": "70609",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3175 LU 3050х1300х0,8мм",
+    "article": "70609",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70609.jpg",
+    "thickness": "0.8",
+    "color": "Жовтий"
+  },
+  {
+    "id": "70839",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0561 PXL 3050х1300х0,6мм",
+    "article": "70839",
+    "price": "1717.56",
+    "image": "https://viyar.ua/store/Items/photos/ph70839.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "70850",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1858 LU 3050х1300х0,8мм",
+    "article": "70850",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70850.jpg",
+    "thickness": "0.8",
+    "color": "Зелений"
+  },
+  {
+    "id": "70864",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4416 LU 3050х1300х0,8мм",
+    "article": "70864",
+    "price": "1840.32",
+    "image": "https://viyar.ua/store/Items/photos/ph70864.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "71083",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0571 PXL 3050х1300х0,6мм",
+    "article": "71083",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph71083.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "69852",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3380 Mika 4200х1300х0,6мм",
+    "article": "69852",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69852.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69863",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3191 Erre 4200х1300х0,7мм",
+    "article": "69863",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69863.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69878",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3318 Tex 4200х1300х0,6мм",
+    "article": "69878",
+    "price": "3347.10",
+    "image": "https://viyar.ua/store/Items/photos/ph69878.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69914",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4588 Aleve 4200х1300х0,6мм",
+    "article": "69914",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69914.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69934",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9235 Larix 4200х1300х0,6мм",
+    "article": "69934",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69934.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "69991",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9239 Larix 4200х1300х0,6мм",
+    "article": "69991",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69991.jpg",
+    "thickness": "0.6",
+    "color": "Червоний"
+  },
+  {
+    "id": "54239",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 0759 R 0,9 мм",
+    "article": "54239",
+    "price": "5288.16",
+    "image": "https://viyar.ua/store/Items/photos/ph54239.jpg",
+    "thickness": "1",
+    "color": "Червоний"
+  },
+  {
+    "id": "45345",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 4584 Aleve 0,6 мм",
+    "article": "45345",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph45345.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "54215",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3327 Mika 0,6 мм",
+    "article": "54215",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph54215.jpg",
+    "thickness": "0.7",
+    "color": "Бежевий"
+  },
+  {
+    "id": "74321",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3394 Flatting 0,7 мм",
+    "article": "74321",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74321.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "65673",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3431 Losa 0,6 мм",
+    "article": "65673",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph65673.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74335",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3279 Luna 0,7 мм",
+    "article": "74335",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74335.jpg",
+    "thickness": "0.7",
+    "color": "Чорний"
+  },
+  {
+    "id": "74327",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3354 Luna 0,7 мм",
+    "article": "74327",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74327.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "74336",
+    "vendor": "Arpa",
+    "name": "Пластик Arpa 3276 Luna 0,7 мм",
+    "article": "74336",
+    "price": "6102.30",
+    "image": "https://viyar.ua/store/Items/photos/ph74336.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "45338",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3369 Luna 4200х1300х0,6мм",
+    "article": "45338",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph45338.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70529",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9206 LU 3050х1300х0,9мм",
+    "article": "70529",
+    "price": "2100.78",
+    "image": "https://viyar.ua/store/Items/photos/ph70529.jpg",
+    "thickness": "0.9",
+    "color": "Білий"
+  },
+  {
+    "id": "70539",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0571 LU 3050х1300х0,8мм",
+    "article": "70539",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70539.jpg",
+    "thickness": "0.8",
+    "color": "Червоний"
+  },
+  {
+    "id": "70550",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0200 Lucida 3050х1300х0,8мм",
+    "article": "70550",
+    "price": "1969.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70550.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70561",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2208 LU 3050х1300х0,8мм",
+    "article": "70561",
+    "price": "2206.50",
+    "image": "https://viyar.ua/store/Items/photos/ph70561.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70572",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 0682 R 3050х1300х0,6мм",
+    "article": "70572",
+    "price": "1553.16",
+    "image": "https://viyar.ua/store/Items/photos/ph70572.jpg",
+    "thickness": "0.6",
+    "color": "Помаранчевий"
+  },
+  {
+    "id": "70588",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4260 R 3050х1300х0,6мм",
+    "article": "70588",
+    "price": "1583.04",
+    "image": "https://viyar.ua/store/Items/photos/ph70588.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "70599",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2593 LU 3050х1300х0,8мм",
+    "article": "70599",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70599.jpg",
+    "thickness": "0.8",
+    "color": "Жовтий"
+  },
+  {
+    "id": "70611",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2632 LU 3050х1300х0,8мм",
+    "article": "70611",
+    "price": "2158.44",
+    "image": "https://viyar.ua/store/Items/photos/ph70611.jpg",
+    "thickness": "0.8",
+    "color": "Синій"
+  },
+  {
+    "id": "70841",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 1861 LU 3050х1300х0,8мм",
+    "article": "70841",
+    "price": "2007.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70841.jpg",
+    "thickness": "0.8",
+    "color": "Бежевий"
+  },
+  {
+    "id": "70852",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 2608 PXL 3050х1300х0,6мм",
+    "article": "70852",
+    "price": "1896.90",
+    "image": "https://viyar.ua/store/Items/photos/ph70852.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "70865",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4416 R 3050х1300х0,6мм",
+    "article": "70865",
+    "price": "1840.32",
+    "image": "https://viyar.ua/store/Items/photos/ph70865.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "50565",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3340 Міка 4200х1300х0,6мм",
+    "article": "50565",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph50565.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69855",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3297 Lucida 4200х1300х0,8мм",
+    "article": "69855",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69855.jpg",
+    "thickness": "0.8",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69864",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 4602 Aleve 4200х1300х0,6мм",
+    "article": "69864",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69864.jpg",
+    "thickness": "0.6",
+    "color": "Сірий"
+  },
+  {
+    "id": "69879",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3393 Luna 4200х1300х0,6мм",
+    "article": "69879",
+    "price": "2415.18",
+    "image": "https://viyar.ua/store/Items/photos/ph69879.jpg",
+    "thickness": "0.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69924",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 3237 Erre 4200х1300х0,7мм",
+    "article": "69924",
+    "price": "2179.98",
+    "image": "https://viyar.ua/store/Items/photos/ph69924.jpg",
+    "thickness": "0.7",
+    "color": "Сірий"
+  },
+  {
+    "id": "69935",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9237 Larix 4200х1300х0,7мм",
+    "article": "69935",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69935.jpg",
+    "thickness": "0.7",
+    "color": "Коричневий"
+  },
+  {
+    "id": "69992",
+    "vendor": "Arpa",
+    "name": "Пластик ARPA 9243 Larix 4200х1300х0,6мм",
+    "article": "69992",
+    "price": "2951.70",
+    "image": "https://viyar.ua/store/Items/photos/ph69992.jpg",
+    "thickness": "0.6",
+    "color": "Білий"
+  },
+  {
+    "id": "56812",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0749 0,9 мм",
+    "article": "56812",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56812.jpg",
+    "thickness": "0.9",
+    "color": "Коричневий"
+  },
+  {
+    "id": "56808",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0717 0,9 мм",
+    "article": "56808",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56808.jpg",
+    "thickness": "0.9",
+    "color": "Бежевий"
+  },
+  {
+    "id": "58118",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 2629 0,9 мм",
+    "article": "58118",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58118.jpg",
+    "thickness": "0.9",
+    "color": "Коричневий"
+  },
+  {
+    "id": "56810",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0719 0,9 мм",
+    "article": "56810",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56810.jpg",
+    "thickness": "0.9",
+    "color": "Бежевий"
+  },
+  {
+    "id": "58119",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 2638 0,9 мм",
+    "article": "58119",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58119.jpg",
+    "thickness": "0.9",
+    "color": "Сірий"
+  },
+  {
+    "id": "58121",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0030 0,9 мм",
+    "article": "58121",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph58121.jpg",
+    "thickness": "0.9",
+    "color": "Білий"
+  },
+  {
+    "id": "56811",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0720 0,9 мм",
+    "article": "56811",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56811.jpg",
+    "thickness": "0.9",
+    "color": "Чорний"
+  },
+  {
+    "id": "58114",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0748 0,9 мм",
+    "article": "58114",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58114.jpg",
+    "thickness": "0.9",
+    "color": "Бежевий"
+  },
+  {
+    "id": "58115",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0750 0,9 мм",
+    "article": "58115",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58115.jpg",
+    "thickness": "0.9",
+    "color": "Зелений"
+  },
+  {
+    "id": "56814",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0754 0,9 мм",
+    "article": "56814",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56814.jpg",
+    "thickness": "0.9",
+    "color": "Синій"
+  },
+  {
+    "id": "58113",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0725 0,9 мм",
+    "article": "58113",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58113.jpg",
+    "thickness": "0.9",
+    "color": "Сірий"
+  },
+  {
+    "id": "56809",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0718 0,9 мм",
+    "article": "56809",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56809.jpg",
+    "thickness": "0.9",
+    "color": "Сірий"
+  },
+  {
+    "id": "56813",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0751 0,9 мм",
+    "article": "56813",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56813.jpg",
+    "thickness": "0.9",
+    "color": "Червоний"
+  },
+  {
+    "id": "58117",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 2628 0,9 мм",
+    "article": "58117",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58117.jpg",
+    "thickness": "0.9",
+    "color": "Бежевий"
+  },
+  {
+    "id": "56815",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 2630 0,9 мм",
+    "article": "56815",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56815.jpg",
+    "thickness": "0.9",
+    "color": "Чорний"
+  },
+  {
+    "id": "56816",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0724 0,9 мм",
+    "article": "56816",
+    "price": "14936.76",
+    "image": "https://viyar.ua/store/Items/photos/ph56816.jpg",
+    "thickness": "0.9",
+    "color": "Сірий"
+  },
+  {
+    "id": "58116",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0752 0,9 мм",
+    "article": "58116",
+    "price": "15419.70",
+    "image": "https://viyar.ua/store/Items/photos/ph58116.jpg",
+    "thickness": "0.9",
+    "color": "Сірий"
+  },
+  {
+    "id": "56807",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0032 0,9 мм",
+    "article": "56807",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph56807.jpg",
+    "thickness": "0.9",
+    "color": "Білий"
+  },
+  {
+    "id": "58120",
+    "vendor": "Arpa",
+    "name": "Пластик Fenix NTM 0029 0,9 мм",
+    "article": "58120",
+    "price": "14280.06",
+    "image": "https://viyar.ua/store/Items/photos/ph58120.jpg",
+    "thickness": "0.9",
+    "color": "Білий"
+  },
+  {
+    "id": "178449",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 401/200 SRM Copper Crush SRM",
+    "article": "178449",
+    "price": "27503.58",
+    "image": "https://viyar.ua/store/Items/photos/ph178449.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "178457",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 473/636 Alu Mirror Polished Lava Tea",
+    "article": "178457",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph178457.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "178471",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 690/340 SRM Copper Diamond Antique SRM",
+    "article": "178471",
+    "price": "27503.58",
+    "image": "https://viyar.ua/store/Items/photos/ph178471.jpg",
+    "thickness": "1.3",
+    "color": "Бронза"
+  },
+  {
+    "id": "188436",
+    "vendor": "Arpa",
+    "name": "HPL Homapal M6426 Plex Brass",
+    "article": "188436",
+    "price": "18578.58",
+    "image": "https://viyar.ua/store/Items/photos/ph188436.jpg",
+    "thickness": "1",
+    "color": "Золото"
+  },
+  {
+    "id": "178450",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 446/920 Alu Riffel Horizontal Steeltone",
+    "article": "178450",
+    "price": "19489.32",
+    "image": "https://viyar.ua/store/Items/photos/ph178450.jpg",
+    "thickness": "0.9",
+    "color": "Срібло"
+  },
+  {
+    "id": "178458",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 474/636 Alu Mirror Polished Lava Smokey Grey",
+    "article": "178458",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph178458.jpg",
+    "thickness": "1.3",
+    "color": "Чорний"
+  },
+  {
+    "id": "178472",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 695D SRM Copper Stratos Diagonal SRM",
+    "article": "178472",
+    "price": "27503.58",
+    "image": "https://viyar.ua/store/Items/photos/ph178472.jpg",
+    "thickness": "1.3",
+    "color": "Червоний"
+  },
+  {
+    "id": "189294",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 441 Alu Brushed Natural (2029 Sat)",
+    "article": "189294",
+    "price": "10746.42",
+    "image": "https://viyar.ua/store/Items/photos/ph189294.jpg",
+    "thickness": "1",
+    "color": "Срібло"
+  },
+  {
+    "id": "178451",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 447 SRM Alu Brushed Coppertone SRM",
+    "article": "178451",
+    "price": "15664.32",
+    "image": "https://viyar.ua/store/Items/photos/ph178451.jpg",
+    "thickness": "1",
+    "color": "Мідь"
+  },
+  {
+    "id": "178465",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 475/636 Alu Plain Polished Lava Gunmetal Matt",
+    "article": "178465",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph178465.jpg",
+    "thickness": "1.3",
+    "color": "Чорний"
+  },
+  {
+    "id": "185516",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 641/000 Stainless Steel Brushed",
+    "article": "185516",
+    "price": "22403.58",
+    "image": "https://viyar.ua/store/Items/photos/ph185516.jpg",
+    "thickness": "0.8",
+    "color": "Сірий"
+  },
+  {
+    "id": "189299",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 794 Alu Brushed Goldtone Special (2030 Sat)",
+    "article": "189299",
+    "price": "9107.16",
+    "image": "https://viyar.ua/store/Items/photos/ph189299.jpg",
+    "thickness": "1",
+    "color": "Золото"
+  },
+  {
+    "id": "178452",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 451 SRM Alu Brushed Bronzetone SRM",
+    "article": "178452",
+    "price": "15664.32",
+    "image": "https://viyar.ua/store/Items/photos/ph178452.jpg",
+    "thickness": "1",
+    "color": "Бронза"
+  },
+  {
+    "id": "178466",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 477/124 Alu Mirror Polished Cascade Coppertone",
+    "article": "178466",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph178466.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "188431",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 423/980 Alu Plex Stainless Steeltone",
+    "article": "188431",
+    "price": "18578.58",
+    "image": "https://viyar.ua/store/Items/photos/ph188431.jpg",
+    "thickness": "1",
+    "color": "Срібло"
+  },
+  {
+    "id": "162044",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 471 Alu Mirror Polished Goldtone (2037 LU)",
+    "article": "162044",
+    "price": "20764.32",
+    "image": "https://viyar.ua/store/Items/photos/ph162044.jpg",
+    "thickness": "1",
+    "color": "Золото"
+  },
+  {
+    "id": "178453",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 454 SRM Alu Brushed Rosegold SRM",
+    "article": "178453",
+    "price": "15664.32",
+    "image": "https://viyar.ua/store/Items/photos/ph178453.jpg",
+    "thickness": "1",
+    "color": "Рожевий"
+  },
+  {
+    "id": "178467",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 490 SRM Copper Antique SRM",
+    "article": "178467",
+    "price": "27503.58",
+    "image": "https://viyar.ua/store/Items/photos/ph178467.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "188432",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 448 Alu Brushed Black (2034 Sat)",
+    "article": "188432",
+    "price": "10746.42",
+    "image": "https://viyar.ua/store/Items/photos/ph188432.jpg",
+    "thickness": "1",
+    "color": "Чорний"
+  },
+  {
+    "id": "162046",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 471/124 Alu Mirror Polished Cascade Goldtone",
+    "article": "162046",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph162046.jpg",
+    "thickness": "1.3",
+    "color": "Золото"
+  },
+  {
+    "id": "178454",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 470/636 Alu Mirror Polished Lava Natural",
+    "article": "178454",
+    "price": "17905.74",
+    "image": "https://viyar.ua/store/Items/photos/ph178454.jpg",
+    "thickness": "1.3",
+    "color": "Срібло"
+  },
+  {
+    "id": "178468",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 500/340 SRM Brass Diamond Antique SRM (vertical joint at abt. 610 mm)",
+    "article": "178468",
+    "price": "28596.42",
+    "image": "https://viyar.ua/store/Items/photos/ph178468.jpg",
+    "thickness": "1.3",
+    "color": "Золото"
+  },
+  {
+    "id": "188433",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 470 Alu Mirror Polished Superior Natural (2035 LU)",
+    "article": "188433",
+    "price": "20764.32",
+    "image": "https://viyar.ua/store/Items/photos/ph188433.jpg",
+    "thickness": "1",
+    "color": "Срібло"
+  },
+  {
+    "id": "162047",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 477/636 Alu Mirror Polished Lava Coppertone",
+    "article": "162047",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph162047.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "178455",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 471/636 Alu Mirror Polished Lava Goldtone",
+    "article": "178455",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph178455.jpg",
+    "thickness": "1.3",
+    "color": "Золото"
+  },
+  {
+    "id": "178469",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 500/502 Brass Moon (vertical joint at abt. 610 mm)",
+    "article": "178469",
+    "price": "18361.26",
+    "image": "https://viyar.ua/store/Items/photos/ph178469.jpg",
+    "thickness": "1.3",
+    "color": "Золото"
+  },
+  {
+    "id": "188434",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 473 Alu Mirror Polished Tea (2036 LU)",
+    "article": "188434",
+    "price": "20764.32",
+    "image": "https://viyar.ua/store/Items/photos/ph188434.jpg",
+    "thickness": "1",
+    "color": "Мідь"
+  },
+  {
+    "id": "165429",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 636/502 Copper Moon Dark",
+    "article": "165429",
+    "price": "17632.62",
+    "image": "https://viyar.ua/store/Items/photos/ph165429.jpg",
+    "thickness": "1.3",
+    "color": "Бронза"
+  },
+  {
+    "id": "178456",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 473/124 Alu Mirror Polished Cascade Tea",
+    "article": "178456",
+    "price": "17924.10",
+    "image": "https://viyar.ua/store/Items/photos/ph178456.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "178470",
+    "vendor": "Arpa",
+    "name": "HPL Homapal 635/502 Copper Moon Turquoise",
+    "article": "178470",
+    "price": "17632.62",
+    "image": "https://viyar.ua/store/Items/photos/ph178470.jpg",
+    "thickness": "1.3",
+    "color": "Мідь"
+  },
+  {
+    "id": "188435",
+    "vendor": "Arpa",
+    "name": "HPL Homapal M6424 Plex Copper",
+    "article": "188435",
+    "price": "18578.58",
+    "image": "https://viyar.ua/store/Items/photos/ph188435.jpg",
+    "thickness": "1",
+    "color": "Мідь"
+  }
+];

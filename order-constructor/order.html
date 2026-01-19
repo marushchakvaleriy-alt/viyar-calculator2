@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нове замовлення</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar h1 {
+            font-size: 20px;
+            color: #1e3c72;
+        }
+
+        .nav-links a {
+            color: #1e3c72;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: #e8f0fe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px 50px;
+        }
+
+        .order-header {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .order-header h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .order-number {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .order-number label {
+            font-weight: 600;
+        }
+
+        .order-number input {
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            width: 150px;
+            font-family: inherit;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #1e3c72;
+            color: white;
+            padding: 18px 25px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            background: #2a5298;
+        }
+
+        .section-header .toggle {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .section.collapsed .section-header .toggle {
+            transform: rotate(-90deg);
+        }
+
+        .section.collapsed .section-body {
+            display: none;
+        }
+
+        .section-body {
+            padding: 25px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .field-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .field-label .hint {
+            font-weight: 400;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        .field-input.catalog-input {
+            background: #f8fafc;
+        }
+
+        .toggle-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-btn {
+            display: flex;
+            gap: 5px;
+        }
+
+        .toggle-btn button {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .toggle-btn button:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .toggle-btn button:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .toggle-btn button.active-plus {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .toggle-btn button.active-minus {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .subsection {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .subsection-title {
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        textarea.field-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .actions-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2a5298;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #1e3c72;
+            color: #1e3c72;
+        }
+
+        .btn-outline:hover {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .autocomplete-wrapper {
+            position: relative;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+
+        .autocomplete-list.active {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .autocomplete-item:hover {
+            background: #f0f9ff;
+        }
+
+        .autocomplete-item .vendor {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .autocomplete-item .name {
+            font-weight: 600;
+        }
+
+        .autocomplete-item .article {
+            font-size: 12px;
+            color: #1e40af;
+        }
+
+        .excel-row {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 4px 0;
+            margin-bottom: 0px !important;
+            background: white;
+        }
+
+        .excel-row:hover {
+            background-color: #f8fafc;
+        }
+
+        .excel-row .field-group {
+            margin-bottom: 0 !important;
+            padding-right: 10px;
+            border-right: 1px solid #f1f5f9;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .excel-row .field-group:last-child {
+            border-right: none;
+        }
+
+        .excel-row label {
+            margin-bottom: 0 !important;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .excel-subheader {
+            background: #e2e8f0;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            margin-top: 10px;
+        }
+
+        /* Compact Inputs for Excel Look */
+        .excel-row input,
+        .excel-row select {
+            border: none;
+            background: transparent;
+            padding: 5px;
+            font-size: 14px;
+            height: auto;
+        }
+
+        .excel-row input:focus,
+        .excel-row select:focus {
+            background: #fff;
+            box-shadow: inset 0 0 0 2px #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>📝 Нове замовлення</h1>
+        <div class="nav-links">
+            <a href="index.html">🏠 Головна</a>
+            <a href="catalogs.html">📚 Довідники</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Номер замовлення -->
+        <div class="order-header">
+            <h2>Бланк замовлення</h2>
+            <div class="order-number">
+                <label>Номер замовлення:</label>
+                <input type="text" id="orderNumber" placeholder="№">
+                <span style="color:#6b7280">Дата: <span id="orderDate"></span></span>
+            </div>
+        </div>
+
+        <!-- DYNAMIC FORM CONTAINER -->
+        <div id="form-container"></div>
+
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- Catalogs -->
+    <!-- Dynamic Catalog Data (User Defined) -->
+    <script src="data/catalogs/board_materials.js"></script>
+    <script src="data/catalogs/furniture_fittings.js"></script>
+    <script src="data/catalogs/appliances_plumbing.js"></script>
+    <script src="data/catalogs/edges_plastics.js"></script>
+    <script src="data/catalogs/countertops_panels.js"></script>
+    <script src="data/catalogs/lighting.js"></script>
+    <script src="data/catalogs/sliding_systems.js"></script>
+    <script src="data/catalogs/services_production.js"></script>
+    <script src="data/catalogs/tools_consumables.js"></script>
+
+    <!-- Blum Hardware (Categorized) -->
+    <script src="data/catalogs/blum_aventos.js"></script>
+    <script src="data/catalogs/blum_tandembox.js"></script>
+    <script src="data/catalogs/blum_legrabox.js"></script>
+    <script src="data/catalogs/blum_movento.js"></script>
+    <script src="data/catalogs/blum_hinges.js"></script>
+    <script src="data/catalogs/blum_servo.js"></script>
+    <script src="data/catalogs/blum_tipon.js"></script>
+    <script src="data/catalogs/blum_other.js"></script>
+
+    <!-- <script src="data/catalogs/glass_mirror.js"></script> -->
+    <!-- <script src="data/catalogs/flooring.js"></script> -->
+
+    <script>
+        // Catalog Mapping (Broad Categories)
+        const catalogs = {
+            // Materials
+            ldsp: () => window.Catalog_BoardMaterials || [],
+            edges: () => window.Catalog_EdgesPlastics || [],
+            postforming: () => window.Catalog_CountertopsPanels || [],
+
+            // Hardware (All mapped to the big Furniture Fittings catalog)
+            hinges: () => window.Catalog_FurnitureFittings || [],
+            handles: () => window.Catalog_FurnitureFittings || [],
+            drawer_systems: () => window.Catalog_FurnitureFittings || [],
+            lift_systems: () => window.Catalog_FurnitureFittings || [],
+            cargo: () => window.Catalog_FurnitureFittings || [],
+            dryers: () => window.Catalog_FurnitureFittings || [],
+            plinth: () => window.Catalog_FurnitureFittings || [],
+
+            // Appliances
+            appliances: () => window.Catalog_AppliancesPlumbing || [],
+            sinks: () => window.Catalog_AppliancesPlumbing || [],
+            mixers: () => window.Catalog_AppliancesPlumbing || [],
+
+            // Lighting
+            lighting: () => window.Catalog_Lighting || [],
+
+            // Sliding Systems
+            sliding: () => window.Catalog_SlidingSystems || [],
+
+            // Blum Hardware (Categorized)
+            blum_aventos: () => window.Catalog_BlumAventos || [],
+            blum_tandembox: () => window.Catalog_BlumTandembox || [],
+            blum_legrabox: () => window.Catalog_BlumLegrabox || [],
+            blum_movento: () => window.Catalog_BlumMovento || [],
+            blum_hinges: () => window.Catalog_BlumHinges || [],
+            blum_servo: () => window.Catalog_BlumServo || [],
+            blum_tipon: () => window.Catalog_BlumTipOn || [],
+            blum_other: () => window.Catalog_BlumOther || [],
+
+            // Fallback
+            default: () => []
+        };
+
+        function getCatalog(id) {
+            if (catalogs[id]) {
+                return catalogs[id]();
+            }
+            console.warn(`Catalog ID "${id}" not found, returning empty list.`);
+            return [];
+        }
+    </script>
+
+    <!-- Engine & Config -->
+    <script src="data/config_form.js"></script>
+    <script src="core/engine.js"></script>
+
+    <script>
+        // Init Order Date
+        document.getElementById('orderDate').innerText = new Date().toLocaleDateString('uk-UA');
+
+        // Autocomplete Logic (Global Helper)
+        function setupAutocomplete(inputId, listId, data) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+
+            if (!input || !list) return; // Guard
+
+            // Filter Element Logic (Vendor Select)
+            const filterId = input.dataset.filterBy;
+            let filterEl = null;
+            if (filterId) {
+                filterEl = document.getElementById(filterId);
+                if (filterEl) {
+                    filterEl.addEventListener('change', () => {
+                        input.value = ''; // Clear input on vendor change
+                        // Optionally trigger list update
+                        const items = filterData('');
+                        renderList(items);
+                    });
+                }
+            }
+
+            function filterData(query) {
+                let sourceData = data || [];
+
+                // 1. Filter by Vendor (if selected)
+                if (filterEl && filterEl.value) {
+                    const filterVal = filterEl.value.toLowerCase();
+                    sourceData = sourceData.filter(item =>
+                        item.vendor && item.vendor.toLowerCase().includes(filterVal)
+                    );
+                }
+
+                // 2. Filter by Query
+                if (!query) {
+                    // If vendor is selected, return all items (limited)
+                    // If no vendor and no query, return empty
+                    return (filterEl && filterEl.value) ? sourceData.slice(0, 50) : [];
+                }
+
+                const lowerQuery = query.toLowerCase();
+                return sourceData.filter(item =>
+                    (item.name && item.name.toLowerCase().includes(lowerQuery)) ||
+                    (item.article && item.article.toLowerCase().includes(lowerQuery))
+                ).slice(0, 50); // Limit results
+            }
+
+            function renderList(items) {
+                list.innerHTML = '';
+                if (items.length === 0) {
+                    list.classList.remove('active');
+                    return;
+                }
+
+                items.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    div.innerHTML = `
+                        <div class="vendor">${item.vendor || 'Інший'}</div>
+                        <div class="name">${item.name}</div>
+                        <div class="article">${item.article || ''}</div>
+                    `;
+                    div.onclick = () => {
+                        input.value = `${item.vendor ? item.vendor + ' ' : ''}${item.name} ${item.article ? '(' + item.article + ')' : ''}`;
+                        if (item.thickness) input.value += ` ${item.thickness}мм`;
+                        list.classList.remove('active');
+                    };
+                    list.appendChild(div);
+                });
+                list.classList.add('active');
+            }
+
+            function handleInput() {
+                const items = filterData(input.value);
+                renderList(items);
+            }
+
+            input.addEventListener('input', handleInput);
+            input.addEventListener('focus', handleInput);
+
+            document.addEventListener('click', (e) => {
+                if (wrapper && !wrapper.contains(e.target)) {
+                    list.classList.remove('active');
+                }
+            });
+
+            const wrapper = input.parentElement;
+        }
+
+        // Initialize Engine
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.Engine && window.FormConfig) {
+                window.Engine.init(window.FormConfig, 'form-container');
+
+                // Helper to setup all autocompletes after render
+                const inputs = document.querySelectorAll('.catalog-input');
+                inputs.forEach(input => {
+                    const catalogKey = input.dataset.catalog;
+                    const varName = 'Catalog_' + window.Engine.capitalize(catalogKey);
+
+                    if (window[varName]) {
+                        setupAutocomplete(input.id, input.id + '_list', window[varName]);
+                    }
+                });
+            } else {
+                console.error('Engine or Config not loaded');
+            }
+
+            // Load Draft logic (needs to be updated for dynamic form??)
+            // For now, let's just restore the basic load functionality adapted to dynamic fields
+            loadDraft();
+        });
+
+        // --- OLD FUNCTIONS ADAPTED ---
+
+        function toggleSection(id) {
+            // Engine handles this natively now in createSection, but keeping for compatibility if needed
+            const section = document.getElementById(id);
+            if (section) section.classList.toggle('collapsed');
+        }
+
+        // --- DATA SAVING (Drafts) ---
+        // We need to collect data from ALL inputs generated by Engine
+        function collectFormData() {
+            const data = {};
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.id) {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        data[input.id] = input.checked;
+                    } else if (input.id.includes('_softclose')) { // Special handling for our custom toggles
+                        const btnGroup = document.getElementById(input.id); // Wait, button group has the ID
+                        // Actually our Engine assigns ID to the container div of the toggle
+                        const toggleDiv = document.getElementById(input.id);
+                        if (toggleDiv) data[input.id] = toggleDiv.dataset.value === 'true';
+                    } else {
+                        data[input.id] = input.value;
+                    }
+                }
+                // Also check toggle divs manually since they are not inputs
+                if (input.classList.contains('toggle-btn')) { // Wait, Engine implementation detail
+                    data[input.id] = input.dataset.value === 'true';
+                }
+            });
+
+            // Specific fix for our custom toggles
+            const toggles = document.querySelectorAll('.toggle-btn');
+            toggles.forEach(t => {
+                data[t.id] = t.dataset.value === 'true';
+            });
+
+            return data;
+        }
+
+        function saveDraft() {
+            const data = collectFormData();
+            // Basic check if empty
+            if (!data.orderNumber && Object.keys(data).length < 5) return;
+
+            localStorage.setItem('order_draft', JSON.stringify(data));
+            showToast('Чернетку збережено');
+        }
+
+        function loadDraft() {
+            const saved = localStorage.getItem('order_draft');
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.keys(data).forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el) {
+                        if (el.tagName === 'DIV' && el.classList.contains('toggle-btn')) {
+                            // It's a toggle
+                            window.Engine.setToggle(key, data[key]);
+                        } else if (el.type === 'checkbox') {
+                            el.checked = data[key];
+                        } else {
+                            el.value = data[key];
+                        }
+                    }
+                });
+            }
+        }
+
+        // Auto-save
+        setInterval(saveDraft, 30000);
+
+        // --- EXPORT TO EXCEL ---
+        function exportToExcel() {
+            const data = collectFormData();
+            let csvContent = "\uFEFF"; // BOM
+            csvContent += "Поле;Значення\n";
+
+            for (const [key, value] of Object.entries(data)) {
+                // Try to find label
+                // This is harder with dynamic form, but we can try looking for label element
+                // Or just use ID for now
+                csvContent += `${key};${value}\n`;
+            }
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `order_${data.orderNumber || 'draft'}.csv`;
+            link.click();
+        }
+
+        // --- PRINT ---
+        function printOrder() {
+            window.print();
+        }
+
+        // Toast
+        function showToast(msg) {
+            // Implement simple toast
+            const div = document.createElement('div');
+            div.textContent = msg;
+            div.style.position = 'fixed';
+            div.style.bottom = '20px';
+            div.style.right = '20px';
+            div.style.background = '#333';
+            div.style.color = 'white';
+            div.style.padding = '10px 20px';
+            div.style.borderRadius = '5px';
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 2000);
+        }
+
+    </script>
+
+    <!-- КНОПКИ ДІЙ -->
+    <div class="actions-bar">
+        <div>
+            <button class="btn btn-secondary" onclick="clearForm()">🗑️ Очистити</button>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-outline" onclick="saveLocal()">💾 Зберегти чернетку</button>
+            <button class="btn btn-primary" onclick="exportPDF()">📄 PDF</button>
+            <button class="btn btn-primary" onclick="exportExcel()">📊 Excel</button>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Друк</button>
+            <button class="btn btn-success" onclick="saveOrder()">✅ Зберегти замовлення</button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Довідники -->
+    <script src="data/catalogs/ldsp.js"></script>
+    <script src="data/catalogs/edges.js"></script>
+    <script src="data/catalogs/hinges.js"></script>
+    <script src="data/catalogs/handles.js"></script>
+    <script src="data/catalogs/countertops.js"></script>
+    <script src="data/catalogs/drawer_systems.js"></script>
+    <script src="data/catalogs/lift_systems.js"></script>
+    <script src="data/catalogs/cargo.js"></script>
+    <script src="data/catalogs/dryers.js"></script>
+
+    <!-- jsPDF для експорту PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <script>
+        // Налаштування довідників (moved to line 476)
+
+        const toggleStates = {};
+
+        // Ініціалізація
+        document.addEventListener('DOMContentLoaded', () => {
+            // Встановити дату
+            document.getElementById('orderDate').textContent = new Date().toLocaleDateString('uk');
+
+            // Ініціалізувати автокомпліт
+            document.querySelectorAll('.catalog-input').forEach(input => {
+                setupAutocomplete(input);
+            });
+
+            // Завантажити чернетку якщо є
+            loadLocal();
+
+            // Автозбереження кожні 30 секунд
+            const settings = JSON.parse(localStorage.getItem('order_settings') || '{}');
+            const autosaveInterval = (settings.autosaveInterval || 30) * 1000;
+            if (autosaveInterval > 0) {
+                setInterval(() => {
+                    const data = collectFormData();
+                    if (data.orderNumber || Object.values(data).some(v => v && v !== 'Білий')) {
+                        localStorage.setItem('order_draft', JSON.stringify(data));
+                        console.log('Автозбереження:', new Date().toLocaleTimeString());
+                    }
+                }, autosaveInterval);
+            }
+        });
+
+        function setupAutocomplete(input) {
+            const listId = input.id + '_list';
+            const list = document.getElementById(listId);
+            const catalogName = input.dataset.catalog;
+
+            input.addEventListener('focus', () => showSuggestions(input, list, catalogName));
+            input.addEventListener('input', () => showSuggestions(input, list, catalogName));
+            input.addEventListener('blur', () => {
+                setTimeout(() => list.classList.remove('active'), 200);
+            });
+        }
+
+        function showSuggestions(input, list, catalogName) {
+            const query = input.value.toLowerCase();
+            const items = catalogs[catalogName]();
+
+            const filtered = items.filter(item =>
+                item.name?.toLowerCase().includes(query) ||
+                item.article?.toLowerCase().includes(query) ||
+                item.vendor?.toLowerCase().includes(query)
+            ).slice(0, 10);
+
+            if (filtered.length === 0) {
+                list.classList.remove('active');
+                return;
+            }
+
+            list.innerHTML = filtered.map(item => `
+                <div class="autocomplete-item" onclick="selectItem('${input.id}', '${item.vendor} ${item.name} ${item.article}')">
+                    <div class="vendor">${item.vendor}</div>
+                    <div class="name">${item.name}</div>
+                    <div class="article">${item.article}</div>
+                </div>
+            `).join('');
+
+            list.classList.add('active');
+        }
+
+        function selectItem(inputId, value) {
+            document.getElementById(inputId).value = value;
+            document.getElementById(inputId + '_list').classList.remove('active');
+        }
+
+        function toggleSection(sectionId) {
+            document.getElementById(sectionId).classList.toggle('collapsed');
+        }
+
+        function setToggle(toggleId, value) {
+            toggleStates[toggleId] = value;
+            const container = document.getElementById(toggleId);
+            const buttons = container.querySelectorAll('button');
+
+            buttons[0].className = value ? 'active-plus' : '';
+            buttons[1].className = !value ? 'active-minus' : '';
+        }
+
+        function collectFormData() {
+            const data = {
+                orderNumber: document.getElementById('orderNumber').value,
+                date: new Date().toISOString(),
+                toggleStates: { ...toggleStates }
+            };
+
+            // Зібрати всі поля
+            document.querySelectorAll('.field-input').forEach(input => {
+                if (input.id) {
+                    data[input.id] = input.value;
+                }
+            });
+
+            return data;
+        }
+
+        function saveLocal() {
+            const data = collectFormData();
+            localStorage.setItem('order_draft', JSON.stringify(data));
+            alert('✅ Чернетку збережено!');
+        }
+
+        function loadLocal() {
+            const saved = localStorage.getItem('order_draft');
+            if (saved) {
+                const data = JSON.parse(saved);
+
+                // Заповнити поля
+                for (const [key, value] of Object.entries(data)) {
+                    const input = document.getElementById(key);
+                    if (input && typeof value === 'string') {
+                        input.value = value;
+                    }
+                }
+
+                // Відновити toggle стани
+                if (data.toggleStates) {
+                    for (const [key, value] of Object.entries(data.toggleStates)) {
+                        setToggle(key, value);
+                    }
+                }
+            }
+        }
+
+        function clearForm() {
+            if (confirm('Очистити всі поля?')) {
+                document.querySelectorAll('.field-input').forEach(input => {
+                    if (input.tagName === 'SELECT') {
+                        input.selectedIndex = 0;
+                    } else {
+                        input.value = '';
+                    }
+                });
+                localStorage.removeItem('order_draft');
+            }
+        }
+
+        function saveOrder() {
+            const data = collectFormData();
+            console.log('Замовлення:', data);
+            alert('✅ Замовлення збережено!\n\n(Для повного збереження потрібна інтеграція з Firebase)');
+        }
+
+        function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const orderNumber = document.getElementById('orderNumber').value || 'Б/Н';
+            const orderDate = document.getElementById('orderDate').textContent;
+
+            // Налаштування
+            let y = 20;
+            const lineHeight = 7;
+            const marginLeft = 15;
+            const pageWidth = 195;
+
+            // Заголовок
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(18);
+            doc.text('БЛАНК ЗАМОВЛЕННЯ', 105, y, { align: 'center' });
+            y += 10;
+
+            doc.setFontSize(12);
+            doc.text(`Замовлення № ${orderNumber}`, 105, y, { align: 'center' });
+            y += 7;
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text(`Дата: ${orderDate}`, 105, y, { align: 'center' });
+            y += 15;
+
+            // Функція для секцій
+            function addSection(title) {
+                if (y > 270) { doc.addPage(); y = 20; }
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.setFillColor(30, 60, 114);
+                doc.setTextColor(255, 255, 255);
+                doc.rect(marginLeft, y - 5, pageWidth - 15, 8, 'F');
+                doc.text(title, marginLeft + 3, y);
+                doc.setTextColor(0, 0, 0);
+                y += 10;
+            }
+
+            // Функція для полів
+            function addField(label, fieldId, suffix = '') {
+                if (y > 280) { doc.addPage(); y = 20; }
+                const el = document.getElementById(fieldId);
+                let value = '';
+                if (el) {
+                    value = el.tagName === 'SELECT' ? el.options[el.selectedIndex]?.text || '' : el.value;
+                }
+                if (!value || value === '— Оберіть —') value = '-';
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(9);
+                doc.text(label + ':', marginLeft, y);
+                doc.setFont('helvetica', 'normal');
+
+                // Обмеження довжини тексту
+                const maxWidth = 130;
+                const textLines = doc.splitTextToSize(value + suffix, maxWidth);
+                doc.text(textLines, marginLeft + 55, y);
+                y += lineHeight * Math.max(1, textLines.length);
+            }
+
+            // Функція для toggle
+            function getToggle(toggleId) {
+                return toggleStates[toggleId] ? 'Так' : 'Ні';
+            }
+
+            // === МАТЕРІАЛИ ===
+            addSection('МАТЕРІАЛИ');
+            addField('Корпус нижніх', 'corpus_bottom');
+            addField('Корпус верхніх', 'corpus_top');
+            addField('Корпус додатково', 'corpus_extra');
+            addField('Крайка корпуса', 'edge_corpus');
+            addField('Товщина крайки', 'edge_corpus_thickness');
+            addField('Крайка стільниці', 'edge_countertop');
+            addField('Колір ДВП', 'dvp_color');
+            y += 5;
+
+            // === ФАСАДИ ===
+            addSection('ФАСАДИ');
+            addField('Фасад нижній', 'facade_bottom_material');
+            addField('Товщина', 'facade_bottom_thickness');
+            addField('Дарбування', 'facade_bottom_painting');
+            addField('Текстура', 'facade_bottom_texture');
+            addField('Фрезерування', 'facade_bottom_milling');
+            y += 3;
+            addField('Фасад верхній', 'facade_top_material');
+            addField('Товщина', 'facade_top_thickness');
+            addField('Дарбування', 'facade_top_painting');
+            addField('Текстура', 'facade_top_texture');
+            addField('Фрезерування', 'facade_top_milling');
+            addField('Крайка фасадів', 'edge_facade');
+            y += 5;
+
+            // === СТІЛЬНИЦІ ===
+            addSection('СТІЛЬНИЦІ ТА ПАНЕЛІ');
+            addField('Стільниця', 'countertop');
+            addField('Товщина', 'countertop_thickness');
+            addField('Стик', 'countertop_joint');
+            addField('HPL', 'countertop_hpl');
+            addField('Стінова панель', 'wall_panel');
+            addField('Товщина панелі', 'wall_panel_thickness');
+            addField('Скло полиць', 'glass_shelves');
+            addField('Скло вітрин', 'glass_vitrines');
+            addField('Декор', 'decorative');
+            y += 5;
+
+            // === ФУРНІТУРА ===
+            addSection('ФУРНІТУРА');
+            addField('Цоколь', 'plinth');
+            addField('Висота цоколя', 'plinth_height');
+            addField('Полицетримачі', 'shelf_supports');
+            addField('Бортик', 'edging');
+            addField('Петлі', 'hinges', ' | Доводчик: ' + getToggle('hinges_softclose'));
+            addField('Відкривання', 'opening_system', ' | Доводчик: ' + getToggle('opening_softclose'));
+            addField('Висування', 'drawer_system', ' | Доводчик: ' + getToggle('drawer_softclose'));
+            addField('Колір бокових', 'drawer_side_color');
+            addField('Підйомний мех.', 'lift_system');
+            addField('Карго 1', 'cargo1', ' | Доводчик: ' + getToggle('cargo1_softclose'));
+            addField('Карго 2', 'cargo2', ' | Доводчик: ' + getToggle('cargo2_softclose'));
+            addField('Ручки', 'handles');
+            addField('Посилання ручок', 'handles_link');
+            addField('TIP-ON', 'tipon');
+            addField('Сушка', 'dryer');
+            addField('Ширина сушки', 'dryer_width');
+            addField('Лоток', 'tray');
+            addField('Ширина лотка', 'tray_width');
+            y += 5;
+
+            // === ПІДСВІТКА ===
+            addSection('ПІДСВІТКА');
+            addField('Профіль', 'light_profile');
+            addField('Вимикач', 'light_switch');
+            addField('LED стрічка', 'light_strip');
+            addField('Розміщення', 'light_placement');
+            y += 5;
+
+            // === ТЕХНІКА ===
+            addSection('ТЕХНІКА');
+            addField('Холодильник', 'fridge');
+            addField('Духовка', 'oven');
+            addField('Варильна пов.', 'cooktop');
+            addField('Витяжка', 'hood');
+            addField('Мікрохвильова', 'microwave');
+            addField('Посудомийка', 'dishwasher');
+            addField('Пралка', 'washer');
+            addField('Додатково 1', 'extra_appliance1');
+            addField('Додатково 2', 'extra_appliance2');
+            addField('Додатково 3', 'extra_appliance3');
+            y += 5;
+
+            // === ПРИМІТКИ ===
+            addSection('ПРИМІТКИ');
+            const notes = document.getElementById('notes')?.value || '-';
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            const noteLines = doc.splitTextToSize(notes, pageWidth - 20);
+            if (y + noteLines.length * 5 > 280) { doc.addPage(); y = 20; }
+            doc.text(noteLines, marginLeft, y);
+
+            // Зберегти
+            doc.save(`Замовлення_${orderNumber}_${orderDate.replace(/\./g, '-')}.pdf`);
+        }
+
+        function exportExcel() {
+            const orderNumber = document.getElementById('orderNumber').value || 'Б-Н';
+            const orderDate = document.getElementById('orderDate').textContent;
+
+            // Функція для toggle
+            function getToggle(toggleId) {
+                return toggleStates[toggleId] ? 'Так' : 'Ні';
+            }
+
+            // Функція для отримання значення поля
+            function getField(fieldId) {
+                const el = document.getElementById(fieldId);
+                if (!el) return '';
+                return el.tagName === 'SELECT'
+                    ? (el.options[el.selectedIndex]?.text || '').replace('— Оберіть —', '')
+                    : el.value;
+            }
+
+            // Створюємо дані для CSV
+            const rows = [
+                ['БЛАНК ЗАМОВЛЕННЯ'],
+                [''],
+                ['Номер замовлення', orderNumber],
+                ['Дата', orderDate],
+                [''],
+                ['=== МАТЕРІАЛИ ==='],
+                ['Корпус нижніх', getField('corpus_bottom')],
+                ['Корпус верхніх', getField('corpus_top')],
+                ['Корпус додатково', getField('corpus_extra')],
+                ['Крайка корпуса', getField('edge_corpus')],
+                ['Товщина крайки', getField('edge_corpus_thickness')],
+                ['Крайка стільниці', getField('edge_countertop')],
+                ['Колір ДВП', getField('dvp_color')],
+                [''],
+                ['=== ФАСАДИ ==='],
+                ['Фасад нижній', getField('facade_bottom_material')],
+                ['Товщина', getField('facade_bottom_thickness')],
+                ['Дарбування', getField('facade_bottom_painting')],
+                ['Текстура', getField('facade_bottom_texture')],
+                ['Фрезерування', getField('facade_bottom_milling')],
+                ['Фасад верхній', getField('facade_top_material')],
+                ['Товщина', getField('facade_top_thickness')],
+                ['Дарбування', getField('facade_top_painting')],
+                ['Текстура', getField('facade_top_texture')],
+                ['Фрезерування', getField('facade_top_milling')],
+                ['Крайка фасадів', getField('edge_facade')],
+                [''],
+                ['=== СТІЛЬНИЦІ ==='],
+                ['Стільниця', getField('countertop')],
+                ['Товщина', getField('countertop_thickness')],
+                ['Стик', getField('countertop_joint')],
+                ['HPL', getField('countertop_hpl')],
+                ['Стінова панель', getField('wall_panel')],
+                ['Товщина панелі', getField('wall_panel_thickness')],
+                ['Скло полиць', getField('glass_shelves')],
+                ['Скло вітрин', getField('glass_vitrines')],
+                ['Декор', getField('decorative')],
+                [''],
+                ['=== ФУРНІТУРА ==='],
+                ['Цоколь', getField('plinth')],
+                ['Висота цоколя', getField('plinth_height')],
+                ['Полицетримачі', getField('shelf_supports')],
+                ['Бортик', getField('edging')],
+                ['Петлі', getField('hinges'), 'Доводчик:', getToggle('hinges_softclose')],
+                ['Відкривання', getField('opening_system'), 'Доводчик:', getToggle('opening_softclose')],
+                ['Висування', getField('drawer_system'), 'Доводчик:', getToggle('drawer_softclose')],
+                ['Колір бокових', getField('drawer_side_color')],
+                ['Підйомний мех.', getField('lift_system')],
+                ['Карго 1', getField('cargo1'), 'Доводчик:', getToggle('cargo1_softclose')],
+                ['Карго 2', getField('cargo2'), 'Доводчик:', getToggle('cargo2_softclose')],
+                ['Ручки', getField('handles')],
+                ['Посилання ручок', getField('handles_link')],
+                ['TIP-ON', getField('tipon')],
+                ['Сушка', getField('dryer')],
+                ['Ширина сушки', getField('dryer_width')],
+                ['Лоток', getField('tray')],
+                ['Ширина лотка', getField('tray_width')],
+                [''],
+                ['=== ПІДСВІТКА ==='],
+                ['Профіль', getField('light_profile')],
+                ['Вимикач', getField('light_switch')],
+                ['LED стрічка', getField('light_strip')],
+                ['Розміщення', getField('light_placement')],
+                [''],
+                ['=== ТЕХНІКА ==='],
+                ['Холодильник', getField('fridge')],
+                ['Духовка', getField('oven')],
+                ['Варильна пов.', getField('cooktop')],
+                ['Витяжка', getField('hood')],
+                ['Мікрохвильова', getField('microwave')],
+                ['Посудомийка', getField('dishwasher')],
+                ['Пралка', getField('washer')],
+                ['Додатково 1', getField('extra_appliance1')],
+                ['Додатково 2', getField('extra_appliance2')],
+                ['Додатково 3', getField('extra_appliance3')],
+                [''],
+                ['=== ПРИМІТКИ ==='],
+                [getField('notes')]
+            ];
+
+            // Конвертуємо в CSV
+            const csvContent = rows.map(row =>
+                row.map(cell => `"${(cell || '').replace(/"/g, '""')}"`).join(';')
+            ).join('\n');
+
+            // Додаємо BOM для правильного відображення кирилиці в Excel
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Замовлення_${orderNumber}_${orderDate.replace(/\./g, '-')}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+
+</html>

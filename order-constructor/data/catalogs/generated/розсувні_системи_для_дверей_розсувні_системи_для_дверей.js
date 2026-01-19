@@ -1,0 +1,233 @@
+window.Catalog_РозсувніСистемиДляДверейРозсувніСистемиДляДверей = [
+  {
+    "id": "189431",
+    "vendor": "SVOYA",
+    "name": "Застібка на стійку для вертикального ДСП",
+    "article": "189431",
+    "price": "93.48",
+    "image": "https://viyar.ua/store/Items/photos/ph189431.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189439",
+    "vendor": "SVOYA",
+    "name": "Подвійне кріплення для тумби",
+    "article": "189439",
+    "price": "389.22",
+    "image": "https://viyar.ua/store/Items/photos/ph189439.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "209509",
+    "vendor": "SVOYA",
+    "name": "Вертикальний профіль (стійка)",
+    "article": "209509",
+    "price": "3007.62",
+    "image": "https://viyar.ua/store/Items/photos/ph209509_3EoAm.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189432",
+    "vendor": "SVOYA",
+    "name": "Тримач задньої стінки 180 градусів",
+    "article": "189432",
+    "price": "192.72",
+    "image": "https://viyar.ua/store/Items/photos/ph189432.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189440",
+    "vendor": "SVOYA",
+    "name": "Праве кріплення для тумби",
+    "article": "189440",
+    "price": "319.56",
+    "image": "https://viyar.ua/store/Items/photos/ph189440.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "224557",
+    "vendor": "Китай",
+    "name": "Гвинт М4х6 пот/гл 10.9 БП INB",
+    "article": "224557",
+    "price": "1.86",
+    "image": "https://viyar.ua/store/Items/photos/ph224557_IRsZp.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189433",
+    "vendor": "SVOYA",
+    "name": "Тримач задньої стінки 90 градусів",
+    "article": "189433",
+    "price": "198.60",
+    "image": "https://viyar.ua/store/Items/photos/ph189433.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "224559",
+    "vendor": "Китай",
+    "name": "Гвинт М4х8 пот/гл 10.9 БП INB",
+    "article": "224559",
+    "price": "1.74",
+    "image": "https://viyar.ua/store/Items/photos/ph224559_EHva8.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189434",
+    "vendor": "SVOYA",
+    "name": "Ніжка кутова",
+    "article": "189434",
+    "price": "153.96",
+    "image": "https://viyar.ua/store/Items/photos/ph189434.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "199185",
+    "vendor": "SVOYA",
+    "name": "Профіль для взуттєвої полиці(лицьовий)",
+    "article": "199185",
+    "price": "2694.78",
+    "image": "https://viyar.ua/store/Items/photos/ph199185.jpg",
+    "thickness": "3",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "224561",
+    "vendor": "Китай",
+    "name": "Гайка М4 6 цб",
+    "article": "224561",
+    "price": "0.36",
+    "image": "https://viyar.ua/store/Items/photos/ph224561_yYwIT.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189435",
+    "vendor": "SVOYA",
+    "name": "Ніжка звичайна",
+    "article": "189435",
+    "price": "153.96",
+    "image": "https://viyar.ua/store/Items/photos/ph189435.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "204177",
+    "vendor": "SVOYA",
+    "name": "Гвинт M4*10 мм",
+    "article": "204177",
+    "price": "8.34",
+    "image": "https://viyar.ua/store/Items/photos/ph204177_ErsNh.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189436",
+    "vendor": "SVOYA",
+    "name": "Кронштейн для полиць",
+    "article": "189436",
+    "price": "393.84",
+    "image": "https://viyar.ua/store/Items/photos/ph189436.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189437",
+    "vendor": "SVOYA",
+    "name": "Кронштейн для взуттєвої полиці",
+    "article": "189437",
+    "price": "393.84",
+    "image": "https://viyar.ua/store/Items/photos/ph189437.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189430",
+    "vendor": "SVOYA",
+    "name": "Відповідна планка для застібки",
+    "article": "189430",
+    "price": "87.60",
+    "image": "https://viyar.ua/store/Items/photos/ph189430.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "189438",
+    "vendor": "SVOYA",
+    "name": "Ексцентрик для ДСП  полиць",
+    "article": "189438",
+    "price": "65.10",
+    "image": "https://viyar.ua/store/Items/photos/ph189438.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "206391",
+    "vendor": "SVOYA",
+    "name": "Ліве кріплення для тумби",
+    "article": "206391",
+    "price": "319.56",
+    "image": "https://viyar.ua/store/Items/photos/ph206391_IISMo.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "199184",
+    "vendor": "SVOYA",
+    "name": "Профіль для взуттєвої полиці (внутрішній)",
+    "article": "199184",
+    "price": "1867.32",
+    "image": "https://viyar.ua/store/Items/photos/ph199184.jpg",
+    "thickness": "3",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "204178",
+    "vendor": "SVOYA",
+    "name": "Гвинт M4*12 мм",
+    "article": "204178",
+    "price": "8.34",
+    "image": "https://viyar.ua/store/Items/photos/ph204178_RU2BJ.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "204179",
+    "vendor": "SVOYA",
+    "name": "Гвинт M6*35 мм",
+    "article": "204179",
+    "price": "12.54",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  }
+];

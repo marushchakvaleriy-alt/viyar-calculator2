@@ -258,15 +258,115 @@ const Schema = {
     "groups": [
         {
             "id": "g_main",
-            "title": "Основні параметри"
-        },
-        {
-            "id": "g1767963732768",
-            "title": "Підсвітка"
+            "title": "ОСНОВНІ ПАРАМЕТРИ",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
         },
         {
             "id": "g1767987129232",
-            "title": "праовлоа"
+            "title": "ДОДАТКОВІ ПАРАМЕТРИ ДЛЯ ПРОЄКТУВАННЯ",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768680996055",
+            "title": "МАТЕРІАЛИ",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768680413215",
+            "title": "СТІЛЬНИЦЯ",
+            "layout": {
+                "width": "50%",
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768682348005",
+            "title": "ФАРТУХ",
+            "layout": {
+                "width": "50%",
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768682883092",
+            "title": "МОДУЛІ",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768688857668",
+            "title": "ДОДАТКОВІ ЕЛЕМЕНТИ",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768690215898",
+            "title": "ФУНКЦІОНАЛЬНА ФУРНІТУРА",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 12,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768692820958",
+            "title": "РУЧКИ",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
+        },
+        {
+            "id": "g1768692944843",
+            "title": "Підсвітка",
+            "layout": {
+                "titleSize": 16,
+                "titleWeight": 700,
+                "fieldSize": 14,
+                "fieldWeight": 600,
+                "headerColor": "#2563eb"
+            }
         }
     ],
     "fields": [
@@ -336,7 +436,8 @@ const Schema = {
             "type": "select",
             "layout": {
                 "width": "w-50",
-                "inpBorder": "#0f0f0f"
+                "inpBorder": "#0f0f0f",
+                "placeholder": ""
             },
             "helpContent": "",
             "placeholderText": "",
@@ -356,6 +457,811 @@ const Schema = {
             ]
         },
         {
+            "id": "f1768676820324",
+            "groupId": "g_main",
+            "label": "Техніка",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "inputWidth": 30,
+                "placeholder": "ввести 0 або значення"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768676867732",
+            "groupId": "g1767987129232",
+            "label": "Підготовка карти заміру",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768679130585",
+            "groupId": "g1767987129232",
+            "label": "Підготовка монтажних схем для комунікацій",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768679146785",
+            "groupId": "g1767987129232",
+            "label": "Переклад (Крелсення)",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768679185689",
+            "groupId": "g1767987129232",
+            "label": "Креслення на погодження в дюймовій системі",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768681003870",
+            "groupId": "g1768680996055",
+            "label": "",
+            "type": "action_button",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "column",
+                "inputWidth": 100,
+                "width": "w-100",
+                "fontSize": 16
+            },
+            "helpContent": "",
+            "default": "Додати матеріал",
+            "modalFields": [
+                {
+                    "id": "mf_1768681046495",
+                    "label": "Загальна к-ть матеріалів:",
+                    "type": "number",
+                    "default": 0,
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681064200",
+                    "label": "ДСП",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681261606",
+                    "label": "МДФ плити",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681274358",
+                    "label": "Фарба/плівка 'прямі'",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681285630",
+                    "label": "Фарба/плівка 'фрезеровані'",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681300509",
+                    "label": "Шпоновані 'прямі'",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681310974",
+                    "label": "Шпоновані 'фрезеровані'",
+                    "type": "checkbox",
+                    "default": 0,
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681323565",
+                    "label": "Алюм. рамкові",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681333870",
+                    "label": "Скло-дзеркало",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681348062",
+                    "label": "ARPA/Fenix",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681398606",
+                    "label": "HPL фасади Fiushin",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681415400",
+                    "label": "HPL компакт плита",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681427238",
+                    "label": "МДФ фасади з індивідуальним фрезеруванням к-сть штук",
+                    "type": "number",
+                    "default": 0,
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768681431479",
+                    "label": "перехід текстури(кількість матеріалів з переходом текстур)",
+                    "type": "number",
+                    "default": 0,
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f1768680415543",
+            "groupId": "g1768680413215",
+            "label": "",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf_1768680514535",
+                    "label": "Матеріал",
+                    "type": "select",
+                    "default": 0,
+                    "layout": {
+                        "inpBorder": "#000000"
+                    },
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "ДСП-МДФ"
+                        },
+                        {
+                            "value": "opt1768680602856",
+                            "label": "Керамограніт-Кварц"
+                        },
+                        {
+                            "value": "opt1768680610239",
+                            "label": "HPL компакт плита"
+                        },
+                        {
+                            "value": "opt1768680619775",
+                            "label": "Акрил"
+                        },
+                        {
+                            "value": "opt1768680624711",
+                            "label": "R&D (дерево-метал)"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_1768680648375",
+                    "label": "Форма стільниці",
+                    "type": "select",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    },
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Пряма"
+                        },
+                        {
+                            "value": "opt2",
+                            "label": "Г-подібна"
+                        },
+                        {
+                            "value": "opt1768680679271",
+                            "label": "П-подібна"
+                        },
+                        {
+                            "value": "opt1768680684147",
+                            "label": "G-подібна (по периметру)"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_1768680731607",
+                    "label": "Опуски",
+                    "type": "checkbox_qty",
+                    "default": "Додати",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f1768682469949",
+            "groupId": "g1768682348005",
+            "label": "",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf_1768682541004",
+                    "label": "ДСП-МДФ",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768682626758",
+                    "label": "Керамограніт-Кварц",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768682643916",
+                    "label": "ДСП-МДФ",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768682662885",
+                    "label": "Акрил",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768682673916",
+                    "label": "Скло",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768682686428",
+                    "label": "R&D (дерево-метал)",
+                    "type": "checkbox",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f1768682886611",
+            "groupId": "g1768682883092",
+            "label": "Нижні модул",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768682914364",
+            "groupId": "g1768682883092",
+            "label": "Верхні модулі",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768682927420",
+            "groupId": "g1768682883092",
+            "label": "Антресолі",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768682937380",
+            "groupId": "g1768682883092",
+            "label": "Пенали",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768688860220",
+            "groupId": "g1768688857668",
+            "label": "",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "modalFields": [
+                {
+                    "id": "mf_1768688973044",
+                    "label": "Фальш горизонтальні - Карниз",
+                    "type": "select_yes_no",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768688989525",
+                    "label": "Фальш вертикальні",
+                    "type": "select_yes_no",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768689016476",
+                    "label": "Металоконструкція рамкова",
+                    "type": "checkbox_qty",
+                    "default": "Додати",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768689037228",
+                    "label": "Металоконструкція обʼємна",
+                    "type": "checkbox_qty",
+                    "default": "Додати",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768689059772",
+                    "label": "Вентмагістраль",
+                    "type": "select_yes_no",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
+                },
+                {
+                    "id": "mf_1768689088836",
+                    "label": "Деталь R&D, гнутий елемент тощо",
+                    "type": "multiselect",
+                    "default": "",
+                    "layout": {
+                        "inpBorder": "#000000"
+                    },
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Кількість типів елементів"
+                        },
+                        {
+                            "value": "opt2",
+                            "label": "Загальна кількість деталей"
+                        }
+                    ]
+                }
+            ],
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
+        },
+        {
+            "id": "f1768690218763",
+            "groupId": "g1768690215898",
+            "label": "Ящики",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "placeholder": "вкажіть кількість або 0",
+                "inputOffset": 0,
+                "labelWidth": 117,
+                "width": "w-50",
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": true,
+                "spaced": true,
+                "padding": 11,
+                "gap": 1,
+                "color": "#0d0c0c",
+                "fontSize": 10,
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal",
+                "textAlign": "left"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690258315",
+            "groupId": "g1768690215898",
+            "label": "Висувна полиця",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": true,
+                "spaced": true,
+                "padding": 11,
+                "gap": 1,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690271642",
+            "groupId": "g1768690215898",
+            "label": "Підйомні механізми",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": false,
+                "spaced": true,
+                "padding": 11,
+                "gap": 1,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690281586",
+            "groupId": "g1768690215898",
+            "label": "Карго/сушки",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": false,
+                "spaced": true,
+                "padding": 11,
+                "gap": 1,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690295730",
+            "groupId": "g1768690215898",
+            "label": "Магічний кут",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": false,
+                "spaced": false,
+                "padding": 11,
+                "gap": 1,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690305298",
+            "groupId": "g1768690215898",
+            "label": "Servo-Drive",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": true,
+                "spaced": true,
+                "padding": 11,
+                "gap": 1,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690315195",
+            "groupId": "g1768690215898",
+            "label": "Консольні полиці",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": false,
+                "spaced": true,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal",
+                "gap": 1,
+                "padding": 11
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690327098",
+            "groupId": "g1768690215898",
+            "label": "Висувний механізм для верхніх шухляд",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 123,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": false,
+                "spaced": false,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal",
+                "gap": 1,
+                "padding": 11
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690334882",
+            "groupId": "g1768690215898",
+            "label": "Системи розсувних дверей (Revego, Hawa, Salice, pocket doors)",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 121,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": true,
+                "spaced": false,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal",
+                "gap": 1,
+                "padding": 11
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768690344482",
+            "groupId": "g1768690215898",
+            "label": "Slide M, WingLine L",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "flexDirection": "row",
+                "inputWidth": 100,
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0",
+                "fontSize": 10,
+                "inputOffset": 0,
+                "textAlign": "left",
+                "labelWidth": 119,
+                "fontWeight": "400",
+                "marginTop": -10,
+                "marginLeft": 0,
+                "cardRadius": 25,
+                "uppercase": false,
+                "color": "#0d0c0c",
+                "inpBorderWidth": 0,
+                "inpRadius": 8,
+                "lineHeight": "1",
+                "fontStyle": "normal",
+                "spaced": true,
+                "gap": 1,
+                "padding": 11
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
             "id": "f1768216195464",
             "groupId": "g1767963732768",
             "label": "Модулі з підсвіткою",
@@ -363,7 +1269,8 @@ const Schema = {
             "helpContent": "",
             "layout": {
                 "inpBorder": "#0c0d0d",
-                "width": "w-25"
+                "width": "w-25",
+                "placeholder": "виберіть 0 або значення"
             },
             "allowDecimal": true
         },
@@ -396,181 +1303,229 @@ const Schema = {
             "type": "number",
             "layout": {
                 "inpBorder": "#0c0d0d",
-                "width": "w-25"
+                "width": "w-25",
+                "placeholder": "виберіть 0 або значення"
             }
         },
         {
-            "id": "f1768471062862",
-            "groupId": "g1767987129232",
-            "label": "укцук",
-            "type": "select_yes_no",
-            "helpContent": "",
-            "layout": {
-                "inpBorder": "#050505",
-                "placeholder": "авпапав",
-                "helpImg": "images/hints/ph66424.jpg",
-                "width": "w-66",
-                "glass": true
-            },
-            "hidden": true
-        },
-        {
-            "id": "f1768471064143",
-            "groupId": "g1767987129232",
-            "label": "цукцук",
+            "id": "f1768679269552",
+            "groupId": "g1768679265657",
+            "label": "Загальна к-ть матеріалів",
             "type": "number",
-            "layout": {
-                "inpBorder": "#050505",
-                "width": "w-66",
-                "glass": true
-            },
-            "hidden": true
-        },
-        {
-            "id": "f1768471066582",
-            "groupId": "g1767987129232",
-            "label": "Нова дія",
-            "type": "number",
-            "layout": {
-                "inpBorder": "#050505",
-                "width": "w-66",
-                "glass": true
-            },
-            "hidden": true
-        },
-        {
-            "id": "f1768471219330",
-            "groupId": "g1767987129232",
-            "label": "454545",
-            "type": "select",
-            "helpContent": "",
-            "placeholderText": "ввіаівві",
-            "options": [
-                {
-                    "value": "o1768471243553",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768471244481",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768471245257",
-                    "label": "Варіант"
-                }
-            ],
-            "layout": {
-                "placeholder": "ава",
-                "helpImg": "images/hints/ph66424.jpg",
-                "inpBorder": "#0b66ef",
-                "width": "w-50",
-                "inputWidth": 66
-            }
-        },
-        {
-            "id": "f1768559493803",
-            "groupId": "g1767987129232",
-            "label": "Нова дія",
-            "type": "select_modal",
-            "helpContent": "",
-            "default": "",
-            "modalFields": [
-                {
-                    "id": "mf_1768559510172",
-                    "label": "віаів",
-                    "type": "select",
-                    "default": "",
-                    "options": [
-                        {
-                            "value": "opt1",
-                            "label": "Варіант 1"
-                        },
-                        {
-                            "value": "opt2",
-                            "label": "Варіант 2"
-                        }
-                    ]
-                },
-                {
-                    "id": "mf_1768576261659",
-                    "label": "авпав",
-                    "type": "checkbox_qty",
-                    "default": "Додати"
-                },
-                {
-                    "id": "mf_1768576274002",
-                    "label": "Нове поле",
-                    "type": "select_yes_no",
-                    "default": ""
-                },
-                {
-                    "id": "mf_1768576309962",
-                    "label": "Нове поле",
-                    "type": "number",
-                    "default": 0
-                },
-                {
-                    "id": "mf_1768576336731",
-                    "label": "Нове поле",
-                    "type": "number",
-                    "default": 0
-                }
-            ],
-            "layout": {
-                "width": "w-50",
-                "inpBorder": "#050505",
-                "glass": true
-            },
-            "placeholderText": "",
-            "labelYes": "",
-            "labelNo": ""
-        },
-        {
-            "id": "f1768471497645",
-            "groupId": "g1767987129232",
-            "label": "вапапва",
-            "type": "select",
-            "helpContent": "",
-            "placeholderText": "вавав",
-            "options": [
-                {
-                    "value": "o1768471511981",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768471512757",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768471513597",
-                    "label": "Варіант"
-                },
-                {
-                    "value": "o1768559461547",
-                    "label": "Варіант"
-                }
-            ],
-            "layout": {
-                "inpBorder": "#050505",
-                "inputWidth": 83,
-                "width": "w-66",
-                "placeholder": "авіа",
-                "help": "ваі",
-                "helpImg": "images/hints/ph66424.jpg",
-                "glass": true
-            }
-        },
-        {
-            "id": "f1768578177179",
-            "groupId": "g1767987129232",
-            "label": "Нова дія",
-            "type": "checkbox_qty",
             "layout": {
                 "inpBorder": "#000000"
             },
             "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768679291776",
+            "groupId": "g1768679265657",
+            "label": "Вид матеріалів",
+            "type": "multiselect",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "placeholderText": "",
+            "options": [
+                {
+                    "value": "o1768679317504",
+                    "label": "ДСП"
+                },
+                {
+                    "value": "o1768679326600",
+                    "label": "ХДФ / ДВП"
+                },
+                {
+                    "value": "o1768679333864",
+                    "label": "МДФ плити"
+                },
+                {
+                    "value": "o1768680282240",
+                    "label": "Фарба/плівка 'прямі'"
+                },
+                {
+                    "value": "o1768680291295",
+                    "label": "Фарба/плівка 'фрезеровані'"
+                },
+                {
+                    "value": "o1768680299767",
+                    "label": "Шпоновані 'прямі'"
+                },
+                {
+                    "value": "o1768680308735",
+                    "label": "Шпоновані 'фрезеровані'"
+                },
+                {
+                    "value": "o1768680317623",
+                    "label": "Алюмінієві фасади"
+                },
+                {
+                    "value": "o1768680326071",
+                    "label": "Скло/Дзеркало"
+                },
+                {
+                    "value": "o1768680346007",
+                    "label": "ARPA/Fenix"
+                },
+                {
+                    "value": "o1768680351215",
+                    "label": "HPL компакт плита"
+                },
+                {
+                    "value": "o1768680361087",
+                    "label": "HPL фасади FUSION"
+                }
+            ]
+        },
+        {
+            "id": "f1768680369784",
+            "groupId": "g1768679265657",
+            "label": "МДФ фасади з індивідуальним фрезеруванням",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768680388879",
+            "groupId": "g1768679265657",
+            "label": "Перехід текстури",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768688295430",
+            "groupId": "g1768688291559",
+            "label": "Фальш горизонтальні - Карниз",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768688326668",
+            "groupId": "g1768688291559",
+            "label": "Фальш вертикальні",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768692947766",
+            "groupId": "g1768692944843",
+            "label": "Модулі з підсвіткою:(к-ть)",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768692967646",
+            "groupId": "g1768692944843",
+            "label": "Підсвітка робочої зони",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50"
+            },
+            "helpContent": "",
+            "options": [
+                {
+                    "value": "o1768692987646",
+                    "label": "Підсвітка цоколя"
+                }
+            ]
+        },
+        {
+            "id": "f1768693014206",
+            "groupId": "g1768692944843",
+            "label": "Підсвітка цоколя",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50"
+            },
+            "helpContent": ""
+        },
+        {
+            "id": "f1768693027791",
+            "groupId": "g1768692944843",
+            "label": "Окремі елементи з підсвітко",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-50",
+                "placeholder": "вкажіть кількість або 0"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1768693176830",
+            "groupId": "g1768692820958",
+            "label": "",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000",
+                "inputWidth": 36
+            },
+            "helpContent": "",
             "default": "",
-            "allowDecimal": true
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf1768693267102",
+                    "label": "GOLA низ",
+                    "type": "checkbox"
+                },
+                {
+                    "id": "mf1768693275998",
+                    "label": "GOLA верх",
+                    "type": "checkbox"
+                },
+                {
+                    "id": "mf1768693286111",
+                    "label": "GOLA вертикальна",
+                    "type": "checkbox"
+                },
+                {
+                    "id": "mf1768693293621",
+                    "label": "Торцев",
+                    "type": "checkbox"
+                },
+                {
+                    "id": "mf1768693304269",
+                    "label": "Фрезеровані",
+                    "type": "checkbox"
+                },
+                {
+                    "id": "mf1768693318077",
+                    "label": "Рush-to-open",
+                    "type": "checkbox"
+                },
+                {
+                    "id": "mf1768693326438",
+                    "label": "Інші",
+                    "type": "checkbox"
+                }
+            ]
         }
     ],
     "products": {
@@ -585,20 +1540,78 @@ const Schema = {
             "pr_a2": 10,
             "pr_i1": 10,
             "o1768126302128": {
-                "pr_c1": 10
+                "pr_c1": 3,
+                "pr_c3": 1,
+                "pr_c2": 1,
+                "pr_c7": 3,
+                "pr_c6": 2,
+                "pr_c9": 3,
+                "pr_c12": 3,
+                "pr_d1": 3,
+                "pr_d2": 6,
+                "pr_d3": 1,
+                "pr_d6": 1,
+                "pr_d9": 6,
+                "pr_d10": 2,
+                "pr_d11": 1,
+                "pr_i1": 3,
+                "pr_i2": 2
             },
             "o1768126358353": {
-                "pr_c1": 10,
-                "pr_c6": 10,
-                "pr_c7": 10
+                "pr_c1": 3,
+                "pr_c6": 3,
+                "pr_c7": 3,
+                "pr_c2": 2,
+                "pr_c3": 3,
+                "pr_c9": 4,
+                "pr_c12": 3,
+                "pr_d1": 3,
+                "pr_d2": 6,
+                "pr_d3": 2,
+                "pr_d6": 1,
+                "pr_d9": 12,
+                "pr_d10": 2,
+                "pr_d11": 1,
+                "pr_i1": 3,
+                "pr_i2": 2
             },
             "o1768126364753": {
-                "pr_c1": 10,
-                "pr_c4": 10,
-                "pr_c5": 10
+                "pr_c1": 3,
+                "pr_c4": 0,
+                "pr_c5": 0,
+                "pr_c2": 4,
+                "pr_c3": 4,
+                "pr_c7": 3,
+                "pr_c6": 3,
+                "pr_c9": 6,
+                "pr_c12": 3,
+                "pr_d1": 3,
+                "pr_d2": 6,
+                "pr_d3": 4,
+                "pr_d6": 1,
+                "pr_d9": 18,
+                "pr_d10": 2,
+                "pr_d11": 1,
+                "pr_i1": 3,
+                "pr_i2": 2
             },
             "o1768126371016": {
-                "pr_c1": 10
+                "pr_c1": 3,
+                "pr_c2": 6,
+                "pr_c3": 6,
+                "pr_c7": 3,
+                "pr_c6": 3,
+                "pr_c9": 8,
+                "pr_c12": 3,
+                "pr_d1": 3,
+                "pr_d2": 6,
+                "pr_d3": 6,
+                "pr_d6": 1,
+                "pr_d9": 24,
+                "pr_d10": 2,
+                "pr_d11": 1,
+                "pr_i1": 3,
+                "pr_i2": 2
             }
         },
         "f1767963691670": {
@@ -609,29 +1622,46 @@ const Schema = {
             "pr_i1": 10
         },
         "f1767963695152": {
-            "pr_c1": 10,
-            "pr_a1": 10,
-            "pr_i1": 10,
-            "pr_i2": 10
+            "pr_c1": 2,
+            "pr_a1": 0,
+            "pr_i1": 1,
+            "pr_i2": 1,
+            "pr_c6": 1,
+            "pr_d6": 1,
+            "pr_d9": 3
         },
         "f1767963696506": {
-            "pr_c1": 10,
-            "pr_a1": 10,
-            "pr_i1": 10
+            "pr_c1": 1,
+            "pr_a1": 0,
+            "pr_i1": 3,
+            "pr_c2": 3,
+            "pr_c9": 1,
+            "pr_d1": 1,
+            "pr_d3": 3,
+            "pr_i2": 3
         },
         "f1768127632277": {
             "o1768134080487": {
-                "pr_c1": 10
+                "pr_c1": 0,
+                "pr_c2": 1
             },
             "o1768134108853": {
-                "pr_c1": 10,
-                "pr_c5": 10,
-                "pr_c6": 10,
-                "pr_c7": 10
+                "pr_c1": 1,
+                "pr_c5": 0,
+                "pr_c6": 1,
+                "pr_c7": 0,
+                "pr_c2": 6,
+                "pr_c9": 2,
+                "pr_d1": 2,
+                "pr_d3": 4
             },
             "o1768134116972": {
-                "pr_c1": 10,
-                "pr_c4": 10
+                "pr_c1": 1,
+                "pr_c4": 0,
+                "pr_c2": 3,
+                "pr_c6": 1,
+                "pr_d1": 2,
+                "pr_d3": 2
             }
         },
         "f1768216195464": {
@@ -693,6 +1723,314 @@ const Schema = {
         },
         "f1768471062862": {
             "pr_c1": 10
+        },
+        "f1768679291776": {
+            "o1768679317504": {
+                "pr_c1": 10
+            },
+            "o1768679326600": {
+                "pr_c1": 10
+            },
+            "o1768679333864": {
+                "pr_c1": 10
+            },
+            "o1768680282240": {
+                "pr_c1": 10
+            },
+            "o1768680291295": {
+                "pr_c1": 10
+            },
+            "o1768680299767": {
+                "pr_c1": 10
+            },
+            "o1768680308735": {
+                "pr_c1": 10
+            },
+            "o1768680326071": {
+                "pr_c1": 10
+            },
+            "o1768680317623": {
+                "pr_c1": 10
+            },
+            "o1768680346007": {
+                "pr_c1": 10
+            },
+            "o1768680351215": {
+                "pr_c1": 10
+            },
+            "o1768680361087": {
+                "pr_c1": 10
+            }
+        },
+        "f1768679269552": {
+            "pr_c1": 10
+        },
+        "f1768680388879": {
+            "pr_c1": 10
+        },
+        "f1768680369784": {
+            "pr_c1": 10
+        },
+        "f1768682914364": {
+            "pr_c1": 0,
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_d4": 1,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768682927420": {
+            "pr_c1": 0,
+            "pr_c5": 1,
+            "pr_c4": 1,
+            "pr_d4": 1,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768682886611": {
+            "pr_c1": 0,
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_d4": 1,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a9": 1
+        },
+        "f1768682937380": {
+            "pr_c1": 0,
+            "pr_c5": 1,
+            "pr_c4": 2,
+            "pr_d4": 2,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a9": 1
+        },
+        "f1768690281586": {
+            "pr_c1": 0,
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_d4": 1,
+            "pr_a8": 1,
+            "pr_a5": 1,
+            "pr_a3": 2
+        },
+        "f1768690315195": {
+            "pr_c1": 0,
+            "pr_c4": 1,
+            "pr_c12": 1,
+            "pr_d4": 1,
+            "pr_a8": 1,
+            "pr_a9": 1,
+            "pr_a5": 1,
+            "pr_a3": 1
+        },
+        "f1768690327098": {
+            "pr_c1": 2,
+            "pr_c4": 2,
+            "pr_d4": 1,
+            "pr_d1": 1,
+            "pr_a8": 1,
+            "pr_a9": 1,
+            "pr_a5": 1,
+            "pr_a3": 1
+        },
+        "f1768690334882": {
+            "pr_c1": 3,
+            "pr_c5": 2,
+            "pr_c10": 2,
+            "pr_c12": 3,
+            "pr_c9": 4,
+            "pr_c4": 4,
+            "pr_c3": 6,
+            "pr_c14": 3,
+            "pr_c13": 3,
+            "pr_d5": 1,
+            "pr_d6": 1,
+            "pr_d7": 2,
+            "pr_d2": 2,
+            "pr_d8": 1,
+            "pr_d4": 5,
+            "pr_d1": 3,
+            "pr_a8": 1,
+            "pr_a9": 1,
+            "pr_a5": 1,
+            "pr_a3": 12
+        },
+        "f1768690344482": {
+            "pr_c1": 0,
+            "pr_c4": 1,
+            "pr_c3": 1,
+            "pr_c5": 1,
+            "pr_c12": 1,
+            "pr_d4": 1,
+            "pr_d1": 1,
+            "pr_a9": 2,
+            "pr_a8": 2,
+            "pr_a5": 4,
+            "pr_a3": 6
+        },
+        "f1768690295730": {
+            "pr_c1": 2,
+            "pr_c4": 2,
+            "pr_d1": 1,
+            "pr_d4": 2,
+            "pr_a8": 1,
+            "pr_a5": 1,
+            "pr_a3": 2,
+            "pr_a9": 2
+        },
+        "f1768690305298": {
+            "pr_c1": 2,
+            "pr_c12": 2,
+            "pr_c4": 3,
+            "pr_d1": 1,
+            "pr_a8": 1,
+            "pr_a9": 1,
+            "pr_a5": 1,
+            "pr_a3": 1
+        },
+        "f1768690271642": {
+            "pr_c1": 0,
+            "pr_c4": 2,
+            "pr_d4": 1,
+            "pr_a9": 1,
+            "pr_a8": 1,
+            "pr_a5": 1,
+            "pr_a3": 1
+        },
+        "f1768690258315": {
+            "pr_c1": 0,
+            "pr_c4": 2,
+            "pr_d4": 1,
+            "pr_a8": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a3": 1
+        },
+        "f1768690218763": {
+            "pr_c1": 0,
+            "pr_c4": 1,
+            "pr_d4": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a8": 1,
+            "pr_a3": 1
+        },
+        "f1768692826392": {
+            "pr_c1": 10,
+            "o1768692886182": {
+                "pr_c1": 10
+            },
+            "o1768692895015": {
+                "pr_c1": 10
+            },
+            "o1768692902839": {
+                "pr_c1": 10
+            },
+            "o1768692913726": {
+                "pr_c1": 10
+            },
+            "o1768692919638": {
+                "pr_c1": 10
+            }
+        },
+        "f1768692947766": {
+            "pr_c1": 0,
+            "pr_c5": 1,
+            "pr_c4": 1,
+            "pr_c12": 1,
+            "pr_c8": 2,
+            "pr_d4": 1,
+            "pr_d9": 1,
+            "pr_a2": 1,
+            "pr_a4": 2
+        },
+        "f1768693027791": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_c12": 1,
+            "pr_c8": 2,
+            "pr_d4": 1,
+            "pr_d5": 1,
+            "pr_d9": 1,
+            "pr_a4": 2
+        },
+        "f1768692967646": {
+            "pr_c1": 0,
+            "pr_c5": 1,
+            "pr_c12": 1,
+            "pr_c4": 2,
+            "pr_c8": 2,
+            "pr_d4": 1,
+            "pr_d5": 1,
+            "pr_d9": 1,
+            "pr_a9": 1,
+            "pr_a8": 1,
+            "pr_a5": 2,
+            "pr_a6": 2
+        },
+        "f1768693014206": {
+            "pr_c1": 0,
+            "pr_c5": 1,
+            "pr_c4": 1,
+            "pr_c3": 1,
+            "pr_c12": 1,
+            "pr_c8": 2,
+            "pr_d4": 1,
+            "pr_d5": 1,
+            "pr_d9": 1,
+            "pr_a9": 1,
+            "pr_a8": 1,
+            "pr_a5": 2,
+            "pr_a6": 2
+        },
+        "f1768679146785": {
+            "pr_c1": 3,
+            "pr_c6": 3,
+            "pr_c8": 3,
+            "pr_d9": 6,
+            "pr_d10": 2
+        },
+        "f1768676820324": {
+            "pr_c1": 3,
+            "pr_c3": 2,
+            "pr_c4": 1,
+            "pr_d1": 2,
+            "pr_d4": 1,
+            "pr_d5": 1,
+            "pr_a2": 1,
+            "pr_a5": 2,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a9": 1,
+            "pr_a8": 2
+        },
+        "f1768679130585": {
+            "pr_d9": 3
+        },
+        "f1768676867732": {
+            "pr_d9": 3
+        },
+        "f1768679185689": {
+            "pr_d9": 3
         }
     },
     "modalFieldRules": {
@@ -717,10 +2055,404 @@ const Schema = {
         },
         "f1768559493803_mf_1768576309962": {
             "pr_c2": 10
+        },
+        "f1768680415543_mf_1768680648375": {
+            "pr_c1": 0,
+            "opt1": {
+                "pr_c1": 0,
+                "pr_c4": 1,
+                "pr_c3": 1,
+                "pr_a6": 1,
+                "pr_a5": 1
+            },
+            "opt1768680679271": {
+                "pr_c1": 0,
+                "pr_c4": 1,
+                "pr_c3": 3,
+                "pr_a5": 3,
+                "pr_a6": 3
+            },
+            "opt2": {
+                "pr_c1": 0,
+                "pr_c4": 1,
+                "pr_c3": 2,
+                "pr_a5": 2,
+                "pr_a6": 2
+            },
+            "opt1768680684147": {
+                "pr_c1": 0,
+                "pr_c4": 1,
+                "pr_c3": 4,
+                "pr_a5": 4,
+                "pr_a6": 4
+            }
+        },
+        "f1768680415543_mf_1768680731607": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c4": 1,
+            "pr_d4": 1
+        },
+        "f1768680415543_mf_1768680514535": {
+            "opt1768680610239": {
+                "pr_c1": 1,
+                "pr_c3": 1,
+                "pr_c5": 1,
+                "pr_c9": 1,
+                "pr_c12": 1,
+                "pr_c10": 2,
+                "pr_c13": 1,
+                "pr_d4": 2,
+                "pr_a1": 1,
+                "pr_a2": 1,
+                "pr_a5": 2,
+                "pr_a6": 2
+            },
+            "opt1768680602856": {
+                "pr_c1": 1,
+                "pr_c3": 1,
+                "pr_c5": 1,
+                "pr_c9": 1,
+                "pr_c8": 4,
+                "pr_c10": 2,
+                "pr_d4": 2,
+                "pr_d7": 2
+            },
+            "opt1": {
+                "pr_c1": 1,
+                "pr_c3": 1,
+                "pr_c5": 1,
+                "pr_c9": 1,
+                "pr_c10": 1,
+                "pr_c12": 1,
+                "pr_d4": 1,
+                "pr_a2": 1,
+                "pr_a1": 1,
+                "pr_a6": 2,
+                "pr_a5": 2
+            },
+            "opt1768680624711": {
+                "pr_c1": 1,
+                "pr_c5": 1,
+                "pr_c9": 1,
+                "pr_c12": 1,
+                "pr_c3": 4,
+                "pr_c8": 4,
+                "pr_d4": 2,
+                "pr_d7": 2,
+                "pr_a1": 1,
+                "pr_a2": 1,
+                "pr_a5": 3,
+                "pr_a6": 3
+            },
+            "opt1768680619775": {
+                "pr_c1": 1,
+                "pr_c3": 1,
+                "pr_c5": 1,
+                "pr_c9": 1,
+                "pr_c10": 2,
+                "pr_c13": 1,
+                "pr_d7": 1,
+                "pr_d4": 2
+            }
+        },
+        "f1768681003870_mf_1768681261606": {
+            "pr_c1": 0,
+            "pr_c10": 2,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681274358": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681064200": {
+            "pr_c1": 0,
+            "pr_c10": 1,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681285630": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c4": 2,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 3
+        },
+        "f1768681003870_mf_1768681300509": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681310974": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c4": 2,
+            "pr_c13": 2,
+            "pr_c14": 1,
+            "pr_d4": 3
+        },
+        "f1768681003870_mf_1768681323565": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 2
+        },
+        "f1768681003870_mf_1768681333870": {
+            "pr_c1": 0,
+            "pr_c10": 1,
+            "pr_c4": 1,
+            "pr_c13": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681348062": {
+            "pr_c1": 0,
+            "pr_c10": 2,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681398606": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c13": 2,
+            "pr_c14": 1,
+            "pr_d4": 2
+        },
+        "f1768681003870_mf_1768681415400": {
+            "pr_c1": 0,
+            "pr_c10": 3,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681427238": {
+            "pr_c1": 0,
+            "pr_c10": 1,
+            "pr_c13": 2,
+            "pr_d4": 1
+        },
+        "f1768681003870_mf_1768681431479": {
+            "pr_c1": 0,
+            "pr_c8": 3,
+            "pr_d9": 1
+        },
+        "f1768682469949_mf_1768682626758": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c8": 1,
+            "pr_c12": 1,
+            "pr_d4": 1
+        },
+        "f1768682469949_mf_1768682643916": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c12": 1,
+            "pr_d4": 1
+        },
+        "f1768682469949_mf_1768682541004": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c12": 1,
+            "pr_d4": 1
+        },
+        "f1768682469949_mf_1768682662885": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c8": 1,
+            "pr_c12": 1,
+            "pr_d4": 1
+        },
+        "f1768682469949_mf_1768682673916": {
+            "pr_c1": 0,
+            "pr_c3": 1,
+            "pr_c8": 1,
+            "pr_c12": 1,
+            "pr_d4": 1
+        },
+        "f1768682469949_mf_1768682686428": {
+            "pr_c1": 0,
+            "pr_c3": 2,
+            "pr_c4": 1,
+            "pr_c8": 1,
+            "pr_c9": 1,
+            "pr_c12": 1,
+            "pr_d4": 2
+        },
+        "f1768688860220_mf_1768689088836": {
+            "opt1": {
+                "pr_c1": 0,
+                "pr_c8": 3,
+                "pr_c2": 0,
+                "pr_c3": 1,
+                "pr_d5": 1,
+                "pr_d9": 1,
+                "pr_d8": 3,
+                "pr_a2": 1
+            },
+            "opt2": {
+                "pr_c1": 0,
+                "pr_c3": 0,
+                "pr_c4": 1,
+                "pr_c5": 1,
+                "pr_d6": 1,
+                "pr_a2": 1,
+                "pr_a4": 1,
+                "pr_a5": 1,
+                "pr_a6": 1,
+                "pr_a7": 1,
+                "pr_a8": 1,
+                "pr_a9": 1
+            },
+            "pr_c1": 0
+        },
+        "f1768688860220_mf_1768688973044": {
+            "pr_c1": 0,
+            "pr_c3": 3,
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_d5": 1,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768688860220_mf_1768689016476": {
+            "pr_c1": 0,
+            "pr_c3": 2,
+            "pr_c5": 1,
+            "pr_c4": 1,
+            "pr_c8": 3,
+            "pr_d5": 1,
+            "pr_d8": 1,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768688860220_mf_1768689037228": {
+            "pr_c1": 0,
+            "pr_c3": 4,
+            "pr_c4": 1,
+            "pr_c5": 2,
+            "pr_c8": 3,
+            "pr_d8": 1,
+            "pr_d5": 3,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768688860220_mf_1768689059772": {
+            "pr_c1": 1,
+            "pr_c3": 2,
+            "pr_c4": 1,
+            "pr_c12": 1,
+            "pr_c13": 1,
+            "pr_d1": 1,
+            "pr_d2": 2,
+            "pr_d5": 2
+        },
+        "f1768688860220_mf_1768688989525": {
+            "pr_c1": 0,
+            "pr_c3": 2,
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_d5": 1,
+            "pr_a2": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a7": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768681003870_mf_1768681046495": {
+            "pr_c10": 1,
+            "pr_c13": 1,
+            "pr_c14": 1,
+            "pr_d4": 1
+        },
+        "f1768693176830_mf1768693267102": {
+            "pr_c4": 1,
+            "pr_c3": 1,
+            "pr_c12": 2,
+            "pr_d4": 2,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1,
+            "pr_a8": 1,
+            "pr_a9": 1
+        },
+        "f1768693176830_mf1768693275998": {
+            "pr_c4": 1,
+            "pr_c3": 1,
+            "pr_c12": 2,
+            "pr_d4": 1,
+            "pr_a9": 1,
+            "pr_a8": 1,
+            "pr_a4": 1,
+            "pr_a5": 1,
+            "pr_a6": 1
+        },
+        "f1768693176830_mf1768693286111": {
+            "pr_c4": 1,
+            "pr_c12": 2,
+            "pr_d4": 1,
+            "pr_a8": 1,
+            "pr_a9": 1,
+            "pr_a6": 1,
+            "pr_a5": 1,
+            "pr_a4": 1
+        },
+        "f1768693176830_mf1768693304269": {
+            "pr_c4": 1,
+            "pr_c3": 1,
+            "pr_c10": 2,
+            "pr_d4": 2
+        },
+        "f1768693176830_mf1768693293621": {
+            "pr_c4": 1,
+            "pr_c3": 1,
+            "pr_c12": 2,
+            "pr_d4": 2
+        },
+        "f1768693176830_mf1768693318077": {
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_c10": 1,
+            "pr_d4": 2
+        },
+        "f1768693176830_mf1768693326438": {
+            "pr_c4": 1,
+            "pr_c5": 1,
+            "pr_c10": 1,
+            "pr_d4": 2
         }
     },
     "layout": {
-        "title": "Кухні"
+        "title": "Кухні",
+        "theme": "dark",
+        "groupGap": 0,
+        "baseFontSize": 11
     }
 };
 window.Schema = Schema;

@@ -1,0 +1,982 @@
+window.Catalog_ToolsConsumables = [
+  {
+    "id": "57640",
+    "vendor": "Makita",
+    "name": "Набір свердл та біт (71 шт.) (D-33691)",
+    "article": "57640",
+    "price": "3499.98",
+    "image": "https://viyar.ua/store/Items/photos/ph57640.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "94086",
+    "vendor": "Китай",
+    "name": "Свердло для конфірмата 6,4 d=4,5 мм",
+    "article": "94086",
+    "price": "138.00",
+    "image": "https://viyar.ua/store/Items/photos/ph94086.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39547",
+    "vendor": "Mastertool",
+    "name": "Скоби 10 мм, 1000 шт",
+    "article": "39547",
+    "price": "31.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39547.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39733",
+    "vendor": "Stanley",
+    "name": "Бур SDS-Plus 8х100х160мм. STA54037 Stanley",
+    "article": "39733",
+    "price": "70.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39733.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39732",
+    "vendor": "Stanley",
+    "name": "Бур SDS-Plus 6х100х160мм. STA54032 Stanley",
+    "article": "39732",
+    "price": "61.62",
+    "image": "https://viyar.ua/store/Items/photos/ph39732.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39496",
+    "vendor": "Mastertool",
+    "name": "Біти РZ2, 50 мм, S2, 2 шт",
+    "article": "39496",
+    "price": "52.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39496.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "65862",
+    "vendor": "Makita",
+    "name": "Свердло для дерева з 3 ріжучими крайками 6x95 мм (D-07054) MakitaСвердло для дерева з 3 ріжучими кра",
+    "article": "65862",
+    "price": "46.98",
+    "image": "https://viyar.ua/store/Items/photos/ph65862.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91769",
+    "vendor": "Makita",
+    "name": "Свердло SDS-Plus Standard 6x160 мм (D-00066) Makitа",
+    "article": "91769",
+    "price": "63.00",
+    "image": "https://viyar.ua/store/Items/photos/ph91769.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "92472",
+    "vendor": "Makita",
+    "name": "Свердло HSS-R по металу 5x86 мм (D-38641) Makita",
+    "article": "92472",
+    "price": "15.78",
+    "image": "https://viyar.ua/store/Items/photos/ph92472.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "23437",
+    "vendor": "Hettich",
+    "name": "Центруюче свердло д / дерева, діам.5мм (62000) Hettich",
+    "article": "23437",
+    "price": "4993.92",
+    "image": "https://viyar.ua/store/Items/photos/ph23437.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39550",
+    "vendor": "Mastertool",
+    "name": "Стрижні клейові 11,2 * 300 мм, 1 кг, прозорі",
+    "article": "39550",
+    "price": "367.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39550.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39735",
+    "vendor": "Stanley",
+    "name": "Полотно по дереву, 100x72,5мм, різ 40мм, Т, 2шт. STA23072 Stanley",
+    "article": "39735",
+    "price": "114.18",
+    "image": "https://viyar.ua/store/Items/photos/ph39735.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39503",
+    "vendor": "Mastertool",
+    "name": "Пильне полотно для лобзика по дереву 5 шт, швидкий фігурний різ, 6TPI, L 100 мм T244D",
+    "article": "39503",
+    "price": "90.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39503.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39504",
+    "vendor": "Mastertool",
+    "name": "Пильне полотно для лобзика по дереву 5 шт, чистий прямий різ, 8TPI, L",
+    "article": "39504",
+    "price": "127.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39504.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57680",
+    "vendor": "Makita",
+    "name": "Перове свердло 22x150 мм (D-07761)",
+    "article": "57680",
+    "price": "139.98",
+    "image": "https://viyar.ua/store/Items/photos/ph57680.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57671",
+    "vendor": "Makita",
+    "name": "Перове свердло 12x150 мм (D-07705)",
+    "article": "57671",
+    "price": "105.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57671.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "61904",
+    "vendor": "Stanley",
+    "name": "Скоби тип G 10мм, 1000шт (1-TRA706T) Stanley",
+    "article": "61904",
+    "price": "108.78",
+    "image": "https://viyar.ua/store/Items/photos/ph61904.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91771",
+    "vendor": "Makita",
+    "name": "Свердло SDS-Plus Standard 8x110 мм (D-00125) Makita",
+    "article": "91771",
+    "price": "58.98",
+    "image": "https://viyar.ua/store/Items/photos/ph91771.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "92474",
+    "vendor": "Makita",
+    "name": "Свердло HSS-R по металу 5,5x93 мм (D-38657) Makita",
+    "article": "92474",
+    "price": "16.50",
+    "image": "https://viyar.ua/store/Items/photos/ph92474.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "160319",
+    "vendor": "Mastertool",
+    "name": "Стрічка малярна MASTERTOOL 48 мм Р20 79-9904",
+    "article": "160319",
+    "price": "46.02",
+    "image": "https://viyar.ua/store/Items/photos/ph160319.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39722",
+    "vendor": "Stanley",
+    "name": "Біти Ph1, Ph2, 60мм, 1 шт. 1-68-784 Stanley",
+    "article": "39722",
+    "price": "36.78",
+    "image": "https://viyar.ua/store/Items/photos/ph39722.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39525",
+    "vendor": "Mastertool",
+    "name": "Сліпі заклепки алюмінієві 3,2 * 12,00 мм, 50 шт",
+    "article": "39525",
+    "price": "28.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39525.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39546",
+    "vendor": "Mastertool",
+    "name": "Скоби 8 мм, 1000 шт",
+    "article": "39546",
+    "price": "28.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39546.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57674",
+    "vendor": "Makita",
+    "name": "Перове свердло 15x150 мм (D-07727)",
+    "article": "57674",
+    "price": "135.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57674.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "65863",
+    "vendor": "Makita",
+    "name": "Свердло для дерева з 3 ріжучими крайками 8x115 мм (D-07076) Makita",
+    "article": "65863",
+    "price": "49.98",
+    "image": "https://viyar.ua/store/Items/photos/ph65863.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91774",
+    "vendor": "Makita",
+    "name": "Свердло SDS-Plus Standard 8x160 мм (D-00131) Makita",
+    "article": "91774",
+    "price": "60.00",
+    "image": "https://viyar.ua/store/Items/photos/ph91774.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "92476",
+    "vendor": "Makita",
+    "name": "Свердло HSS-R по металу 4x75 мм (D-38607) Makita",
+    "article": "92476",
+    "price": "12.48",
+    "image": "https://viyar.ua/store/Items/photos/ph92476.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "160320",
+    "vendor": "Mastertool",
+    "name": "Стрічка малярна MASTERTOOL 25 мм Р20 79-9901",
+    "article": "160320",
+    "price": "25.02",
+    "image": "https://viyar.ua/store/Items/photos/ph160320.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39552",
+    "vendor": "Mastertool",
+    "name": "Стрічка ізоляційна 0,15 мм, 17 мм * 10 м, 1 шт, синя",
+    "article": "39552",
+    "price": "17.28",
+    "image": "https://viyar.ua/store/Items/photos/ph39552.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39488",
+    "vendor": "Mastertool",
+    "name": "Губка для шліфування Р120 100 * 70 * 25 мм",
+    "article": "39488",
+    "price": "28.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39488.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39723",
+    "vendor": "Stanley",
+    "name": "Біти Ph2, 25мм, 1 шт. 1-68-946 Stanley",
+    "article": "39723",
+    "price": "13.08",
+    "image": "https://viyar.ua/store/Items/photos/ph39723.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39527",
+    "vendor": "Mastertool",
+    "name": "Хомут пластиковий 2,5 * 150 мм білий, 100 шт",
+    "article": "39527",
+    "price": "30.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39527.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57677",
+    "vendor": "Makita",
+    "name": "Перове свердло 18x150 мм (D-07749)",
+    "article": "57677",
+    "price": "127.98",
+    "image": "https://viyar.ua/store/Items/photos/ph57677.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57681",
+    "vendor": "Makita",
+    "name": "Перове свердло 28x160 мм (D-07808)",
+    "article": "57681",
+    "price": "154.98",
+    "image": "https://viyar.ua/store/Items/photos/ph57681.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91827",
+    "vendor": "Makita",
+    "name": "Пильне полотно для лобзика HCS по дереву, швидке пиляння B-16 (A-85684) Makita",
+    "article": "91827",
+    "price": "184.98",
+    "image": "https://viyar.ua/store/Items/photos/ph91827.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "92477",
+    "vendor": "Makita",
+    "name": "Свердло HSS-R по металу 4,5x80 мм (D-38629) Makita",
+    "article": "92477",
+    "price": "14.28",
+    "image": "https://viyar.ua/store/Items/photos/ph92477.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39734",
+    "vendor": "Stanley",
+    "name": "Полотно по дереву, 100x72,5мм, різ 30мм, Т, 2шт. STA21052 Stanley",
+    "article": "39734",
+    "price": "137.40",
+    "image": "https://viyar.ua/store/Items/photos/ph39734.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39494",
+    "vendor": "Mastertool",
+    "name": "Біти H4 (HEX), 50 мм, S2, 2 шт Mastertool",
+    "article": "39494",
+    "price": "52.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39494.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57638",
+    "vendor": "Makita",
+    "name": "Набір свердл по бетону (5 шт.) (D-05175)",
+    "article": "57638",
+    "price": "345.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57638.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91797",
+    "vendor": "Makita",
+    "name": "Набір свердел SDS-Plus, 5 шт (D-36049) Makita",
+    "article": "91797",
+    "price": "328.02",
+    "image": "https://viyar.ua/store/Items/photos/ph91797.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39707",
+    "vendor": "Stanley",
+    "name": "Біти Ph1, 25мм, 2шт. STA61020 Stanley",
+    "article": "39707",
+    "price": "51.84",
+    "image": "https://viyar.ua/store/Items/photos/ph39707.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39497",
+    "vendor": "Mastertool",
+    "name": "Свердло пір'яне 35мм",
+    "article": "39497",
+    "price": "64.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39497.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39531",
+    "vendor": "Mastertool",
+    "name": "Хомут пластиковий 2,5 * 200 мм чорний, 100 шт",
+    "article": "39531",
+    "price": "42.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39531.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57676",
+    "vendor": "Makita",
+    "name": "Перове свердло 16x150 мм (D-07733)",
+    "article": "57676",
+    "price": "120.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57676.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "61910",
+    "vendor": "Stanley",
+    "name": "Скоби тип G 14мм, 1000шт (1-TRA709T) Stanley",
+    "article": "61910",
+    "price": "112.98",
+    "image": "https://viyar.ua/store/Items/photos/ph61910.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91739",
+    "vendor": "Makita",
+    "name": "Свердло SDS-Plus Standard 12x160 мм (D-00228) Makita",
+    "article": "91739",
+    "price": "75.00",
+    "image": "https://viyar.ua/store/Items/photos/ph91739.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91843",
+    "vendor": "Makita",
+    "name": "Свердло для дерева з 3 ріжучими крайками 3x60 мм (D-07026) Makita",
+    "article": "91843",
+    "price": "36.00",
+    "image": "https://viyar.ua/store/Items/photos/ph91843.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39731",
+    "vendor": "Stanley",
+    "name": "Бур SDS-Plus 12х150х210мм. STA54067 Stanley",
+    "article": "39731",
+    "price": "110.88",
+    "image": "https://viyar.ua/store/Items/photos/ph39731.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39529",
+    "vendor": "Mastertool",
+    "name": "Хомут пластиковий 2,5 * 100 мм чорний, 100 шт",
+    "article": "39529",
+    "price": "19.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39529.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39740",
+    "vendor": "Stanley",
+    "name": "Свердло по дереву d = 8мм, 120x80мм. STA52026 Stanley",
+    "article": "39740",
+    "price": "64.08",
+    "image": "https://viyar.ua/store/Items/photos/ph39740.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57682",
+    "vendor": "Makita",
+    "name": "Перове свердло 30x160 мм (D-07814)",
+    "article": "57682",
+    "price": "157.98",
+    "image": "https://viyar.ua/store/Items/photos/ph57682.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "60158",
+    "vendor": "Mastertool",
+    "name": "Свердло для меблевого конфірмату d = 4,5*75 мм Mastertool (2-32-045)",
+    "article": "60158",
+    "price": "79.02",
+    "image": "https://viyar.ua/store/Items/photos/ph60158.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "62063",
+    "vendor": "Stanley",
+    "name": "Набір біт 7 од. (S- 4.5мм, 5.5мм, 6.5мм - Ph- 0,1,2) + тримач (1-68-735) Stanley",
+    "article": "62063",
+    "price": "217.26",
+    "image": "https://viyar.ua/store/Items/photos/ph62063.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91760",
+    "vendor": "Makita",
+    "name": "Свердло SDS-Plus Standard 12x210 мм (D-00234) Makita",
+    "article": "91760",
+    "price": "100.98",
+    "image": "https://viyar.ua/store/Items/photos/ph91760.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "83346",
+    "vendor": "Stanley",
+    "name": "Олівець червоний для столяра 176мм НВ (1-03-850) Stanley",
+    "article": "83346",
+    "price": "29.28",
+    "image": "https://viyar.ua/store/Items/photos/ph83346.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "121094",
+    "vendor": "Hettich",
+    "name": "Гільзове свердло d=2,5 (9257329) Hettich",
+    "article": "121094",
+    "price": "3895.74",
+    "image": "https://viyar.ua/store/Items/photos/ph121094.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39522",
+    "vendor": "Mastertool",
+    "name": "Набір свердел для дерева 5 шт (4 * 75, 5 * 80, 6 * 90, 8 * 103, 10 * 117 мм) GRANITE",
+    "article": "39522",
+    "price": "55.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39522.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39730",
+    "vendor": "Stanley",
+    "name": "Бур SDS-Plus 10х100х160мм. STA54042 Stanley",
+    "article": "39730",
+    "price": "76.32",
+    "image": "https://viyar.ua/store/Items/photos/ph39730.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39548",
+    "vendor": "Mastertool",
+    "name": "Скоби 12 мм, 1000 шт",
+    "article": "39548",
+    "price": "36.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39548.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39506",
+    "vendor": "Mastertool",
+    "name": "Пильне полотно для лобзика по дереву 5 шт, чистий фігурний різ, 20TPI,",
+    "article": "39506",
+    "price": "187.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39506.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39748",
+    "vendor": "Stanley",
+    "name": "Набір з 6 вставок і магніт. утримувача (1-68-739)Stanley",
+    "article": "39748",
+    "price": "277.80",
+    "image": "https://viyar.ua/store/Items/photos/ph39748.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91762",
+    "vendor": "Makita",
+    "name": "Свердло SDS-Plus Standard 6x110 мм (D-00050) Makita",
+    "article": "91762",
+    "price": "61.02",
+    "image": "https://viyar.ua/store/Items/photos/ph91762.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "121095",
+    "vendor": "Hettich",
+    "name": "Гільзове свердло d=5 (70268) Hettich",
+    "article": "121095",
+    "price": "4139.16",
+    "image": "https://viyar.ua/store/Items/photos/ph121095.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57673",
+    "vendor": "Makita",
+    "name": "Перове свердло 14x150 мм (D-07711)",
+    "article": "57673",
+    "price": "115.02",
+    "image": "https://viyar.ua/store/Items/photos/ph57673.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39490",
+    "vendor": "Mastertool",
+    "name": "Біти РН1, 50 мм, S2, 2 шт Mastertool",
+    "article": "39490",
+    "price": "52.02",
+    "image": "https://viyar.ua/store/Items/photos/ph39490.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "83365",
+    "vendor": "Stanley",
+    "name": "Степлер 6-14мм 'Light Duty' скобы тип 'А' шпильки тип 'J' (6-TR150L) Stanley",
+    "article": "83365",
+    "price": "1683.00",
+    "image": "https://viyar.ua/store/Items/photos/ph83365.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39495",
+    "vendor": "Mastertool",
+    "name": "Біти РZ2, 25 мм, S2, 2 шт",
+    "article": "39495",
+    "price": "31.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39495.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57686",
+    "vendor": "Makita",
+    "name": "Біта PZ1 (3 шт.) (B-23488)Makita",
+    "article": "57686",
+    "price": "75.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57686.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "91836",
+    "vendor": "Makita",
+    "name": "Пильне полотно для лобзика B-25 (A-85765) Makita",
+    "article": "91836",
+    "price": "225.00",
+    "image": "https://viyar.ua/store/Items/photos/ph91836.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39505",
+    "vendor": "Mastertool",
+    "name": "Пильне полотно для лобзика по дереву 5 шт, чистий прямий різ, реверс, 10TPI, L 100 мм T101BR",
+    "article": "39505",
+    "price": "123.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39505.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57687",
+    "vendor": "Makita",
+    "name": "Біта PZ2 (3 шт.) (B-23494)Makita",
+    "article": "57687",
+    "price": "75.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57687.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "112586",
+    "vendor": "Stanley",
+    "name": "Стрижні клейові 11,3 * 101 мм, 6 шт прозорі DualTemp (1-GS15DT) Stanley",
+    "article": "112586",
+    "price": "71.88",
+    "image": "https://viyar.ua/store/Items/photos/ph112586.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39493",
+    "vendor": "Mastertool",
+    "name": "Біти H4 (HEX), 25 мм, S2, 2 шт Mastertool",
+    "article": "39493",
+    "price": "31.98",
+    "image": "https://viyar.ua/store/Items/photos/ph39493.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39706",
+    "vendor": "Stanley",
+    "name": "Біти Pz1, Pz2, Pz3, 25мм, 3шт. блістер STA61043 Stanley",
+    "article": "39706",
+    "price": "65.04",
+    "image": "https://viyar.ua/store/Items/photos/ph39706.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57649",
+    "vendor": "Makita",
+    "name": "Свердло (фреза) Фостнера 15х90 (D-41925)",
+    "article": "57649",
+    "price": "382.98",
+    "image": "https://viyar.ua/store/Items/photos/ph57649.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "61893",
+    "vendor": "Stanley",
+    "name": "Маркер столярний 2шт. (0-47-316) Stanley",
+    "article": "61893",
+    "price": "104.58",
+    "image": "https://viyar.ua/store/Items/photos/ph61893.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39737",
+    "vendor": "Stanley",
+    "name": "Свердло по дереву d = 4 мм, 80x52мм. STA52006 Stanley",
+    "article": "39737",
+    "price": "41.46",
+    "image": "https://viyar.ua/store/Items/photos/ph39737.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "65858",
+    "vendor": "Makita",
+    "name": "Свердло для дерева з 3 ріжучими крайками 4x75 мм (D-07032) Makita",
+    "article": "65858",
+    "price": "36.00",
+    "image": "https://viyar.ua/store/Items/photos/ph65858.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39736",
+    "vendor": "Stanley",
+    "name": "Свердло по дереву d = 10мм, 133x90мм. STA52036 Stanley",
+    "article": "39736",
+    "price": "75.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39736.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39728",
+    "vendor": "Stanley",
+    "name": "Біти Pz2, 25мм, 2шт. STA61041 Stanley",
+    "article": "39728",
+    "price": "51.96",
+    "image": "https://viyar.ua/store/Items/photos/ph39728.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "61908",
+    "vendor": "Stanley",
+    "name": "Скоби тип G 12мм, 1000шт (1-TRA708T) Stanley",
+    "article": "61908",
+    "price": "108.78",
+    "image": "https://viyar.ua/store/Items/photos/ph61908.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "62064",
+    "vendor": "Stanley",
+    "name": "Лезвие с отламывающимися сегментами 9мм, 10шт (1-11-300) Stanley",
+    "article": "62064",
+    "price": "100.02",
+    "image": "https://viyar.ua/store/Items/photos/ph62064.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39553",
+    "vendor": "Mastertool",
+    "name": "Стрічка ізоляційна 0,15 мм, 17 мм * 10 м, 1 шт, чорна",
+    "article": "39553",
+    "price": "17.28",
+    "image": "https://viyar.ua/store/Items/photos/ph39553.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39523",
+    "vendor": "Mastertool",
+    "name": "Набір свердел для дерева 8 шт (3 * 60, 4 * 75, 5 * 80, 6 * 90, 7 * 95, 8 * 103, 9 * 108, 10 * 117 мм",
+    "article": "39523",
+    "price": "87.00",
+    "image": "https://viyar.ua/store/Items/photos/ph39523.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "62065",
+    "vendor": "Stanley",
+    "name": "Маркер-міні з загостреним наконечником, чорний (1-47-324) Stanley",
+    "article": "62065",
+    "price": "36.00",
+    "image": "https://viyar.ua/store/Items/photos/ph62065.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "92480",
+    "vendor": "Makita",
+    "name": "Свердло HSS-R по металу 2x49 мм (D-38554) Makita",
+    "article": "92480",
+    "price": "7.20",
+    "image": "https://viyar.ua/store/Items/photos/ph92480.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39724",
+    "vendor": "Stanley",
+    "name": "Біти Ph2, 25мм, 2шт. STA61021 Stanley",
+    "article": "39724",
+    "price": "51.96",
+    "image": "https://viyar.ua/store/Items/photos/ph39724.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39738",
+    "vendor": "Stanley",
+    "name": "Свердло по дереву d = 5мм, 90x60мм. STA52011 Stanley",
+    "article": "39738",
+    "price": "43.92",
+    "image": "https://viyar.ua/store/Items/photos/ph39738.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39725",
+    "vendor": "Stanley",
+    "name": "Біти Pz1, 25мм, 2шт. STA61040 Stanley",
+    "article": "39725",
+    "price": "51.90",
+    "image": "https://viyar.ua/store/Items/photos/ph39725.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39727",
+    "vendor": "Stanley",
+    "name": "Біти Pz2, 25мм, 1 шт. 1-68-949 Stanley",
+    "article": "39727",
+    "price": "13.74",
+    "image": "https://viyar.ua/store/Items/photos/ph39727.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "39726",
+    "vendor": "Stanley",
+    "name": "Біти Pz1, Pz2, 60мм, 1 шт. 1-68-786 Stanley",
+    "article": "39726",
+    "price": "36.78",
+    "image": "https://viyar.ua/store/Items/photos/ph39726.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "57679",
+    "vendor": "Makita",
+    "name": "Перове свердло 20x150 мм (D-07755)",
+    "article": "57679",
+    "price": "135.00",
+    "image": "https://viyar.ua/store/Items/photos/ph57679.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "61896",
+    "vendor": "Stanley",
+    "name": "Лезвие запасное сегментированное, 10 шт (0-11-301) Stanley",
+    "article": "61896",
+    "price": "129.72",
+    "image": "https://viyar.ua/store/Items/photos/ph61896.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "65861",
+    "vendor": "Makita",
+    "name": "Свердло для дерева з 3 ріжучими крайками 5x85 мм (D-07048) MakitaСвердло для дерева з 3 ріжучими кра",
+    "article": "65861",
+    "price": "42.00",
+    "image": "https://viyar.ua/store/Items/photos/ph65861.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "190081",
+    "vendor": "ПАКПРИНТ, ТОВ",
+    "name": "Скоба металева 16мм СМ 16",
+    "article": "190081",
+    "price": "",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "190195",
+    "vendor": "FORNIT",
+    "name": "Термоетикетка 100х60 з'ємний клей, супер ТОР+лак (2тис./рул.) (вт41)",
+    "article": "190195",
+    "price": "",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "190215",
+    "vendor": "FORNIT",
+    "name": "Термоетикетка 98х150 мм з'ємний клей (500 шт./рул.) (вт41)",
+    "article": "190215",
+    "price": "",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "190226",
+    "vendor": "Форніт",
+    "name": "Термоетикетка 40х150 мм ТОР, каучуковий клей (0,5тис.) (вт 41)",
+    "article": "190226",
+    "price": "",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": ""
+  }
+];

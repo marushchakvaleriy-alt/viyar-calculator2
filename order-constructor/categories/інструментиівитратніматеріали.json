@@ -1,0 +1,2226 @@
+{
+  "category": "Інструменти і витратні матеріали",
+  "count": 98,
+  "items": [
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_sverl_i_bit_71_sht_d_33691/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57640",
+      "title": "Набір свердл та біт (71 шт.) (D-33691)",
+      "price": {
+        "amount": "3499.98",
+        "currency": "₴",
+        "unit": "",
+        "raw": "3 499.98 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57640.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57640.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "1.912",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_konfirmata_d_4_5_mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "94086",
+      "title": "Свердло для конфірмата 6,4 d=4,5 мм",
+      "price": {
+        "amount": "138.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "138.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph94086.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\94086.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Китай",
+        "Вага, кг:": "0.031",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoby_10_mm_1000_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39547",
+      "title": "Скоби 10 мм, 1000 шт",
+      "price": {
+        "amount": "31.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "31.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39547.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39547.jpg",
+      "specs": {
+        "Тип товару:": "Скоби",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.084",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bur_sds_plus_8kh100kh160mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39733",
+      "title": "Бур SDS-Plus 8х100х160мм. STA54037 Stanley",
+      "price": {
+        "amount": "70.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "70.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39733.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39733.jpg",
+      "specs": {
+        "Тип товару:": "Бур",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.06",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bur_sds_plus_6kh100kh160mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39732",
+      "title": "Бур SDS-Plus 6х100х160мм. STA54032 Stanley",
+      "price": {
+        "amount": "61.62",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "61.62 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39732.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39732.jpg",
+      "specs": {
+        "Тип товару:": "Бур",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.054",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nasadki_otvyertochnye_rz2_50_mm_s2_2_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39496",
+      "title": "Біти РZ2, 50 мм, S2, 2 шт",
+      "price": {
+        "amount": "52.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "52.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39496.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39496.jpg",
+      "specs": {
+        "Тип товару:": "Набори інструментів",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.032",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_dereva_s_3_rezhushchimi_kromkami_6x95_mm_d_07054_makitasverlo_dlya_dereva_s_3_rezhushchi/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "65862",
+      "title": "Свердло для дерева з 3 ріжучими крайками 6x95 мм (D-07054) MakitaСвердло для дерева з 3 ріжучими кра",
+      "price": {
+        "amount": "46.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "46.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph65862.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\65862.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.022",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_sds_plus_standard_6x160_mm_d_00066_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91769",
+      "title": "Свердло SDS-Plus Standard 6x160 мм (D-00066) Makitа",
+      "price": {
+        "amount": "63.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "63.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91769.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91769.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.056",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_hss_r_po_metallu_5x86_mm_d_38641_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "92472",
+      "title": "Свердло HSS-R по металу 5x86 мм (D-38641) Makita",
+      "price": {
+        "amount": "15.78",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "15.78 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph92472.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\92472.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.006",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/tsentriruyushchee_sverlo_d_dereva_diam_5mm_62000_hettich/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "23437",
+      "title": "Центруюче свердло д / дерева, діам.5мм (62000) Hettich",
+      "price": {
+        "amount": "4993.92",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "4 993.92 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph23437.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\23437.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Hettich",
+        "Вага, кг:": "1",
+        "Країна виробник:": "Німеччина",
+        "Матеріал:": "Метал",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sterzhni_kleevye_11_2_300_mm_1_kg_prozrachnye/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39550",
+      "title": "Стрижні клейові 11,2 * 300 мм, 1 кг, прозорі",
+      "price": {
+        "amount": "367.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "367.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39550.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39550.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "1",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_polotno_po_derevu_100x72_5mm_rez_40mm_t_2sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39735",
+      "title": "Полотно по дереву, 100x72,5мм, різ 40мм, Т, 2шт. STA23072 Stanley",
+      "price": {
+        "amount": "114.18",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "114.18 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39735.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39735.jpg",
+      "specs": {
+        "Тип товару:": "Полотно пильне",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.056",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/pilnoe_polotno_dlya_lobzika_po_derevu_5_sht_bystryy_figurnyy_rez_6tpi_l_100_mm_t244d/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39503",
+      "title": "Пильне полотно для лобзика по дереву 5 шт, швидкий фігурний різ, 6TPI, L 100 мм T244D",
+      "price": {
+        "amount": "90.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "90.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39503.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39503.jpg",
+      "specs": {
+        "Тип товару:": "Полотно пильне",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.038",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/pilnoe_polotno_dlya_lobzika_po_derevu_5_sht_chistyy_pryamoy_rez_8tpi_l_116_mm_t301cd/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39504",
+      "title": "Пильне полотно для лобзика по дереву 5 шт, чистий прямий різ, 8TPI, L",
+      "price": {
+        "amount": "127.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "127.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39504.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39504.jpg",
+      "specs": {
+        "Тип товару:": "Полотно пильне",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.046",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_22x150_mm_d_07761/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57680",
+      "title": "Перове свердло 22x150 мм (D-07761)",
+      "price": {
+        "amount": "139.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "139.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57680.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57680.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.058",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_12x150_mm_d_07705/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57671",
+      "title": "Перове свердло 12x150 мм (D-07705)",
+      "price": {
+        "amount": "105.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "105.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57671.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57671.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.046",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoby_tip_g_10mm_1000sht_1_tra706t_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "61904",
+      "title": "Скоби тип G 10мм, 1000шт (1-TRA706T) Stanley",
+      "price": {
+        "amount": "108.78",
+        "currency": "₴",
+        "unit": "",
+        "raw": "108.78 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph61904.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\61904.jpg",
+      "specs": {
+        "Тип товару:": "Скоби",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.152",
+        "Країна виробник:": "Тайвань",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_sds_plus_standard_8x110_mm_d_00125_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91771",
+      "title": "Свердло SDS-Plus Standard 8x110 мм (D-00125) Makita",
+      "price": {
+        "amount": "58.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "58.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91771.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91771.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.048",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_hss_r_po_metallu_5_5x93_mm_d_38657_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "92474",
+      "title": "Свердло HSS-R по металу 5,5x93 мм (D-38657) Makita",
+      "price": {
+        "amount": "16.50",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "16.50 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph92474.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\92474.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.012",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/lenta_malyarnaya_mastertool_48_mm_r20_79_9904/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "160319",
+      "title": "Стрічка малярна MASTERTOOL 48 мм Р20 79-9904",
+      "price": {
+        "amount": "46.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "46.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph160319.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\160319.jpg",
+      "specs": {
+        "Тип товару:": "Інструменти",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.082",
+        "Ширина(W), мм:": "48",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bity_ph1_ph2_60mm_10sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39722",
+      "title": "Біти Ph1, Ph2, 60мм, 1 шт. 1-68-784 Stanley",
+      "price": {
+        "amount": "36.78",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "36.78 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39722.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39722.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.016",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/slepye_zaklepki_alyuminievye_3_2_12_00_mm_50_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39525",
+      "title": "Сліпі заклепки алюмінієві 3,2 * 12,00 мм, 50 шт",
+      "price": {
+        "amount": "28.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "28.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39525.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39525.jpg",
+      "specs": {
+        "Тип товару:": "Заклепки",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.058",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoby_8_mm_1000_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39546",
+      "title": "Скоби 8 мм, 1000 шт",
+      "price": {
+        "amount": "28.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "28.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39546.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39546.jpg",
+      "specs": {
+        "Тип товару:": "Скоби",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.074",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_15x150_mm_d_07727/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57674",
+      "title": "Перове свердло 15x150 мм (D-07727)",
+      "price": {
+        "amount": "135.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "135.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57674.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57674.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.056",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_dereva_s_3_rezhushchimi_kromkami_8x115_mm_d_07076_makitasverlo_dlya_dereva_s_3_rezhushch/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "65863",
+      "title": "Свердло для дерева з 3 ріжучими крайками 8x115 мм (D-07076) Makita",
+      "price": {
+        "amount": "49.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "49.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph65863.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.038",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_sds_plus_standard_8x160_mm_d_00131_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91774",
+      "title": "Свердло SDS-Plus Standard 8x160 мм (D-00131) Makita",
+      "price": {
+        "amount": "60.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "60.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91774.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91774.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.064",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_hss_r_po_metallu_4x75_mm_d_38607_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "92476",
+      "title": "Свердло HSS-R по металу 4x75 мм (D-38607) Makita",
+      "price": {
+        "amount": "12.48",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "12.48 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph92476.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\92476.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.008",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/lenta_malyarnaya_mastertool_25_mm_r20_79_9901/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "160320",
+      "title": "Стрічка малярна MASTERTOOL 25 мм Р20 79-9901",
+      "price": {
+        "amount": "25.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "25.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph160320.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\160320.jpg",
+      "specs": {
+        "Тип товару:": "Інструменти",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.044",
+        "Ширина(W), мм:": "25",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/lenta_izolyatsionnaya_0_15_mm_17_mm_10_m_10_sht_sinyaya/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39552",
+      "title": "Стрічка ізоляційна 0,15 мм, 17 мм * 10 м, 1 шт, синя",
+      "price": {
+        "amount": "17.28",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "17.28 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39552.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39552.jpg",
+      "specs": {
+        "Тип товару:": "Ізоляція",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.038",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/gubka_dlya_shlifovaniya_r120_100_70_25_mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39488",
+      "title": "Губка для шліфування Р120 100 * 70 * 25 мм",
+      "price": {
+        "amount": "28.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "28.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39488.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39488.jpg",
+      "specs": {
+        "Тип товару:": "Губка",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.023",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/bity_ph2_25mm_1_sht_1_68_946_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39723",
+      "title": "Біти Ph2, 25мм, 1 шт. 1-68-946 Stanley",
+      "price": {
+        "amount": "13.08",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "13.08 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39723.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39723.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.004",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/khomut_plastikovyy_2_5_150_mm_belyy_100_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39527",
+      "title": "Хомут пластиковий 2,5 * 150 мм білий, 100 шт",
+      "price": {
+        "amount": "30.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "30.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39527.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39527.jpg",
+      "specs": {
+        "Тип товару:": "Хомут",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.046",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_18x150_mm_d_07749/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57677",
+      "title": "Перове свердло 18x150 мм (D-07749)",
+      "price": {
+        "amount": "127.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "127.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57677.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57677.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.05",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_28x160_mm_d_07808/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57681",
+      "title": "Перове свердло 28x160 мм (D-07808)",
+      "price": {
+        "amount": "154.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "154.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57681.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57681.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.064",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/pilnoe_polotno_dlya_lobzika_hcs_po_derevu_bystroe_pilenie_b_16_a_85684_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91827",
+      "title": "Пильне полотно для лобзика HCS по дереву, швидке пиляння B-16 (A-85684) Makita",
+      "price": {
+        "amount": "184.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "184.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91827.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91827.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.038",
+        "Країна виробник:": "Японія",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_hss_r_po_metallu_4_5x80_mm_d_38629_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "92477",
+      "title": "Свердло HSS-R по металу 4,5x80 мм (D-38629) Makita",
+      "price": {
+        "amount": "14.28",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "14.28 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph92477.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\92477.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.006",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_polotno_po_derevu_100x72_5mm_rez_30mm_t_2sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39734",
+      "title": "Полотно по дереву, 100x72,5мм, різ 30мм, Т, 2шт. STA21052 Stanley",
+      "price": {
+        "amount": "137.40",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "137.40 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39734.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39734.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.018",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nasadki_otvyertochnye_h4_50_mm_s2_2_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39494",
+      "title": "Біти H4 (HEX), 50 мм, S2, 2 шт Mastertool",
+      "price": {
+        "amount": "52.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "52.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39494.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39494.jpg",
+      "specs": {
+        "Тип товару:": "Набори інструментів",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.032",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_sverl_po_betonu_5_sht_d_05175/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57638",
+      "title": "Набір свердл по бетону (5 шт.) (D-05175)",
+      "price": {
+        "amount": "345.00",
+        "currency": "₴",
+        "unit": "",
+        "raw": "345.00 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57638.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57638.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.138",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_sverl_sds_plus_5_sht_d_36049_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91797",
+      "title": "Набір свердел SDS-Plus, 5 шт (D-36049) Makita",
+      "price": {
+        "amount": "328.02",
+        "currency": "₴",
+        "unit": "",
+        "raw": "328.02 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91797.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91797.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.332",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bity_ph1_25mm_2sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39707",
+      "title": "Біти Ph1, 25мм, 2шт. STA61020 Stanley",
+      "price": {
+        "amount": "51.84",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "51.84 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39707.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39707.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.016",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_perevoe_35mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39497",
+      "title": "Свердло пір'яне 35мм",
+      "price": {
+        "amount": "64.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "64.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39497.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39497.jpg",
+      "specs": {
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.06",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "3 місяця",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/khomut_plastikovyy_2_5_200_mm_chernyy_100_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39531",
+      "title": "Хомут пластиковий 2,5 * 200 мм чорний, 100 шт",
+      "price": {
+        "amount": "42.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "42.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39531.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39531.jpg",
+      "specs": {
+        "Тип товару:": "Хомут",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.058",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_16x150_mm_d_07733/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57676",
+      "title": "Перове свердло 16x150 мм (D-07733)",
+      "price": {
+        "amount": "120.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "120.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57676.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57676.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.048",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoby_tip_g_14mm_1000sht_1_tra709t_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "61910",
+      "title": "Скоби тип G 14мм, 1000шт (1-TRA709T) Stanley",
+      "price": {
+        "amount": "112.98",
+        "currency": "₴",
+        "unit": "",
+        "raw": "112.98 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph61910.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Скоби",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.214",
+        "Країна виробник:": "Тайвань",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_sds_plus_standard_12x160_mm_d_00228_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91739",
+      "title": "Свердло SDS-Plus Standard 12x160 мм (D-00228) Makita",
+      "price": {
+        "amount": "75.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "75.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91739.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91739.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.082",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_dereva_s_3_rezhushchimi_kromkami_3x60_mm_d_07026_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91843",
+      "title": "Свердло для дерева з 3 ріжучими крайками 3x60 мм (D-07026) Makita",
+      "price": {
+        "amount": "36.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "36.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91843.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91843.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.004",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bur_sds_plus_12kh150kh210mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39731",
+      "title": "Бур SDS-Plus 12х150х210мм. STA54067 Stanley",
+      "price": {
+        "amount": "110.88",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "110.88 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39731.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39731.jpg",
+      "specs": {
+        "Тип товару:": "Бур",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.1",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/khomut_plastikovyy_2_5_100_mm_chernyy_100_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39529",
+      "title": "Хомут пластиковий 2,5 * 100 мм чорний, 100 шт",
+      "price": {
+        "amount": "19.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "19.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39529.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39529.jpg",
+      "specs": {
+        "Тип товару:": "Хомут",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.028",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_sverlo_po_derevu_d_8mm_120x80mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39740",
+      "title": "Свердло по дереву d = 8мм, 120x80мм. STA52026 Stanley",
+      "price": {
+        "amount": "64.08",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "64.08 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39740.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39740.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.038",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_30x160_mm_d_07814/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57682",
+      "title": "Перове свердло 30x160 мм (D-07814)",
+      "price": {
+        "amount": "157.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "157.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57682.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57682.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.058",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_mebelnogo_konfirmata_d_4_5_75_mm_mastertool_2_32_045/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "60158",
+      "title": "Свердло для меблевого конфірмату d = 4,5*75 мм Mastertool (2-32-045)",
+      "price": {
+        "amount": "79.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "79.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph60158.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\60158.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.046",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_bit_7_ed_s_4_5mm_5_5mm_6_5mm_ph_0_1_2_derzhatel_1_68_735_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "62063",
+      "title": "Набір біт 7 од. (S- 4.5мм, 5.5мм, 6.5мм - Ph- 0,1,2) + тримач (1-68-735) Stanley",
+      "price": {
+        "amount": "217.26",
+        "currency": "₴",
+        "unit": "",
+        "raw": "217.26 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph62063.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\62063.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.092",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_sds_plus_standard_12x210_mm_d_00234_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91760",
+      "title": "Свердло SDS-Plus Standard 12x210 мм (D-00234) Makita",
+      "price": {
+        "amount": "100.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "100.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91760.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91760.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.098",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/karandash_krasnyy_dlya_stolyara_176mm_nv_1_03_850_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "83346",
+      "title": "Олівець червоний для столяра 176мм НВ (1-03-850) Stanley",
+      "price": {
+        "amount": "29.28",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "29.28 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph83346.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\83346.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.05",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/gilzovoe_sverlo_d_2_5_9257329_hettich/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "121094",
+      "title": "Гільзове свердло d=2,5 (9257329) Hettich",
+      "price": {
+        "amount": "3895.74",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "3 895.74 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph121094.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\121094.jpg",
+      "specs": {
+        "Виробник:": "Hettich",
+        "Вага, кг:": "0.098",
+        "Країна виробник:": "Німеччина",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_sverl_dlya_dereva_5_sht_4_75_5_80_6_90_8_103_10_117_mm_granite/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39522",
+      "title": "Набір свердел для дерева 5 шт (4 * 75, 5 * 80, 6 * 90, 8 * 103, 10 * 117 мм) GRANITE",
+      "price": {
+        "amount": "55.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "55.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39522.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39522.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.1",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bur_sds_plus_10kh100kh160mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39730",
+      "title": "Бур SDS-Plus 10х100х160мм. STA54042 Stanley",
+      "price": {
+        "amount": "76.32",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "76.32 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39730.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39730.jpg",
+      "specs": {
+        "Тип товару:": "Бур",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.074",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoby_12_mm_1000_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39548",
+      "title": "Скоби 12 мм, 1000 шт",
+      "price": {
+        "amount": "36.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "36.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39548.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39548.jpg",
+      "specs": {
+        "Тип товару:": "Скоби",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.1",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/pilnoe_polotno_dlya_lobzika_po_derevu_5_sht_chistyy_figurnyy_rez_20tpi_l_77mm_t101ao/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39506",
+      "title": "Пильне полотно для лобзика по дереву 5 шт, чистий фігурний різ, 20TPI,",
+      "price": {
+        "amount": "187.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "187.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39506.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39506.jpg",
+      "specs": {
+        "Тип товару:": "Полотно пильне",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.026",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_stanley_iz_6_vstavok_i_magnit_derzhatelya_1_68_739/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39748",
+      "title": "Набір з 6 вставок і магніт. утримувача (1-68-739)Stanley",
+      "price": {
+        "amount": "277.80",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "277.80 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39748.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39748.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.09",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_sds_plus_standard_6x110_mm_d_00050_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91762",
+      "title": "Свердло SDS-Plus Standard 6x110 мм (D-00050) Makita",
+      "price": {
+        "amount": "61.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "61.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91762.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91762.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.046",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/gilzovoe_sverlo_d_5_70268_hettich/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "121095",
+      "title": "Гільзове свердло d=5 (70268) Hettich",
+      "price": {
+        "amount": "4139.16",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "4 139.16 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph121095.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\121095.jpg",
+      "specs": {
+        "Виробник:": "Hettich",
+        "Вага, кг:": "0.102",
+        "Країна виробник:": "Німеччина",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_14x150_mm_d_07711/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57673",
+      "title": "Перове свердло 14x150 мм (D-07711)",
+      "price": {
+        "amount": "115.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "115.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57673.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57673.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.048",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nasadki_otvyertochnye_rn1_50_mm_s2_2_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39490",
+      "title": "Біти РН1, 50 мм, S2, 2 шт Mastertool",
+      "price": {
+        "amount": "52.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "52.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39490.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39490.jpg",
+      "specs": {
+        "Тип товару:": "Набори інструментів",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.026",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/stepler_6_14mm_light_duty_skobi_tip_a_shpilki_tip_j_6_tr150l_s/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "83365",
+      "title": "Степлер 6-14мм \"Light Duty\" скобы тип \"А\" шпильки тип \"J\" (6-TR150L) Stanley",
+      "price": {
+        "amount": "1683.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "1 683.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph83365.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\83365.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.2",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nasadki_otvyertochnye_rz2_25_mm_s2_2_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39495",
+      "title": "Біти РZ2, 25 мм, S2, 2 шт",
+      "price": {
+        "amount": "31.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "31.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39495.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39495.jpg",
+      "specs": {
+        "Тип товару:": "Набори інструментів",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.014",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/bita_pz1_3_sht_b_23488_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57686",
+      "title": "Біта PZ1 (3 шт.) (B-23488)Makita",
+      "price": {
+        "amount": "75.00",
+        "currency": "₴",
+        "unit": "",
+        "raw": "75.00 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57686.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57686.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.016",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/pilnoe_polotno_dlya_lobzika_b_25_a_85765_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "91836",
+      "title": "Пильне полотно для лобзика B-25 (A-85765) Makita",
+      "price": {
+        "amount": "225.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "225.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph91836.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\91836.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.04",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/pilnoe_polotno_dlya_lobzika_po_derevu_5_sht_chistyy_pryamoy_rez_revers_10tpi_l_100_mm_t101br/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39505",
+      "title": "Пильне полотно для лобзика по дереву 5 шт, чистий прямий різ, реверс, 10TPI, L 100 мм T101BR",
+      "price": {
+        "amount": "123.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "123.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39505.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39505.jpg",
+      "specs": {
+        "Тип товару:": "Полотно пильне",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.046",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/bita_pz2_3_sht_b_23494_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57687",
+      "title": "Біта PZ2 (3 шт.) (B-23494)Makita",
+      "price": {
+        "amount": "75.00",
+        "currency": "₴",
+        "unit": "",
+        "raw": "75.00 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57687.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\57687.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.018",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sterzhni_kleevye_11_3_101_mm_6_sht_prozrachnye_dualtemp_1_gs15dt_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "112586",
+      "title": "Стрижні клейові 11,3 * 101 мм, 6 шт прозорі DualTemp (1-GS15DT) Stanley",
+      "price": {
+        "amount": "71.88",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "71.88 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph112586.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\112586.jpg",
+      "specs": {
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.074",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nasadki_otvyertochnye_h4_25_mm_s2_2_sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39493",
+      "title": "Біти H4 (HEX), 25 мм, S2, 2 шт Mastertool",
+      "price": {
+        "amount": "31.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "31.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39493.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\39493.jpg",
+      "specs": {
+        "Тип товару:": "Набори інструментів",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.014",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bity_pz1_pz2_pz3_25mm_3sht_blister/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39706",
+      "title": "Біти Pz1, Pz2, Pz3, 25мм, 3шт. блістер STA61043 Stanley",
+      "price": {
+        "amount": "65.04",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "65.04 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39706.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.022",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_freza_fostnera_15kh90_d_41925/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57649",
+      "title": "Свердло (фреза) Фостнера 15х90 (D-41925)",
+      "price": {
+        "amount": "382.98",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "382.98 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57649.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Фрези",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.054",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/marker_stolyarnyy_2sht_0_47_316_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "61893",
+      "title": "Маркер столярний 2шт. (0-47-316) Stanley",
+      "price": {
+        "amount": "104.58",
+        "currency": "₴",
+        "unit": "",
+        "raw": "104.58 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph61893.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\HelpCrunch(_onChatOpen_,function(a){dataLayer.push({event__opensChat_})});HelpCrunch(_onChatClose_,function(a){dataLayer.jpg",
+      "specs": {
+        "Тип товару:": "Маркери",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.032",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_sverlo_po_derevu_d_4mm_80x52mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39737",
+      "title": "Свердло по дереву d = 4 мм, 80x52мм. STA52006 Stanley",
+      "price": {
+        "amount": "41.46",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "41.46 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39737.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.016",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_dereva_s_3_rezhushchimi_kromkami_4x75_mm_d_07032_makitasverlo_dlya_dereva_s_3_rezhushchi/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "65858",
+      "title": "Свердло для дерева з 3 ріжучими крайками 4x75 мм (D-07032) Makita",
+      "price": {
+        "amount": "36.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "36.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph65858.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.008",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_sverlo_po_derevu_d_10mm_133x90mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39736",
+      "title": "Свердло по дереву d = 10мм, 133x90мм. STA52036 Stanley",
+      "price": {
+        "amount": "75.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "75.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39736.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.058",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bity_pz2_25mm_2sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39728",
+      "title": "Біти Pz2, 25мм, 2шт. STA61041 Stanley",
+      "price": {
+        "amount": "51.96",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "51.96 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39728.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.018",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoby_tip_g_12mm_1000sht_1_tra708t_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "61908",
+      "title": "Скоби тип G 12мм, 1000шт (1-TRA708T) Stanley",
+      "price": {
+        "amount": "108.78",
+        "currency": "₴",
+        "unit": "",
+        "raw": "108.78 ₴/Набор"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph61908.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Скоби",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.194",
+        "Країна виробник:": "Тайвань",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/lezvie_s_otlamyvayushchimisya_segmentami_9mm_10sht_1_11_300_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "62064",
+      "title": "Лезвие с отламывающимися сегментами 9мм, 10шт (1-11-300) Stanley",
+      "price": {
+        "amount": "100.02",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "100.02 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph62064.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Ножи",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.032",
+        "Країна виробник:": "Великобританія",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/lenta_izolyatsionnaya_0_15_mm_17_mm_10_m_10_sht_chernaya/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39553",
+      "title": "Стрічка ізоляційна 0,15 мм, 17 мм * 10 м, 1 шт, чорна",
+      "price": {
+        "amount": "17.28",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "17.28 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39553.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Ізоляція",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.0359",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/nabor_sverl_dlya_dereva_8_sht_3_60_4_75_5_80_6_90_7_95_8_103_9_108_10_117_mm_granite/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39523",
+      "title": "Набір свердел для дерева 8 шт (3 * 60, 4 * 75, 5 * 80, 6 * 90, 7 * 95, 8 * 103, 9 * 108, 10 * 117 мм",
+      "price": {
+        "amount": "87.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "87.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39523.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Mastertool",
+        "Вага, кг:": "0.162",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "6 місяців",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/marker_mini_s_zaostrennym_nakonechnikom_chernyy_1_47_324_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "62065",
+      "title": "Маркер-міні з загостреним наконечником, чорний (1-47-324) Stanley",
+      "price": {
+        "amount": "36.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "36.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph62065.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\HelpCrunch(_onChatOpen_,function(a){dataLayer.push({event__opensChat_})});HelpCrunch(_onChatClose_,function(a){dataLayer.jpg",
+      "specs": {
+        "Тип товару:": "Маркери",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.008",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_hss_r_po_metallu_2x49_mm_d_38554_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "92480",
+      "title": "Свердло HSS-R по металу 2x49 мм (D-38554) Makita",
+      "price": {
+        "amount": "7.20",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "7.20 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph92480.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Ручний інструмент",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.001",
+        "Країна виробник:": "Китай",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bity_ph2_25mm_2sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39724",
+      "title": "Біти Ph2, 25мм, 2шт. STA61021 Stanley",
+      "price": {
+        "amount": "51.96",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "51.96 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39724.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.014",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_sverlo_po_derevu_d_5mm_90x60mm/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39738",
+      "title": "Свердло по дереву d = 5мм, 90x60мм. STA52011 Stanley",
+      "price": {
+        "amount": "43.92",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "43.92 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39738.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.014",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/aks_instr_stanley_bity_pz1_25mm_2sht/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39725",
+      "title": "Біти Pz1, 25мм, 2шт. STA61040 Stanley",
+      "price": {
+        "amount": "51.90",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "51.90 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39725.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.012",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/bity_pz2_25mm_1_sht_1_68_949_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39727",
+      "title": "Біти Pz2, 25мм, 1 шт. 1-68-949 Stanley",
+      "price": {
+        "amount": "13.74",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "13.74 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39727.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.008",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/bity_pz1_pz2_60mm_1_sht_1_68_786_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "39726",
+      "title": "Біти Pz1, Pz2, 60мм, 1 шт. 1-68-786 Stanley",
+      "price": {
+        "amount": "36.78",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "36.78 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph39726.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Біти",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.01",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/perevoe_sverlo_20x150_mm_d_07755/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "57679",
+      "title": "Перове свердло 20x150 мм (D-07755)",
+      "price": {
+        "amount": "135.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "135.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph57679.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.05",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/lezvie_zapasnoe_segmentirovannoe_10_sht_0_11_301_stanley/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "61896",
+      "title": "Лезвие запасное сегментированное, 10 шт (0-11-301) Stanley",
+      "price": {
+        "amount": "129.72",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "129.72 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph61896.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\HelpCrunch(_onChatOpen_,function(a){dataLayer.push({event__opensChat_})});HelpCrunch(_onChatClose_,function(a){dataLayer.jpg",
+      "specs": {
+        "Тип товару:": "Ножи",
+        "Виробник:": "Stanley",
+        "Вага, кг:": "0.086",
+        "Країна виробник:": "Великобританія",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/sverlo_dlya_dereva_s_3_rezhushchimi_kromkami_5x85_mm_d_07048_makita/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "65861",
+      "title": "Свердло для дерева з 3 ріжучими крайками 5x85 мм (D-07048) MakitaСвердло для дерева з 3 ріжучими кра",
+      "price": {
+        "amount": "42.00",
+        "currency": "₴",
+        "unit": "шт",
+        "raw": "42.00 ₴/шт"
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/ph65861.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Тип товару:": "Свердла",
+        "Виробник:": "Makita",
+        "Вага, кг:": "0.016",
+        "Країна виробник:": "Китай",
+        "Гарантія:": "1 рік",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/skoba-metaleva-16mm-sm-16/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "190081",
+      "title": "Скоба металева 16мм СМ 16",
+      "price": {
+        "amount": "",
+        "currency": "",
+        "unit": "",
+        "raw": ""
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Виробник:": "ПАКПРИНТ, ТОВ",
+        "Вага, кг:": "0.001",
+        "Країна виробник:": "Україна",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/termoetiketka-100kh60-z-mniy-kley-super-tor-lak-2tis-rul-vt41/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "190195",
+      "title": "Термоетикетка 100х60 з'ємний клей, супер ТОР+лак (2тис./рул.) (вт41)",
+      "price": {
+        "amount": "",
+        "currency": "",
+        "unit": "",
+        "raw": ""
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Виробник:": "FORNIT",
+        "Вага, кг:": "0.001",
+        "Країна виробник:": "Україна",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/termoetiketka-98kh150-mm-z-mniy-kley-500-sht-rul-vt41/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "190215",
+      "title": "Термоетикетка 98х150 мм з'ємний клей (500 шт./рул.) (вт41)",
+      "price": {
+        "amount": "",
+        "currency": "",
+        "unit": "",
+        "raw": ""
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Виробник:": "FORNIT",
+        "Вага, кг:": "0.002",
+        "Країна виробник:": "Україна",
+        "Чистий розмір": "ні"
+      }
+    },
+    {
+      "product_url": "https://viyar.ua/ua/catalog/termoetiketka-40kh150-mm-tor-kauchukoviy-kley-0-5tis-vt-41/",
+      "breadcrumbs": "Головна/Каталог/Інструменти і витратні матеріали/Витратні матеріали",
+      "code": "190226",
+      "title": "Термоетикетка 40х150 мм ТОР, каучуковий клей (0,5тис.) (вт 41)",
+      "price": {
+        "amount": "",
+        "currency": "",
+        "unit": "",
+        "raw": ""
+      },
+      "clean_size": "ні",
+      "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+      "saved_image": "D:\\Dropbox\\_code\\links\\Viyar-crawler\\img\\no_code.jpg",
+      "specs": {
+        "Виробник:": "Форніт",
+        "Країна виробник:": "Україна",
+        "Чистий розмір": "ні"
+      }
+    }
+  ]
+}

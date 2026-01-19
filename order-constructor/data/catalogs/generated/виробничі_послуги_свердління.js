@@ -1,0 +1,211 @@
+window.Catalog_ВиробничіПослугиСвердління = [
+  {
+    "id": "00011",
+    "vendor": "",
+    "name": "Свердління отворів",
+    "article": "00011",
+    "price": "6.78",
+    "image": "https://viyar.ua/store/Items/photos/ph00011.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98175",
+    "vendor": "ВіЯр",
+    "name": "Свердління глибоких торцевих отворів",
+    "article": "98175",
+    "price": "42.06",
+    "image": "https://viyar.ua/store/Items/photos/ph98175.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "130949",
+    "vendor": "ВіЯр",
+    "name": "Заглиблення під завіси D35 негабаритних деталей (плит ВГ та ГТ, стяжок, стільниць)",
+    "article": "130949",
+    "price": "25.98",
+    "image": "https://viyar.ua/store/Items/photos/ph130949.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "51203",
+    "vendor": "ВіЯр",
+    "name": "Заглиблення під завіси D35",
+    "article": "51203",
+    "price": "18.90",
+    "image": "https://viyar.ua/store/Items/photos/ph51203.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98178",
+    "vendor": "ВіЯр",
+    "name": "Свердління глибоких торцевих отворів (плит ВГ та ГТ, стяжок)",
+    "article": "98178",
+    "price": "48.12",
+    "image": "https://viyar.ua/store/Items/photos/ph98178.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98061",
+    "vendor": "ВіЯр",
+    "name": "Свердління отворів (груповий розкрій)",
+    "article": "98061",
+    "price": "14.94",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "96184",
+    "vendor": "ВіЯр",
+    "name": "Свердління негабаритних деталей",
+    "article": "96184",
+    "price": "28.02",
+    "image": "https://viyar.ua/store/Items/photos/ph96184.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "144691",
+    "vendor": "Україна",
+    "name": "Лазерне свердління ДВП",
+    "article": "144691",
+    "price": "19.98",
+    "image": "https://viyar.ua/store/Items/photos/ph144691.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98165",
+    "vendor": "ВіЯр",
+    "name": "Свердління негабаритних деталей (груповий розкрій)",
+    "article": "98165",
+    "price": "36.00",
+    "image": "https://viyar.ua/store/Items/photos/ph98165.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54109",
+    "vendor": "ВіЯр",
+    "name": "Свердління отворів (МебЩит)",
+    "article": "54109",
+    "price": "10.02",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54110",
+    "vendor": "ВіЯр",
+    "name": "Свердління ручне (МебЩит)",
+    "article": "54110",
+    "price": "10.02",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "54107",
+    "vendor": "ВіЯр",
+    "name": "Свердління негабаритних деталей (МебЩит)",
+    "article": "54107",
+    "price": "8.88",
+    "image": "https://viyar.ua/store/Items/photos/noname_ua.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98190",
+    "vendor": "ВіЯр",
+    "name": "Свердління глибоких торцевих отворів (груповий розкрій)",
+    "article": "98190",
+    "price": "78.84",
+    "image": "https://viyar.ua/store/Items/photos/ph98190.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "128750",
+    "vendor": "ВіЯр",
+    "name": "Поглиблення під петлі D35 (плит ВГ та ГТ, стяжок)",
+    "article": "128750",
+    "price": "21.42",
+    "image": "https://viyar.ua/store/Items/photos/ph128750.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "128751",
+    "vendor": "ВіЯр",
+    "name": "Заглиблення під завіси D35 (груповий розкрій)",
+    "article": "128751",
+    "price": "18.96",
+    "image": "https://viyar.ua/store/Items/photos/ph128751.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98039",
+    "vendor": "ВіЯр",
+    "name": "Свердління отворів (плит ВГ та ГТ, стяжок)",
+    "article": "98039",
+    "price": "9.06",
+    "image": "https://viyar.ua/store/Items/photos/ph98039.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "130947",
+    "vendor": "ВіЯр",
+    "name": "Заглиблення під завіси D35  негабаритних деталей",
+    "article": "130947",
+    "price": "20.04",
+    "image": "https://viyar.ua/store/Items/photos/ph130947.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "98084",
+    "vendor": "ВіЯр",
+    "name": "Свердління негабаритних деталей (плит ВГ та ГТ, стяжок, стільниць)",
+    "article": "98084",
+    "price": "36.00",
+    "image": "https://viyar.ua/store/Items/photos/ph98084.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "130948",
+    "vendor": "ВіЯр",
+    "name": "Заглиблення під завіси D35  негабаритних деталей (груповий розкрій)",
+    "article": "130948",
+    "price": "39.72",
+    "image": "https://viyar.ua/store/Items/photos/ph130948.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  }
+];

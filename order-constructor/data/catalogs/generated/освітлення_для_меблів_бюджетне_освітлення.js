@@ -1,0 +1,222 @@
+window.Catalog_ОсвітленняДляМеблівБюджетнеОсвітлення = [
+  {
+    "id": "171301",
+    "vendor": "Smart",
+    "name": "LED-стрічка Smart, 60 LEDs/m, 4,8W, 12V, холодне світло",
+    "article": "171301",
+    "price": "129.36",
+    "image": "https://viyar.ua/store/Items/photos/ph171301.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "171302",
+    "vendor": "Smart",
+    "name": "LED-стрічка Smart, 120 LEDs/m, 9,6W, 12V тепле світло",
+    "article": "171302",
+    "price": "225.30",
+    "image": "https://viyar.ua/store/Items/photos/ph171302.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "171303",
+    "vendor": "Smart",
+    "name": "LED-стрічка Smart, 120 LEDs/m, 9,6W, 12V, денне світло",
+    "article": "171303",
+    "price": "225.30",
+    "image": "https://viyar.ua/store/Items/photos/ph171303.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "171304",
+    "vendor": "Smart",
+    "name": "LED-стрічка Smart, 120 LEDs/m, 9,6W, 12V, холодне світло",
+    "article": "171304",
+    "price": "225.30",
+    "image": "https://viyar.ua/store/Items/photos/ph171304.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "160275",
+    "vendor": "BIOM",
+    "name": "LED-стрічка ST-12-2835-120-CW-20-V2, 120 LEDs/m, 9W, 12V, IP20, холодний",
+    "article": "160275",
+    "price": "423.30",
+    "image": "https://viyar.ua/store/Items/photos/ph160275.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "160278",
+    "vendor": "BIOM",
+    "name": "LED-стрічка ST-12-2835-60-CW-20-V2, 60 LEDs/m, 4,8W, 12V, IP20, холодний",
+    "article": "160278",
+    "price": "281.46",
+    "image": "https://viyar.ua/store/Items/photos/ph160278.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "171299",
+    "vendor": "Smart",
+    "name": "LED- стрічка Smart, 60 LEDs/m, 4,8W, 12V, тепле світло",
+    "article": "171299",
+    "price": "129.36",
+    "image": "https://viyar.ua/store/Items/photos/ph171299.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "171300",
+    "vendor": "Smart",
+    "name": "LED-стрічка Smart, 60 LEDs/m, 4,8W, 12V, денне світло",
+    "article": "171300",
+    "price": "129.36",
+    "image": "https://viyar.ua/store/Items/photos/ph171300.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "200584",
+    "vendor": "Smart",
+    "name": "Блок живлення SMART 60W, 12V, IP20, метал. Корпус",
+    "article": "200584",
+    "price": "156.48",
+    "image": "https://viyar.ua/store/Items/photos/ph200584_9DYZw.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "200586",
+    "vendor": "Smart",
+    "name": "Блок живлення SMART 100W, 12V, IP20, метал. корпус",
+    "article": "200586",
+    "price": "233.64",
+    "image": "https://viyar.ua/store/Items/photos/ph200586_o2xQq.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "200588",
+    "vendor": "Smart",
+    "name": "Блок живлення SMART 150W, 12V, IP20, метал. Корпус",
+    "article": "200588",
+    "price": "312.48",
+    "image": "https://viyar.ua/store/Items/photos/ph200588_EqII1.jpg",
+    "thickness": "",
+    "color": "",
+    "material": ""
+  },
+  {
+    "id": "160286",
+    "vendor": "BIOM",
+    "name": "Профіль для LED-стрічки, НАКЛАДНИЙ LP-7A , анодоване срібло L = 2м",
+    "article": "160286",
+    "price": "51.00",
+    "image": "https://viyar.ua/store/Items/photos/ph160286.jpg",
+    "thickness": "",
+    "color": "Срібло",
+    "material": ""
+  },
+  {
+    "id": "160288",
+    "vendor": "BIOM",
+    "name": "Профіль для LED-стрічки, КУТОВИЙ ЛПУ-16А , анодоване срібло L = 2м",
+    "article": "160288",
+    "price": "79.02",
+    "image": "https://viyar.ua/store/Items/photos/ph160288.jpg",
+    "thickness": "",
+    "color": "Срібло",
+    "material": ""
+  },
+  {
+    "id": "160290",
+    "vendor": "BIOM",
+    "name": "Заглушка до НАКЛАДНОГО ZP-7 алюм. профілю, сірий",
+    "article": "160290",
+    "price": "5.52",
+    "image": "https://viyar.ua/store/Items/photos/ph160290.jpg",
+    "thickness": "",
+    "color": "Сірий",
+    "material": ""
+  },
+  {
+    "id": "160291",
+    "vendor": "BIOM",
+    "name": "Заглушка до КУТОВОГО ZPU-R16 алюм.профілю, сірий",
+    "article": "160291",
+    "price": "5.52",
+    "image": "https://viyar.ua/store/Items/photos/ph160291.jpg",
+    "thickness": "",
+    "color": "Сірий",
+    "material": ""
+  },
+  {
+    "id": "169154",
+    "vendor": "BIOM",
+    "name": "Лінза світлорозсіююча для профілю LM-S16, молочна прямокутна",
+    "article": "169154",
+    "price": "31.98",
+    "image": "https://viyar.ua/store/Items/photos/ph169154.jpg",
+    "thickness": "",
+    "color": "Молочний",
+    "material": ""
+  },
+  {
+    "id": "160293",
+    "vendor": "BIOM",
+    "name": "Лінза світлорозсіююча для профілю  LMR-16,  молочна радіальна",
+    "article": "160293",
+    "price": "28.02",
+    "image": "https://viyar.ua/store/Items/photos/ph160293.jpg",
+    "thickness": "",
+    "color": "Молочний",
+    "material": ""
+  },
+  {
+    "id": "160287",
+    "vendor": "BIOM",
+    "name": "Профіль для LED-стрічки, ВРІЗНИЙ LPV-7A, анодоване срібло  L = 2м",
+    "article": "160287",
+    "price": "78.00",
+    "image": "https://viyar.ua/store/Items/photos/ph160287.jpg",
+    "thickness": "",
+    "color": "Срібло",
+    "material": ""
+  },
+  {
+    "id": "160289",
+    "vendor": "BIOM",
+    "name": "Заглушка до ВРІЗНОГО ZPV-7 алюм. профілю , сірий",
+    "article": "160289",
+    "price": "5.52",
+    "image": "https://viyar.ua/store/Items/photos/ph160289.jpg",
+    "thickness": "",
+    "color": "Сірий",
+    "material": ""
+  },
+  {
+    "id": "160292",
+    "vendor": "BIOM",
+    "name": "Лінза світлорозсіююча для профілю LM-UT, молочна пряма",
+    "article": "160292",
+    "price": "18.00",
+    "image": "https://viyar.ua/store/Items/photos/ph160292.jpg",
+    "thickness": "",
+    "color": "Молочний",
+    "material": ""
+  }
+];

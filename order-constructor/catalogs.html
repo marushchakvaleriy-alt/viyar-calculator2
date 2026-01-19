@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор довідників</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            color: #1e3c72;
+        }
+
+        .navbar a {
+            color: #1e3c72;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background: #e8f0fe;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .tab.active {
+            background: white;
+            color: #1e3c72;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .card-header h2 {
+            color: #1e3c72;
+            font-size: 22px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #162c55;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+
+        .search-box input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .modal-footer {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+        }
+
+        /* Dropdown Menu Styles */
+        .tab-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tab-dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Add invisible bridge between button and dropdown */
+        .tab-dropdown::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 5px;
+            z-index: 999;
+        }
+
+        .tab-dropdown:hover .dropdown-content,
+        .tab-dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #1e3c72;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #e8f0fe;
+        }
+
+        .dropdown-item.active {
+            background-color: #1e3c72;
+            color: white;
+        }
+
+        .tab.has-dropdown::after {
+            content: ' ▼';
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        /* Utility class for hiding elements */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Category Grid Styles */
+        .category-grid {
+            /* display is controlled via JavaScript */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .category-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .category-card-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .category-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .category-card-vendors {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .category-card-vendors li {
+            padding: 4px 0;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .category-card-vendors li:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+
+        .category-card-vendors li::before {
+            content: '• ';
+            color: #1e3c72;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>📚 Редактор довідників</h1>
+        <div>
+            <a href="index.html">🏠 Головна</a>
+            <a href="order.html">📝 Замовлення</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Статистика -->
+        <div class="stats" id="stats"></div>
+
+        <!-- Вкладки категорій -->
+        <div class="tabs" id="tabs"></div>
+
+        <!-- Таблиця -->
+        <div class="card">
+            <div class="card-header">
+                <h2 id="catalogTitle">Оберіть категорію</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Пошук по назві або артикулу...">
+                    <button class="btn btn-primary" onclick="openAddModal()">+ Додати</button>
+                    <button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤
+                        Імпорт</button>
+                    <button class="btn btn-secondary" onclick="exportCatalog()">📥 Експорт</button>
+                    <input type="file" id="importFile" accept=".js,.json,.csv" style="display:none"
+                        onchange="importCatalog(event)">
+                </div>
+            </div>
+            <div id="tableContainer">
+                <div class="empty-state">
+                    <h3>👆 Оберіть категорію вище</h3>
+                    <p>Щоб переглянути та редагувати довідник</p>
+                </div>
+            </div>
+
+            <!-- Category Grid View (for board materials) -->
+            <div id="categoryGrid" class="category-grid hidden"></div>
+
+            <!-- Pagination Controls -->
+            <div id="paginationControls" style="display: none; margin-top: 20px; text-align: center;">
+                <button class="btn btn-secondary" id="prevPageBtn" onclick="prevPage()" style="margin-right: 10px;">
+                    ← Попередня
+                </button>
+                <span id="pageInfo" style="margin: 0 15px; font-weight: 600; color: #1e3c72; font-size: 16px;"></span>
+                <button class="btn btn-secondary" id="nextPageBtn" onclick="nextPage()" style="margin-left: 10px;">
+                    Наступна →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно додавання/редагування -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Додати позицію</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="itemForm">
+                <div id="formFields"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Скасувати</button>
+                    <button type="submit" class="btn btn-success">Зберегти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальне вікно підтвердження видалення -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ Підтвердити видалення</h3>
+                <button class="close-btn" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <p>Ви впевнені, що хочете видалити цю позицію?</p>
+            <p><strong id="deleteItemName"></strong></p>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Скасувати</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Видалити</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Завантаження довідників (User Defined) -->
+    <!-- Board Materials by Vendor -->
+    <script src="data/catalogs/board_materials_agt.js"></script>
+    <script src="data/catalogs/board_materials_arpa.js"></script>
+    <script src="data/catalogs/board_materials_bel_viso.js"></script>
+    <script src="data/catalogs/board_materials_cleaf.js"></script>
+    <script src="data/catalogs/board_materials_egger.js"></script>
+    <script src="data/catalogs/board_materials_kronospan.js"></script>
+    <script src="data/catalogs/board_materials_niemann.js"></script>
+    <script src="data/catalogs/board_materials_rehau.js"></script>
+    <script src="data/catalogs/board_materials_swiss_krono.js"></script>
+
+    <!-- ДСП by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_дсп_cleaf.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_дсп_egger.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_дсп_kronospan.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_дсп_rehau.js"></script>
+
+    <!-- МДФ панелі by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_мдф_панелі_agt.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_мдф_панелі_egger.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_мдф_панелі_kronospan.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_мдф_панелі_niemann.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_мдф_панелі_rehau.js"></script>
+
+    <!-- МДФ плита by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_мдфплита_egger.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_мдфплита_kronospan.js"></script>
+
+    <!-- Пластик HPL by Vendor -->
+    <script src="data/catalogs/generated/плитніматеріалипластикhpl_arpa.js"></script>
+    <script src="data/catalogs/generated/плитніматеріалипластикhpl_viyarfronts.js"></script>
+
+    <!-- Шпоновані плити by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_шпоновані_плити_bel_viso.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_шпоновані_плити_viyarfronts.js"></script>
+
+    <!-- Фанера by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_фанера_віяр.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_фанера_одек.js"></script>
+
+    <!-- ХДФ/ДВП by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_двп_плита_хдф_kronospan.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_двп_плита_хдф_woodeco.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_двп_плита_хдф_уніплит.js"></script>
+
+    <!-- CDF -->
+    <script src="data/catalogs/generated/плитні_матеріали_cdf_плита.js"></script>
+
+    <!-- OSB by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_осб_kronospan.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_осб_swiss_krono.js"></script>
+
+    <!-- Меблеві щити by Vendor -->
+    <script src="data/catalogs/generated/плитні_матеріали_меблеві_щити_вуд_стандарт_лтд.js"></script>
+    <script src="data/catalogs/generated/плитні_матеріали_меблеві_щити_эгурра.js"></script>
+
+    <!-- Other Catalogs -->
+    <script src="data/catalogs/furniture_fittings.js"></script>
+    <script src="data/catalogs/appliances_plumbing.js"></script>
+    <script src="data/catalogs/edges_plastics.js"></script>
+    <script src="data/catalogs/countertops_panels.js"></script>
+    <script src="data/catalogs/lighting.js"></script>
+    <script src="data/catalogs/sliding_systems.js"></script>
+    <script src="data/catalogs/services_production.js"></script>
+    <script src="data/catalogs/tools_consumables.js"></script>
+    <script src="data/catalogs/glass_mirror.js"></script>
+    <script src="data/catalogs/flooring.js"></script>
+
+    <!-- Blum Hardware (Categorized) -->
+    <script src="data/catalogs/blum_aventos.js"></script>
+    <script src="data/catalogs/blum_tandembox.js"></script>
+    <script src="data/catalogs/blum_legrabox.js"></script>
+    <script src="data/catalogs/blum_movento.js"></script>
+    <script src="data/catalogs/blum_hinges.js"></script>
+    <script src="data/catalogs/blum_servo.js"></script>
+    <script src="data/catalogs/blum_tipon.js"></script>
+    <script src="data/catalogs/blum_other.js"></script>
+
+    <script>
+        // Конфігурація довідників
+        const catalogConfigs = {
+            board_materials: {
+                name: 'Плитні матеріали',
+                icon: '🪵',
+                isCategoryGrid: true,
+                categoryGroups: [
+                    {
+                        id: 'dsp',
+                        name: 'ДСП',
+                        icon: '🪵',
+                        vendors: [
+                            { name: 'Cleaf', key: 'dsp_cleaf', data: () => window.Catalog_ПлитніМатеріалиДсп_Cleaf || [] },
+                            { name: 'Egger', key: 'dsp_egger', data: () => window.Catalog_ПлитніМатеріалиДсп_Egger || [] },
+                            { name: 'Kronospan', key: 'dsp_kronospan', data: () => window.Catalog_ПлитніМатеріалиДсп_Kronospan || [] },
+                            { name: 'Swiss Krono', key: 'dsp_swisskrono', data: () => [] },
+                            { name: 'Rehau', key: 'dsp_rehau', data: () => window.Catalog_ПлитніМатеріалиДсп_Rehau || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'thickness', label: 'Товщина', type: 'text' },
+                            { id: 'color', label: 'Колір/Декор', type: 'text' },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'thickness', 'price']
+                    },
+                    {
+                        id: 'mdf_panels',
+                        name: 'Фасадні МДФ-панелі',
+                        icon: '📐',
+                        vendors: [
+                            { name: 'AGT', key: 'mdf_panels_agt', data: () => window.Catalog_ПлитніМатеріалиМдфПанелі_AGT || [] },
+                            { name: 'Niemann', key: 'mdf_panels_niemann', data: () => window.Catalog_ПлитніМатеріалиМдфПанелі_Niemann || [] },
+                            { name: 'Egger Perfect Sense', key: 'mdf_panels_egger', data: () => window.Catalog_ПлитніМатеріалиМдфПанелі_Egger || [] },
+                            { name: 'Панелі МДФ RAUVISIO Crystal', key: 'mdf_panels_rehau', data: () => window.Catalog_ПлитніМатеріалиМдфПанелі_Rehau || [] },
+                            { name: 'МДФ Kronospan Feelness', key: 'mdf_panels_kronospan', data: () => window.Catalog_ПлитніМатеріалиМдфПанелі_Kronospan || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'thickness', label: 'Товщина', type: 'text' },
+                            { id: 'color', label: 'Колір/Декор', type: 'text' },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'thickness', 'price']
+                    },
+                    {
+                        id: 'mdf_plate',
+                        name: 'МДФ-плита',
+                        icon: '📋',
+                        vendors: [
+                            { name: 'Egger', key: 'mdf_plate_egger', data: () => window.Catalog_ПлитніМатеріалиМдфплита_Egger || [] },
+                            { name: 'Kronospan', key: 'mdf_plate_kronospan', data: () => window.Catalog_ПлитніМатеріалиМдфплита_Kronospan || [] },
+                            { name: 'Swiss Krono', key: 'mdf_plate_swisskrono', data: () => [] },
+                            { name: 'Korostens', key: 'mdf_plate_korostens', data: () => [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'thickness', label: 'Товщина', type: 'text' },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'thickness', 'price']
+                    },
+                    {
+                        id: 'hpl_plates',
+                        name: 'Плити HPL',
+                        icon: '🔲',
+                        vendors: [
+                            { name: 'Arpa', key: 'hpl_plates_arpa', data: () => window.ПлитніматеріалиплитиHpl_Arpa || [] },
+                            { name: 'Fenix', key: 'hpl_plates_fenix', data: () => [] },
+                            { name: 'Homapal', key: 'hpl_plates_homapal', data: () => [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'hpl_plastic',
+                        name: 'Пластик HPL',
+                        icon: '🎨',
+                        vendors: [
+                            { name: 'Arpa', key: 'hpl_plastic_arpa', data: () => window.ПлитніматеріалипластикHpl_Arpa || [] },
+                            { name: 'ViyarFronts', key: 'hpl_plastic_viyarfronts', data: () => window.ПлитніматеріалипластикHpl_ViyarFronts || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'veneer_boards',
+                        name: 'Шпоновані плити',
+                        icon: '🌳',
+                        vendors: [
+                            { name: 'Bel Viso', key: 'veneer_belviso', data: () => window.Catalog_ПлитніМатеріалиШпонованіПлити_BelViso || [] },
+                            { name: 'ViyarFronts', key: 'veneer_viyarfronts', data: () => window.Catalog_ПлитніМатеріалиШпонованіПлити_ViyarFronts || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'plywood',
+                        name: 'Фанера',
+                        icon: '📐',
+                        vendors: [
+                            { name: 'Віяр', key: 'plywood_viyar', data: () => window.Catalog_ПлитніМатеріалиФанера_Віяр || [] },
+                            { name: 'Одек', key: 'plywood_odek', data: () => window.Catalog_ПлитніМатеріалиФанера_Одек || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'hdf_dvp',
+                        name: 'ХДФ / ДВП',
+                        icon: '📄',
+                        vendors: [
+                            { name: 'Kronospan', key: 'hdf_kronospan', data: () => window.Catalog_ПлитніМатеріалиДвпПлитаХдф_Kronospan || [] },
+                            { name: 'WOODECO', key: 'hdf_woodeco', data: () => window.Catalog_ПлитніМатеріалиДвпПлитаХдф_Woodeco || [] },
+                            { name: 'Уніплит', key: 'hdf_uniplit', data: () => window.Catalog_ПлитніМатеріалиДвпПлитаХдф_Уніплит || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'cdf',
+                        name: 'CDF',
+                        icon: '📋',
+                        vendors: [
+                            { name: 'CDF плита', key: 'cdf_plate', data: () => window.Catalog_ПлитніМатеріалиCdfПлита || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'osb',
+                        name: 'OSB',
+                        icon: '🔲',
+                        vendors: [
+                            { name: 'Kronospan', key: 'osb_kronospan', data: () => window.Catalog_ПлитніМатеріалиОсб_Kronospan || [] },
+                            { name: 'Swiss Krono', key: 'osb_swisskrono', data: () => window.Catalog_ПлитніМатеріалиОсб_SwissKrono || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    },
+                    {
+                        id: 'furniture_shields',
+                        name: 'Меблеві щити',
+                        icon: '🪵',
+                        vendors: [
+                            { name: 'Вуд Стандарт ЛТД', key: 'shields_wood', data: () => window.Catalog_ПлитніМатеріалиМеблевіЩити_ВудСтандартЛтд || [] },
+                            { name: 'Эгурра', key: 'shields_egurra', data: () => window.Catalog_ПлитніМатеріалиМеблевіЩити_Эгурра || [] }
+                        ],
+                        fields: [
+                            { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                            { id: 'name', label: 'Назва', type: 'text', required: true },
+                            { id: 'article', label: 'Артикул', type: 'text', required: true },
+                            { id: 'price', label: 'Ціна', type: 'number' }
+                        ],
+                        columns: ['vendor', 'name', 'article', 'price']
+                    }
+                ]
+            },
+            furniture_fittings: {
+                name: 'Меблева фурнітура',
+                icon: '🔧',
+                data: () => window.Catalog_FurnitureFittings || [],
+                fields: [
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'price', label: 'Ціна', type: 'number' },
+                    { id: 'image', label: 'Фото', type: 'text' }
+                ],
+                columns: ['vendor', 'name', 'article', 'price']
+            },
+            appliances_plumbing: {
+                name: 'Техніка та Сантехніка',
+                icon: '🚿',
+                data: () => window.Catalog_AppliancesPlumbing || [],
+                fields: [
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'price', label: 'Ціна', type: 'number' }
+                ],
+                columns: ['vendor', 'name', 'article', 'price']
+            },
+            edges_plastics: {
+                name: 'Крайка і пластики',
+                icon: '📏',
+                data: () => window.Catalog_EdgesPlastics || [],
+                fields: [
+                    { id: 'vendor', label: 'Виробник', type: 'text' },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text' },
+                    { id: 'thickness', label: 'Товщина', type: 'text' },
+                    { id: 'width', label: 'Ширина', type: 'text' }
+                ],
+                columns: ['vendor', 'name', 'article', 'thickness']
+            },
+            countertops_panels: {
+                name: 'Стільниці та стінпанелі',
+                icon: '🍽️',
+                data: () => window.Catalog_CountertopsPanels || [],
+                fields: [
+                    { id: 'vendor', label: 'Виробник', type: 'text' },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text' },
+                    { id: 'thickness', label: 'Товщина', type: 'text' }
+                ],
+                columns: ['vendor', 'name', 'article', 'thickness']
+            },
+            lighting: {
+                name: 'Освітлення',
+                icon: '💡',
+                data: () => window.Catalog_Lighting || [],
+                fields: [
+                    { id: 'vendor', label: 'Виробник', type: 'text' },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text' },
+                    { id: 'price', label: 'Ціна', type: 'number' }
+                ],
+                columns: ['vendor', 'name', 'article', 'price']
+            },
+            sliding_systems: {
+                name: 'Розсувні системи',
+                icon: '🚪',
+                data: () => window.Catalog_SlidingSystems || [],
+                fields: [
+                    { id: 'vendor', label: 'Виробник', type: 'text' },
+                    { id: 'name', label: 'Назва', type: 'text' },
+                    { id: 'article', label: 'Артикул', type: 'text' }
+                ],
+                columns: ['vendor', 'name', 'article']
+            },
+            services_production: {
+                name: 'Виробничі послуги',
+                icon: '⚙️',
+                data: () => window.Catalog_ServicesProduction || [],
+                fields: [
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'price', label: 'Ціна', type: 'number' }
+                ],
+                columns: ['name', 'price']
+            },
+            tools_consumables: {
+                name: 'Інструменти',
+                icon: '🔨',
+                data: () => window.Catalog_ToolsConsumables || [],
+                fields: [
+                    { id: 'name', label: 'Назва', type: 'text' },
+                    { id: 'price', label: 'Ціна', type: 'number' }
+                ],
+                columns: ['name', 'price']
+            },
+            glass_mirror: {
+                name: 'Скло та Дзеркало',
+                icon: '🪞',
+                data: () => window.Catalog_GlassMirror || [],
+                fields: [
+                    { id: 'name', label: 'Назва', type: 'text' }
+                ],
+                columns: ['name', 'price']
+            },
+            flooring: {
+                name: 'Підлога',
+                icon: '🧱',
+                data: () => window.Catalog_Flooring || [],
+                fields: [
+                    { id: 'name', label: 'Назва', type: 'text' }
+                ],
+                columns: ['name', 'price']
+            },
+            blum_aventos: {
+                name: 'Blum AVENTOS',
+                icon: '⬆️',
+                data: () => window.Catalog_BlumAventos || [],
+                fields: [
+                    { id: 'id', label: 'ID (унікальний)', type: 'text', required: true },
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'category', label: 'Категорія', type: 'text' },
+                    { id: 'technology', label: 'Технологія', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'category', 'technology']
+            },
+            blum_tandembox: {
+                name: 'Blum TANDEMBOX',
+                icon: '📦',
+                data: () => window.Catalog_BlumTandembox || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'category', label: 'Категорія', type: 'text' },
+                    { id: 'color', label: 'Колір', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'category', 'color']
+            },
+            blum_legrabox: {
+                name: 'Blum LEGRABOX',
+                icon: '📦',
+                data: () => window.Catalog_BlumLegrabox || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'category', label: 'Категорія', type: 'text' },
+                    { id: 'color', label: 'Колір', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'category', 'color']
+            },
+            blum_movento: {
+                name: 'Blum MOVENTO',
+                icon: '➡️',
+                data: () => window.Catalog_BlumMovento || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'category', label: 'Категорія', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'category']
+            },
+            blum_hinges: {
+                name: 'Blum Петлі',
+                icon: '🔗',
+                data: () => window.Catalog_BlumHinges || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'category', label: 'Категорія', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'category']
+            },
+            blum_servo: {
+                name: 'Blum SERVO-DRIVE',
+                icon: '⚡',
+                data: () => window.Catalog_BlumServo || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'technology', label: 'Технологія', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'technology']
+            },
+            blum_tipon: {
+                name: 'Blum TIP-ON',
+                icon: '👆',
+                data: () => window.Catalog_BlumTipOn || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'technology', label: 'Технологія', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'technology']
+            },
+            blum_other: {
+                name: 'Blum Інше',
+                icon: '🔧',
+                data: () => window.Catalog_BlumOther || [],
+                fields: [
+                    { id: 'original_id', label: 'ID Blum', type: 'text', required: true },
+                    { id: 'vendor', label: 'Виробник', type: 'text', required: true },
+                    { id: 'name', label: 'Назва', type: 'text', required: true },
+                    { id: 'article', label: 'Артикул', type: 'text', required: true },
+                    { id: 'category', label: 'Категорія', type: 'text' }
+                ],
+                columns: ['original_id', 'article', 'name', 'category']
+            }
+        };
+
+        let currentCatalog = null;
+        let editingItemId = null;
+        let currentPage = 1;
+        const itemsPerPage = 50;
+
+        // Ініціалізація
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTabs();
+            renderStats();
+
+            // Search Listener
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                currentPage = 1; // Reset to first page on search
+                renderTable(e.target.value);
+            });
+        });
+
+        // Рендеринг вкладок (кнопок категорій)
+        function renderTabs() {
+            const tabsContainer = document.getElementById('tabs');
+            tabsContainer.innerHTML = '';
+
+            Object.keys(catalogConfigs).forEach(key => {
+                const config = catalogConfigs[key];
+
+                // Category grid - render as regular tab
+                if (config.isCategoryGrid) {
+                    const btn = document.createElement('div');
+                    btn.className = 'tab';
+                    btn.innerHTML = `${config.icon} ${config.name}`;
+                    btn.onclick = () => switchToCategoryGrid(key);
+                    if (currentCatalog === key) btn.classList.add('active');
+                    tabsContainer.appendChild(btn);
+                }
+                // Parent category with dropdown
+                else if (config.isParent && config.subcategories) {
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'tab-dropdown';
+
+                    const btn = document.createElement('div');
+                    btn.className = 'tab has-dropdown';
+                    btn.innerHTML = `${config.icon} ${config.name}`;
+
+                    const dropdownContent = document.createElement('div');
+                    dropdownContent.className = 'dropdown-content';
+
+                    Object.keys(config.subcategories).forEach(subKey => {
+                        const subConfig = config.subcategories[subKey];
+                        const item = document.createElement('div');
+                        item.className = 'dropdown-item';
+                        item.innerHTML = `${subConfig.icon} ${subConfig.name}`;
+                        item.onclick = () => switchCatalog(subKey, config.subcategories);
+                        if (currentCatalog === subKey) item.classList.add('active');
+                        dropdownContent.appendChild(item);
+                    });
+
+                    dropdown.appendChild(btn);
+                    dropdown.appendChild(dropdownContent);
+                    tabsContainer.appendChild(dropdown);
+                }
+                // Regular category
+                else {
+                    const btn = document.createElement('div');
+                    btn.className = 'tab';
+                    btn.innerHTML = `${config.icon} ${config.name}`;
+                    btn.onclick = () => switchCatalog(key);
+                    if (currentCatalog === key) btn.classList.add('active');
+                    tabsContainer.appendChild(btn);
+                }
+            });
+        }
+
+        // Switch to category grid view
+        function switchToCategoryGrid(key) {
+            console.log('switchToCategoryGrid called for:', key);
+            currentCatalog = key;
+
+            const config = catalogConfigs[key];
+            document.getElementById('catalogTitle').innerHTML = `${config.icon} ${config.name}`;
+
+            // Hide table, show grid
+            document.getElementById('tableContainer').classList.add('hidden');
+            document.getElementById('paginationControls').classList.add('hidden');
+            const grid = document.getElementById('categoryGrid');
+            grid.classList.remove('hidden');
+            grid.style.display = 'grid'; // Set grid layout
+            console.log('Grid shown, table hidden');
+
+            renderCategoryGrid(config.categoryGroups);
+            // Don't re-render tabs - it causes button recreation and lost event handlers
+        }
+
+        // Render category grid
+        function renderCategoryGrid(categoryGroups) {
+            const gridContainer = document.getElementById('categoryGrid');
+            gridContainer.innerHTML = '';
+            // Don't set className here - it removes inline display:none style
+            // The grid is already styled with .category-grid in CSS when display is set to block
+
+            categoryGroups.forEach(category => {
+                const card = document.createElement('div');
+                card.className = 'category-card';
+
+                // Category image/icon
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'category-card-image';
+                imageDiv.textContent = category.icon || '📦';
+                card.appendChild(imageDiv);
+
+                // Category title
+                const title = document.createElement('div');
+                title.className = 'category-card-title';
+                title.textContent = category.name;
+                card.appendChild(title);
+
+                // Vendor list
+                const vendorList = document.createElement('ul');
+                vendorList.className = 'category-card-vendors';
+
+                category.vendors.forEach(vendor => {
+                    const li = document.createElement('li');
+                    li.textContent = vendor.name;
+                    li.onclick = () => switchToVendor(category, vendor);
+                    vendorList.appendChild(li);
+                });
+
+                card.appendChild(vendorList);
+                gridContainer.appendChild(card);
+            });
+        }
+
+        // Switch to vendor catalog
+        function switchToVendor(category, vendor) {
+            currentCatalog = vendor.key;
+            currentPage = 1;
+
+            // Update title with breadcrumb
+            document.getElementById('catalogTitle').innerHTML =
+                `🪵 Плитні матеріали › ${category.name} › ${vendor.name}`;
+
+            // Show table, hide grid
+            document.getElementById('categoryGrid').style.display = 'none';
+            document.getElementById('tableContainer').style.display = 'block';
+
+            // Store current category context for rendering
+            window.currentCategoryContext = { category, vendor };
+
+            renderTable();
+        }
+
+        // Switch to regular catalog (non-grid)
+        function switchCatalog(key, subcategories = null) {
+            console.log('switchCatalog called for:', key);
+            currentCatalog = key;
+            currentPage = 1;
+
+            // Clear category context
+            window.currentCategoryContext = null;
+
+            // ALWAYS hide grid, show table
+            const grid = document.getElementById('categoryGrid');
+            grid.classList.add('hidden');
+            grid.style.display = 'none';
+            document.getElementById('tableContainer').classList.remove('hidden');
+            document.getElementById('paginationControls').classList.add('hidden');
+            console.log('Grid hidden, table shown');
+
+            // Get config from subcategories or main catalogConfigs
+            const config = subcategories ? subcategories[key] : catalogConfigs[key];
+
+            document.getElementById('catalogTitle').innerHTML = `${config.icon} ${config.name}`;
+
+            // Don't re-render tabs - it causes button recreation and lost event handlers
+
+            renderTable();
+        }
+
+
+        // Helper function to get config for current catalog (including subcategories)
+        function getCurrentConfig() {
+            // Check if we're in a category grid vendor context
+            if (window.currentCategoryContext) {
+                const { category, vendor } = window.currentCategoryContext;
+                return {
+                    name: vendor.name,
+                    icon: vendor.icon || category.icon,
+                    data: vendor.data,
+                    fields: category.fields,
+                    columns: category.columns
+                };
+            }
+
+            // Check if it's a subcategory
+            for (const parentKey in catalogConfigs) {
+                const parent = catalogConfigs[parentKey];
+                if (parent.subcategories && parent.subcategories[currentCatalog]) {
+                    return parent.subcategories[currentCatalog];
+                }
+            }
+            // Otherwise it's a top-level catalog
+            return catalogConfigs[currentCatalog];
+        }
+
+        // Рендеринг таблиці
+        function renderTable(search = '') {
+            if (!currentCatalog) return;
+
+            try {
+                // Uses proper tableContainer
+                const container = document.getElementById('tableContainer');
+                if (!container) {
+                    console.error('Element #tableContainer not found!');
+                    return;
+                }
+
+                // Force visible - remove hidden class which has !important
+                container.classList.remove('hidden');
+                container.style.display = 'block';
+
+                const config = getCurrentConfig();
+
+                // Safety check for data function
+                let data = [];
+                if (typeof config.data === 'function') {
+                    data = config.data() || [];
+                }
+
+                const paginationControls = document.getElementById('paginationControls');
+
+                // Filter
+                const filtered = data.filter(item => {
+                    const s = search.toLowerCase();
+                    return (item.name && item.name.toLowerCase().includes(s)) ||
+                        (item.article && item.article.toLowerCase().includes(s)) ||
+                        (item.vendor && item.vendor.toLowerCase().includes(s)) ||
+                        (item.original_id && item.original_id.toLowerCase().includes(s));
+                });
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div class="empty-state"><h3>😕 Нічого не знайдено</h3></div>`;
+                    if (paginationControls) paginationControls.style.display = 'none';
+                    return;
+                }
+
+                // Safety check for columns
+                if (!config.columns || !Array.isArray(config.columns)) {
+                    if (config.fields) {
+                        config.columns = config.fields.map(f => f.id);
+                    } else if (filtered.length > 0) {
+                        config.columns = Object.keys(filtered[0]);
+                    } else {
+                        config.columns = ['name', 'article', 'price'];
+                    }
+                }
+
+                // Pagination
+                const totalPages = Math.ceil(filtered.length / itemsPerPage);
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const pageData = filtered.slice(startIndex, endIndex);
+
+                let html = `<table><thead><tr>`;
+                config.columns.forEach(col => {
+                    // Try to find field definition, fallback to column name
+                    const field = config.fields ? config.fields.find(f => f.id === col) : null;
+                    html += `<th>${field ? field.label : col}</th>`;
+                });
+                html += `<th>Дії</th></tr></thead><tbody>`;
+
+                pageData.forEach(item => {
+                    html += `<tr>`;
+                    config.columns.forEach(col => {
+                        let val = item[col] || '-';
+                        if (col === 'color' && String(val).startsWith('#')) {
+                            val = `<span class="badge" style="background:${val}; color:#fff; text-shadow:0 0 2px #000">${val}</span>`;
+                        }
+                        html += `<td>${val}</td>`;
+                    });
+
+                    // Actions
+                    html += `<td>
+                        <button class="action-btn" onclick="editItem('${item.id || item.article}')">✏️</button>
+                        <button class="action-btn" style="color:red" onclick="deleteItemRequest('${item.id || item.article}')">🗑️</button>
+                    </td></tr>`;
+                });
+
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+
+                // Update pagination controls
+                if (paginationControls) {
+                    if (totalPages > 1) {
+                        paginationControls.style.display = 'block';
+                        document.getElementById('pageInfo').textContent = `Сторінка ${currentPage} з ${totalPages} (${filtered.length} позицій)`;
+                        document.getElementById('prevPageBtn').disabled = currentPage === 1;
+                        document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+                    } else {
+                        paginationControls.style.display = 'none';
+                    }
+                }
+            } catch (err) {
+                console.error('Render error:', err);
+                const container = document.getElementById('tableContainer');
+                if (container) {
+                    container.innerHTML = `<div class="empty-state" style="color:red"><h3>⚠️ Помилка відображення</h3><p>${err.message}</p></div>`;
+                }
+            }
+        }
+
+        function nextPage() {
+            currentPage++;
+            renderTable(document.getElementById('searchInput').value);
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable(document.getElementById('searchInput').value);
+            }
+        }
+
+        function renderStats() {
+            let totalItems = 0;
+            let totalCategories = Object.keys(catalogConfigs).length;
+
+            for (const key in catalogConfigs) {
+                const conf = catalogConfigs[key];
+
+                // Skip category grids or configs without data function
+                if (conf.isCategoryGrid || typeof conf.data !== 'function') {
+                    continue;
+                }
+
+                const data = conf.data();
+                if (Array.isArray(data)) {
+                    totalItems += data.length;
+                }
+            }
+
+            const statsInfo = document.getElementById('statsInfo');
+            if (statsInfo) {
+                statsInfo.textContent = `Всього категорій: ${totalCategories} | Всього позицій: ${totalItems} `;
+            }
+        }
+
+        // --- CRUD Logic (Placeholder / Basic) ---
+
+        function openAddModal() {
+            if (!currentCatalog) return alert('Оберіть категорію');
+            editingItemId = null;
+            document.getElementById('modalTitle').innerText = 'Додати позицію';
+            renderForm();
+            document.getElementById('itemModal').classList.add('active');
+        }
+
+        function editItem(id) {
+            editingItemId = id;
+            document.getElementById('modalTitle').innerText = 'Редагувати позицію';
+            renderForm(id);
+            document.getElementById('itemModal').classList.add('active');
+        }
+
+        function renderForm(id = null) {
+            const config = catalogConfigs[currentCatalog];
+            let data = [];
+
+            // Check if config has data function
+            if (typeof config.data === 'function') {
+                data = config.data();
+            }
+
+            const item = id ? data.find(i => (i.id == id || i.article == id)) : {};
+
+            const container = document.getElementById('formFields');
+            container.innerHTML = '';
+
+            if (config.fields) {
+                config.fields.forEach(field => {
+                    const val = item[field.id] || '';
+                    let inputHtml = '';
+
+                    if (field.type === 'select') {
+                        inputHtml = `< select name = "${field.id}" >
+                    ${field.options.map(opt => `<option value="${opt}" ${opt === val ? 'selected' : ''}>${opt}</option>`).join('')}
+                        </select > `;
+                    } else {
+                        inputHtml = `< input type = "${field.type}" name = "${field.id}" value = "${val}" ${field.required ? 'required' : ''}> `;
+                    }
+
+                    container.innerHTML += `
+                    < div class="form-group" >
+                        <label>${field.label}</label>
+                            ${inputHtml}
+                        </div >
+                    `;
+                });
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').classList.remove('active');
+        }
+
+        // Form Submit
+        document.getElementById('itemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const newItem = {};
+            formData.forEach((value, key) => newItem[key] = value);
+
+            const config = catalogConfigs[currentCatalog];
+            const data = config.data();
+
+            if (editingItemId) {
+                // Update
+                const idx = data.findIndex(i => i.id == editingItemId || i.article == editingItemId);
+                if (idx !== -1) {
+                    data[idx] = { ...data[idx], ...newItem };
+                }
+            } else {
+                // Create
+                newItem.id = Date.now().toString(); // unique ID
+                data.push(newItem);
+            }
+
+            closeModal();
+            renderTable();
+            renderStats();
+            // In a real app, we would save to server/file here
+        });
+
+        // Delete
+        let itemToDelete = null;
+        function deleteItemRequest(id) {
+            itemToDelete = id;
+            document.getElementById('deleteItemName').innerText = id;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            itemToDelete = null;
+        }
+
+        function confirmDelete() {
+            if (!itemToDelete) return;
+            const config = catalogConfigs[currentCatalog];
+            const data = config.data();
+            const idx = data.findIndex(i => i.id == itemToDelete || i.article == itemToDelete);
+            if (idx !== -1) {
+                data.splice(idx, 1);
+            }
+            closeDeleteModal();
+            renderTable();
+            renderStats();
+        }
+
+        // Export/Import
+        function exportCatalog() {
+            if (!currentCatalog) return;
+            const data = catalogConfigs[currentCatalog].data();
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentCatalog}.json`;
+            a.click();
+        }
+
+        function importCatalog(event) {
+            // Logic to parse JSON and update window.Catalog_...
+            // Left as exercise or future task
+            alert('Функція імпорту поки в розробці');
+        }
+
+        // Initialize when window fully loads
+        window.onload = function () {
+            console.log('Catalog editor initializing...');
+
+            // Call init functions right away
+            renderTabs();
+            renderStats();
+
+            // Search Listener
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                currentPage = 1;
+                renderTable(e.target.value);
+            });
+
+            console.log('Catalog editor initialized!');
+        };
+
+    </script>
+</body>
+
+</html>

@@ -163,6 +163,10 @@
             <button class="nav-btn" onclick="goToDesigner()"
                 style="margin-top:10px; background: #6366f1; border: 1px solid rgba(255,255,255,0.2)">🎨
                 ДИЗАЙНЕР</button>
+            <button class="nav-btn" onclick="openAIModal()"
+                style="margin-top:10px; background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); border: none; font-weight: 800; color: white; display:flex; align-items:center; justify-content:center; gap:8px">
+                ✨ AI MAGIC
+            </button>
             <input type="file" id="csvIn" style="display:none" onchange="handleCSV(this)">
         </div>
     </div>
@@ -203,6 +207,67 @@
         <div class="matrix-container" id="matrixContainer"></div>
     </div>
 
+    <!-- AI MAGIC MODAL -->
+    <div id="aiModal" class="modal">
+        <div class="modal-card"
+            style="max-width: 600px; width: 90%; max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header"
+                style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); color: white;">
+                <h3>✨ AI Розрахунок (Gemini 1.5)</h3>
+                <button onclick="closeModal('aiModal')"
+                    style="background:none; border:none; color:white; font-size:24px; cursor:pointer">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px; overflow-y: auto; flex: 1;">
+
+                <div class="form-group">
+                    <label class="form-label">🔑 Gemini API Key <a href="https://aistudio.google.com/app/apikey"
+                            target="_blank" style="font-size:11px; color:#3b82f6">(Отримати ключ)</a></label>
+                    <input type="password" id="aiKey" class="form-input"
+                        placeholder="Вставте ваш API ключ тут (збережеться автоматично)">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🖼️ Фото меблів / Ескіз</label>
+                    <div id="aiDropzone"
+                        style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; background: #f8fafc; position: relative"
+                        onclick="document.getElementById('aiImgInput').click()">
+                        <div id="aiDropText">
+                            <div style="font-size: 32px; margin-bottom: 10px">📸</div>
+                            <span style="color: #64748b; font-weight: 500">Натисніть або перетягніть фото
+                                сюди</span><br>
+                            <span style="color: #94a3b8; font-size: 11px">(Також можна вставити Ctrl+V)</span>
+                        </div>
+                        <img id="aiPreview"
+                            style="max-width: 100%; max-height: 200px; display: none; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1)">
+                        <button id="aiRemoveImg" onclick="event.stopPropagation(); clearAiImage()"
+                            style="display:none; position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer">&times;</button>
+                    </div>
+                    <input type="file" id="aiImgInput" accept="image/*" style="display:none"
+                        onchange="handleAiFile(this.files[0])">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">📝 Технічне Завдання (ТЗ)</label>
+                    <textarea id="aiPrompt" class="form-input" rows="4"
+                        placeholder="Опишіть деталі: матеріали, фурнітура, особливості (наприклад: 'Фасади МДФ фарбований, фурнітура Blum, стільниця Egger')"></textarea>
+                </div>
+
+                <div id="aiLog"
+                    style="display:none; background:#1e293b; color:#10b981; padding:10px; border-radius:8px; font-family:monospace; font-size:11px; margin-bottom:15px; white-space: pre-wrap;">
+                </div>
+
+            </div>
+            <div class="modal-footer"
+                style="padding: 15px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="closeModal('aiModal')" class="btn"
+                    style="background: #f1f5f9; color: #64748b">Скасувати</button>
+                <button onclick="runAiAnalysis()" id="aiRunBtn" class="btn"
+                    style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); color: white; border: none; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3)">🤖
+                    Аналізувати</button>
+            </div>
+        </div>
+    </div>
+
     <!-- UNIVERSAL ACTION MODAL (Replaces Prompts) -->
     <div id="actionModal" class="modal">
         <div class="modal-card">
@@ -239,10 +304,16 @@
             <div class="modal-body">
                 <input type="hidden" id="fId">
                 <div class="form-group">
+                    <label class="form-label">Назва Поля</label>
+                    <input type="text" id="fName" class="form-input" placeholder="Назва поля (Label)">
+                </div>
+                <div class="form-group">
                     <label class="form-label">Тип Поля</label>
                     <select id="fType" class="form-input" onchange="toggleFieldSettings(this.value)">
                         <option value="number">Число / Кількість</option>
                         <option value="select">Випадаючий список (Рядки)</option>
+                        <option value="multiselect">Множинний вибір (Checkboxes)</option>
+                        <option value="multiselect_qty">Множинний вибір + Кількість</option>
                         <option value="select_yes_no">Випадаючий список (Так/Ні)</option>
                         <option value="checkbox_qty">Галочка + Кількість</option>
                         <option value="action_button">Кнопка виклику форми (Модалка)</option>
@@ -1098,6 +1169,8 @@
                         <span class="drag-handle" title="Перетягнути групу" style="opacity:0.2; cursor:grab">☰</span>
                         <span class="collapse-btn" onclick="toggleGroup('${g.id}')">${isCollapsed ? '▶' : '▼'}</span>
                         <span style="cursor:pointer; flex:1" onclick="openActionModal('RENAME_GROUP', '${g.id}', ${isP})">${g.title}</span>
+                        <button class="gear-btn" onclick="event.stopPropagation(); openGroupSettingsModal('${g.id}', ${isP})" style="background:none; border:none; cursor:pointer; opacity:0.4; transition:opacity 0.2s; font-size:16px; padding:2px 6px" title="Налаштування групи">⚙️</button>
+                        <button class="group-delete-btn" onclick="event.stopPropagation(); delGroup('${g.id}',${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; opacity:0.4; transition:opacity 0.2s; font-size:16px; padding:2px 6px" title="Видалити групу">🗑️</button>
                     </div>
                 `;
                 grRow.appendChild(nameTd);
@@ -1152,14 +1225,22 @@
                     }
                 });
 
-                // Delete Button Cell
-                const delTd = document.createElement('td');
-                delTd.innerHTML = `<button onclick="delGroup('${g.id}',${isP})" style="background:none; border:none; color:var(--danger); cursor:pointer">🗑</button>`;
-                grRow.appendChild(delTd);
+                // Delete button is now in the group name cell
 
-                // Drag events for groups
-                grRow.onmouseenter = () => grRow.querySelector('.drag-handle').style.opacity = '1';
-                grRow.onmouseleave = () => grRow.querySelector('.drag-handle').style.opacity = '0.1';
+                // Drag events for groups and delete button visibility
+                grRow.onmouseenter = () => {
+                    grRow.querySelector('.drag-handle').style.opacity = '1';
+                    const deleteBtn = grRow.querySelector('.group-delete-btn');
+                    if (deleteBtn) deleteBtn.style.opacity = '1';
+                };
+                grRow.onmouseleave = () => {
+                    grRow.querySelector('.drag-handle').style.opacity = '0.1';
+                    const deleteBtn = grRow.querySelector('.group-delete-btn');
+                    if (deleteBtn) deleteBtn.style.opacity = '0.4';
+                };
+
+                // Empty cell for the last column (to match header and field rows)
+                grRow.appendChild(document.createElement('td'));
 
                 table.appendChild(grRow);
 
@@ -1281,7 +1362,7 @@
                     fRow.appendChild(document.createElement('td'));
                     table.appendChild(fRow);
 
-                    if (f.type === 'select') {
+                    if (f.type === 'select' || f.type === 'multiselect') {
                         if (f.options) {
                             f.options.forEach(o => {
                                 const oRow = document.createElement('tr'); const olc = document.createElement('td'); olc.className = 'col-sticky'; olc.style.paddingLeft = '30px'; olc.style.background = '#fff';
@@ -1387,7 +1468,7 @@
                                 mfLc.className = 'col-sticky';
                                 mfLc.style.paddingLeft = '40px';
                                 mfLc.style.background = '#fff';
-                                const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'checkbox_qty': '☑️', 'checkbox': '✅', 'select_yes_no': '🔽' }[mf.type] || '🎯';
+                                const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'multiselect_qty': '📋', 'checkbox_qty': '☑️', 'checkbox': '✅', 'select_yes_no': '🔽' }[mf.type] || '🎯';
                                 mfLc.innerHTML = `<div style="display:flex; align-items:center; gap:6px; width:100%"><span style="font-size:10px; opacity:0.6" title="${mf.type}">${typeIcon}</span><input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})"><button onclick="event.stopPropagation(); changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" class="gear-btn" title="Налаштування" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; opacity:0.4" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">⚙️</button><button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button></div>`;
                                 mfRow.appendChild(mfLc);
 
@@ -1465,7 +1546,7 @@
                                 table.appendChild(mfRow);
 
                                 // Add option rows for select and multiselect type modal fields
-                                if (mf.type === 'select' || mf.type === 'multiselect') {
+                                if (mf.type === 'select' || mf.type === 'multiselect' || mf.type === 'multiselect_qty') {
                                     if (mf.options) {
                                         mf.options.forEach((opt, optIdx) => {
                                             const optRow = document.createElement('tr');
@@ -2026,6 +2107,82 @@
             renderMatrix();
         }
 
+        function addModalField(buttonId, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (!field) return;
+            if (!field.modalFields) field.modalFields = [];
+
+            // Create modal for adding new field
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+            const modal = document.createElement('div');
+            modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:320px';
+            modal.innerHTML = `
+                <h4 style="margin:0 0 20px 0;font-size:18px;color:#1e293b">➕ Нове поле в модалку</h4>
+                
+                <div style="margin-bottom:15px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Назва поля</label>
+                    <input id="mfNewName" type="text" value="Нове поле" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px">
+                </div>
+
+                <div style="margin-bottom:20px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Тип поля</label>
+                    <select id="mfNewType" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px">
+                        <option value="number">🔢 Число (number)</option>
+                        <option value="select">📋 Випадаючий список (select)</option>
+                        <option value="select_yes_no">🔽 Вибір Так/Ні (select_yes_no)</option>
+                        <option value="checkbox">✅ Чекбокс (checkbox)</option>
+                        <option value="checkbox_qty">☑️ Чекбокс з кількістю (checkbox_qty)</option>
+                        <option value="multiselect">📑 Множинний вибір (multiselect)</option>
+                        <option value="multiselect_qty">📋 Множинний вибір + кількість (multiselect_qty)</option>
+                    </select>
+                </div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end">
+                    <button id="mfNewCancelBtn" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                    <button id="mfNewSaveBtn" style="padding:10px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;cursor:pointer;font-weight:600">Додати поле в модалку</button>
+                </div>
+            `;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            document.getElementById('mfNewName').focus();
+            document.getElementById('mfNewName').select();
+
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.getElementById('mfNewCancelBtn').onclick = () => overlay.remove();
+
+            document.getElementById('mfNewSaveBtn').onclick = () => {
+                const label = document.getElementById('mfNewName').value.trim();
+                const type = document.getElementById('mfNewType').value;
+
+                if (!label) {
+                    alert('Введіть назву поля');
+                    return;
+                }
+
+                const newMf = {
+                    id: 'mf' + Date.now(),
+                    label: label,
+                    type: type
+                };
+
+                // Add default options for select types
+                if (type === 'select' || type === 'multiselect' || type === 'multiselect_qty') {
+                    newMf.options = [
+                        { value: 'opt1', label: 'Варіант 1' }
+                    ];
+                }
+
+                field.modalFields.push(newMf);
+                markDirty();
+                renderMatrix();
+                overlay.remove();
+            };
+        }
+
         function changeModalFieldType(buttonId, mfIdx, isP) {
             const fields = isP ? Schema.products.fields : Schema.fields;
             const field = fields.find(f => f.id === buttonId);
@@ -2047,6 +2204,7 @@
                     <option value="checkbox" ${mf.type === 'checkbox' ? 'selected' : ''}>✅ Чекбокс (checkbox)</option>
                     <option value="checkbox_qty" ${mf.type === 'checkbox_qty' ? 'selected' : ''}>☑️ Чекбокс з кількістю (checkbox_qty)</option>
                     <option value="multiselect" ${mf.type === 'multiselect' ? 'selected' : ''}>📑 Множинний вибір (multiselect)</option>
+                    <option value="multiselect_qty" ${mf.type === 'multiselect_qty' ? 'selected' : ''}>📋 Множинний вибір + кількість (multiselect_qty)</option>
                 </select>
                 <div style="display:flex;gap:10px;justify-content:flex-end">
                     <button id="mfTypeCancelBtn" style="padding:8px 16px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
@@ -2062,7 +2220,7 @@
                 const selectedType = document.getElementById('mfTypeSelect').value;
                 if (selectedType !== mf.type) {
                     mf.type = selectedType;
-                    if ((selectedType === 'select' || selectedType === 'multiselect') && !mf.options) {
+                    if ((selectedType === 'select' || selectedType === 'multiselect' || selectedType === 'multiselect_qty') && !mf.options) {
                         mf.options = [{ value: 'opt1', label: 'Варіант 1' }];
                     }
                     markDirty();
@@ -2133,7 +2291,66 @@
             };
         }
         function delOpt(fI, oV, isP) { const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === fI); f.options = f.options.filter(o => o.value !== oV); markDirty(); renderMatrix(); }
-        function delGroup(id, isP) { if (confirm('Видалити всю групу?')) { if (isP) Schema.products.groups = Schema.products.groups.filter(g => g.id !== id); else Schema.groups = Schema.groups.filter(g => g.id !== id); markDirty(); refresh(); } }
+        function delGroup(id, isP) { if (confirm('Видалити всю групу?')) { if (isP) Schema.products.groups = Schema.products.groups.filter(g => g.id !== id); else Schema.groups = Schema.groups.filter(g => g.id !== id); markDirty(); renderSidebar(); renderMatrix(); } }
+
+        function openGroupSettingsModal(gId, isP) {
+            const group = (isP ? Schema.products.groups : Schema.groups).find(g => g.id === gId);
+            if (!group) return;
+            if (!group.layout) group.layout = {};
+
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+            const modal = document.createElement('div');
+            modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:320px';
+            modal.innerHTML = `
+                <h4 style="margin:0 0 20px 0;font-size:18px;color:#1e293b">⚙️ Налаштування групи</h4>
+                
+                <div style="margin-bottom:15px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Назва групи</label>
+                    <input id="grTitle" type="text" value="${group.title || ''}" style="width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px">
+                </div>
+
+                <div style="margin-bottom:15px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Ширина групи (для сітки)</label>
+                    <select id="grWidth" style="width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px">
+                        <option value="100%" ${(!group.layout.width || group.layout.width === '100%') ? 'selected' : ''}>100% (На всю ширину)</option>
+                        <option value="50%" ${group.layout.width === '50%' ? 'selected' : ''}>50% (Половина)</option>
+                        <option value="33.33%" ${group.layout.width === '33.33%' ? 'selected' : ''}>33% (Третина)</option>
+                        <option value="25%" ${group.layout.width === '25%' ? 'selected' : ''}>25% (Чверть)</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom:20px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Колір фону (опціонально)</label>
+                    <input id="grBg" type="color" value="${group.layout.background || '#ffffff'}" style="width:100%;height:40px;padding:0;border:none;cursor:pointer">
+                </div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end; border-top:1px solid #eee; padding-top:15px">
+                    <button id="grCancel" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
+                    <button id="grSave" style="padding:10px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;cursor:pointer;font-weight:600">Зберегти</button>
+                </div>
+            `;
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            document.getElementById('grCancel').onclick = () => overlay.remove();
+            document.getElementById('grSave').onclick = () => {
+                group.title = document.getElementById('grTitle').value;
+                group.layout.width = document.getElementById('grWidth').value;
+                const bg = document.getElementById('grBg').value;
+                if (bg !== '#ffffff') group.layout.background = bg;
+                else delete group.layout.background;
+
+                markDirty();
+                renderMatrix();
+                // renderSidebar usually not needed for group layout, but title yes
+                renderSidebar();
+                overlay.remove();
+            };
+        }
 
         function delField(id, isP) {
             console.log('Deleting field:', id, 'isProduct:', isP);
@@ -2154,6 +2371,7 @@
         function openFModal(id, isP) {
             const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id);
             document.getElementById('fId').value = id;
+            document.getElementById('fName').value = f.label || '';
             document.getElementById('fType').value = f.type;
             document.getElementById('fHelp').value = f.helpContent || '';
             document.getElementById('fDefault').value = f.default || '';
@@ -2180,8 +2398,11 @@
             const id = document.getElementById('fId').value;
             const isP = document.getElementById('fieldModal').dataset.mode === 'prod';
             const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id);
+
+            f.label = document.getElementById('fName').value;
             f.type = document.getElementById('fType').value;
             f.helpContent = document.getElementById('fHelp').value;
+
             if (f.type === 'action_button' || f.type === 'checkbox_qty' || f.type === 'select_modal') {
                 f.default = document.getElementById('fDefault').value;
             }
@@ -2200,6 +2421,7 @@
             markDirty();
             closeModal('fieldModal');
             renderMatrix();
+            renderSidebar();
         }
 
         function togglePreview(show) { if (!show) return closeModal('prodModal'); renderPView(); document.getElementById('prodModal').style.display = 'flex'; }
@@ -2251,7 +2473,31 @@
                                 <span style="font-size:12px">${o.label}</span>
                             </label>
                         `).join('');
-                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><div style="background:#f8fafc; padding:8px; border-radius:6px; border:1px solid #e2e8f0; max-height:150px; overflow-y:auto">${items}</div>`;
+
+                        let labelHtml = f.label;
+                        if (f.helpContent) {
+                            labelHtml += ` <span style="cursor:help; color:#3b82f6; font-size:14px; margin-left:4px" title="${f.helpContent.replace(/"/g, '&quot;')}">ⓘ</span>`;
+                        }
+
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${labelHtml}</label><div style="background:transparent; padding:0; border:none; max-height:none;">${items}</div>`;
+                    }
+                    else if (f.type === 'multiselect_qty') {
+                        let items = (f.options || []).map(o => `
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; padding:4px 0; border-bottom:1px solid #eee;">
+                                <label style="flex:1; display:flex; align-items:center; gap:6px; cursor:pointer; margin:0;">
+                                    <input type="checkbox" class="preview-input preview-ms-qty-check" data-bid="${button.id}" data-fid="${f.id}" data-type="multiselect_qty" value="${o.value}" onchange="recalcPreviewTotal('${button.id}')">
+                                    <span style="font-size:12px">${o.label}</span>
+                                </label>
+                                <input type="number" value="1" class="preview-ms-qty-input" data-value="${o.value}" data-bid="${button.id}" data-fid="${f.id}" min="1" oninput="recalcPreviewTotal('${button.id}')" style="width:60px; padding:4px 8px; font-size:11px; border:1px solid #d1d5db; border-radius:4px;">
+                            </div>
+                        `).join('');
+
+                        let labelHtml = f.label;
+                        if (f.helpContent) {
+                            labelHtml += ` <span style="cursor:help; color:#3b82f6; font-size:14px; margin-left:4px" title="${f.helpContent.replace(/"/g, '&quot;')}">ⓘ</span>`;
+                        }
+
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${labelHtml}</label><div style="background:transparent; padding:0; border:none;">${items}</div>`;
                     }
                     else if (f.type === 'checkbox') {
                         row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox" style="width:18px; height:18px" onchange="recalcPreviewTotal('${button.id}')"><label style="font-size:12px; font-weight:500">${f.label}</label></div>`;
@@ -2624,6 +2870,227 @@
 
             markDirty();
             closeModal('markupModal');
+        }
+
+        // ============================================
+        // AI MAGIC IMPLEMENTATION (Gemini 1.5 Flash)
+        // ============================================
+        let currentAiImageBase64 = null;
+
+        function openAIModal() {
+            document.getElementById('aiModal').style.display = 'flex';
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) document.getElementById('aiKey').value = savedKey;
+
+            // Setup Dropzone Drag & Drop
+            const dz = document.getElementById('aiDropzone');
+            if (!dz.dataset.init) {
+                dz.dataset.init = "true";
+                dz.ondragover = (e) => { e.preventDefault(); dz.style.background = '#e0e7ff'; dz.style.borderColor = '#818cf8'; };
+                dz.ondragleave = (e) => { e.preventDefault(); dz.style.background = '#f8fafc'; dz.style.borderColor = '#cbd5e1'; };
+                dz.ondrop = (e) => {
+                    e.preventDefault();
+                    dz.style.background = '#f8fafc'; dz.style.borderColor = '#cbd5e1';
+                    if (e.dataTransfer.files[0]) handleAiFile(e.dataTransfer.files[0]);
+                };
+            }
+            // Global Paste Handler
+            window.removeEventListener('paste', handlePasteImage);
+            window.addEventListener('paste', handlePasteImage);
+        }
+
+        function handlePasteImage(e) {
+            if (document.getElementById('aiModal').style.display !== 'flex') return;
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (const item of items) {
+                if (item.type.indexOf('image') === 0) {
+                    handleAiFile(item.getAsFile());
+                }
+            }
+        }
+
+        function handleAiFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentAiImageBase64 = e.target.result.split(',')[1]; // Remove prefix
+                document.getElementById('aiPreview').src = e.target.result;
+                document.getElementById('aiPreview').style.display = 'block';
+                document.getElementById('aiDropText').style.display = 'none';
+                document.getElementById('aiRemoveImg').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearAiImage() {
+            currentAiImageBase64 = null;
+            document.getElementById('aiPreview').src = '';
+            document.getElementById('aiPreview').style.display = 'none';
+            document.getElementById('aiDropText').style.display = 'block';
+            document.getElementById('aiRemoveImg').style.display = 'none';
+            document.getElementById('aiImgInput').value = '';
+        }
+
+        function getCompactSchema() {
+            // Helper to get all fields (calc + products if needed)
+            // For now, let's focus on CALCULATOR fields (main schema)
+            return (Schema.fields || []).map(f => {
+                const simple = { id: f.id, label: f.label, type: f.type };
+                if (f.options) simple.options = f.options.map(o => ({ v: o.value, l: o.label }));
+                if (f.modalFields) simple.modalFields = f.modalFields.map(mf => {
+                    const smf = { id: mf.id, label: mf.label, type: mf.type };
+                    if (mf.options) smf.options = mf.options.map(o => ({ v: o.value, l: o.label }));
+                    return smf;
+                });
+                return simple;
+            });
+        }
+
+        async function runAiAnalysis() {
+            const apiKey = document.getElementById('aiKey').value.trim();
+            const promptText = document.getElementById('aiPrompt').value.trim();
+            const log = document.getElementById('aiLog');
+
+            if (!apiKey) { alert('Введіть Gemini API Key!'); return; }
+            localStorage.setItem('gemini_api_key', apiKey);
+
+            if (!currentAiImageBase64 && !promptText) { alert('Додайте фото або опис ТЗ!'); return; }
+
+            const btn = document.getElementById('aiRunBtn');
+            btn.innerHTML = '⏳ Думаю...';
+            btn.disabled = true;
+            log.style.display = 'block';
+            log.innerText = '> Підготовка даних...\n';
+
+            try {
+                // Prepare Context
+                const compactSchema = getCompactSchema();
+                // Filter out non-essential fields to save tokens
+                const schemaStr = JSON.stringify(compactSchema);
+
+                log.innerText += '> Відправка запиту до Google Gemini...\n';
+
+                const requestBody = {
+                    contents: [{
+                        parts: [
+                            {
+                                text: `Ти - експерт з оцінки меблів. Твоя ціль - заповнити калькулятор на основі фото та ТЗ.
+Ось скорочена схема полів (JSON): ${schemaStr}.
+ТЗ клієнта: "${promptText}".
+ЗАВДАННЯ: 
+1. Проаналізуй фото (якщо є) та текст.
+2. Визначи, які значення полів мають бути встановлені (кількість, тип).
+3. Поверни ТІЛЬКИ чистий JSON об'єкт у форматі:
+{
+  "fieldId": value,
+  "fieldId_optionValue": value, (для select/options)
+  "fieldId_modalFieldId": value (для полів модалки)
+}
+ЯКЩО це action_button/select_modal:
+- Основне поле зазвичай не заповнюється, заповнюються його modalFields.
+- Ключ для modalField має формат "FieldID_ModalFieldID".
+ЯКЩО це select/multiselect:
+- Ключ має формат "FieldID_OptionValue".
+Значення мають бути числами (кількість).
+
+Приклад відповіді:
+{
+  "f123": 2, // просте поле (наприклад, 2 тумби)
+  "f456_opt1": 1, // опція
+  "f789_mf1": 5 // поле всередині модалки
+}
+Відповідай ТІЛЬКИ JSON. Без markdown.` },
+                            ...(currentAiImageBase64 ? [{ inline_data: { mime_type: "image/jpeg", data: currentAiImageBase64 } }] : [])
+                        ]
+                    }]
+                };
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) throw new Error('API Error: ' + response.statusText);
+
+                const data = await response.json();
+                if (!data.candidates || !data.candidates[0].content) throw new Error('No content from AI');
+
+                let aiText = data.candidates[0].content.parts[0].text;
+
+                log.innerText += '> Отримано відповідь. Обробка...\n';
+
+                // Clean markdown
+                aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
+                let result;
+                try {
+                    result = JSON.parse(aiText);
+                } catch (e) {
+                    console.log('Raw AI:', aiText);
+                    throw new Error('Невалідний JSON від AI');
+                }
+
+                log.innerText += '> Знайдено полів: ' + Object.keys(result).length + '\n';
+                console.log('AI Result:', result);
+
+                // APPLY CHANGES
+                let changesCount = 0;
+
+                // We assume we are filling the "Global" calculator part (main schema fields)
+                // And we apply values to ALL ACTIVE PROCESSES (or create a default one?)
+                // Since this is admin panel, "values" are stored in Schema.rules[fId][pId]
+                // We'll try to apply to all NON-HIDDEN processes in the schema.
+
+                const validP = Object.keys(Schema.processes).map(k => ({ id: k, ...Schema.processes[k] })).filter(p => !p.hidden);
+
+                Object.keys(result).forEach(key => {
+                    const val = Number(result[key]) || 0;
+                    if (val === 0) return;
+
+                    let fId = key;
+                    let subId = null;
+
+                    // Naive ID parsing (assuming IDs don't have excessive underscores or we match prefix)
+                    // Better: Iterate all fields and find match
+                    const field = Schema.fields.find(f => key === f.id || key.startsWith(f.id + '_'));
+                    if (field) {
+                        fId = field.id;
+                        if (key.length > fId.length) subId = key.substring(fId.length + 1);
+                    } else {
+                        return; // Field not found
+                    }
+
+                    // Apply to processes
+                    validP.forEach(p => {
+                        if (subId) {
+                            if (field.modalFields && field.modalFields.some(mf => mf.id === subId)) {
+                                // Is Modal Field
+                                updModalFieldRule(fId, subId, p.id, val, false);
+                            } else {
+                                // Assume Option
+                                updRule(fId, p.id, subId, val);
+                            }
+                        } else {
+                            // Simple Field
+                            updRule(fId, p.id, null, val);
+                        }
+                    });
+                    changesCount++;
+                });
+
+                log.innerText += `✅ Успішно! Оновлено ${changesCount} значень.`;
+                renderMatrix();
+                // Scroll to top or just flash
+                alert(`✨ AI завершив роботу!\nЗаповнено полів: ${changesCount}`);
+
+            } catch (err) {
+                log.innerText += '❌ Помилка: ' + err.message;
+                console.error(err);
+                alert('Помилка AI: ' + err.message);
+            } finally {
+                btn.innerHTML = '🤖 Аналізувати';
+                btn.disabled = false;
+            }
         }
     </script>
 </body>

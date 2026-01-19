@@ -1,0 +1,1032 @@
+window.Catalog_BoardMaterials_NIEMANN = [
+  {
+    "id": "116033",
+    "vendor": "NIEMANN",
+    "name": "Чистячі засоби NIEMANN",
+    "article": "116033",
+    "price": "572.16",
+    "image": "https://viyar.ua/store/Items/photos/ph116033.jpg",
+    "thickness": "",
+    "color": ""
+  },
+  {
+    "id": "67964",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7498HM Acrylux-MAT(AFP) HiPS PREMIUM Капучино NIEMANN",
+    "article": "67964",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph67964.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "67966",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85383HM Acrylux-MAT(AFP) HiPS PREMIUM Сірий NIEMANN",
+    "article": "67966",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph67966.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67968",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8855HM Acrylux-MAT HiPS PREMIUM Антрацит металік NIEMANN",
+    "article": "67968",
+    "price": "12014.76",
+    "image": "https://viyar.ua/store/Items/photos/ph67968.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "169085",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85735HM Acrylux MAT(AFP) PREMIUM Гранит NIEMANN двустороння 2800х1300х18мм",
+    "article": "169085",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169085.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "176430",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8865 Acrylux Чорний металік MAT METALLIC PET NIEMANN двостороння 2800х1300х18.6мм",
+    "article": "176430",
+    "price": "9693.06",
+    "image": "https://viyar.ua/store/Items/photos/ph176430.jpg",
+    "thickness": "18.6",
+    "color": "Чорний"
+  },
+  {
+    "id": "143930",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8421HM Acrylux MAT(AFP) PREMIUM Чорний NIEMANN двостороння 2800х1300х18мм",
+    "article": "143930",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph143930.jpg",
+    "thickness": "18",
+    "color": "Чорний"
+  },
+  {
+    "id": "67952",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8421H Acrylux HiPS PREMIUM Чорний глянець NIEMANN",
+    "article": "67952",
+    "price": "8717.04",
+    "image": "https://viyar.ua/store/Items/photos/ph67952.jpg",
+    "thickness": "18",
+    "color": "Чорний"
+  },
+  {
+    "id": "90350",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4702HM Acrylux-MAT(AFP)  HiPS PREMIUM Темно-синій NIEMANN",
+    "article": "90350",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph90350.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "90351",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85735HM Acrylux-MAT(AFP) HiPS PREMIUM Граніт NIEMANN",
+    "article": "90351",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph90351.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67946",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4644H Acrylux HiPS PREMIUM Кобальт NIEMANN  2800х1300х18мм",
+    "article": "67946",
+    "price": "11779.80",
+    "image": "https://viyar.ua/store/Items/photos/ph67946.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "164580",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 6005HM Acrylux MAT(AFP) PREMIUM Пляшковий зелений NIEMANN двостороння 2800х1300х18мм",
+    "article": "164580",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph164580.jpg",
+    "thickness": "18",
+    "color": "Зелений"
+  },
+  {
+    "id": "169086",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1982H Acrylux PREMIUM Сніжно-білий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169086",
+    "price": "16163.94",
+    "image": "https://viyar.ua/store/Items/photos/ph169086.jpg",
+    "thickness": "18.4",
+    "color": "Білий"
+  },
+  {
+    "id": "169096",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85384H Acrylux PREMIUM Попіл глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169096",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169096.jpg",
+    "thickness": "18.4",
+    "color": "Сірий"
+  },
+  {
+    "id": "176431",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8860 Acrylux Біла перлина MAT METALLIC PET HIPS NIEMANN 2800х1300х18мм",
+    "article": "176431",
+    "price": "9895.14",
+    "image": "https://viyar.ua/store/Items/photos/ph176431.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "185630",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8856HM Acrylux-MAT(AFP) HiPS PREMIUM Оливковий металік NIEMANN 2800x1300x18мм",
+    "article": "185630",
+    "price": "14916.78",
+    "image": "https://viyar.ua/store/Items/photos/ph185630.jpg",
+    "thickness": "18",
+    "color": "Зелений"
+  },
+  {
+    "id": "214044",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5406HM Acrylux-MAT(AFP) HiPS PREMIUM Шавлія NIEMANN 2800x1300x18мм",
+    "article": "214044",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph214044_dClbN.jpg",
+    "thickness": "18",
+    "color": ""
+  },
+  {
+    "id": "67958",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8636H Acrylux HiPS PREMIUM Сріблястий металік глянець NIEMANN",
+    "article": "67958",
+    "price": "12158.22",
+    "image": "https://viyar.ua/store/Items/photos/ph67958.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67956",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85384H Acrylux HiPS PREMIUM Попіл глянець NIEMANN 2800х1300х18мм",
+    "article": "67956",
+    "price": "10909.38",
+    "image": "https://viyar.ua/store/Items/photos/ph67956.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67944",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4473H Acrylux HiPS PREMIUM Оксид металік NIEMANN",
+    "article": "67944",
+    "price": "12350.88",
+    "image": "https://viyar.ua/store/Items/photos/ph67944.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "67949",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7408H Acrylux HiPS PREMIUM Бронзово-жовтий металік глянець NIEMANN 2800х1300х18мм",
+    "article": "67949",
+    "price": "12158.22",
+    "image": "https://viyar.ua/store/Items/photos/ph67949.jpg",
+    "thickness": "18",
+    "color": "Бронза"
+  },
+  {
+    "id": "130598",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85382HM Acrylux-MAT(AFP) HiPS PREMIUM Темно-сірий NIEMANN 2800х1300х18мм",
+    "article": "130598",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph130598.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "169079",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1982HM Acrylux MAT(AFP) PREMIUM Сніжно-білий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169079",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169079.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "169089",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7496HM Acrylux MAT(AFP) PREMIUM Кремовий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169089",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169089.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "176432",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8861 Acrylux Золота перлина MAT METALLIC PET HIPS NIEMANN 2800х1300х18мм",
+    "article": "176432",
+    "price": "9895.14",
+    "image": "https://viyar.ua/store/Items/photos/ph176432.jpg",
+    "thickness": "18",
+    "color": "Жовтий"
+  },
+  {
+    "id": "67956",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85384H Acrylux HiPS PREMIUM Попіл глянець NIEMANN 2800х1300х18мм",
+    "article": "67956",
+    "price": "10909.38",
+    "image": "https://viyar.ua/store/Items/photos/ph67956.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67944",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4473H Acrylux HiPS PREMIUM Оксид металік NIEMANN",
+    "article": "67944",
+    "price": "12350.88",
+    "image": "https://viyar.ua/store/Items/photos/ph67944.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "67953",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8427H Acrylux HiPS PREMIUM Чорний металік глянець NIEMANN  2800х1300х18мм",
+    "article": "67953",
+    "price": "12351.12",
+    "image": "https://viyar.ua/store/Items/photos/ph67953.jpg",
+    "thickness": "18",
+    "color": "Чорний"
+  },
+  {
+    "id": "130599",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85728HM Acrylux-MAT(AFP) HiPS PREMIUM Шифер сірий NIEMANN 2800х1300х18мм",
+    "article": "130599",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph130599.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "169080",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85468HM Acrylux MAT(AFP) PREMIUM Світло-Сірий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169080",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169080.jpg",
+    "thickness": "18",
+    "color": "Світло-сірий"
+  },
+  {
+    "id": "169090",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7498HM Acrylux MAT(AFP) PREMIUM Капучино NIEMANN двостороння 2800х1300х18мм",
+    "article": "169090",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169090.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "169098",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5357HM Acrylux MAT(AFP) PREMIUM Лагуна NIEMANN двостороння 2800х1300х18мм",
+    "article": "169098",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169098.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "176425",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8860 Acrylux Біла перлина MAT METALLIC PET NIEMANN двостороння 2800х1300х18.6мм",
+    "article": "176425",
+    "price": "13098.36",
+    "image": "https://viyar.ua/store/Items/photos/ph176425.jpg",
+    "thickness": "18.6",
+    "color": "Білий"
+  },
+  {
+    "id": "176433",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8862 Acrylux Бронзова перлина MAT METALLIC PET HIPS NIEMANN 2800х1300х18мм",
+    "article": "176433",
+    "price": "9895.14",
+    "image": "https://viyar.ua/store/Items/photos/ph176433.jpg",
+    "thickness": "18",
+    "color": "Коричневий"
+  },
+  {
+    "id": "185632",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8859HM Acrylux-MAT(AFP) HiPS PREMIUM Античне золото NIEMANN 2800x1300x18мм",
+    "article": "185632",
+    "price": "14917.86",
+    "image": "https://viyar.ua/store/Items/photos/ph185632.jpg",
+    "thickness": "18",
+    "color": "Бронза"
+  },
+  {
+    "id": "67967",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85468HM Acrylux-MAT HiPS PREMIUM Світло-Сірий NIEMANN",
+    "article": "67967",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph67967.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "67718",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1994H Acrylux HiPS PREMIUM Білий глянець NIEMANN",
+    "article": "67718",
+    "price": "10896.36",
+    "image": "https://viyar.ua/store/Items/photos/ph67718.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "67954",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85382H Acrylux HiPS PREMIUM Темно Сірий глянець NIEMANN 2800х1300х18мм",
+    "article": "67954",
+    "price": "11778.96",
+    "image": "https://viyar.ua/store/Items/photos/ph67954.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "130600",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4670HM Acrylux-MAT(AFP) HiPS PREMIUM Морський NIEMANN 2800х1300х18мм",
+    "article": "130600",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph130600.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "169081",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 11082HM Acrylux MAT(AFP) PREMIUM Арктичний Білий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169081",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169081.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "169108",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85383H Acrylux PREMIUM Сірий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169108",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169108.jpg",
+    "thickness": "18.4",
+    "color": "Сірий"
+  },
+  {
+    "id": "176426",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8861 Acrylux Золота перлина MAT METALLIC PET NIEMANN двостороння 2800х1300х18.6мм",
+    "article": "176426",
+    "price": "13098.36",
+    "image": "https://viyar.ua/store/Items/photos/ph176426.jpg",
+    "thickness": "18.6",
+    "color": "Жовтий"
+  },
+  {
+    "id": "185633",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8856HM Acrylux MAT(AFP) PREMIUM Оливковый металлик NIEMANN  двостороння 2800х1300х18,4мм",
+    "article": "185633",
+    "price": "23710.86",
+    "image": "https://viyar.ua/store/Items/photos/ph185633.jpg",
+    "thickness": "18.4",
+    "color": "Зелений"
+  },
+  {
+    "id": "67719",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 6000H Acrylux HiPS PREMIUM Арктичний Білий глянець NIEMANN",
+    "article": "67719",
+    "price": "10896.36",
+    "image": "https://viyar.ua/store/Items/photos/ph67719.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "67717",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1982H Acrylux HiPS PREMIUM Сніжно-білий глянець NIEMANN 2800х1300х18мм",
+    "article": "67717",
+    "price": "10896.36",
+    "image": "https://viyar.ua/store/Items/photos/ph67717.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "67951",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7498H Acrylux HiPS PREMIUM Капучино глянець NIEMANN",
+    "article": "67951",
+    "price": "10909.38",
+    "image": "https://viyar.ua/store/Items/photos/ph67951.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "67955",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85383H Acrylux HiPS PREMIUM Сірий глянець NIEMANN 2800х1300х18мм",
+    "article": "67955",
+    "price": "8717.04",
+    "image": "https://viyar.ua/store/Items/photos/ph67955.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "130601",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5357HM Acrylux-MAT(AFP) HiPS PREMIUM Лагуна NIEMANN 2800х1300х18мм",
+    "article": "130601",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph130601.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "169082",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 6000H Acrylux PREMIUM Арктичний Білий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169082",
+    "price": "16163.82",
+    "image": "https://viyar.ua/store/Items/photos/ph169082.jpg",
+    "thickness": "18.4",
+    "color": "Білий"
+  },
+  {
+    "id": "130601",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5357HM Acrylux-MAT(AFP) HiPS PREMIUM Лагуна NIEMANN 2800х1300х18мм",
+    "article": "130601",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph130601.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "169082",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 6000H Acrylux PREMIUM Арктичний Білий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169082",
+    "price": "16163.82",
+    "image": "https://viyar.ua/store/Items/photos/ph169082.jpg",
+    "thickness": "18.4",
+    "color": "Білий"
+  },
+  {
+    "id": "169092",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85382HM Acrylux MAT(AFP) PREMIUM Темно-сірий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169092",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169092.jpg",
+    "thickness": "18",
+    "color": "Темно-сірий"
+  },
+  {
+    "id": "169100",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7408H Acrylux PREMIUM Бронзово-жовтий металік глянець NIEMANN двостороння 2800х1300х18,4м",
+    "article": "169100",
+    "price": "18114.72",
+    "image": "https://viyar.ua/store/Items/photos/ph169100.jpg",
+    "thickness": "18.4",
+    "color": "Бронза"
+  },
+  {
+    "id": "176427",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8862 Acrylux Бронзова перлина MAT METALLIC PET NIEMANN двостороння 2800х1300х18.6мм",
+    "article": "176427",
+    "price": "13098.36",
+    "image": "https://viyar.ua/store/Items/photos/ph176427.jpg",
+    "thickness": "18.6",
+    "color": "Коричневий"
+  },
+  {
+    "id": "176435",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8864 Acrylux Синій хамелеон MAT METALLIC PET HIPS NIEMANN 2800х1300х18мм",
+    "article": "176435",
+    "price": "9895.14",
+    "image": "https://viyar.ua/store/Items/photos/ph176435.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "185634",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8857HM Acrylux MAT(AFP) PREMIUM Латунь NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "185634",
+    "price": "22616.52",
+    "image": "https://viyar.ua/store/Items/photos/ph185634.jpg",
+    "thickness": "18.4",
+    "color": "Коричневий"
+  },
+  {
+    "id": "67950",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7496H Acrylux HiPS PREMIUM Кремовий глянець NIEMANN",
+    "article": "67950",
+    "price": "10909.38",
+    "image": "https://viyar.ua/store/Items/photos/ph67950.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "67959",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8855H Acrylux HiPS PREMIUM Антрацит металік глянець NIEMANN",
+    "article": "67959",
+    "price": "9139.86",
+    "image": "https://viyar.ua/store/Items/photos/ph67959.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67962",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7408HM Acrylux-MAT HiPS PREMIUM Бронзово-жовтий металік NIEMANN",
+    "article": "67962",
+    "price": "12014.76",
+    "image": "https://viyar.ua/store/Items/photos/ph67962.jpg",
+    "thickness": "18",
+    "color": "Бронза"
+  },
+  {
+    "id": "112720",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7496HM Acrylux-MAT(AFP) HiPS PREMIUM Кремовий NIEMANN  2800х1300х18мм",
+    "article": "112720",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph112720.jpg",
+    "thickness": "18",
+    "color": "Бежевий"
+  },
+  {
+    "id": "130602",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85384HM Acrylux-MAT(AFP) HiPS PREMIUM Попіл NIEMANN 2800х1300х18мм",
+    "article": "130602",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph130602.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "169083",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85384HM Acrylux MAT(AFP) PREMIUM Попіл NIEMANN двостороння 2800х1300х18мм",
+    "article": "169083",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169083.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "169093",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85728HM Acrylux MAT(AFP) PREMIUM Шифер сірий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169093",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169093.jpg",
+    "thickness": "18",
+    "color": "Світло-сірий"
+  },
+  {
+    "id": "176428",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8863 Acrylux Синій металік MAT METALLIC PET NIEMANN двостороння 2800х1300х18.6мм",
+    "article": "176428",
+    "price": "13098.72",
+    "image": "https://viyar.ua/store/Items/photos/ph176428.jpg",
+    "thickness": "18.6",
+    "color": "Синій"
+  },
+  {
+    "id": "185635",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8859HM Acrylux MAT(AFP) PREMIUM Античное золото NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "185635",
+    "price": "23710.86",
+    "image": "https://viyar.ua/store/Items/photos/ph185635.jpg",
+    "thickness": "18.4",
+    "color": "Бронза"
+  },
+  {
+    "id": "67960",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 11082HM Acrylux-MAT(AFP)  HiPS PREMIUM Арктичний Білий NIEMANN",
+    "article": "67960",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph67960.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "67961",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1982HM Acrylux-MAT(AFP)  HiPS PREMIUM Сніжно-білий NIEMANN",
+    "article": "67961",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph67961.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "67965",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8421HM Acrylux-MAT(AFP) HiPS PREMIUM Чорний NIEMANN",
+    "article": "67965",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph67965.jpg",
+    "thickness": "18",
+    "color": "Чорний"
+  },
+  {
+    "id": "114397",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 6005HM Acrylux MAT(AFP) HIPS Пляшковий зелений NIEMANN",
+    "article": "114397",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph114397.jpg",
+    "thickness": "18",
+    "color": "Зелений"
+  },
+  {
+    "id": "159529",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1644H Acrylux HIPS Кришталево-білий глянець WH NIEMANN",
+    "article": "159529",
+    "price": "10896.36",
+    "image": "https://viyar.ua/store/Items/photos/ph159529.jpg",
+    "thickness": "18",
+    "color": "Білий"
+  },
+  {
+    "id": "169084",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85383HM Acrylux MAT(AFP) PREMIUM Сірий NIEMANN двостороння 2800х1300х18мм",
+    "article": "169084",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169084.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "176429",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8864 Acrylux Синій хамелеон MAT METALLIC PET NIEMANN двостороння 2800х1300х18.6мм",
+    "article": "176429",
+    "price": "13098.72",
+    "image": "https://viyar.ua/store/Items/photos/ph176429.jpg",
+    "thickness": "18.6",
+    "color": "Синій"
+  },
+  {
+    "id": "169874",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8855HM Acrylux MAT PREMIUM Антрацит металік NIEMANN двостороння 2800х1300х18мм",
+    "article": "169874",
+    "price": "16567.86",
+    "image": "https://viyar.ua/store/Items/photos/ph169874.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67943",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 3362H Acrylux HiPS PREMIUM Червоний глянець NIEMANN 2800х1300х18мм",
+    "article": "67943",
+    "price": "11779.80",
+    "image": "https://viyar.ua/store/Items/photos/ph67943.jpg",
+    "thickness": "18",
+    "color": "Червоний"
+  },
+  {
+    "id": "146220",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4702HM Acrylux MAT(AFP) PREMIUM Темно-синій NIEMANN двостороння 2800х1300х18мм",
+    "article": "146220",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph146220.jpg",
+    "thickness": "18",
+    "color": "Темно-синій"
+  },
+  {
+    "id": "169112",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8427H Acrylux PREMIUM Чорний металік глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169112",
+    "price": "18114.72",
+    "image": "https://viyar.ua/store/Items/photos/ph169112.jpg",
+    "thickness": "18.4",
+    "color": "Чорний"
+  },
+  {
+    "id": "169095",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7496H Acrylux PREMIUM Кремовий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169095",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169095.jpg",
+    "thickness": "18.4",
+    "color": "Бежевий"
+  },
+  {
+    "id": "169103",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4473H Acrylux PREMIUM Оксид металік NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169103",
+    "price": "18114.72",
+    "image": "https://viyar.ua/store/Items/photos/ph169103.jpg",
+    "thickness": "18.4",
+    "color": "Синій"
+  },
+  {
+    "id": "186210",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85841HM Acrylux MAT(AFP)  PREMIUM Сірий металік NIEMANN двостороння 2800х1300х18мм",
+    "article": "186210",
+    "price": "16567.86",
+    "image": "https://viyar.ua/store/Items/photos/ph186210.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  },
+  {
+    "id": "67945",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4548H Acrylux HiPS PREMIUM Фіолетовий глянець NIEMANN 2800х1300х18мм",
+    "article": "67945",
+    "price": "11779.80",
+    "image": "https://viyar.ua/store/Items/photos/ph35336.jpg",
+    "thickness": "18",
+    "color": "Фіолетовий"
+  },
+  {
+    "id": "169115",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1644H Acrylux PREMIUM Кришталево-білий глянець WH NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169115",
+    "price": "16163.94",
+    "image": "https://viyar.ua/store/Items/photos/ph169115.jpg",
+    "thickness": "18.4",
+    "color": "Білий"
+  },
+  {
+    "id": "169104",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85382H Acrylux PREMIUM Темно Сірий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169104",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169104.jpg",
+    "thickness": "18.4",
+    "color": "Темно-сірий"
+  },
+  {
+    "id": "169087",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85468H Acrylux PREMIUM Світло-Сірий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169087",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169087.jpg",
+    "thickness": "18.4",
+    "color": "Світло-сірий"
+  },
+  {
+    "id": "169097",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8636H Acrylux PREMIUM Сріблястий металік глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169097",
+    "price": "18114.72",
+    "image": "https://viyar.ua/store/Items/photos/ph169097.jpg",
+    "thickness": "18.4",
+    "color": "Сірий"
+  },
+  {
+    "id": "169105",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8421H Acrylux PREMIUM Чорний глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169105",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169105.jpg",
+    "thickness": "18.4",
+    "color": "Чорний"
+  },
+  {
+    "id": "67948",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5357H Acrylux HiPS PREMIUM Лагуна глянець NIEMANN",
+    "article": "67948",
+    "price": "11779.80",
+    "image": "https://viyar.ua/store/Items/photos/ph67948.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "169106",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8855H Acrylux PREMIUM Антрацит металік глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169106",
+    "price": "18114.72",
+    "image": "https://viyar.ua/store/Items/photos/ph169106.jpg",
+    "thickness": "18.4",
+    "color": "Сірий"
+  },
+  {
+    "id": "214046",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7045HM Acrylux-MAT(AFP) HiPS PREMIUM Кашемір NIEMANN 2800x1300x18мм",
+    "article": "214046",
+    "price": "10523.46",
+    "image": "https://viyar.ua/store/Items/photos/ph214046_3pW9o.jpg",
+    "thickness": "18",
+    "color": ""
+  },
+  {
+    "id": "169091",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 11035H Acrylux PREMIUM Білий металік глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169091",
+    "price": "18114.72",
+    "image": "https://viyar.ua/store/Items/photos/ph169091.jpg",
+    "thickness": "18.4",
+    "color": "Білий"
+  },
+  {
+    "id": "169099",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7408HM Acrylux MAT PREMIUM Бронзово-жовтий металік NIEMANN двостороння 2800х1300х18мм",
+    "article": "169099",
+    "price": "16567.86",
+    "image": "https://viyar.ua/store/Items/photos/ph169099.jpg",
+    "thickness": "18",
+    "color": "Бронза"
+  },
+  {
+    "id": "176434",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8863 Acrylux Синій металік MAT METALLIC PET HIPS NIEMANN 2800х1300х18мм",
+    "article": "176434",
+    "price": "9894.78",
+    "image": "https://viyar.ua/store/Items/photos/ph176434.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "214048",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5406HM Acrylux-MAT(AFP) HiPS PREMIUM Шавлія NIEMANN двостороння 2800x1300x18мм",
+    "article": "214048",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph214048_bEETo.jpg",
+    "thickness": "18",
+    "color": ""
+  },
+  {
+    "id": "67947",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4670H Acrylux HiPS PREMIUM Морський глянець NIEMANN",
+    "article": "67947",
+    "price": "11779.80",
+    "image": "https://viyar.ua/store/Items/photos/ph67947.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "169109",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 5357H Acrylux PREMIUM Лагуна глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169109",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169109.jpg",
+    "thickness": "18.4",
+    "color": "Синій"
+  },
+  {
+    "id": "214049",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 3493HM Acrylux-MAT(AFP) HiPS PREMIUM Бордо NIEMANN довстороння 2800x1300x18мм",
+    "article": "214049",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph214049_Rv2Vq.jpg",
+    "thickness": "18",
+    "color": ""
+  },
+  {
+    "id": "169110",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4644H Acrylux PREMIUM Кобальт глянец NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169110",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169110.jpg",
+    "thickness": "18.4",
+    "color": "Синій"
+  },
+  {
+    "id": "169101",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4670HM Acrylux MAT(AFP) PREMIUM Морський NIEMANN двостороння 2800х1300х18мм",
+    "article": "169101",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph169101.jpg",
+    "thickness": "18",
+    "color": "Синій"
+  },
+  {
+    "id": "176436",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 8865 Acrylux Чорний металік MAT METALLIC PET HIPS NIEMANN 2800х1300х18мм",
+    "article": "176436",
+    "price": "9895.14",
+    "image": "https://viyar.ua/store/Items/photos/ph176436.jpg",
+    "thickness": "18",
+    "color": "Чорний"
+  },
+  {
+    "id": "214050",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7045HM Acrylux-MAT(AFP) HiPS PREMIUM Кашемір NIEMANN двостороння 2800x1300x18мм",
+    "article": "214050",
+    "price": "14522.70",
+    "image": "https://viyar.ua/store/Items/photos/ph214050_Am7sc.jpg",
+    "thickness": "18",
+    "color": ""
+  },
+  {
+    "id": "169111",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 4670H Acrylux PREMIUM Морський глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169111",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169111.jpg",
+    "thickness": "18.4",
+    "color": "Синій"
+  },
+  {
+    "id": "169094",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 1994H Acrylux PREMIUM Білий глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169094",
+    "price": "16163.94",
+    "image": "https://viyar.ua/store/Items/photos/ph169094.jpg",
+    "thickness": "18.4",
+    "color": "Білий"
+  },
+  {
+    "id": "169102",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 7498H Acrylux PREMIUM Капучино глянець NIEMANN двостороння 2800х1300х18,4мм",
+    "article": "169102",
+    "price": "16857.90",
+    "image": "https://viyar.ua/store/Items/photos/ph169102.jpg",
+    "thickness": "18.4",
+    "color": "Бежевий"
+  },
+  {
+    "id": "186209",
+    "vendor": "NIEMANN",
+    "name": "Панель МДФ 85841HM Acrylux-MAT(AFP) HiPS PREMIUM Сірий металік NIEMANN 2800х1300х18мм",
+    "article": "186209",
+    "price": "12014.76",
+    "image": "https://viyar.ua/store/Items/photos/ph186209.jpg",
+    "thickness": "18",
+    "color": "Сірий"
+  }
+];

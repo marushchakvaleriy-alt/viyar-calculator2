@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Налаштування</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            color: #1e3c72;
+        }
+
+        .nav-links a {
+            color: #1e3c72;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: #e8f0fe;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #1e3c72;
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h3 {
+            font-size: 15px;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .setting-info p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .setting-control input[type="text"],
+        .setting-control input[type="number"],
+        .setting-control select {
+            padding: 8px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            min-width: 200px;
+        }
+
+        .setting-control input:focus,
+        .setting-control select:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2a5298;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .color-picker {
+            width: 50px;
+            height: 35px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+
+        .stat-box .label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .warning-box h4 {
+            color: #92400e;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .warning-box p {
+            color: #a16207;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .setting-control {
+                width: 100%;
+            }
+
+            .setting-control input,
+            .setting-control select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>⚙️ Налаштування</h1>
+        <div class="nav-links">
+            <a href="index.html">🏠 Головна</a>
+            <a href="order.html">📝 Нове замовлення</a>
+            <a href="catalogs.html">📚 Довідники</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Статистика -->
+        <div class="card">
+            <h2>📊 Статистика системи</h2>
+            <div class="stats-grid" id="statsGrid"></div>
+        </div>
+
+        <!-- Налаштування компанії -->
+        <div class="card">
+            <h2>🏢 Дані компанії</h2>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Назва компанії</h3>
+                    <p>Відображається в PDF та замовленнях</p>
+                </div>
+                <div class="setting-control">
+                    <input type="text" id="companyName" placeholder="Моя компанія">
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Телефон</h3>
+                    <p>Контактний номер</p>
+                </div>
+                <div class="setting-control">
+                    <input type="text" id="companyPhone" placeholder="+380...">
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Email</h3>
+                    <p>Електронна пошта</p>
+                </div>
+                <div class="setting-control">
+                    <input type="text" id="companyEmail" placeholder="email@company.com">
+                </div>
+            </div>
+        </div>
+
+        <!-- Налаштування замовлень -->
+        <div class="card">
+            <h2>📝 Налаштування замовлень</h2>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Префікс номера замовлення</h3>
+                    <p>Наприклад: К-2026-</p>
+                </div>
+                <div class="setting-control">
+                    <input type="text" id="orderPrefix" placeholder="К-2026-">
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Автозбереження чернеток</h3>
+                    <p>Інтервал в секундах (0 - вимкнено)</p>
+                </div>
+                <div class="setting-control">
+                    <input type="number" id="autosaveInterval" min="0" max="300" value="30">
+                </div>
+            </div>
+        </div>
+
+        <!-- Зовнішній вигляд -->
+        <div class="card">
+            <h2>🎨 Зовнішній вигляд</h2>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Основний колір</h3>
+                    <p>Колір заголовків та кнопок</p>
+                </div>
+                <div class="setting-control">
+                    <input type="color" class="color-picker" id="primaryColor" value="#1e3c72">
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Акцентний колір</h3>
+                    <p>Колір успішних дій</p>
+                </div>
+                <div class="setting-control">
+                    <input type="color" class="color-picker" id="accentColor" value="#10b981">
+                </div>
+            </div>
+        </div>
+
+        <!-- Дані -->
+        <div class="card">
+            <h2>💾 Управління даними</h2>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="exportAllData()">📥 Експорт всіх даних</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importAllFile').click()">📤 Імпорт
+                    даних</button>
+                <input type="file" id="importAllFile" accept=".json" style="display:none"
+                    onchange="importAllData(event)">
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Небезпечна зона</h4>
+                <p>Ці дії неможливо скасувати</p>
+            </div>
+
+            <div class="actions" style="margin-top:15px">
+                <button class="btn btn-danger" onclick="clearDrafts()">🗑️ Очистити чернетки</button>
+                <button class="btn btn-danger" onclick="clearAllData()">🗑️ Очистити всі дані</button>
+            </div>
+        </div>
+
+        <!-- Збереження -->
+        <div class="card">
+            <div class="actions" style="justify-content:center">
+                <button class="btn btn-success" onclick="saveSettings()" style="padding:15px 40px; font-size:16px">
+                    💾 Зберегти налаштування
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ініціалізація
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            renderStats();
+        });
+
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('order_settings') || '{}');
+
+            document.getElementById('companyName').value = settings.companyName || '';
+            document.getElementById('companyPhone').value = settings.companyPhone || '';
+            document.getElementById('companyEmail').value = settings.companyEmail || '';
+            document.getElementById('orderPrefix').value = settings.orderPrefix || 'К-2026-';
+            document.getElementById('autosaveInterval').value = settings.autosaveInterval || 30;
+            document.getElementById('primaryColor').value = settings.primaryColor || '#1e3c72';
+            document.getElementById('accentColor').value = settings.accentColor || '#10b981';
+        }
+
+        function saveSettings() {
+            const settings = {
+                companyName: document.getElementById('companyName').value,
+                companyPhone: document.getElementById('companyPhone').value,
+                companyEmail: document.getElementById('companyEmail').value,
+                orderPrefix: document.getElementById('orderPrefix').value,
+                autosaveInterval: parseInt(document.getElementById('autosaveInterval').value) || 30,
+                primaryColor: document.getElementById('primaryColor').value,
+                accentColor: document.getElementById('accentColor').value
+            };
+
+            localStorage.setItem('order_settings', JSON.stringify(settings));
+            alert('✅ Налаштування збережено!');
+        }
+
+        function renderStats() {
+            const orders = JSON.parse(localStorage.getItem('orders_list') || '[]');
+            const draft = localStorage.getItem('order_draft');
+            const settings = localStorage.getItem('order_settings');
+
+            // Підрахунок розміру даних
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage.getItem(key).length * 2; // UTF-16
+                }
+            }
+
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-box">
+                    <div class="value">${orders.length}</div>
+                    <div class="label">Замовлень</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value">${draft ? '1' : '0'}</div>
+                    <div class="label">Чернеток</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value">11</div>
+                    <div class="label">Довідників</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value">${formatBytes(totalSize)}</div>
+                    <div class="label">Використано</div>
+                </div>
+            `;
+        }
+
+        function formatBytes(bytes) {
+            if (bytes < 1024) return bytes + ' Б';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' МБ';
+        }
+
+        function exportAllData() {
+            const data = {
+                exportDate: new Date().toISOString(),
+                settings: JSON.parse(localStorage.getItem('order_settings') || '{}'),
+                orders: JSON.parse(localStorage.getItem('orders_list') || '[]'),
+                draft: JSON.parse(localStorage.getItem('order_draft') || 'null')
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `order-constructor-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importAllData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (data.settings) {
+                        localStorage.setItem('order_settings', JSON.stringify(data.settings));
+                    }
+                    if (data.orders) {
+                        localStorage.setItem('orders_list', JSON.stringify(data.orders));
+                    }
+                    if (data.draft) {
+                        localStorage.setItem('order_draft', JSON.stringify(data.draft));
+                    }
+
+                    alert('✅ Дані імпортовано!');
+                    loadSettings();
+                    renderStats();
+                } catch (err) {
+                    alert('❌ Помилка імпорту: ' + err.message);
+                }
+
+                event.target.value = '';
+            };
+
+            reader.readAsText(file);
+        }
+
+        function clearDrafts() {
+            if (confirm('Видалити всі чернетки?')) {
+                localStorage.removeItem('order_draft');
+                renderStats();
+                alert('✅ Чернетки видалено!');
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('⚠️ УВАГА!\n\nЦе видалить ВСІ дані:\n- Замовлення\n- Чернетки\n- Налаштування\n\nПродовжити?')) {
+                if (confirm('Ви впевнені? Ця дія незворотня!')) {
+                    localStorage.removeItem('order_settings');
+                    localStorage.removeItem('orders_list');
+                    localStorage.removeItem('order_draft');
+                    renderStats();
+                    loadSettings();
+                    alert('✅ Всі дані видалено!');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

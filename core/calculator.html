@@ -500,11 +500,15 @@
 </head>
 
 <body>
-    <div style="position:fixed; top:20px; left:20px; z-index:100">
+    <div style="position:fixed; top:20px; left:20px; z-index:100; display:flex; gap:10px">
         <a href="../index.html"
             style="text-decoration:none; background:white; padding:8px 12px; border-radius:30px; box-shadow:0 2px 5px rgba(0,0,0,0.1); font-weight:600; color:#4b5563; display:flex; align-items:center; gap:5px; font-size:13px; border:1px solid #e5e7eb; transition:0.2s">
             <span style="font-size:16px">🏠</span> На головну
         </a>
+        <button onclick="showAiModal()"
+            style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); color:white; border:none; padding:8px 15px; border-radius:30px; box-shadow:0 2px 5px rgba(0,0,0,0.2); font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; transition:transform 0.2s">
+            ✨ AI Magic
+        </button>
     </div>
 
     <!-- Auth Controls (Fixed Top Right) -->
@@ -619,6 +623,80 @@
         </div>
     </div>
 
+    <!-- AI MAGIC MODAL -->
+    <div id="aiModal" class="modal" style="display:none; align-items:center; justify-content:center; z-index:2000;">
+        <div class="modal-box"
+            style="width: 600px; max-width: 90%; background:white; border-radius:12px; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+            <div class="modal-header"
+                style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); padding: 20px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="color:white; margin:0; font-size:18px;">✨ AI Розрахунок (Gemini)</h3>
+                <button onclick="document.getElementById('aiModal').style.display='none'"
+                    style="background:none; border:none; color:white; font-size:24px; cursor:pointer; opacity:0.8">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 24px; max-height:70vh; overflow-y:auto;">
+
+                <div class="pg-field">
+                    <label style="display:block; margin-bottom:6px; font-weight:600; font-size:13px; color:#374151;">🔑
+                        Gemini API Key <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                            style="font-size:11px; color:#3b82f6">(Отримати безкоштовно)</a></label>
+                    <div style="display:flex; gap:8px">
+                        <input type="password" id="aiKey" class="pg-input"
+                            value="AIzaSyBMvARr6WSKdS3SV_-oDAauxmLeA-7eWkM" placeholder="Вставте ваш ключ API тут"
+                            style="flex:1;" oninput="localStorage.setItem('gemini_api_key', this.value)">
+                        <button
+                            onclick="const el=document.getElementById('aiKey'); el.type = el.type==='password'?'text':'password'; this.innerText = el.type==='password'?'👁️':'🔒'"
+                            style="background:#f3f4f6; border:1px solid #d1d5db; border-radius:8px; padding:0 10px; cursor:pointer;"
+                            title="Показати/Приховати">👁️</button>
+                        <button
+                            onclick="document.getElementById('aiKey').value=''; localStorage.removeItem('gemini_api_key');"
+                            style="background:#fee2e2; border:1px solid #fca5a5; border-radius:8px; padding:0 10px; cursor:pointer; color:#b91c1c"
+                            title="Очистити">❌</button>
+                    </div>
+                </div>
+
+                <div class="pg-field">
+                    <label style="display:block; margin-bottom:6px; font-weight:600; font-size:13px; color:#374151;">🖼️
+                        Фото меблів / Ескіз</label>
+                    <div id="aiDropzone"
+                        style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; background: #f8fafc; position: relative"
+                        onclick="document.getElementById('aiImgInput').click()">
+                        <div id="aiDropText">
+                            <div style="font-size: 32px; margin-bottom: 10px">📸</div>
+                            <span style="color: #64748b; font-weight: 500">Перетягніть фото сюди або (Ctrl+V)</span>
+                        </div>
+                        <img id="aiPreview"
+                            style="max-width: 100%; max-height: 200px; display: none; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1)">
+                        <button id="aiRemoveImg" onclick="event.stopPropagation(); clearAiImage()"
+                            style="display:none; position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer">&times;</button>
+                    </div>
+                    <input type="file" id="aiImgInput" accept="image/*" style="display:none"
+                        onchange="processAiFile(this.files[0])">
+                </div>
+
+                <div class="pg-field">
+                    <label style="display:block; margin-bottom:6px; font-weight:600; font-size:13px; color:#374151;">📝
+                        Технічне Завдання (ТЗ)</label>
+                    <textarea id="aiPrompt" class="pg-input" rows="4"
+                        placeholder="Опишіть деталі: матеріали, фурнітура, особливості (" Фасади МДФ, 4 ящика")..."
+                        style="width:100%; font-family:sans-serif;"></textarea>
+                </div>
+
+                <div id="aiLog"
+                    style="display:none; background:#1f2937; color:#10b981; padding:12px; border-radius:8px; font-family:monospace; font-size:11px; margin-bottom:15px; white-space: pre-wrap; margin-top:15px;">
+                </div>
+
+            </div>
+            <div class="modal-footer"
+                style="padding: 16px 24px; background: #f9fafb; border-top: 1px solid #e5e7eb; display:flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="document.getElementById('aiModal').style.display='none'"
+                    class="btn btn-secondary">Скасувати</button>
+                <button onclick="runAiAnalysis()" id="aiRunBtn" class="btn btn-primary"
+                    style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); border: none;">🤖
+                    Аналізувати</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let editingProductId = null;
         let currentButtonId = null;
@@ -700,6 +778,17 @@
 
             console.log('Rendering modal for button:', button.label || button.default, 'Fields:', button.modalFields.length);
 
+            // Extract Modal Typography Settings
+            const layout = button.layout || {};
+            const mSize = layout.modalFieldSize ? `font-size:${layout.modalFieldSize}px;` : '';
+            const mWeight = layout.modalFieldWeight ? `font-weight:${layout.modalFieldWeight};` : '';
+            const mColor = layout.modalFieldColor ? `color:${layout.modalFieldColor};` : '';
+            const mStyle = layout.modalFieldStyle ? `font-style:${layout.modalFieldStyle};` : '';
+            const mLineHeight = layout.modalFieldLineHeight ? `line-height:${layout.modalFieldLineHeight};` : '';
+
+            const labelStyle = `display:block; margin-bottom:5px; ${mSize} ${mWeight} ${mColor} ${mStyle} ${mLineHeight}`;
+            const checkLabelStyle = `flex:1; display:flex; align-items:center; gap:6px; cursor:pointer; margin:0; ${mSize} ${mWeight} ${mColor} ${mStyle} ${mLineHeight}`;
+
             button.modalFields.forEach(f => {
                 const row = document.createElement('div');
                 row.className = 'pg-field';
@@ -708,21 +797,65 @@
 
                 if (f.type === 'select') {
                     let opts = (f.options || []).map(o => `<option value="${o.value}" ${currentVal === o.value ? 'selected' : ''}>${o.label}</option>`).join('');
-                    row.innerHTML = `<label>${f.label}</label><select class="pg-input" id="inp_${f.id}" data-fid="${f.id}" onchange="recalcModalTotal()">${opts}</select>`;
+                    row.innerHTML = `<label style="${labelStyle}">${f.label}</label><select class="pg-input" id="inp_${f.id}" data-fid="${f.id}" onchange="recalcModalTotal()">${opts}</select>`;
                 }
                 else if (f.type === 'multiselect') {
                     const selectedVals = Array.isArray(currentVal) ? currentVal : [];
-                    let items = (f.options || []).map(o => `
-                        <label class="checkbox-item">
-                            <input type="checkbox" class="ms-check" data-fid="${f.id}" value="${o.value}" ${selectedVals.includes(o.value) ? 'checked' : ''} onchange="recalcModalTotal()">
-                            <span>${o.label}</span>
-                        </label>
-                    `).join('');
-                    row.innerHTML = `<label>${f.label}</label><div class="checkbox-list">${items}</div>`;
+                    let items = (f.options || []).map(o => {
+                        const isSelected = selectedVals.some(v => v.value === o.value || v === o.value);
+                        const qty = selectedVals.find(v => v.value === o.value)?.qty || 1;
+
+                        return `
+                        <div class="multiselect-item" style="display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #e5e7eb;">
+                            <label style="${checkLabelStyle}">
+                                <input type="checkbox" class="ms-check" data-fid="${f.id}" value="${o.value}" ${isSelected ? 'checked' : ''} onchange="recalcModalTotal()">
+                                <span>${o.label}</span>
+                            </label>
+                            <input type="number" class="ms-qty" data-value="${o.value}" data-fid="${f.id}" value="${qty}" min="1" 
+                                   oninput="recalcModalTotal()" 
+                                   style="width:70px; padding:4px 8px; border:1px solid #d1d5db; border-radius:6px; text-align:center;">
+                        </div>
+                    `;
+                    }).join('');
+
+                    let labelHtml = f.label;
+                    if (f.helpContent) {
+                        labelHtml += ` <span style="cursor:help; color:#3b82f6; font-size:16px; margin-left:5px;" title="${f.helpContent.replace(/"/g, '&quot;')}">ⓘ</span>`;
+                    }
+
+                    row.innerHTML = `<label style="${labelStyle.replace('display:block', 'display:flex').replace('margin-bottom:5px', 'margin-bottom:10px; align-items:center')}">${labelHtml}</label>
+                                     <div class="checkbox-list" style="background:white; border:none; padding:0; max-height:none; box-shadow:none;">${items}</div>`;
+                }
+                else if (f.type === 'multiselect_qty') {
+                    const selectedVals = Array.isArray(currentVal) ? currentVal : [];
+                    let items = (f.options || []).map(o => {
+                        const isSelected = selectedVals.some(v => v.value === o.value || v === o.value);
+                        const qty = selectedVals.find(v => v.value === o.value)?.qty || 1;
+
+                        return `
+                        <div class="multiselect-item" style="display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #e5e7eb;">
+                            <label style="${checkLabelStyle}">
+                                <input type="checkbox" class="ms-qty-check" data-fid="${f.id}" value="${o.value}" ${isSelected ? 'checked' : ''} onchange="recalcModalTotal()">
+                                <span>${o.label}</span>
+                            </label>
+                            <input type="number" class="ms-qty-input" data-value="${o.value}" data-fid="${f.id}" value="${qty}" min="1" 
+                                   oninput="recalcModalTotal()" 
+                                   style="width:70px; padding:4px 8px; border:1px solid #d1d5db; border-radius:6px; text-align:center;">
+                        </div>
+                    `;
+                    }).join('');
+
+                    let labelHtml = f.label;
+                    if (f.helpContent) {
+                        labelHtml += ` <span style="cursor:help; color:#3b82f6; font-size:16px; margin-left:5px;" title="${f.helpContent.replace(/"/g, '&quot;')}">ⓘ</span>`;
+                    }
+
+                    row.innerHTML = `<label style="${labelStyle.replace('display:block', 'display:flex').replace('margin-bottom:5px', 'margin-bottom:10px; align-items:center')}">${labelHtml}</label>
+                                     <div class="checkbox-list" style="background:white; border:none; padding:0; max-height:none; box-shadow:none;">${items}</div>`;
                 }
                 else if (f.type === 'number') {
                     const val = currentVal !== null ? currentVal : (f.default || 0);
-                    row.innerHTML = `<label>${f.label}</label><input type="number" class="pg-input" id="inp_${f.id}" data-fid="${f.id}" value="${val}" oninput="recalcModalTotal()">`;
+                    row.innerHTML = `<label style="${labelStyle}">${f.label}</label><input type="number" class="pg-input" id="inp_${f.id}" name="field_n_${f.id}_${Date.now()}" data-fid="${f.id}" value="${val}" oninput="recalcModalTotal()" autocomplete="new-password">`;
                 }
                 else if (f.type === 'checkbox_qty') {
                     row.className = 'pg-check-row';
@@ -730,7 +863,7 @@
                     const qVal = currentVal ? currentVal.qty : 1;
                     row.innerHTML = `
                         <label class="pg-check-label"><input type="checkbox" id="chk_${f.id}" data-fid="${f.id}" ${isChecked ? 'checked' : ''} onchange="recalcModalTotal()"> ${f.label}</label>
-                        <input type="number" class="pg-check-qty" id="qty_${f.id}" value="${qVal}" oninput="recalcModalTotal()">
+                        <input type="number" class="pg-check-qty" id="qty_${f.id}" name="field_q_${f.id}_${Date.now()}" value="${qVal}" oninput="recalcModalTotal()" autocomplete="new-password">
                     `;
                 }
                 else if (f.type === 'checkbox') {
@@ -857,6 +990,229 @@
             }
 
             closeProductModal();
+        }
+    </script>
+    <script>
+        // ============================================
+        // AI MAGIC IMPLEMENTATION CS (Client Side)
+        // ============================================
+        let geminiImageBase64 = null;
+
+        function showAiModal() {
+            document.getElementById('aiModal').style.display = 'flex';
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) document.getElementById('aiKey').value = savedKey;
+
+            // Setup Dropzone Drag & Drop
+            const dz = document.getElementById('aiDropzone');
+            if (!dz.dataset.init) {
+                dz.dataset.init = "true";
+                dz.ondragover = (e) => { e.preventDefault(); dz.style.background = '#e0e7ff'; dz.style.borderColor = '#818cf8'; };
+                dz.ondragleave = (e) => { e.preventDefault(); dz.style.background = '#f8fafc'; dz.style.borderColor = '#cbd5e1'; };
+                dz.ondrop = (e) => {
+                    e.preventDefault();
+                    dz.style.background = '#f8fafc'; dz.style.borderColor = '#cbd5e1';
+                    if (e.dataTransfer.files[0]) processAiFile(e.dataTransfer.files[0]);
+                };
+            }
+            // Global Paste Handler
+            window.removeEventListener('paste', processPasteImage);
+            window.addEventListener('paste', processPasteImage);
+        }
+
+        function processPasteImage(e) {
+            if (document.getElementById('aiModal').style.display !== 'flex') return;
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (const item of items) {
+                if (item.type.indexOf('image') === 0) {
+                    processAiFile(item.getAsFile());
+                }
+            }
+        }
+
+        function processAiFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                geminiImageBase64 = e.target.result.split(',')[1]; // Remove prefix
+                document.getElementById('aiPreview').src = e.target.result;
+                document.getElementById('aiPreview').style.display = 'block';
+                document.getElementById('aiDropText').style.display = 'none';
+                document.getElementById('aiRemoveImg').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearAiImage() {
+            geminiImageBase64 = null;
+            document.getElementById('aiPreview').src = '';
+            document.getElementById('aiPreview').style.display = 'none';
+            document.getElementById('aiDropText').style.display = 'block';
+            document.getElementById('aiRemoveImg').style.display = 'none';
+            document.getElementById('aiImgInput').value = '';
+        }
+
+        function getCompactSchema() {
+            // Get fields from Global Schema
+            if (!window.Schema || !window.Schema.fields) return [];
+            return window.Schema.fields.map(f => {
+                const simple = { id: f.id, label: f.label, type: f.type };
+                if (f.options) simple.options = f.options.map(o => ({ v: o.value, l: o.label }));
+                if (f.modalFields) simple.modalFields = f.modalFields.map(mf => {
+                    const smf = { id: mf.id, label: mf.label, type: mf.type };
+                    if (mf.options) smf.options = mf.options.map(o => ({ v: o.value, l: o.label }));
+                    return smf;
+                });
+                return simple;
+            });
+        }
+
+        async function runAiAnalysis() {
+            const apiKey = document.getElementById('aiKey').value.trim();
+            const promptText = document.getElementById('aiPrompt').value.trim();
+            const log = document.getElementById('aiLog');
+            const btn = document.getElementById('aiRunBtn');
+
+            if (!apiKey) { alert('Введіть Gemini API Key!'); return; }
+            localStorage.setItem('gemini_api_key', apiKey);
+
+            if (!geminiImageBase64 && !promptText) { alert('Додайте фото або опис ТЗ!'); return; }
+
+            btn.innerHTML = '⏳ Думаю...';
+            btn.disabled = true;
+            log.style.display = 'block';
+            log.innerText = '> Підготовка даних...\n';
+
+            try {
+                // 1. AUTO-DETECT BEST MODEL
+                log.innerText += '> Пошук доступної AI моделі...\n';
+                let bestModel = 'models/gemini-1.5-flash';
+                let apiVersion = 'v1beta';
+
+                try {
+                    const modelsResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                    if (modelsResp.ok) {
+                        const mData = await modelsResp.json();
+                        if (mData.models) {
+                            // Priority: Flash 1.5 -> Pro 1.5 -> Pro Vision -> Pro
+                            const capableModels = mData.models.filter(m => m.supportedGenerationMethods.includes('generateContent'));
+
+                            const flash15 = capableModels.find(m => m.name.includes('gemini-1.5-flash'));
+                            const pro15 = capableModels.find(m => m.name.includes('gemini-1.5-pro'));
+                            const proVision = capableModels.find(m => m.name.includes('gemini-pro-vision'));
+
+                            if (flash15) bestModel = flash15.name;
+                            else if (pro15) bestModel = pro15.name;
+                            else if (proVision) bestModel = proVision.name;
+                            else if (capableModels.length > 0) bestModel = capableModels[0].name;
+
+                            log.innerText += `> Обрано модель: ${bestModel.replace('models/', '')}\n`;
+                        }
+                    } else {
+                        log.innerText += '> Не вдалося отримати список моделей. Пробую стандартну...\n';
+                    }
+                } catch (e) {
+                    console.warn('Model list failed', e);
+                }
+
+                // 2. PREPARE REQUEST
+                const compactSchema = getCompactSchema();
+                const schemaStr = JSON.stringify(compactSchema);
+
+                const requestBody = {
+                    contents: [{
+                        parts: [
+                            {
+                                text: `Ти - експерт з оцінки меблів. Твоя ціль - заповнити калькулятор на основі фото та ТЗ.
+Ось скорочена схема полів (JSON): ${schemaStr}.
+ТЗ клієнта: "${promptText}".
+
+ВАЖЛИВО ПРО ГЕОМЕТРІЮ КУХНІ:
+1. Уважно визначи тип планування:
+   - Пряма (Linear): Меблі в одну лінію.
+   - Г-подібна (L-shape): Меблі вздовж двох суміжних стін (1 кут).
+   - П-подібна (U-shape): Меблі вздовж трьох стін (2 кути).
+2. Якщо на фото видно шафи зліва, по центру (під вікном) і справа -> це П-подібна.
+3. Не плутай П-подібну з Г-подібною.
+
+ЗАВДАННЯ: 
+1. Проаналізуй фото (якщо є) та текст.
+2. Визначи, які значення полів мають бути встановлені.
+3. Поверни ТІЛЬКИ чистий JSON об'єкт у форматі:
+{
+  "fieldId": value, // Для number
+  "fieldId": "optionValue", // Для select (якщо string)
+  "fieldId": ["val1", "val2"] // Для multiselect
+}
+Якщо це select_modal / action_button:
+- Заповни їх modalFields.
+- Для модальних полів використовуй ключі: "ButtonId_ModalFieldId".
+Приклад:
+{
+  "width": 3000,
+  "depth": 600,
+  "material_body": "dsp_white",
+  "drawers_btn_count": 4 
+}
+Відповідай ТІЛЬКИ JSON. Без markdown.` },
+                            ...(geminiImageBase64 ? [{ inline_data: { mime_type: "image/jpeg", data: geminiImageBase64 } }] : [])
+                        ]
+                    }]
+                };
+
+                // 3. EXECUTE
+                log.innerText += '> Відправка запиту...\n';
+                const response = await fetch(`https://generativelanguage.googleapis.com/${apiVersion}/${bestModel}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    const errMsg = errData.error ? errData.error.message : response.statusText;
+                    throw new Error(`API Error (${response.status}): ${errMsg}`);
+                }
+
+                const data = await response.json();
+                if (!data.candidates || !data.candidates[0].content) throw new Error('No content from AI');
+
+                let aiText = data.candidates[0].content.parts[0].text;
+                log.innerText += '> Отримано відповідь. Обробка JSON...\n';
+
+                aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
+                let result;
+                try {
+                    result = JSON.parse(aiText);
+                } catch (e) {
+                    console.log('Raw AI:', aiText);
+                    throw new Error('Невалідний JSON від AI');
+                }
+
+                // APPLY
+                let changesCount = 0;
+                Object.keys(result).forEach(key => {
+                    if (result[key] !== null && result[key] !== undefined) {
+                        Engine.state[key] = result[key];
+                        changesCount++;
+                    }
+                });
+
+                log.innerText += `✅ Успішно! Оновлено ${changesCount} полів.`;
+                Engine.renderForm();
+                Engine.calculate();
+
+                alert(`✨ AI Заповнив ${changesCount} полів!`);
+                setTimeout(() => { document.getElementById('aiModal').style.display = 'none'; }, 2000);
+
+            } catch (err) {
+                log.innerText += '❌ Помилка: ' + err.message;
+                console.error(err);
+                alert('Помилка AI: ' + err.message);
+            } finally {
+                btn.innerHTML = '🤖 Аналізувати';
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
