@@ -4,10 +4,10 @@ const Schema = {
         "title": "Новий калькулятор",
         "lastUpdated": "2026-01-09",
         "markup": {
-            "cat_construction": 10,
-            "cat_design": 10,
-            "cat_assembly": 10,
-            "cat_installation": 10
+            "cat_construction": 0,
+            "cat_design": 0,
+            "cat_assembly": 0,
+            "cat_installation": 0
         }
     },
     "categories": {
@@ -18,10 +18,6 @@ const Schema = {
         "cat_design": {
             "name": "Проєктування",
             "color": "#f3e8ff"
-        },
-        "cat_assembly": {
-            "name": "Збірка",
-            "color": "#fef9c3"
         },
         "cat_installation": {
             "name": "Монтаж",
@@ -155,51 +151,6 @@ const Schema = {
             "category": "cat_design"
         },
         {
-            "id": "pr_a1",
-            "name": "Комплектування",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a2",
-            "name": "Сортування",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a3",
-            "name": "Додаткова Індивідуальна послуга",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a4",
-            "name": "Збірка",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a5",
-            "name": "Контрольний монтаж",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a6",
-            "name": "Демонтаж",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a7",
-            "name": "Демонтаж подетальний",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a8",
-            "name": "Пакування помодульне",
-            "category": "cat_assembly"
-        },
-        {
-            "id": "pr_a9",
-            "name": "Пакування подетальне",
-            "category": "cat_assembly"
-        },
-        {
             "id": "pr_i1",
             "name": "перевірка приміщення",
             "category": "cat_installation"
@@ -261,7 +212,7 @@ const Schema = {
             "title": "ОСНОВНІ ПАРАМЕТРИ",
             "layout": {
                 "titleSize": 16,
-                "titleWeight": 700,
+                "titleWeight": 500,
                 "fieldSize": 14,
                 "fieldWeight": 600,
                 "headerColor": "#2563eb"
@@ -547,6 +498,11 @@ const Schema = {
                     }
                 },
                 {
+                    "id": "mf1768996095620",
+                    "label": "ХДФ / ДВП",
+                    "type": "checkbox"
+                },
+                {
                     "id": "mf_1768681261606",
                     "label": "МДФ плити",
                     "type": "checkbox",
@@ -653,6 +609,15 @@ const Schema = {
                     "layout": {
                         "inpBorder": "#000000"
                     }
+                },
+                {
+                    "id": "mf_multiplier",
+                    "label": "Кількість пакетів документів",
+                    "type": "number",
+                    "default": 1,
+                    "layout": {
+                        "inpBorder": "#000000"
+                    }
                 }
             ]
         },
@@ -698,6 +663,10 @@ const Schema = {
                         {
                             "value": "opt1768680624711",
                             "label": "R&D (дерево-метал)"
+                        },
+                        {
+                            "value": "opt1768995910482",
+                            "label": "Стільниця Замовника"
                         }
                     ]
                 },
@@ -875,7 +844,7 @@ const Schema = {
                 {
                     "id": "mf_1768688973044",
                     "label": "Фальш горизонтальні - Карниз",
-                    "type": "select_yes_no",
+                    "type": "checkbox",
                     "default": "",
                     "layout": {
                         "inpBorder": "#000000"
@@ -884,7 +853,7 @@ const Schema = {
                 {
                     "id": "mf_1768688989525",
                     "label": "Фальш вертикальні",
-                    "type": "select_yes_no",
+                    "type": "checkbox",
                     "default": "",
                     "layout": {
                         "inpBorder": "#000000"
@@ -911,7 +880,7 @@ const Schema = {
                 {
                     "id": "mf_1768689059772",
                     "label": "Вентмагістраль",
-                    "type": "select_yes_no",
+                    "type": "checkbox",
                     "default": "",
                     "layout": {
                         "inpBorder": "#000000"
@@ -1424,7 +1393,7 @@ const Schema = {
         {
             "id": "f1768692947766",
             "groupId": "g1768692944843",
-            "label": "Модулі з підсвіткою:(к-ть)",
+            "label": "Кількість відрізків підсвітки",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
@@ -1435,37 +1404,9 @@ const Schema = {
             "allowDecimal": false
         },
         {
-            "id": "f1768692967646",
-            "groupId": "g1768692944843",
-            "label": "Підсвітка робочої зони",
-            "type": "select_yes_no",
-            "layout": {
-                "inpBorder": "#000000",
-                "width": "w-50"
-            },
-            "helpContent": "",
-            "options": [
-                {
-                    "value": "o1768692987646",
-                    "label": "Підсвітка цоколя"
-                }
-            ]
-        },
-        {
-            "id": "f1768693014206",
-            "groupId": "g1768692944843",
-            "label": "Підсвітка цоколя",
-            "type": "select_yes_no",
-            "layout": {
-                "inpBorder": "#000000",
-                "width": "w-50"
-            },
-            "helpContent": ""
-        },
-        {
             "id": "f1768693027791",
             "groupId": "g1768692944843",
-            "label": "Окремі елементи з підсвітко",
+            "label": " К-сть пристроїв керування",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
@@ -1661,7 +1602,7 @@ const Schema = {
                 "pr_c2": 3,
                 "pr_c6": 1,
                 "pr_d1": 2,
-                "pr_d3": 2
+                "pr_d3": 1
             }
         },
         "f1768216195464": {
@@ -1952,26 +1893,32 @@ const Schema = {
         },
         "f1768692947766": {
             "pr_c1": 0,
-            "pr_c5": 1,
-            "pr_c4": 1,
-            "pr_c12": 1,
-            "pr_c8": 2,
-            "pr_d4": 1,
-            "pr_d9": 1,
-            "pr_a2": 1,
-            "pr_a4": 2
+            "pr_c5": 0,
+            "pr_c4": 0,
+            "pr_c12": 0,
+            "pr_c8": 0,
+            "pr_d4": 0,
+            "pr_d9": 0,
+            "pr_a2": 0,
+            "pr_a4": 0,
+            "_total_cat_construction": "=(( 2 * ceil(x / 4) + 2 ) + 20 - abs(( 2 * ceil(x / 4) + 2 ) - 20 )) / 2",
+            "_total_cat_design": "=(( 1 * ceil(x / 4) + 1 ) + 6 - abs(( 1 * ceil(x / 4) + 1 ) - 6 )) / 2",
+            "_total_cat_installation": "=(( 1 * ceil(x / 3) + 2 ) + 18 - abs(( 1 * ceil(x / 3) + 2 ) - 18 )) / 2"
         },
         "f1768693027791": {
             "pr_c1": 0,
-            "pr_c3": 1,
-            "pr_c4": 1,
-            "pr_c5": 1,
-            "pr_c12": 1,
-            "pr_c8": 2,
-            "pr_d4": 1,
-            "pr_d5": 1,
-            "pr_d9": 1,
-            "pr_a4": 2
+            "pr_c3": 0,
+            "pr_c4": 0,
+            "pr_c5": 0,
+            "pr_c12": 0,
+            "pr_c8": 0,
+            "pr_d4": 0,
+            "pr_d5": 0,
+            "pr_d9": 0,
+            "pr_a4": 0,
+            "_total_cat_construction": "=(( 1 * ceil(x / 3) + 2 ) + 20 - abs(( 1 * ceil(x / 3) + 2 ) - 20 )) / 2",
+            "_total_cat_design": "=(( 1 * ceil(x / 3) + 0 ) + 6 - abs(( 1 * ceil(x / 3) + 0 ) - 6 )) / 2",
+            "_total_cat_installation": "=(( 2 * ceil(x / 3) + 1 ) + 18 - abs(( 2 * ceil(x / 3) + 1 ) - 18 )) / 2"
         },
         "f1768692967646": {
             "pr_c1": 0,
@@ -2010,8 +1957,8 @@ const Schema = {
             "pr_d10": 2
         },
         "f1768676820324": {
-            "pr_c1": 3,
-            "pr_c3": 2,
+            "pr_c1": 1,
+            "pr_c3": 1,
             "pr_c4": 1,
             "pr_d1": 2,
             "pr_d4": 1,
@@ -2154,6 +2101,9 @@ const Schema = {
                 "pr_c13": 1,
                 "pr_d7": 1,
                 "pr_d4": 2
+            },
+            "opt1768995910482": {
+                "pr_c3": 3
             }
         },
         "f1768681003870_mf_1768681261606": {
@@ -2168,7 +2118,9 @@ const Schema = {
             "pr_c10": 3,
             "pr_c13": 1,
             "pr_c14": 1,
-            "pr_d4": 1
+            "pr_d4": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681064200": {
             "pr_c1": 0,
@@ -2183,14 +2135,18 @@ const Schema = {
             "pr_c4": 2,
             "pr_c13": 1,
             "pr_c14": 1,
-            "pr_d4": 3
+            "pr_d4": 3,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681300509": {
             "pr_c1": 0,
             "pr_c10": 3,
             "pr_c13": 1,
             "pr_c14": 1,
-            "pr_d4": 1
+            "pr_d4": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681310974": {
             "pr_c1": 0,
@@ -2198,53 +2154,69 @@ const Schema = {
             "pr_c4": 2,
             "pr_c13": 2,
             "pr_c14": 1,
-            "pr_d4": 3
+            "pr_d4": 3,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681323565": {
             "pr_c1": 0,
             "pr_c10": 3,
             "pr_c13": 1,
             "pr_c14": 1,
-            "pr_d4": 2
+            "pr_d4": 2,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681333870": {
             "pr_c1": 0,
             "pr_c10": 1,
             "pr_c4": 1,
             "pr_c13": 1,
-            "pr_d4": 1
+            "pr_d4": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681348062": {
             "pr_c1": 0,
             "pr_c10": 2,
             "pr_c13": 1,
             "pr_c14": 1,
-            "pr_d4": 1
+            "pr_d4": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681398606": {
             "pr_c1": 0,
             "pr_c10": 3,
             "pr_c13": 2,
             "pr_c14": 1,
-            "pr_d4": 2
+            "pr_d4": 2,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681415400": {
             "pr_c1": 0,
             "pr_c10": 3,
             "pr_c13": 1,
             "pr_c14": 1,
-            "pr_d4": 1
+            "pr_d4": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681427238": {
             "pr_c1": 0,
             "pr_c10": 1,
             "pr_c13": 2,
-            "pr_d4": 1
+            "pr_d4": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768681003870_mf_1768681431479": {
             "pr_c1": 0,
             "pr_c8": 3,
-            "pr_d9": 1
+            "pr_d9": 1,
+            "pr_i3": 1,
+            "pr_i10": 1
         },
         "f1768682469949_mf_1768682626758": {
             "pr_c1": 0,

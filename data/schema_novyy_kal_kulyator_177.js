@@ -20,6 +20,10 @@ const Schema = {
         "cat_installation": {
             "name": "Монтаж",
             "color": "#dcfce7"
+        },
+        "cat_1773071733608": {
+            "name": "ваіва",
+            "color": "#f0fdfa"
         }
     },
     "processes": [
@@ -253,9 +257,93 @@ const Schema = {
         {
             "id": "g_main",
             "title": "Основні параметри"
+        },
+        {
+            "id": "g1773065581640",
+            "title": "вапвапва",
+            "layout": {
+                "width": "50%"
+            }
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "id": "f1773065582982",
+            "groupId": "g1773065581640",
+            "label": "Нова дія",
+            "type": "action_button",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "лрдорор",
+            "modalFields": [
+                {
+                    "id": "mf1773065617441",
+                    "label": "Нове поле",
+                    "type": "multiselect",
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Варіант 1"
+                        },
+                        {
+                            "value": "opt1773065630899",
+                            "label": "Варіант 2"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf1773065626103",
+                    "label": "Нове поле",
+                    "type": "multiselect_qty",
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Варіант 1"
+                        },
+                        {
+                            "value": "opt1773069558655",
+                            "label": "Варіант 2"
+                        }
+                    ],
+                    "isMultiplier": false
+                },
+                {
+                    "id": "mf1773065634069",
+                    "label": "Нове поле",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "id": "f1773065597496",
+            "groupId": "g1773065581640",
+            "label": "Нова дія",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        },
+        {
+            "id": "f1773069442081",
+            "groupId": "g1773065581640",
+            "label": "Нова дія",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        },
+        {
+            "id": "f1773070356923",
+            "groupId": "g1773065581640",
+            "label": "Нова дія",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        }
+    ],
     "products": {
         "groups": [],
         "fields": []
@@ -264,6 +352,7 @@ const Schema = {
     "layout": {
         "version": "v1",
         "title": "Шафи та гардероби"
-    }
+    },
+    "modalFieldRules": {}
 };
 window.Schema = Schema;

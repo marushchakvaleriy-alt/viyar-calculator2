@@ -3,6 +3,9 @@
 *.crswap
 .tmp
 temp/
+temp_files/
+"для розробки/"
+*.xlsx
 .gemini/
 .agent/
 brain/

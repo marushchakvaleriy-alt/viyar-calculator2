@@ -12,9 +12,9 @@
         function checkDependencies() {
             if (window.isEngineInitialized) return;
 
-            if (window.Engine && window.Schema) {
-                console.log('🚀 Dependencies ready. Initializing Engine via Polling...');
-                // Correct arguments: formContainer, productsList, totalScore
+            const formContainer = document.getElementById('formContainer');
+            if (window.Engine && window.Schema && formContainer) {
+                console.log('🚀 Dependencies ready. Initializing Engine...');
                 Engine.init('formContainer', 'productsList', 'totalScore');
                 window.isEngineInitialized = true;
 
@@ -144,47 +144,358 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="auth.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --primary-border: #bfdbfe;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-focus: #3b82f6;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(226, 232, 240, 0.8);
+            --shadow-float: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 20px;
-            background: #f3f4f6;
-            color: #1f2937;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 30px 20px 80px;
+            background-color: var(--bg-page);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(224, 242, 254, 0.6) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(243, 232, 255, 0.5) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(220, 252, 231, 0.3) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
             margin: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            min-height: 80vh;
+            background: var(--bg-card);
+            padding: 36px 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            min-height: 85vh;
         }
 
-        h1 {
-            color: #111827;
-            margin-top: 0;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
+        /* TOP NAVIGATION */
+        .top-navbar {
+            position: fixed;
+            top: 16px;
+            left: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
         }
 
+        .nav-group-left, .nav-group-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            pointer-events: auto;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 8px 16px;
+            border-radius: 999px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            font-weight: 600;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: #ffffff;
+            color: var(--primary);
+            border-color: var(--primary-border);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+        }
+
+        .nav-btn-ai {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.25);
+        }
+
+        .nav-btn-ai:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(168, 85, 247, 0.35);
+        }
+
+        /* HEADER */
+        .calc-header-wrapper {
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1.5px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calc-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .calc-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--primary-light);
+            color: var(--primary);
+            letter-spacing: 0.02em;
+        }
+
+        /* LAYOUT */
         .layout {
             display: flex;
-            gap: 30px;
+            gap: 36px;
+            align-items: flex-start;
         }
 
         .form-panel {
             flex: 2;
-            padding-right: 30px;
-            border-right: 1px solid #e5e7eb;
+            min-width: 0;
         }
 
         .results-panel {
             flex: 1;
-            min-width: 300px;
+            min-width: 330px;
+            position: sticky;
+            top: 24px;
+            z-index: 50;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04);
+        }
+
+        .results-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .results-title::before {
+            content: '';
+            width: 4px;
+            height: 14px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .results-score-card {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f8fafc 100%);
+            border: 1.5px solid #dbeafe;
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.04);
+        }
+
+        .results-score-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+
+        .total-score {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        /* FORM GROUPS (Engine Overrides) */
+        .group {
+            background: #ffffff !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 16px !important;
+            padding: 22px 24px !important;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02) !important;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 18px;
+        }
+
+        .group:hover {
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04) !important;
+        }
+
+        .group-header {
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            color: #1e40af !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 18px !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .field label {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            color: #334155 !important;
+            margin-bottom: 6px !important;
+        }
+
+        /* SELECTS & INPUTS */
+        .field select, select.pg-input {
+            width: 100% !important;
+            padding: 10px 36px 10px 14px !important;
+            border: 1.5px solid var(--border-color) !important;
+            border-radius: 10px !important;
+            background-color: #ffffff !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.8' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+            background-position: right 12px center !important;
+            background-repeat: no-repeat !important;
+            background-size: 16px !important;
+            appearance: none !important;
+            color: #1e293b !important;
+            font-size: 13.5px !important;
+            font-weight: 500 !important;
+            transition: all 0.2s ease !important;
+            outline: none !important;
+        }
+
+        .field select:focus, select.pg-input:focus {
+            border-color: var(--border-focus) !important;
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.15) !important;
+        }
+
+        .field select:hover, select.pg-input:hover {
+            border-color: #cbd5e1 !important;
+        }
+
+        /* STEPPER NUMBERS */
+        .stepper-box {
+            display: flex !important;
+            align-items: center !important;
+            border: 1.5px solid var(--border-color) !important;
+            border-radius: 10px !important;
+            background: #f8fafc !important;
+            overflow: hidden !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .stepper-box:focus-within {
+            border-color: var(--border-focus) !important;
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.15) !important;
+            background: #ffffff !important;
+        }
+
+        .stepper-btn {
+            width: 38px !important;
+            height: 38px !important;
+            border: none !important;
+            background: transparent !important;
+            color: #475569 !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.15s ease !important;
+            user-select: none !important;
+        }
+
+        .stepper-btn:hover {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+
+        .stepper-btn:active {
+            background: #cbd5e1 !important;
+            transform: scale(0.95);
+        }
+
+        /* PRIMARY BUTTONS (+ Додати матеріал) */
+        .field button, .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 10px !important;
+            padding: 11px 20px !important;
+            font-weight: 700 !important;
+            font-size: 13.5px !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .field button:hover, .btn-primary:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3) !important;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            color: #0f172a;
         }
 
         /* === MODAL === */
@@ -195,40 +506,40 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(15, 23, 42, 0.5);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
         }
 
         .modal-box {
-            background: white;
-            width: 500px;
-            max-width: 90%;
-            max-height: 80vh;
-            border-radius: 16px;
+            background: #ffffff;
+            width: 520px;
+            max-width: 92%;
+            max-height: 85vh;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            animation: modalSlideIn 0.3s ease-out;
+            box-shadow: var(--shadow-float);
+            animation: modalSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         @keyframes modalSlideIn {
             from {
-                transform: translateY(-50px);
+                transform: translateY(20px) scale(0.97);
                 opacity: 0;
             }
-
             to {
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
         }
 
         .modal-header {
             padding: 20px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -236,35 +547,41 @@
 
         .modal-header h3 {
             margin: 0;
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
         }
 
         .modal-close {
             background: none;
             border: none;
-            color: white;
-            font-size: 24px;
+            color: #64748b;
+            font-size: 22px;
             cursor: pointer;
-            opacity: 0.8;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
             transition: 0.2s;
         }
 
         .modal-close:hover {
-            opacity: 1;
-            transform: scale(1.1);
+            background: #e2e8f0;
+            color: #0f172a;
         }
 
         .modal-body {
             padding: 24px;
-            max-height: calc(80vh - 140px);
+            max-height: calc(85vh - 140px);
             overflow-y: auto;
         }
 
         .modal-footer {
             padding: 16px 24px;
-            background: #f9fafb;
-            border-top: 1px solid #e5e7eb;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
             display: flex;
             justify-content: flex-end;
             gap: 12px;
@@ -278,258 +595,126 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #374151;
+            color: #334155;
             font-size: 13px;
         }
 
         .pg-input {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
             font-size: 14px;
             transition: 0.2s;
+            outline: none;
             box-sizing: border-box;
         }
 
         .pg-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .pg-check-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .pg-check-label {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-            color: #374151;
-        }
-
-        .pg-check-qty {
-            width: 80px;
-            padding: 8px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .checkbox-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            padding: 10px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 6px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-
-        .checkbox-item:hover {
-            background: #f1f5f9;
-        }
-
-        .checkbox-item input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 14px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
-            font-size: 14px;
-        }
-
-        .btn-secondary:hover {
-            background: #e5e7eb;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.15);
         }
 
         /* === PRODUCT ITEMS === */
         .product-item {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: 0.2s;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
         }
 
         .product-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-        }
-
-        .product-info {
-            flex: 1;
+            border-color: #cbd5e1;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
         }
 
         .product-name {
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 4px;
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 14px;
+            margin-bottom: 3px;
         }
 
         .product-details {
             font-size: 12px;
-            color: #6b7280;
+            color: #64748b;
         }
 
         .product-score {
-            font-size: 20px;
-            font-weight: 700;
-            color: #667eea;
-            margin-left: 16px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #9ca3af;
-        }
-
-        .results-header {
-            background: #f9fafb;
-            padding: 16px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .total-score {
-            font-size: 32px;
-            font-weight: 700;
-            color: #667eea;
-            text-align: center;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-left: 14px;
         }
 
         /* --- RESPONSIVE UPDATES --- */
-        @media (max-width: 768px) {
+        @media (max-width: 860px) {
             body {
-                padding: 10px;
+                padding: 15px 10px 60px;
             }
 
             .container {
-                padding: 15px;
+                padding: 20px 16px;
+                border-radius: 16px;
+            }
+
+            .top-navbar {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+                gap: 10px;
             }
 
             .layout {
                 flex-direction: column;
-                gap: 20px;
-            }
-
-            .form-panel {
-                padding-right: 0;
-                border-right: none;
-                border-bottom: 1px solid #e5e7eb;
-                padding-bottom: 20px;
+                gap: 24px;
             }
 
             .results-panel {
                 min-width: 100%;
-            }
-
-            .product-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .product-score {
-                margin-left: 0;
-                font-size: 18px;
-            }
-
-            .modal-box {
-                width: 100%;
-                height: 100%;
-                max-width: 100%;
-                max-height: 100%;
-                border-radius: 0;
-            }
-
-            .modal-body {
-                max-height: calc(100vh - 120px);
+                position: relative;
+                top: 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <div style="position:fixed; top:20px; left:20px; z-index:100; display:flex; gap:10px">
-        <a href="../index.html"
-            style="text-decoration:none; background:white; padding:8px 12px; border-radius:30px; box-shadow:0 2px 5px rgba(0,0,0,0.1); font-weight:600; color:#4b5563; display:flex; align-items:center; gap:5px; font-size:13px; border:1px solid #e5e7eb; transition:0.2s">
-            <span style="font-size:16px">🏠</span> На головну
-        </a>
-        <button onclick="showAiModal()"
-            style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); color:white; border:none; padding:8px 15px; border-radius:30px; box-shadow:0 2px 5px rgba(0,0,0,0.2); font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; transition:transform 0.2s">
-            ✨ AI Magic
-        </button>
-    </div>
+    <!-- Top Navigation Bar -->
+    <div class="top-navbar">
+        <div class="nav-group-left">
+            <a href="../index.html" class="nav-btn">
+                <span>←</span> На головну
+            </a>
+            <button onclick="showAiModal()" class="nav-btn nav-btn-ai">
+                ✨ AI Magic
+            </button>
+        </div>
 
-    <!-- Auth Controls (Fixed Top Right) -->
-    <div class="auth-controls"
-        style="position:fixed; top:20px; right:20px; z-index:100; display:flex; align-items:center; gap:10px;">
-        <button id="authLoginBtn" onclick="window.Auth.login()"
-            style="background:#fff; color:#333; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; box-shadow:0 2px 5px rgba(0,0,0,0.1); border:1px solid #e5e7eb;">
-            <span>G</span> Увійти
-        </button>
+        <div class="nav-group-right">
+            <button id="authLoginBtn" onclick="window.Auth.login()" class="nav-btn">
+                <span>G</span> Увійти
+            </button>
 
-        <div id="authUserArea"
-            style="display:none; align-items:center; gap:10px; background:white; padding:4px 12px 4px 4px; border-radius:30px; box-shadow:0 2px 5px rgba(0,0,0,0.1); border:1px solid #e5e7eb;">
-            <img id="authUserAvatar" src=""
-                style="width:32px; height:32px; border-radius:50%; border:2px solid #f3f4f6;">
-            <div style="text-align:right; line-height:1.2; margin-right:5px;">
-                <div id="authUserName" style="font-size:12px; font-weight:700; color:#333;">User</div>
-                <div style="font-size:10px; opacity:0.6; cursor:pointer; text-decoration:underline"
-                    onclick="window.Auth.logout()">Вийти</div>
+            <div id="authUserArea" class="nav-btn" style="display:none; padding:4px 12px 4px 6px;">
+                <img id="authUserAvatar" src="" style="width:26px; height:26px; border-radius:50%; margin-right:4px;">
+                <div style="text-align:right; line-height:1.2;">
+                    <div id="authUserName" style="font-size:12px; font-weight:700; color:#0f172a;">User</div>
+                    <div style="font-size:10px; opacity:0.6; cursor:pointer; text-decoration:underline" onclick="window.Auth.logout()">Вийти</div>
+                </div>
             </div>
         </div>
     </div>
+
     <div class="container">
         <div id="calcHeader"></div>
         <div class="layout">
@@ -539,17 +724,15 @@
             </div>
 
             <div class="results-panel">
-                <h3 style="margin-top:0">Результати</h3>
+                <div class="results-title">Результати розрахунку</div>
+                
                 <!-- Breakdown by Process -->
-                <div id="resultsContainer"
-                    style="margin-bottom:20px; border-bottom:2px solid #eee; padding-bottom:15px">
+                <div id="resultsContainer" style="margin-bottom:18px; padding-bottom:14px; border-bottom:1.5px solid #f1f5f9;">
                     <!-- Dynamic breakdown will be rendered here -->
                 </div>
 
-                <div class="results-header">
-                    <div
-                        style="font-size: 12px; color: #111827; font-weight:700; margin-bottom: 8px; text-transform:uppercase">
-                        ВСЬОГО</div>
+                <div class="results-score-card">
+                    <div class="results-score-label">ЗАГАЛЬНИЙ БАЛ</div>
                     <div class="total-score" id="totalScore">0 ViPoint</div>
                 </div>
 
@@ -803,7 +986,6 @@
                     const selectedVals = Array.isArray(currentVal) ? currentVal : [];
                     let items = (f.options || []).map(o => {
                         const isSelected = selectedVals.some(v => v.value === o.value || v === o.value);
-                        const qty = selectedVals.find(v => v.value === o.value)?.qty || 1;
 
                         return `
                         <div class="multiselect-item" style="display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #e5e7eb;">
@@ -811,9 +993,6 @@
                                 <input type="checkbox" class="ms-check" data-fid="${f.id}" value="${o.value}" ${isSelected ? 'checked' : ''} onchange="recalcModalTotal()">
                                 <span>${o.label}</span>
                             </label>
-                            <input type="number" class="ms-qty" data-value="${o.value}" data-fid="${f.id}" value="${qty}" min="1" 
-                                   oninput="recalcModalTotal()" 
-                                   style="width:70px; padding:4px 8px; border:1px solid #d1d5db; border-radius:6px; text-align:center;">
                         </div>
                     `;
                     }).join('');
@@ -856,6 +1035,10 @@
                 else if (f.type === 'number') {
                     const val = currentVal !== null ? currentVal : (f.default || 0);
                     row.innerHTML = `<label style="${labelStyle}">${f.label}</label><input type="number" class="pg-input" id="inp_${f.id}" name="field_n_${f.id}_${Date.now()}" data-fid="${f.id}" value="${val}" oninput="recalcModalTotal()" autocomplete="new-password">`;
+                }
+                else if (f.type === 'text') {
+                    const val = currentVal !== null ? currentVal : (f.default || '');
+                    row.innerHTML = `<label style="${labelStyle}">${f.label}</label><input type="text" class="pg-input" id="inp_${f.id}" name="field_t_${f.id}_${Date.now()}" data-fid="${f.id}" value="${val}" autocomplete="new-password">`;
                 }
                 else if (f.type === 'checkbox_qty') {
                     row.className = 'pg-check-row';
@@ -909,19 +1092,26 @@
                         multiplier = parseFloat(inp.value) || 0;
                     }
                 }
-                else if (f.type === 'multiselect') {
-                    // Collect all checked values for this field
-                    const checked = Array.from(container.querySelectorAll(`.ms-check[data-fid="${f.id}"]:checked`)).map(el => el.value);
+                else if (f.type === 'multiselect' || f.type === 'multiselect_qty') {
+                    const isQty = f.type === 'multiselect_qty';
+                    const checkClass = isQty ? '.ms-qty-check' : '.ms-check';
+                    const checkedEls = Array.from(container.querySelectorAll(`${checkClass}[data-fid="${f.id}"]:checked`));
                     const ruleKey = `${currentButtonId}_${f.id}`;
 
-                    checked.forEach(optVal => {
+                    checkedEls.forEach(el => {
+                        const optVal = el.value;
+                        let optQty = 1;
+                        if (isQty) {
+                            const qtyInp = container.querySelector(`.ms-qty-input[data-fid="${f.id}"][data-value="${optVal}"]`);
+                            optQty = Math.max(0, parseFloat(qtyInp?.value || 1));
+                        }
+
                         Schema.processes.forEach(p => {
                             if (Schema.modalFieldRules?.[ruleKey]?.[optVal]?.[p.id]) {
-                                total += Number(Schema.modalFieldRules[ruleKey][optVal][p.id]) || 0;
+                                total += (Number(Schema.modalFieldRules[ruleKey][optVal][p.id]) || 0) * optQty;
                             }
                         });
                     });
-                    // multiselect points are added directly to total, so we don't set isActive
                 }
 
                 if (isActive) {
@@ -934,19 +1124,20 @@
                         if (Schema.modalFieldRules && Schema.modalFieldRules[ruleKey] && Schema.modalFieldRules[ruleKey][p.id]) {
                             pts = Number(Schema.modalFieldRules[ruleKey][p.id]) || 0;
                         }
-                        // If it's a number field, the rule is usually 'per unit', so multiply by value
-                        // BUT in this system, often the rule IS the points.
-                        // Let's assume for Checkbox/CheckboxQty it's fixed points per unit.
-                        // For Number field, usually the user enters a quantity.
-
-                        if (f.type === 'number') {
-                            total += pts * multiplier;
-                        } else {
-                            total += pts * multiplier;
-                        }
+                        total += pts * multiplier;
                     });
                 }
             });
+
+            // Множник на основі властивості isMultiplier або legacy ID mf_multiplier
+            const multField = button.modalFields.find(mf => mf.isMultiplier || mf.id === 'mf_multiplier');
+            if (multField) {
+                const multInput = document.getElementById(`inp_${multField.id}`);
+                if (multInput) {
+                    const mVal = parseFloat(multInput.value) || 1;
+                    total *= mVal;
+                }
+            }
 
             const scoreEl = document.getElementById('modalTotalScore');
             if (scoreEl) {
@@ -969,9 +1160,18 @@
                 else if (f.type === 'checkbox') {
                     data[f.id] = document.getElementById(`chk_${f.id}`)?.checked || false;
                 }
-                else if (f.type === 'multiselect') {
-                    const checked = Array.from(document.querySelectorAll(`.ms-check[data-fid="${f.id}"]:checked`)).map(el => el.value);
-                    data[f.id] = checked;
+                else if (f.type === 'multiselect' || f.type === 'multiselect_qty') {
+                    const isQty = f.type === 'multiselect_qty';
+                    const checkClass = isQty ? '.ms-qty-check' : '.ms-check';
+                    const items = Array.from(document.querySelectorAll(`${checkClass}[data-fid="${f.id}"]:checked`)).map(el => {
+                        const val = el.value;
+                        if (isQty) {
+                            const qtyInp = document.querySelector(`.ms-qty-input[data-fid="${f.id}"][data-value="${val}"]`);
+                            return { value: val, qty: parseInt(qtyInp?.value || 1) };
+                        }
+                        return val;
+                    });
+                    data[f.id] = items;
                 }
                 else {
                     const inp = document.getElementById(`inp_${f.id}`);

@@ -25,6 +25,29 @@ const Engine = {
         this.calculate(); // Initial calculation
     },
 
+    getFieldDef(fId) {
+        if (!Schema || !Schema.fields) return null;
+
+        // Optimized recursive search
+        const findIn = (fields) => {
+            for (const f of fields) {
+                if (f.id === fId) return f;
+                if (f.modalFields && f.modalFields.length > 0) {
+                    const found = findIn(f.modalFields);
+                    if (found) return found;
+                }
+                // Check options for nested fields if applicable (though structure suggests simple options usually)
+                if (f.options && Array.isArray(f.options)) {
+                    // Some schemas might have fields inside options? Unlikely based on current structure but safe to check if needed.
+                    // Current Schema structure has fields in 'modalFields'.
+                }
+            }
+            return null;
+        };
+
+        return findIn(Schema.fields);
+    },
+
     injectStyles() {
         if (document.getElementById('engine-grid-styles')) return;
         const style = document.createElement('style');
@@ -183,19 +206,21 @@ const Engine = {
         const headerContainer = document.getElementById('calcHeader');
         if (headerContainer) {
             headerContainer.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:20px; border-bottom:2px solid #e5e7eb; padding-bottom:15px;">
-                    <div style="font-size:24px; font-weight:800; color:#111827">${Schema.layout?.title || 'Калькулятор'}</div>
-                    <div style="font-size:12px; opacity:0.6">${Schema.layout?.version || 'v2.0'}</div>
+                <div class="calc-header-wrapper">
+                    <div class="calc-title">
+                        ${Schema.layout?.title || Schema.meta?.title || 'Калькулятор'}
+                        <span class="calc-badge">${Schema.layout?.version || Schema.meta?.version || 'v2.2'}</span>
+                    </div>
                 </div>
             `;
         }
 
         const container = document.getElementById('formContainer');
+        if (!container) return;
         container.innerHTML = '';
 
-        // Apply Global Theme
-        const theme = (Schema.layout && Schema.layout.theme) || 'dark';
-        document.body.classList.toggle('light-theme', theme === 'light');
+        // Enforce Clean Light Theme
+        document.body.classList.add('light-theme');
 
         // Render category selectors
         this.renderCategoryToggles();
@@ -231,15 +256,17 @@ const Engine = {
 
             if (gl.background) {
                 groupEl.style.background = gl.background;
-            } else if (theme === 'light') {
+            } else {
                 groupEl.style.background = '#ffffff';
-                groupEl.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                groupEl.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
             }
 
-            if (gl.borderWidth || theme === 'light') {
-                groupEl.style.border = `${gl.borderWidth || 1}px solid ${gl.borderColor || (theme === 'light' ? '#e5e7eb' : 'rgba(255,255,255,0.1)')}`;
-                groupEl.style.borderRadius = '12px';
+            if (gl.borderWidth) {
+                groupEl.style.border = `${gl.borderWidth}px solid ${gl.borderColor || '#e2e8f0'}`;
+            } else {
+                groupEl.style.border = '1px solid #e2e8f0';
             }
+            groupEl.style.borderRadius = '14px';
 
             const header = document.createElement('div');
             header.className = 'group-header';
@@ -701,18 +728,91 @@ const Engine = {
             inputElement = null; // Handled manually
             inputWrapper.appendChild(list);
 
+        } else if (field.type === 'number') {
+            const numContainer = document.createElement('div');
+            numContainer.style.cssText = 'display:flex; align-items:center; width:100%; border:1px solid rgba(255,255,255,0.15); border-radius:8px; overflow:hidden; background:rgba(255,255,255,0.05);';
+            
+            // Light theme support
+            if (document.body.classList.contains('light-theme') || (Schema.layout && Schema.layout.theme === 'light')) {
+                numContainer.style.borderColor = '#d1d5db';
+                numContainer.style.background = '#ffffff';
+            }
+
+            const step = field.allowDecimal ? 0.1 : 1;
+
+            const btnMinus = document.createElement('button');
+            btnMinus.type = 'button';
+            btnMinus.textContent = '−';
+            btnMinus.style.cssText = 'width:38px; height:38px; border:none; background:rgba(120,120,120,0.12); color:inherit; font-size:18px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; transition:0.2s; flex-shrink:0;';
+
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = 0;
+            input.step = step;
+            input.style.cssText = 'flex:1; width:100%; min-width:0; text-align:center; border:none; background:transparent; color:inherit; font-size:15px; font-weight:700; padding:8px 4px; outline:none; -moz-appearance:textfield;';
+            if (l.placeholder) input.placeholder = l.placeholder;
+
+            const btnPlus = document.createElement('button');
+            btnPlus.type = 'button';
+            btnPlus.textContent = '+';
+            btnPlus.style.cssText = 'width:38px; height:38px; border:none; background:rgba(120,120,120,0.12); color:inherit; font-size:18px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; transition:0.2s; flex-shrink:0;';
+
+            if (this.state[field.id] !== undefined) {
+                input.value = this.state[field.id] !== '' ? this.state[field.id] : '';
+            } else {
+                input.value = (field.default !== undefined && field.default !== '') ? field.default : '';
+                this.state[field.id] = input.value !== '' ? (Number(input.value) || 0) : 0;
+            }
+
+            const updateVal = (newVal) => {
+                let val = Math.max(0, Number(newVal) || 0);
+                if (field.allowDecimal) {
+                    val = Math.round(val * 10) / 10;
+                } else {
+                    val = Math.round(val);
+                }
+                input.value = val === 0 && !field.default ? '' : val;
+                this.state[field.id] = val;
+                this.calculate();
+            };
+
+            btnMinus.onmouseover = () => btnMinus.style.background = 'rgba(120,120,120,0.25)';
+            btnMinus.onmouseout = () => btnMinus.style.background = 'rgba(120,120,120,0.12)';
+            btnMinus.onclick = (e) => {
+                e.preventDefault();
+                let current = Number(input.value) || 0;
+                updateVal(Math.max(0, current - step));
+            };
+
+            btnPlus.onmouseover = () => btnPlus.style.background = 'rgba(120,120,120,0.25)';
+            btnPlus.onmouseout = () => btnPlus.style.background = 'rgba(120,120,120,0.12)';
+            btnPlus.onclick = (e) => {
+                e.preventDefault();
+                let current = Number(input.value) || 0;
+                updateVal(current + step);
+            };
+
+            input.addEventListener('input', (e) => {
+                let raw = String(e.target.value).replace(',', '.');
+                let val = Math.max(0, Number(raw) || 0);
+                this.state[field.id] = val;
+                this.calculate();
+            });
+
+            numContainer.appendChild(btnMinus);
+            numContainer.appendChild(input);
+            numContainer.appendChild(btnPlus);
+            inputWrapper.appendChild(numContainer);
+            inputElement = null; // Handled manually
+
         } else {
             const input = document.createElement('input');
-            input.type = field.type === 'number' ? 'number' : 'text';
-            if (field.type === 'number') {
-                input.min = 0; // All number fields are non-negative
-                input.step = field.allowDecimal ? 0.1 : 1; // Max 1 decimal place
-            }
+            input.type = 'text';
             if (this.state[field.id] !== undefined) {
                 input.value = this.state[field.id];
             } else {
                 input.value = field.default || '';
-                this.state[field.id] = field.type === 'number' ? (Number(input.value) || 0) : input.value;
+                this.state[field.id] = input.value;
             }
             applyStyleToInput(input);
             inputElement = input;
@@ -723,11 +823,6 @@ const Engine = {
         if (inputElement) {
             inputElement.addEventListener('input', (e) => {
                 let val = e.target.value;
-                if (field.type === 'number') {
-                    // Normalize comma to dot for decimal input
-                    val = String(val).replace(',', '.');
-                    val = Math.max(0, Number(val) || 0); // Ensure non-negative
-                }
                 if (field.type === 'checkbox') val = e.target.checked ? 1 : 0;
                 this.state[field.id] = val;
                 this.calculate();
@@ -742,16 +837,20 @@ const Engine = {
     addProduct(buttonId, data, existingId = null) {
         const productPoints = this.calculateProductPoints(data, buttonId);
 
-        // Generate name from first select field or use button default
+        // Generate name from custom name field, first select field, or use button default
         let name = "Виріб";
-        const button = Schema.fields.find(f => f.id === buttonId);
-        if (button && button.modalFields) {
-            const firstSelect = button.modalFields.find(f => f.type === 'select');
-            if (firstSelect && data[firstSelect.id]) {
-                const opt = firstSelect.options.find(o => o.value === data[firstSelect.id]);
-                if (opt) name = opt.label;
-            } else {
-                name = button.default || button.label || "Виріб";
+        if (data.mf_custom_name) {
+            name = data.mf_custom_name;
+        } else {
+            const button = Schema.fields.find(f => f.id === buttonId);
+            if (button && button.modalFields) {
+                const firstSelect = button.modalFields.find(f => f.type === 'select');
+                if (firstSelect && data[firstSelect.id]) {
+                    const opt = firstSelect.options.find(o => o.value === data[firstSelect.id]);
+                    if (opt) name = opt.label;
+                } else {
+                    name = button.default || button.label || "Виріб";
+                }
             }
         }
 
@@ -782,9 +881,11 @@ const Engine = {
         if (prod) {
             const productPoints = this.calculateProductPoints(data, prod.buttonId);
 
-            // Update name from first select field
+            // Update name from custom name field or first select field
             const button = Schema.fields.find(f => f.id === prod.buttonId);
-            if (button && button.modalFields) {
+            if (data.mf_custom_name) {
+                prod.name = data.mf_custom_name;
+            } else if (button && button.modalFields) {
                 const firstSelect = button.modalFields.find(f => f.type === 'select');
                 if (firstSelect && data[firstSelect.id]) {
                     const opt = firstSelect.options.find(o => o.value === data[firstSelect.id]);
@@ -917,14 +1018,25 @@ const Engine = {
                 summary.push(`${field.label} (${val.qty})`);
             } else if (field.type === 'number' && val > 0) {
                 summary.push(`${field.label}: ${val}`);
-            } else if (field.type === 'multiselect' && Array.isArray(val) && val.length > 0) {
+            } else if ((field.type === 'multiselect' || field.type === 'multiselect_qty') && Array.isArray(val) && val.length > 0) {
+                const isQty = field.type === 'multiselect_qty';
                 const labels = val.map(v => {
-                    const opt = field.options?.find(o => o.value === v);
-                    return opt ? opt.label : v;
+                    const optVal = isQty ? v.value : v;
+                    const optQty = isQty ? v.qty : null;
+                    const opt = field.options?.find(o => o.value === optVal);
+                    const label = opt ? opt.label : optVal;
+                    return isQty ? `${label} (${optQty})` : label;
                 }).filter(Boolean);
                 if (labels.length > 0) summary.push(labels.join(', '));
             }
         });
+
+        // Add multiplier to summary if > 1
+        const multField = button.modalFields.find(mf => mf.isMultiplier);
+        if (multField && data[multField.id] && Number(data[multField.id]) > 1) {
+            summary.push(`${multField.label}: ${data[multField.id]}`);
+        }
+
         return summary;
     },
 
@@ -947,14 +1059,17 @@ const Engine = {
             const ruleSet = Schema.modalFieldRules?.[ruleKey] || Schema.rules[fieldId];
             if (!mf || !ruleSet) return;
 
-            let qty = val;
-            if (mf.type === 'select' || mf.type === 'multiselect') {
-                const values = mf.type === 'multiselect' ? (Array.isArray(val) ? val : []) : [val];
+            if (mf.type === 'select' || mf.type === 'multiselect' || mf.type === 'multiselect_qty') {
+                const isMultQty = mf.type === 'multiselect_qty';
+                const values = (mf.type === 'multiselect' || isMultQty) ? (Array.isArray(val) ? val : []) : [val];
                 values.forEach(v => {
-                    const active = ruleSet[v];
-                    if (active) this.applyPoints(active, points, null, catSums, mf);
+                    const optVal = isMultQty ? v.value : v;
+                    const optQty = isMultQty ? (Number(v.qty) || 1) : null;
+                    const active = ruleSet[optVal];
+                    if (active) this.applyPoints(active, points, optQty, catSums, mf);
                 });
             } else {
+                let qty = val;
                 if (mf.type === 'checkbox_qty') qty = val?.qty || 0;
                 else if (mf.type === 'checkbox') qty = val ? 1 : 0;
                 this.applyPoints(ruleSet, points, qty, catSums, mf);
@@ -969,10 +1084,13 @@ const Engine = {
             const ruleSet = Schema.modalFieldRules?.[ruleKey]; // Corrected from `${buttonId}_${fieldId}`
             if (!mf || !ruleSet) return;
 
-            const values = (mf.type === 'multiselect') ? (Array.isArray(val) ? val : []) : [val];
+            const isMultQty = mf.type === 'multiselect_qty';
+            const values = (mf.type === 'multiselect' || isMultQty) ? (Array.isArray(val) ? val : []) : [val];
 
             values.forEach(v => {
-                const targetRules = (mf.type === 'select' || mf.type === 'multiselect') ? ruleSet[v] : ruleSet;
+                const optVal = isMultQty ? v.value : v;
+                const optQty = isMultQty ? (Number(v.qty) || 1) : (mf.type === 'checkbox_qty' ? val?.qty : v);
+                const targetRules = (mf.type === 'select' || mf.type === 'multiselect' || isMultQty) ? ruleSet[optVal] : ruleSet;
                 if (!targetRules) return;
 
                 Object.keys(Schema.categories).forEach(cid => {
@@ -982,20 +1100,34 @@ const Engine = {
                     // Calculate current sum for this field/category
                     const tempSums = {};
                     Object.keys(Schema.categories).forEach(c => tempSums[c] = 0);
-                    this.applyPoints(targetRules, null, (mf.type === 'checkbox_qty' ? val?.qty : v), tempSums, mf);
+                    this.applyPoints(targetRules, null, optQty, tempSums, mf);
                     const currentSum = tempSums[cid] || 0;
 
                     let finalVal = 0;
                     if (String(formula).startsWith('=')) {
-                        finalVal = this.evaluateFormulaExtended(formula, (mf.type === 'checkbox_qty' ? val?.qty : v), { '@sum': currentSum }); // Reverted contextVal and extraVars to original logic
+                        finalVal = this.evaluateFormulaExtended(formula, optQty, { '@sum': currentSum });
                     } else if (!isNaN(formula)) {
-                        finalVal = currentSum + Number(formula); // Reverted to original logic for fixed numbers
+                        finalVal = currentSum + Number(formula);
                     }
 
-                    catSums[cid] += (finalVal - currentSum); // Reverted to original logic
+                    catSums[cid] += (finalVal - currentSum);
                 });
             });
         });
+
+        // Apply overall multiplier if exists
+        const multField = button.modalFields.find(mf => mf.isMultiplier);
+        const multiplier = multField ? (Number(data[multField.id]) || 1) : 1;
+        
+        if (multiplier !== 1) {
+            Object.keys(catSums).forEach(cid => {
+                catSums[cid] *= multiplier;
+            });
+            Object.keys(points).forEach(pid => {
+                if (pid.startsWith('_')) return;
+                points[pid] *= multiplier;
+            });
+        }
 
         // We return an object that allows renderResults to see the per-category contribution
         // To keep the card total simple, we map catSums back to a single number for the card helper
@@ -1005,6 +1137,7 @@ const Engine = {
 
     // --- CALCULATION KERNEL ---
     calculate() {
+        this.detailedMatrix = {}; // Reset details
         const points = {};
         Schema.processes.forEach(p => points[p.id] = 0);
 
@@ -1019,12 +1152,34 @@ const Engine = {
         this.addedProducts.forEach(prod => {
             if (prod.points._catSums) {
                 Object.keys(prod.points._catSums).forEach(cid => {
-                    catSums[cid] += (prod.points._catSums[cid] || 0);
+                    const val = (prod.points._catSums[cid] || 0);
+                    catSums[cid] += val;
+
+                    // Detail Matrix for Product
+                    const key = 'prod_' + prod.id;
+                    if (!this.detailedMatrix[key]) {
+                        // Find button to get group info? 
+                        // We will map it later using Schema.fields
+                        this.detailedMatrix[key] = { label: prod.name, values: {}, isProduct: true, buttonId: prod.buttonId };
+                    }
+                    if (!this.detailedMatrix[key].values[cid]) this.detailedMatrix[key].values[cid] = 0;
+                    this.detailedMatrix[key].values[cid] += val;
                 });
             } else {
                 Object.keys(prod.points).forEach(pId => {
                     const proc = Schema.processes.find(px => px.id === pId);
-                    if (proc && proc.category) catSums[proc.category] += (prod.points[pId] || 0);
+                    if (proc && proc.category) {
+                        const val = (prod.points[pId] || 0);
+                        catSums[proc.category] += val;
+
+                        // Detail Matrix for Product
+                        const key = 'prod_' + prod.id;
+                        if (!this.detailedMatrix[key]) {
+                            this.detailedMatrix[key] = { label: prod.name, values: {}, isProduct: true, buttonId: prod.buttonId };
+                        }
+                        if (!this.detailedMatrix[key].values[proc.category]) this.detailedMatrix[key].values[proc.category] = 0;
+                        this.detailedMatrix[key].values[proc.category] += val;
+                    }
                 });
             }
         });
@@ -1053,7 +1208,7 @@ const Engine = {
         Object.keys(this.state).forEach(fId => {
             const val = this.state[fId];
             const ruleSet = Schema.rules[fId];
-            const fDef = Schema.fields.find(f => f.id === fId);
+            const fDef = this.getFieldDef(fId);
             if (!fDef || !ruleSet) return;
 
             if (fDef.type === 'select') {
@@ -1088,7 +1243,7 @@ const Engine = {
 
         Object.keys(this.state).forEach(fId => {
             const fVal = this.state[fId];
-            const fDef = Schema.fields.find(f => f.id === fId);
+            const fDef = this.getFieldDef(fId);
             const ruleSet = Schema.rules[fId];
             if (!fDef || !ruleSet) return;
 
@@ -1145,7 +1300,14 @@ const Engine = {
 
                     // 2. Evaluate formula or fixed number
                     let result = 0;
-                    if (String(valInSigma).startsWith('=')) {
+                    const isZeroInput = (fDef.type === 'number' && (Number(effectiveVal) || 0) === 0) ||
+                                        (fDef.type === 'select_yes_no' && (Number(effectiveVal) || 0) === 0) ||
+                                        (fDef.type === 'checkbox' && !effectiveVal) ||
+                                        (fDef.type === 'checkbox_qty' && (!effectiveVal || !effectiveVal.checked || !effectiveVal.qty));
+
+                    if (isZeroInput) {
+                        result = 0;
+                    } else if (String(valInSigma).startsWith('=')) {
                         result = this.evaluateFormulaExtended(valInSigma, effectiveVal, {
                             ...globalVars,
                             '@sum': currentSum,
@@ -1156,7 +1318,17 @@ const Engine = {
                     }
 
                     // Apply difference to the global total
-                    adjustments[cid] += (result - currentSum);
+                    const diff = result - currentSum;
+                    adjustments[cid] += diff;
+
+                    // Update Detailed Matrix (Pass 2 Adjustment)
+                    if (diff !== 0) {
+                        if (!this.detailedMatrix[fId]) {
+                            this.detailedMatrix[fId] = { label: fDef.label, values: {} };
+                        }
+                        if (!this.detailedMatrix[fId].values[cid]) this.detailedMatrix[fId].values[cid] = 0;
+                        this.detailedMatrix[fId].values[cid] += diff;
+                    }
                 });
             });
         });
@@ -1195,7 +1367,34 @@ const Engine = {
             }
 
             if (typeof val === 'string' && val.startsWith('=')) {
-                val = this.evaluateFormulaExtended(val, contextVal, {});
+                // BUGFIX: If field is numeric/checkbox_qty and value is 0/falsy, do NOT evaluate formula 
+                // (unless it's a checkbox which might have a formula for "unchecked" state, but usually unchecked = 0)
+                if (fieldDef && (fieldDef.type === 'number' || fieldDef.type === 'checkbox_qty' || fieldDef.type === 'select_yes_no')) {
+                    const numericInput = Number(contextVal) || 0;
+                    if (numericInput === 0) {
+                        val = 0;
+                    } else {
+                        val = this.evaluateFormulaExtended(val, contextVal, {});
+                    }
+                } else if (fieldDef && fieldDef.type === 'checkbox') {
+                    // Checkbox: contextVal is true/false (from processPass1 passing '1' or '0' logic?? actually processPass1 passes boolean or 1/0? 
+                    // processPass1 passes "1" for checkbox true? No, let's look at processPass1. 
+                    // It passes processedVal. processPass1 says: if (fDef.type === 'checkbox') ... applyPoints(..., processedVal, ...)
+                    // Actually processPass1 does: if (type === 'checkbox') applyPoints(..., processedVal) where processedVal is val (checked?)
+                    // Wait, processPass1: "if (fDef.type === 'checkbox') ... multiplier = contextVal ? 1 : 0".
+                    // So contextVal is likely the boolean or 0/1. If 0, multiplier is 0. 
+                    // But here we are inside "if string starts with =" block.
+
+                    // If checkbox is falsy, we generally expect 0 points regardless of formula, 
+                    // UNLESS the formula specifically handles false state. But usually unchecked = 0 points.
+                    if (!contextVal) val = 0;
+                    else val = this.evaluateFormulaExtended(val, contextVal, {});
+                } else {
+                    // For 'select' or 'multiselect', contextVal might be the option ID or similar, or 1?
+                    // In processPass1 for SELECT, it passes null as contextVal. 
+                    // So specific Select options triggering formulas will evaluate with contextVal=null (which becomes 0 in regex).
+                    val = this.evaluateFormulaExtended(val, contextVal, {});
+                }
             } else {
                 // Determine multiplier
                 let multiplier = 1;
@@ -1212,38 +1411,65 @@ const Engine = {
             }
             if (catSums) {
                 const proc = Schema.processes.find(px => px.id === procId);
-                if (proc && proc.category) catSums[proc.category] += numVal;
+                if (proc && proc.category) {
+                    catSums[proc.category] += numVal;
+
+                    // Detailed Matrix (Pass 1)
+                    // Only track if it's the main accumulation phase (totalPoints is provided)
+                    if (totalPoints && fieldDef && numVal !== 0) {
+                        if (!this.detailedMatrix[fieldDef.id]) {
+                            this.detailedMatrix[fieldDef.id] = { label: fieldDef.label, values: {} };
+                        }
+                        if (!this.detailedMatrix[fieldDef.id].values[proc.category]) this.detailedMatrix[fieldDef.id].values[proc.category] = 0;
+                        this.detailedMatrix[fieldDef.id].values[proc.category] += numVal;
+                    }
+                }
             }
         });
     },
 
-    evaluateFormulaExtended(formula, val, extraVars) {
-        let expr = formula.substring(1).trim();
+    evaluateFormulaExtended(formula, val, extraVars = {}) {
+        if (!formula || typeof formula !== 'string') return 0;
+        let expr = formula.trim();
+        if (expr.startsWith('=')) expr = expr.substring(1).trim();
         if (!expr) return 0;
 
-        // Inject val (qty)
-        expr = expr.replace(/\bval\b/g, val || 0);
-        expr = expr.replace(/@qty/g, val || 0);
+        // Clean numeric val
+        let numVal = 0;
+        if (val !== null && val !== undefined) {
+            if (typeof val === 'number') numVal = isNaN(val) ? 0 : val;
+            else if (typeof val === 'string') numVal = Number(val.replace(',', '.')) || 0;
+            else if (typeof val === 'boolean') numVal = val ? 1 : 0;
+        }
+
+        // Inject val / x / @qty
+        expr = expr.replace(/\bval\b/g, numVal);
+        expr = expr.replace(/\bx\b/g, numVal);
+        expr = expr.replace(/@qty/g, numVal);
 
         // Sort keys by length descending to avoid prefix replacement issues (@sum vs @sum_konst)
-        const keys = Object.keys(extraVars).sort((a, b) => b.length - a.length);
+        const keys = Object.keys(extraVars || {}).sort((a, b) => b.length - a.length);
 
         keys.forEach(key => {
             const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const re = new RegExp(escapedKey + '(?![a-zA-Z0-9_])', 'g');
-            expr = expr.replace(re, extraVars[key]);
+            const varVal = Number(extraVars[key]) || 0;
+            expr = expr.replace(re, varVal);
         });
+
+        // Any remaining unrecognized @sum_... vars should be safely replaced with 0
+        expr = expr.replace(/@[a-zA-Z0-9_]+/g, '0');
 
         // Math helpers
         expr = expr.replace(/min\(/g, 'Math.min(').replace(/max\(/g, 'Math.max(');
-        expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(');
+        expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(').replace(/abs\(/g, 'Math.abs(');
 
         try {
             // Use a clean scope for evaluation
             const res = new Function(`return (${expr})`)();
-            return isNaN(res) ? 0 : Number(res);
+            return isNaN(res) || !isFinite(res) ? 0 : Number(res);
         } catch (e) {
-            console.error("Formula Evaluation Error:", expr, e);
+            console.warn("Formula Evaluation Warning:", expr, e);
             return 0;
         }
     },
@@ -1253,11 +1479,11 @@ const Engine = {
         if (!container) return;
 
         container.innerHTML = `
-            <div style="font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
-                <span style="background: #6366f1; width: 4px; height: 12px; border-radius: 2px;"></span>
+            <div style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.06em; display: flex; align-items: center; gap: 8px;">
+                <span style="background: #2563eb; width: 4px; height: 12px; border-radius: 2px;"></span>
                 Процеси для розрахунку
             </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;" id="catToggleList"></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;" id="catToggleList"></div>
         `;
 
         const list = container.querySelector('#catToggleList');
@@ -1265,28 +1491,27 @@ const Engine = {
             const cat = Schema.categories[cid];
             const isActive = this.activeCategories.has(cid);
 
-            const primaryColor = '#2563eb'; // Deep Blue
             const btn = document.createElement('button');
             btn.style.cssText = `
-                padding: 6px 14px;
+                padding: 7px 16px;
                 border-radius: 999px;
                 font-size: 13px;
                 font-weight: 600;
                 cursor: pointer;
-                border: 2px solid ${isActive ? primaryColor : '#d1d5db'};
-                background: ${isActive ? primaryColor : 'white'};
-                color: ${isActive ? 'white' : '#9ca3af'};
+                border: 1.5px solid ${isActive ? '#2563eb' : '#e2e8f0'};
+                background: ${isActive ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' : '#ffffff'};
+                color: ${isActive ? '#ffffff' : '#64748b'};
                 text-decoration: ${isActive ? 'none' : 'line-through'};
                 transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
                 align-items: center;
-                gap: 6px;
+                gap: 7px;
                 user-select: none;
                 box-shadow: ${isActive ? '0 4px 12px rgba(37, 99, 235, 0.2)' : 'none'};
             `;
 
             btn.innerHTML = `
-                <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: ${isActive ? 'rgba(255,255,255,0.3)' : '#cbd5e1'}; display: flex; align-items: center; justify-content: center; font-size: 8px;">
+                <span style="display: inline-flex; width: 15px; height: 15px; border-radius: 50%; background: ${isActive ? 'rgba(255,255,255,0.25)' : '#e2e8f0'}; align-items: center; justify-content: center; font-size: 9px; font-weight: 800;">
                     ${isActive ? '✓' : ''}
                 </span>
                 ${cat.name}
@@ -1446,63 +1671,77 @@ const Engine = {
     renderResults(points, catSums, originalCatSums = null) {
         // Render to UI
         let grandTotal = 0;
-        const resultsPanel = document.getElementById('resultsContainer') || document.querySelector('.results-panel div[style*="border-bottom"]');
-        if (!resultsPanel) return;
+        const catColors = {
+            'cat_construction': '#0284c7', // Sky Blue
+            'cat_design': '#7c3aed',       // Violet/Purple
+            'cat_installation': '#16a34a', // Emerald
+            'cat_assembly': '#d97706'      // Amber
+        };
 
-        resultsPanel.innerHTML = '';
+        const resultsPanel = document.getElementById('resultsContainer') || document.getElementById('resultsPanel');
+        if (resultsPanel) resultsPanel.innerHTML = '';
         Object.keys(Schema.categories).forEach(cid => {
             const isActive = this.activeCategories.has(cid);
             const sum = Math.round(catSums[cid] || 0); // Final Sum (with Markup)
             if (isActive) grandTotal += sum;
 
+            const dotColor = catColors[cid] || '#3b82f6';
+
             let markupHtml = '';
             // Only show markup info if there is a markup and potential for points
             if (originalCatSums && Schema.meta && Schema.meta.markup) {
                 const markup = Schema.meta.markup[cid] || 0;
-                // Check if this category has points (based on originalCatSums)
                 if (markup > 0 && originalCatSums[cid] > 0) {
                     const orig = Math.round(originalCatSums[cid]);
-                    markupHtml = `<div style="font-size:10px; color:#64748b; text-align:right; margin-top:2px;">
-                        Оригінал: ${orig.toLocaleString()} (+${markup}%)
+                    markupHtml = `<div style="font-size:11px; color:#94a3b8; text-align:right; margin-top:2px;">
+                        Базовий: ${orig.toLocaleString()} (+${markup}%)
                      </div>`;
                 }
             }
 
             const row = document.createElement('div');
             row.style.cssText = `
-                display:flex; 
-                justify-content:space-between; 
-                margin-bottom:10px; 
-                font-size:13px;
-                transition: 0.3s;
-                opacity: ${isActive ? '1' : '0.3'};
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center;
+                margin-bottom: 8px; 
+                font-size: 13.5px;
+                padding: 7px 10px;
+                border-radius: 8px;
+                background: ${isActive ? '#f8fafc' : 'transparent'};
+                transition: 0.2s ease;
+                opacity: ${isActive ? '1' : '0.35'};
                 filter: ${isActive ? 'none' : 'grayscale(1)'};
                 text-decoration: ${isActive ? 'none' : 'line-through'};
             `;
 
             row.innerHTML = `
-                <span>${Schema.categories[cid].name}</span> 
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="width:8px; height:8px; border-radius:50%; background:${isActive ? dotColor : '#cbd5e1'}; flex-shrink:0;"></span>
+                    <span style="font-weight:600; color:#334155;">${Schema.categories[cid].name}</span>
+                </div>
                 <div style="display:flex; flex-direction:column; align-items:flex-end;">
-                    <span style="font-weight:600; color:${isActive ? '#3b82f6' : '#9ca3af'}">${sum.toLocaleString()} ViPoint</span>
+                    <span style="font-weight:700; color:${isActive ? '#0f172a' : '#94a3b8'}; font-size:14px;">${sum.toLocaleString()} <span style="font-size:11px; font-weight:600; color:#64748b">ViPoint</span></span>
                     ${markupHtml}
                 </div>
             `;
-            resultsPanel.appendChild(row);
+            if (resultsPanel) resultsPanel.appendChild(row);
         });
 
         const totalScoreEl = document.getElementById('totalScore');
         if (totalScoreEl) totalScoreEl.innerText = `${Math.round(grandTotal).toLocaleString()} ViPoint`;
 
-        // Render Action Buttons (Details + PDF)
-        const headerContainer = document.querySelector('.results-header');
-        if (headerContainer) {
-            // Container for buttons
+        // Render Action Buttons (Details + PDF + Reset + Save)
+        const scoreCard = document.querySelector('.results-score-card') || totalScoreEl?.parentElement;
+        const resultsPanelEl = document.querySelector('.results-panel');
+
+        if (scoreCard) {
             let btnContainer = document.getElementById('resBtnContainer');
             if (!btnContainer) {
                 btnContainer = document.createElement('div');
                 btnContainer.id = 'resBtnContainer';
-                btnContainer.style.cssText = 'display:flex; gap:10px; margin-top:10px';
-                headerContainer.appendChild(btnContainer);
+                btnContainer.style.cssText = 'display:flex; gap:8px; margin-top:14px; margin-bottom:12px;';
+                scoreCard.parentElement.insertBefore(btnContainer, scoreCard.nextSibling);
             }
 
             // Details Button
@@ -1512,18 +1751,18 @@ const Engine = {
                 btn.innerText = '📋 Деталі';
                 btn.style.cssText = `
                     flex: 1;
-                    padding: 8px;
-                    background: white;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 8px;
-                    color: #64748b;
+                    padding: 9px 8px;
+                    background: #ffffff;
+                    border: 1.5px solid #e2e8f0;
+                    border-radius: 10px;
+                    color: #475569;
                     font-size: 12px;
-                    font-weight: 600;
+                    font-weight: 700;
                     cursor: pointer;
-                    transition: 0.2s;
+                    transition: all 0.2s ease;
                 `;
-                btn.onmouseover = () => { btn.style.background = '#f1f5f9'; btn.style.color = '#3b82f6'; };
-                btn.onmouseout = () => { btn.style.background = 'white'; btn.style.color = '#64748b'; };
+                btn.onmouseover = () => { btn.style.borderColor = '#93c5fd'; btn.style.color = '#2563eb'; btn.style.background = '#eff6ff'; };
+                btn.onmouseout = () => { btn.style.borderColor = '#e2e8f0'; btn.style.color = '#475569'; btn.style.background = '#ffffff'; };
                 btn.onclick = () => this.showProcessDetails(points, catSums, originalCatSums);
                 btnContainer.appendChild(btn);
             } else {
@@ -1537,55 +1776,92 @@ const Engine = {
                 btn.innerText = '📄 PDF';
                 btn.style.cssText = `
                     flex: 1;
-                    padding: 8px;
-                    background: white;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 8px;
-                    color: #ef4444;
+                    padding: 9px 8px;
+                    background: #ffffff;
+                    border: 1.5px solid #e2e8f0;
+                    border-radius: 10px;
+                    color: #475569;
                     font-size: 12px;
-                    font-weight: 600;
+                    font-weight: 700;
                     cursor: pointer;
-                    transition: 0.2s;
+                    transition: all 0.2s ease;
                 `;
-                btn.onmouseover = () => { btn.style.background = '#fef2f2'; btn.style.color = '#dc2626'; };
-                btn.onmouseout = () => { btn.style.background = 'white'; btn.style.color = '#ef4444'; };
+                btn.onmouseover = () => { btn.style.borderColor = '#fca5a5'; btn.style.color = '#dc2626'; btn.style.background = '#fef2f2'; };
+                btn.onmouseout = () => { btn.style.borderColor = '#e2e8f0'; btn.style.color = '#475569'; btn.style.background = '#ffffff'; };
                 btn.onclick = () => this.generatePDF(points, catSums, originalCatSums);
                 btnContainer.appendChild(btn);
             } else {
                 document.getElementById('pdfBtn').onclick = () => this.generatePDF(points, catSums, originalCatSums);
             }
+
+            // Reset Button
+            if (!document.getElementById('resetFormBtn')) {
+                const btn = document.createElement('button');
+                btn.id = 'resetFormBtn';
+                btn.innerText = '🔄 Скинути';
+                btn.title = 'Очистити всі поля форми';
+                btn.style.cssText = `
+                    flex: 1;
+                    padding: 9px 8px;
+                    background: #ffffff;
+                    border: 1.5px solid #e2e8f0;
+                    border-radius: 10px;
+                    color: #475569;
+                    font-size: 12px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                `;
+                btn.onmouseover = () => { btn.style.borderColor = '#cbd5e1'; btn.style.color = '#0f172a'; btn.style.background = '#f1f5f9'; };
+                btn.onmouseout = () => { btn.style.borderColor = '#e2e8f0'; btn.style.color = '#475569'; btn.style.background = '#ffffff'; };
+                btn.onclick = () => this.resetForm();
+                btnContainer.appendChild(btn);
+            } else {
+                document.getElementById('resetFormBtn').onclick = () => this.resetForm();
+            }
         }
 
         // Inject Save Button
-        const totalContainer = totalScoreEl?.parentElement;
-        if (totalContainer && !document.getElementById('btnSaveCloud')) {
+        if (resultsPanelEl && !document.getElementById('btnSaveCloud')) {
             const btn = document.createElement('button');
             btn.id = 'btnSaveCloud';
-            btn.innerHTML = '☁️ Зберегти';
+            btn.innerHTML = '💾 Зберегти розрахунок';
             btn.style.cssText = `
                 display: block;
                 width: 100%;
-                margin-top: 15px;
-                padding: 10px;
-                background: linear-gradient(135deg, #2563eb, #1d4ed8);
-                color: white;
+                margin-top: 14px;
+                padding: 12px 16px;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                color: #ffffff;
                 border: none;
                 border-radius: 12px;
                 font-weight: 700;
+                font-size: 14px;
                 cursor: pointer;
-                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-                transition: all 0.2s;
+                box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+                transition: all 0.2s ease;
             `;
-            btn.onmouseover = () => btn.style.transform = 'translateY(-2px)';
-            btn.onmouseout = () => btn.style.transform = 'translateY(0)';
+            btn.onmouseover = () => { btn.style.transform = 'translateY(-1px)'; btn.style.boxShadow = '0 6px 18px rgba(37, 99, 235, 0.35)'; };
+            btn.onmouseout = () => { btn.style.transform = 'translateY(0)'; btn.style.boxShadow = '0 4px 14px rgba(37, 99, 235, 0.25)'; };
             btn.onclick = () => {
-                console.log("🔘 Button 'Save' Clicked!");
                 this.saveToCloud();
             };
 
-            // Insert after the total score block
-            totalContainer.parentElement.appendChild(btn);
+            const btnContainer = document.getElementById('resBtnContainer');
+            if (btnContainer && btnContainer.nextSibling) {
+                resultsPanelEl.insertBefore(btn, btnContainer.nextSibling);
+            } else {
+                resultsPanelEl.appendChild(btn);
+            }
         }
+    },
+
+    resetForm() {
+        if (!confirm("Очистити всі введені дані та скинути калькулятор?")) return;
+        this.state = {};
+        this.addedProducts = [];
+        this.renderForm();
+        this.calculate();
     },
 
     async generatePDF(points, catSums, originalCatSums) {
@@ -1640,94 +1916,173 @@ const Engine = {
         doc.text(`👤 Клієнт: ${clientName}`, 18, 41);
         doc.text(`📑 Проект: ${document.getElementById('saveTitle')?.value || 'Новий проект'}`, 18, 48);
 
-        // Prepare Table Data
+        // Prepare Columns (Process Categories)
+        const columns = [{ header: 'Поле / Процес', dataKey: 'label' }];
+        const colIds = Object.keys(Schema.categories);
+        colIds.forEach(cid => {
+            columns.push({ header: Schema.categories[cid].name.toUpperCase(), dataKey: cid, halign: 'right' });
+        });
+
+        // Prepare Rows
         const rows = [];
-        let grandTotal = 0;
+        const grandTotals = {};
+        colIds.forEach(cid => grandTotals[cid] = 0);
+        let finalGrandTotal = 0;
 
-        // Group by Category (Reuse Logic)
-        const categories = {};
-        Object.keys(Schema.categories).forEach(cid => {
-            categories[cid] = { meta: Schema.categories[cid], items: [] };
-        });
+        const fmt = (val) => {
+            if (!val) return '-';
+            // USER REQUEST: Show points WITHOUT correction coefficient
+            return Math.round(val).toLocaleString();
+        };
 
-        // Collect Items
-        Object.keys(points).forEach(pid => {
-            const pts = points[pid];
-            if (pts > 0 && pid !== '_catSums') {
-                const proc = Schema.processes.find(p => p.id === pid);
-                if (proc && categories[proc.category]) {
-                    const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[proc.category] || 0) : 0;
-                    const cost = pts * (1 + markup / 100);
-                    categories[proc.category].items.push({
-                        proc: proc.name,
-                        cost: cost
-                    });
-                }
-            }
-        });
+        // Helper to check markup
+        const getMarkup = (cid) => (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[cid] || 0) : 0;
 
-        // Products
-        this.addedProducts.forEach(prod => {
-            if (prod.points) {
-                Object.keys(prod.points).forEach(pid => {
-                    if (pid === '_catSums') return;
-                    const pts = prod.points[pid];
-                    if (pts > 0) {
-                        const proc = Schema.processes.find(p => p.id === pid);
-                        if (proc && categories[proc.category]) {
-                            const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[proc.category] || 0) : 0;
-                            const cost = pts * (1 + markup / 100);
-                            categories[proc.category].items.push({
-                                proc: `[${prod.name}] ${proc.name}`,
-                                cost: cost
+        // Iterate Groups
+        if (this.detailedMatrix) {
+            // Keep track of processed items to handle ungrouped later
+            const processedKeys = new Set();
+
+            Schema.groups.forEach(group => {
+                const groupRows = [];
+                const groupTotals = {};
+                colIds.forEach(c => groupTotals[c] = 0);
+                let groupHasData = false;
+
+                // Find fields for this group
+                const groupFields = Schema.fields.filter(f => f.groupId === group.id);
+
+                const processField = (fieldDef, isNested = false) => {
+                    const fieldId = fieldDef.id;
+
+                    // 1. Standard Field
+                    const data = this.detailedMatrix[fieldId];
+                    if (data) {
+                        processedKeys.add(fieldId);
+                        const hasVal = colIds.some(cid => data.values[cid]);
+                        if (hasVal) {
+                            groupHasData = true;
+                            const row = { label: isNested ? `  ${data.label}` : data.label };
+                            colIds.forEach(cid => {
+                                const val = data.values[cid] || 0;
+                                groupTotals[cid] += val;
+                                row[cid] = fmt(val, getMarkup(cid));
                             });
+                            groupRows.push(row);
                         }
                     }
+
+                    // 2. Linked Products
+                    const productKeys = Object.keys(this.detailedMatrix).filter(k =>
+                        this.detailedMatrix[k].isProduct && this.detailedMatrix[k].buttonId === fieldId
+                    );
+                    productKeys.forEach(pkey => {
+                        processedKeys.add(pkey);
+                        const pData = this.detailedMatrix[pkey];
+                        groupHasData = true;
+                        const row = { label: `  ↳ ${pData.label}` }; // Indent
+                        colIds.forEach(cid => {
+                            const val = pData.values[cid] || 0;
+                            groupTotals[cid] += val;
+                            row[cid] = fmt(val, getMarkup(cid));
+                        });
+                        // Add only if not duplicate
+                        groupRows.push(row);
+                    });
+
+                    // 3. Recursive: Check modalFields
+                    if (fieldDef.modalFields && fieldDef.modalFields.length > 0) {
+                        fieldDef.modalFields.forEach(mf => processField(mf, true));
+                    }
+                };
+
+                // Process fields
+                groupFields.forEach(f => processField(f));
+
+                if (groupHasData) {
+                    // Group Header
+                    rows.push([{ content: `<< ${group.title} >>`, colSpan: columns.length, styles: { fillColor: [241, 245, 249], fontStyle: 'bold', textColor: 50 } }]);
+                    // Data Rows
+                    groupRows.forEach(r => rows.push(r));
+                    // Group Subtotal
+                    const subRow = { label: 'Всього по групі:' };
+                    colIds.forEach(cid => {
+                        grandTotals[cid] += groupTotals[cid];
+                        const val = groupTotals[cid];
+                        subRow[cid] = val > 0 ? Math.round(val * (1 + getMarkup(cid) / 100)).toLocaleString() : '-';
+                    });
+                    // Style subrow? autoTable styles usually separate, but we can pass styles in "didParseCell" or specific row structure
+                    // For simple usage, we put it as a row and style it via hooks or just let it be. 
+                    // To style specifically, we can use the array format with styles
+                    const subRowArray = [{ content: 'Всього по групі:', styles: { fontStyle: 'bold', halign: 'right' } }];
+                    colIds.forEach(cid => {
+                        subRowArray.push({ content: subRow[cid], styles: { fontStyle: 'bold', halign: 'right' } });
+                    });
+                    rows.push(subRowArray);
+                }
+            });
+
+            // Ungrouped
+            const allKeys = Object.keys(this.detailedMatrix);
+            const leftover = allKeys.filter(k => !processedKeys.has(k));
+            if (leftover.length > 0) {
+                const groupRows = [];
+                let groupHasData = false;
+                const groupTotals = {};
+                colIds.forEach(c => groupTotals[c] = 0);
+
+                leftover.forEach(key => {
+                    const data = this.detailedMatrix[key];
+                    const hasVal = colIds.some(cid => data.values[cid]);
+                    if (hasVal) {
+                        groupHasData = true;
+                        const row = { label: `${data.label} ${data.isProduct ? '(Інше)' : ''}` };
+                        colIds.forEach(cid => {
+                            const val = data.values[cid] || 0;
+                            groupTotals[cid] += val;
+                            row[cid] = fmt(val, getMarkup(cid));
+                        });
+                        groupRows.push(row);
+                    }
                 });
+
+                if (groupHasData) {
+                    rows.push([{ content: `<< ІНШЕ >>`, colSpan: columns.length, styles: { fillColor: [241, 245, 249], fontStyle: 'bold', textColor: 50 } }]);
+                    groupRows.forEach(r => rows.push(r));
+                    const subRowArray = [{ content: 'Всього інше:', styles: { fontStyle: 'bold', halign: 'right' } }];
+                    colIds.forEach(cid => {
+                        grandTotals[cid] += groupTotals[cid];
+                        const val = groupTotals[cid];
+                        subRowArray.push({ content: val > 0 ? Math.round(val * (1 + getMarkup(cid) / 100)).toLocaleString() : '-', styles: { fontStyle: 'bold', halign: 'right' } });
+                    });
+                    rows.push(subRowArray);
+                }
             }
-        });
-
-        // Build Rows for AutoTable
-        Object.keys(categories).forEach(cid => {
-            const cat = categories[cid];
-            if (cat.items.length > 0) {
-                // Sort
-                cat.items.sort((a, b) => a.proc.localeCompare(b.proc));
-
-                // Category Header per section or just grouping in table? AutoTable 'grouping' is complex.
-                // We will manually add header rows.
-                rows.push([{ content: cat.meta.name.toUpperCase(), colSpan: 2, styles: { fillColor: [241, 245, 249], fontStyle: 'bold', textColor: 50 } }]);
-
-                let catTotal = 0;
-                cat.items.forEach(item => {
-                    rows.push([item.proc, Math.round(item.cost).toLocaleString()]);
-                    catTotal += item.cost;
-                });
-                grandTotal += catTotal;
-
-                // Category Subtotal
-                rows.push([{ content: 'Разом за категорією:', styles: { halign: 'right', fontStyle: 'bold' } }, { content: Math.round(catTotal).toLocaleString(), styles: { fontStyle: 'bold' } }]);
-            }
-        });
+        }
 
         // Generate Table
         doc.autoTable({
             startY: 65,
-            head: [['Процес / Найменування', 'Вартість (ViPoint)']],
+            columns: columns,
             body: rows,
-            styles: { font: 'Roboto', fontStyle: 'normal' },
+            styles: { font: 'Roboto', fontStyle: 'normal', fontSize: 9 },
             headStyles: { fillColor: [59, 130, 246] },
             columnStyles: {
-                0: { cellWidth: 'auto' },
-                1: { cellWidth: 40, halign: 'right' }
-            }
+                label: { cellWidth: 'auto' },
+                // dynamic cols usually auto width
+            },
+            theme: 'grid'
         });
 
         // Final Total
+        let totalVal = 0;
+        // Also show Total WITHOUT markup
+        colIds.forEach(cid => totalVal += grandTotals[cid]);
+
         const finalY = (doc.lastAutoTable && doc.lastAutoTable.finalY) ? doc.lastAutoTable.finalY + 10 : 80;
         doc.setFontSize(14);
         doc.setTextColor(37, 99, 235);
-        doc.text(`ВСЬОГО: ${Math.round(grandTotal).toLocaleString()} ViPoint`, 196, finalY, { align: 'right' });
+        doc.text(`ВСЬОГО: ${Math.round(totalVal).toLocaleString()} ViPoint`, 196, finalY, { align: 'right' });
 
         // Footer Sign
         doc.setFontSize(10);
@@ -1740,32 +2095,236 @@ const Engine = {
     },
 
     showProcessDetails(points, catSums, originalCatSums) {
-        // Prepare Data grouped by Category
+        // Define switchTab globally so it works (innerHTML script doesn't execute)
+        if (!window.switchTab) {
+            window.switchTab = function (tabId) {
+                document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+                document.getElementById(tabId).style.display = 'block';
+                document.querySelectorAll('.tab-btn').forEach(el => {
+                    el.style.borderBottom = '3px solid transparent';
+                    el.style.color = '#64748b';
+                });
+                const activeBtn = document.getElementById('btn_' + tabId);
+                if (activeBtn) {
+                    activeBtn.style.borderBottom = '3px solid #3b82f6';
+                    activeBtn.style.color = '#3b82f6';
+                }
+            };
+        }
+
+        // =========================================================
+        // VIEW 1: MATRIX (Detailed Breakdown by Processes)
+        // =========================================================
+        const categories = Object.keys(Schema.categories).map(cid => ({
+            id: cid,
+            name: Schema.categories[cid].name,
+            markup: (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[cid] || 0) : 0
+        }));
+
+        let htmlRows = '';
+        let grandTotals = {};
+        categories.forEach(c => grandTotals[c.id] = 0);
+        let matrixGrandTotal = 0;
+
+        const fmt = (val) => {
+            if (!val) return `<span style="color:#e2e8f0">-</span>`;
+            // USER REQUEST: Show points WITHOUT correction coefficient
+            return `<span style="font-weight:600; color:#334155">${Math.round(val).toLocaleString()}</span>`;
+        };
+
+        if (this.detailedMatrix) {
+            // 1. Identify all fields that have data
+            const fieldsWithData = Object.keys(this.detailedMatrix);
+            const processedFields = new Set();
+
+            // 2. Iterate Defined Groups
+            if (Schema.groups && Schema.groups.length > 0) {
+                Schema.groups.forEach(group => {
+                    let groupRowsHtml = '';
+                    let groupHasData = false;
+                    const groupTotals = {};
+                    categories.forEach(c => groupTotals[c.id] = 0);
+
+                    // Find fields for this group
+                    const groupFields = Schema.fields.filter(f => f.groupId === group.id);
+
+                    const processField = (fieldDef, isNested = false) => {
+                        const fieldId = fieldDef.id;
+
+                        // 1. Check Field itself
+                        const data = this.detailedMatrix[fieldId];
+                        if (data) {
+                            processedFields.add(fieldId);
+                            const hasVal = categories.some(c => data.values[c.id]);
+                            if (hasVal) {
+                                groupHasData = true;
+                                let cells = categories.map(c => {
+                                    const val = data.values[c.id] || 0;
+                                    groupTotals[c.id] += val;
+                                    return `<td style="text-align:right; padding:8px; border-bottom:1px solid #f1f5f9">${fmt(val, c.markup)}</td>`;
+                                }).join('');
+
+                                const indentStyle = isNested ? 'padding-left:20px; color:#6b7280' : 'color:#475569';
+                                groupRowsHtml += `
+                                        <tr>
+                                            <td style="padding:8px; border-bottom:1px solid #f1f5f9; ${indentStyle}">${data.label}</td>
+                                            ${cells}
+                                        </tr>
+                                    `;
+                            }
+                        }
+
+                        // 2. Check Products linked to this field
+                        const productKeys = Object.keys(this.detailedMatrix).filter(k =>
+                            this.detailedMatrix[k].isProduct && this.detailedMatrix[k].buttonId === fieldId
+                        );
+                        productKeys.forEach(pkey => {
+                            processedFields.add(pkey);
+                            const pData = this.detailedMatrix[pkey];
+                            groupHasData = true;
+                            let cells = categories.map(c => {
+                                const val = pData.values[c.id] || 0;
+                                groupTotals[c.id] += val;
+                                return `<td style="text-align:right; padding:8px; border-bottom:1px solid #f1f5f9">${fmt(val, c.markup)}</td>`;
+                            }).join('');
+
+                            groupRowsHtml += `
+                                    <tr style="background:#fcfaff">
+                                        <td style="padding:8px; border-bottom:1px solid #f1f5f9; color:#6b7280; padding-left:20px">↳ ${pData.label}</td>
+                                        ${cells}
+                                    </tr>
+                                `;
+                        });
+
+                        // 3. Check specific inputs inside this field (like checkbox_qty internal logic?) - usually covered by fieldId
+
+                        // 4. RECURSIVE: Check modalFields
+                        if (fieldDef.modalFields && fieldDef.modalFields.length > 0) {
+                            fieldDef.modalFields.forEach(mf => processField(mf, true));
+                        }
+                    };
+
+                    // Process all top-level fields in this group
+                    groupFields.forEach(f => processField(f));
+
+                    if (groupHasData) {
+                        htmlRows += `
+                                <tr style="background:#f1f5f9; font-weight:bold; color:#1e293b">
+                                    <td colspan="${categories.length + 1}" style="padding:10px; border-top:2px solid #e2e8f0"><< ${group.title} >></td>
+                                </tr>
+                                ${groupRowsHtml}
+                                <tr style="font-weight:bold; background:#f8fafc">
+                                    <td style="padding:8px; text-align:right">Всього по групі:</td>
+                                    ${categories.map(c => {
+                            grandTotals[c.id] += groupTotals[c.id];
+                            return `<td style="text-align:right; padding:8px">${fmt(groupTotals[c.id], c.markup)}</td>`;
+                        }).join('')}
+                                </tr>
+                            `;
+
+                    }
+                });
+            }
+
+            // 3. Render Ungrouped / Leftover Fields
+            const leftoverKeys = fieldsWithData.filter(k => !processedFields.has(k));
+
+            // Check if we have ungrouped products associated with missing buttons?
+            // Or completely standalone fields (e.g. products without buttonId usually don't happen but...)
+
+            if (leftoverKeys.length > 0) {
+                let groupTotals = {};
+                categories.forEach(c => groupTotals[c.id] = 0);
+                let leftoverRows = '';
+
+                leftoverKeys.forEach(key => {
+                    const data = this.detailedMatrix[key];
+                    let cells = categories.map(c => {
+                        const val = data.values[c.id] || 0;
+                        groupTotals[c.id] += val;
+                        return `<td style="text-align:right; padding:8px; border-bottom:1px solid #f1f5f9">${fmt(val, c.markup)}</td>`;
+                    }).join('');
+
+                    leftoverRows += `
+                        <tr>
+                            <td style="padding:8px; border-bottom:1px solid #f1f5f9; color:#475569">${data.label} ${data.isProduct ? '(Виріб)' : ''}</td>
+                            ${cells}
+                        </tr>
+                    `;
+                });
+
+                htmlRows += `
+                    <tr style="background:#f8fafc">
+                        <td colspan="${categories.length + 1}" style="padding:10px; font-weight:700; color:#1e293b; font-size:12px; text-transform:uppercase; border-top:2px solid #e2e8f0; border-bottom:1px solid #e2e8f0">
+                            << Інше / Не згруповане >>
+                        </td>
+                    </tr>
+                    ${leftoverRows}
+                 `;
+
+                let totalCells = categories.map(c => {
+                    grandTotals[c.id] += groupTotals[c.id];
+                    const val = groupTotals[c.id];
+                    return `<td style="text-align:right; padding:8px; font-weight:700; color:#1e293b; background:#f8fafc; border-bottom:1px solid #e2e8f0">${val > 0 ? Math.round(val * (1 + c.markup / 100)).toLocaleString() : '-'}</td>`;
+                }).join('');
+
+                htmlRows += `
+                    <tr>
+                        <td style="padding:8px; text-align:right; font-size:11px; font-weight:600; color:#64748b; background:#f8fafc; border-bottom:1px solid #e2e8f0">Всього по іншому:</td>
+                        ${totalCells}
+                    </tr>
+                 `;
+            }
+        }
+
+        // Calculate Matrix Grand Total
+        let matrixHeaderCols = categories.map(c => `<th style="padding:10px; text-align:right; color:#64748b; font-size:11px; font-weight:600">${c.name.toUpperCase()}</th>`).join('');
+        let matrixGrandTotalCells = categories.map(c => {
+            const val = grandTotals[c.id];
+            // Also show Total WITHOUT markup for consistency in this view
+            const final = val;
+            matrixGrandTotal += final;
+            return `<td style="text-align:right; padding:12px; font-weight:800; color:#2563eb; background:#eff6ff; border-top:2px solid #bfdbfe">${Math.round(final).toLocaleString()}</td>`;
+        }).join('');
+
+        const matrixHtml = `
+            <table style="width:100%; border-collapse:collapse; font-size:13px; font-family:sans-serif;">
+                <thead>
+                    <tr>
+                        <th style="padding:10px; text-align:left; color:#94a3b8; font-size:11px; font-weight:600; border-bottom:2px solid #e2e8f0">ПОЛЕ / ПРОЦЕС</th>
+                        ${matrixHeaderCols}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${htmlRows || '<tr><td colspan="10" style="padding:20px; text-align:center">Немає даних (спробуйте "Список")</td></tr>'}
+                    <tr>
+                        <td style="padding:12px; text-align:right; font-weight:800; color:#1e3a8a; background:#eff6ff; border-top:2px solid #bfdbfe">ЗАГАЛЬНИЙ ПІДСУМОК:</td>
+                        ${matrixGrandTotalCells}
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+
+        // =========================================================
+        // VIEW 2: LIST (Original Breakdown by Categories)
+        // =========================================================
         const grouped = {};
         Object.keys(Schema.categories).forEach(cid => {
-            grouped[cid] = {
-                meta: Schema.categories[cid],
-                items: [],
-                totalPoints: 0,
-                totalCost: 0
-            };
+            grouped[cid] = { meta: Schema.categories[cid], items: [], totalPoints: 0, totalCost: 0 };
         });
 
-        // 1. Collect Process Points
+        // Collect Points
         Object.keys(points).forEach(pid => {
             const pts = points[pid];
             if (pts > 0 && pid !== '_catSums') {
                 const proc = Schema.processes.find(p => p.id === pid);
                 if (proc && grouped[proc.category]) {
-                    grouped[proc.category].items.push({
-                        name: proc.name,
-                        points: pts
-                    });
+                    grouped[proc.category].items.push({ name: proc.name, points: pts });
                 }
             }
         });
 
-        // 2. Collect Product Points
         this.addedProducts.forEach(prod => {
             if (prod.points) {
                 Object.keys(prod.points).forEach(pid => {
@@ -1774,68 +2333,55 @@ const Engine = {
                     if (pts > 0) {
                         const proc = Schema.processes.find(p => p.id === pid);
                         if (proc && grouped[proc.category]) {
-                            grouped[proc.category].items.push({
-                                name: `[${prod.name}] ${proc.name}`,
-                                points: pts
-                            });
+                            grouped[proc.category].items.push({ name: `[${prod.name}] ${proc.name}`, points: pts });
                         }
                     }
                 });
             }
         });
 
-        // HTML Builder for Columns
-        let columnsHtml = '';
-        let grandTotal = 0;
+        let listHtml = '<div style="display:flex; gap:20px; overflow-x:auto; padding-bottom:10px;">';
+        let listGrandTotal = 0;
 
         Object.keys(grouped).forEach(cid => {
             const group = grouped[cid];
-            if (group.items.length === 0) return; // Skip empty categories
+            if (group.items.length === 0) return;
 
-            // Calculate Totals
             const markup = (Schema.meta && Schema.meta.markup) ? (Schema.meta.markup[cid] || 0) : 0;
-            group.items.forEach(item => {
-                group.totalPoints += item.points;
-            });
+            group.items.forEach(item => group.totalPoints += item.points);
             group.totalCost = group.totalPoints * (1 + markup / 100);
-            grandTotal += group.totalCost;
+            listGrandTotal += group.totalCost;
 
-            // Sort items by name
             group.items.sort((a, b) => a.name.localeCompare(b.name));
 
-            // Build Column HTML
             let itemsHtml = group.items.map(item => {
                 const itemCost = item.points * (1 + markup / 100);
                 return `
                     <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:11px; border-bottom:1px dashed #e2e8f0; padding-bottom:2px;">
                         <span style="color:#334155; padding-right:5px;">${item.name}</span>
-                        <span style="white-space:nowrap; font-weight:600; color:#475569;">
-                            ${Math.round(itemCost).toLocaleString()}
-                            ${markup > 0 ? `<span style="font-size:9px; color:#94a3b8">(${Math.round(item.points)})</span>` : ''}
-                        </span>
+                        <span style="white-space:nowrap; font-weight:600; color:#475569;">${Math.round(itemCost).toLocaleString()}</span>
                     </div>
                 `;
             }).join('');
 
-            columnsHtml += `
-                <div style="flex:1; min-width:220px; border-right:1px solid #e2e8f0; display:flex; flex-direction:column; background:white;">
-                    <div style="padding:12px; background:${group.meta.color || '#f1f5f9'}; border-bottom:1px solid rgba(0,0,0,0.05); text-align:center;">
-                        <div style="font-weight:700; font-size:13px; color:#1e293b; text-transform:uppercase; letter-spacing:0.05em;">${group.meta.name}</div>
-                        ${markup > 0 ? `<div style="font-size:10px; color:#64748b; margin-top:2px;">Кор. коеф.: +${markup}%</div>` : ''}
+            listHtml += `
+                <div style="flex:1; min-width:250px; border:1px solid #e2e8f0; border-radius:8px; display:flex; flex-direction:column; background:white; overflow:hidden;">
+                    <div style="padding:10px; background:${group.meta.color || '#f1f5f9'}; border-bottom:1px solid rgba(0,0,0,0.05); text-align:center;">
+                        <div style="font-weight:700; font-size:13px; color:#1e293b; text-transform:uppercase;">${group.meta.name}</div>
+                        ${markup > 0 ? `<div style="font-size:10px; color:#64748b;">+${markup}%</div>` : ''}
                     </div>
-                    <div style="padding:12px; flex:1; overflow-y:auto; max-height:400px;">
-                        ${itemsHtml}
-                    </div>
-                    <div style="padding:12px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:right;">
-                        <div style="font-size:10px; color:#64748b;">Разом за категорією</div>
-                        <div style="font-size:16px; font-weight:700; color:#3b82f6;">${Math.round(group.totalCost).toLocaleString()}</div>
-                        ${markup > 0 ? `<div style="font-size:10px; color:#94a3b8; margin-top:2px;">Оригінал: ${Math.round(group.totalPoints).toLocaleString()}</div>` : ''}
+                    <div style="padding:10px; flex:1; overflow-y:auto; max-height:400px;">${itemsHtml}</div>
+                    <div style="padding:10px; background:#f8fafc; border-top:1px solid #e2e8f0; text-align:right;">
+                        <span style="font-size:14px; font-weight:700; color:#3b82f6;">${Math.round(group.totalCost).toLocaleString()}</span>
                     </div>
                 </div>
             `;
         });
+        listHtml += '</div>';
 
-        // Create or Reuse Modal (Update Width)
+        // =========================================================
+        // RENDER MODAL WITH TABS
+        // =========================================================
         let modal = document.getElementById('detailsModal');
         if (!modal) {
             modal = document.createElement('div');
@@ -1846,19 +2392,35 @@ const Engine = {
         }
 
         modal.innerHTML = `
-            <div class="modal-box" style="width: 90%; max-width: 1200px; height: 80vh; display:flex; flex-direction:column;">
-                <div class="modal-header" style="background: white; border-bottom:1px solid #e2e8f0; padding: 15px 25px;">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <h3 style="margin:0; color:#1e293b; font-size:18px;">📋 Деталізація Розрахунку</h3>
-                        <span style="background:#eff6ff; color:#3b82f6; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700;">
-                            ВСЬОГО: ${Math.round(grandTotal).toLocaleString()} ViPoint
-                        </span>
+            <div class="modal-box" style="width: 95%; max-width: 1200px; height: 90vh; display:flex; flex-direction:column;">
+                <div class="modal-header" style="background: white; border-bottom:1px solid #e2e8f0; padding: 10px 25px; display:block;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                         <div style="display:flex; align-items:center; gap:10px;">
+                            <h3 style="margin:0; color:#1e293b; font-size:18px;">📋 Деталізація</h3>
+                            <span style="background:#eff6ff; color:#3b82f6; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700;">
+                                ${Math.round(listGrandTotal).toLocaleString()} ViPoint
+                            </span>
+                        </div>
+                        <button class="modal-close" onclick="document.getElementById('detailsModal').style.display='none'" style="color:#64748b; font-size:28px; line-height:1;">&times;</button>
                     </div>
-                    <button class="modal-close" onclick="document.getElementById('detailsModal').style.display='none'" style="color:#64748b; font-size:28px; line-height:1;">&times;</button>
+                    
+                    <div style="display:flex; gap:20px;">
+                        <button id="btn_tabMatrix" class="tab-btn" onclick="switchTab('tabMatrix')" style="background:none; border:none; border-bottom:3px solid #3b82f6; color:#3b82f6; font-weight:600; padding:5px 0; cursor:pointer; font-size:14px;">
+                            Матриця (По процесах)
+                        </button>
+                        <button id="btn_tabList" class="tab-btn" onclick="switchTab('tabList')" style="background:none; border:none; border-bottom:3px solid transparent; color:#64748b; font-weight:600; padding:5px 0; cursor:pointer; font-size:14px;">
+                            Список (По категоріях)
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-body" style="padding:0; flex:1; overflow:hidden; background:#f8fafc;">
-                    <div style="display:flex; height:100%; overflow-x:auto;">
-                        ${columnsHtml || '<div style="padding:40px; text-align:center; color:#94a3b8; width:100%">Немає активних процесів</div>'}
+
+                <div class="modal-body" style="padding:0; flex:1; overflow-y:auto; background:white; position:relative;">
+                    <div id="tabMatrix" class="tab-content" style="padding:20px;">
+                         <!-- Warning removed, let's see logic -->
+                        ${matrixHtml}
+                    </div>
+                    <div id="tabList" class="tab-content" style="padding:20px; display:none;">
+                         ${listHtml}
                     </div>
                 </div>
             </div>

@@ -45,6 +45,9 @@ window.Auth = {
         }
 
         this.provider = new firebase.auth.GoogleAuthProvider();
+        this.provider.setCustomParameters({
+            prompt: 'select_account'
+        });
 
         // Listen for auth state
         this.auth.onAuthStateChanged((user) => {
@@ -54,13 +57,26 @@ window.Auth = {
         });
     },
 
+    isLoggingIn: false,
+
     login: async function () {
         if (window.location.protocol === 'file:') {
-            alert("⚠️ Google Вхід не працює при відкритті файлу напряму.\n\nБудь ласка, запустіть файл 'START.bat' або 'START.exe' для роботи з хмарним збереженням.\n\nЗараз ви працюєте в автономному режимі.");
+            alert("⚠️ Google Вхід не працює при відкритті файлу напряму.\n\nБудь ласка, запустіть файл 'START.bat' або 'START.exe' для роботи з хмарним збереженням.\n\nЗараз ви можете працювати в автономному режимі.");
+            this.loginGuest();
             return;
         }
 
-        if (!this.auth) return alert("Система ще завантажується...");
+        if (this.isLoggingIn) {
+            console.log("Вхід вже виконується, зачекайте...");
+            return;
+        }
+
+        if (!this.auth) {
+            alert("Система авторизації ще завантажується, спробуйте за секунду...");
+            return;
+        }
+
+        this.isLoggingIn = true;
         try {
             await this.auth.signInWithPopup(this.provider);
         } catch (error) {
@@ -69,9 +85,32 @@ window.Auth = {
                 alert("⚠️ Помилка оточення: Google Вхід вимагає HTTP/HTTPS сервера.\nЗапустіть START.bat.");
             } else if (error.code === 'auth/popup-closed-by-user') {
                 // Ignore, user just closed it
+            } else if (error.code === 'auth/cancelled-popup-request') {
+                // Previous popup was cancelled or replaced
+                console.warn("Попередній запит входу скасовано.");
+            } else if (error.code === 'auth/popup-blocked') {
+                alert("⚠️ Браузер заблокував спливаюче вікно Google Входу.\nБудь ласка, дозвольте спливаючі вікна (Pop-ups) для цього сайту в адресному рядку браузера.");
             } else {
-                alert("Помилка входу: " + error.message);
+                alert("Помилка входу Google (" + (error.code || error.message) + ").\nЯкщо на серверах Google помилка 500, ви можете скористатися кнопкою 'Продовжити без входу'.");
             }
+        } finally {
+            this.isLoggingIn = false;
+        }
+    },
+
+    loginGuest: function () {
+        const guestUser = {
+            displayName: "Автономний режим",
+            email: "offline@local",
+            photoURL: "https://ui-avatars.com/api/?name=Guest&background=64748b&color=fff",
+            isAnonymous: true
+        };
+        this.user = guestUser;
+        this.updateUI(guestUser);
+        const cover = document.getElementById('auth-cover');
+        if (cover) {
+            cover.style.opacity = '0';
+            setTimeout(() => cover.style.display = 'none', 400);
         }
     },
 
@@ -79,7 +118,8 @@ window.Auth = {
         if (!this.auth) return;
         try {
             await this.auth.signOut();
-            // alert("Ви вийшли з системи.");
+            this.user = null;
+            this.updateUI(null);
         } catch (error) {
             console.error(error);
         }
@@ -109,53 +149,68 @@ window.Auth = {
     // --- DATABASE METHODS ---
 
     saveCalculation: async function (data) {
-        if (!this.user || !this.db) {
-            return alert("Спочатку увійдіть в систему!");
+        if (!this.user) {
+            return alert("Спочатку увійдіть в систему або відкрийте автономний режим!");
         }
 
         const calcId = `calc_${Date.now()}`;
-        console.log("Saving to Firestore (Timeout 10s)...");
+        const record = {
+            ...data,
+            savedAt: new Date().toISOString(),
+            id: calcId
+        };
 
+        // Local Storage saving (always backup)
         try {
-            // Check network
+            const localHist = JSON.parse(localStorage.getItem('vpoint_saved_calcs') || '[]');
+            localHist.unshift(record);
+            if (localHist.length > 50) localHist.pop();
+            localStorage.setItem('vpoint_saved_calcs', JSON.stringify(localHist));
+        } catch (e) {
+            console.warn("Could not save to LocalStorage:", e);
+        }
+
+        if (this.user.isAnonymous || !this.db) {
+            alert("✅ Розрахунок успішно збережено локально!");
+            return;
+        }
+
+        console.log("Saving to Firestore (Timeout 10s)...");
+        try {
             if (!navigator.onLine) throw new Error("Відсутнє з'єднання з інтернетом!");
 
-            // Create a timeout promise
             const timeout = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error("Timeout: З'єднання з базою даних надто повільне")), 30000);
+                setTimeout(() => reject(new Error("Timeout")), 10000);
             });
 
-            // Race the save op against the timeout
             await Promise.race([
-                this.db.collection("users").doc(this.user.uid).collection("calculations").doc(calcId).set({
-                    ...data,
-                    savedAt: new Date().toISOString(),
-                    id: calcId
-                }),
+                this.db.collection("users").doc(this.user.uid).collection("calculations").doc(calcId).set(record),
                 timeout
             ]);
 
             console.log("Firestore Write SUCCESS!");
             alert("✅ Розрахунок збережено в хмару!");
         } catch (e) {
-            console.error("Firestore Write FAILED:", e);
-            let msg = e.message;
-            if (e.code === 'permission-denied') msg = "Доступ заборонено (Перевірте налаштування Firebase Rules)";
-            if (e.code === 'unavailable') msg = "Сервіс тимчасово недоступний (Офлайн)";
-            alert("Помилка збереження: " + msg);
+            console.warn("Firestore save failed, fallback to local:", e);
+            alert("✅ Розрахунок збережено локально (хмарне збереження недоступне).");
         }
     },
 
     getHistory: async function () {
-        if (!this.user || !this.db) return [];
+        if (this.user && !this.user.isAnonymous && this.db) {
+            try {
+                const snap = await this.db.collection("users").doc(this.user.uid).collection("calculations").orderBy("savedAt", "desc").limit(30).get();
+                const list = [];
+                snap.forEach(doc => list.push(doc.data()));
+                if (list.length > 0) return list;
+            } catch (e) {
+                console.warn("Fetch cloud history failed, reading local:", e);
+            }
+        }
         try {
-            const snap = await this.db.collection("users").doc(this.user.uid).collection("calculations").orderBy("savedAt", "desc").limit(20).get();
-            const list = [];
-            snap.forEach(doc => list.push(doc.data()));
-            return list;
+            return JSON.parse(localStorage.getItem('vpoint_saved_calcs') || '[]');
         } catch (e) {
-            console.error("Fetch History Error:", e);
-            throw e;
+            return [];
         }
     },
 

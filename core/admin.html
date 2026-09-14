@@ -25,8 +25,9 @@
             script.src = cfgPath + '?v=' + new Date().getTime();
             script.onload = function () {
                 console.log('Schema loaded:', configFile);
-                if (window.renderMatrix) window.renderMatrix(); // Auto-render if admin
-                if (window.renderDesigner) window.renderDesigner(); // Auto-render if designer
+                if (typeof refresh === 'function') refresh();
+                else if (window.renderMatrix) window.renderMatrix();
+                if (window.renderDesigner) window.renderDesigner();
             };
             script.onerror = function () {
                 document.body.innerHTML = `
@@ -559,7 +560,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initCalcSwitcher();
-            refresh();
+            if (typeof Schema !== 'undefined') {
+                refresh();
+            }
         });
 
         function refresh() {
@@ -795,7 +798,7 @@
 
             wrapper.appendChild(inp);
 
-            if (onToggleOnce && (fieldType === 'number' || fieldType === 'checkbox_qty') && !isF) {
+            if (onToggleOnce && (fieldType === 'number' || fieldType === 'checkbox_qty' || fieldType === 'multiselect_qty') && !isF) {
                 const tick = document.createElement('div');
                 tick.className = 'once-tick' + (isOnce ? ' active' : '');
                 tick.title = isOnce ? 'Враховується 1 раз (фіксовано)' : 'Множиться на кількість';
@@ -1364,9 +1367,23 @@
 
                     if (f.type === 'select' || f.type === 'multiselect') {
                         if (f.options) {
-                            f.options.forEach(o => {
+                            f.options.forEach((o, oIdx) => {
                                 const oRow = document.createElement('tr'); const olc = document.createElement('td'); olc.className = 'col-sticky'; olc.style.paddingLeft = '30px'; olc.style.background = '#fff';
-                                olc.innerHTML = `∟ <input class="cell-input" style="width:auto; text-align:left" value="${o.label}" onfocus="this.select()" onchange="updOLab('${f.id}','${o.value}',this.value,${isP})"><button onclick="delOpt('${f.id}','${o.value}',${isP})" style="opacity:0.2; background:none; border:none">&times;</button>`;
+                                olc.innerHTML = `
+                                    <div class="opt-draggable" style="display:flex; align-items:center; gap:5px" draggable="true"
+                                        ondragstart="handleOptDragStart(event, '${f.id}', ${oIdx}, ${isP})"
+                                        ondragover="handleOptDragOver(event)"
+                                        ondrop="handleOptDrop(event, '${f.id}', ${oIdx}, ${isP})">
+                                        <span class="drag-handle" style="cursor:grab; color:#94a3b8; font-size:16px; padding:0 3px; user-select:none;" title="Перетягніть для зміни порядку">☰</span>
+                                        <span style="color:#94a3b8; font-size:12px; user-select:none;">∟</span>
+                                        <input class="cell-input" style="width:auto; text-align:left; flex:1" value="${o.label}" onfocus="this.select()" onchange="updOLab('${f.id}','${o.value}',this.value,${isP})">
+                                        <div style="display:inline-flex; flex-direction:column; gap:1px; margin:0 2px">
+                                            <button type="button" onclick="event.stopPropagation(); moveOpt('${f.id}', ${oIdx}, -1, ${isP})" title="Підняти вгору" style="background:none; border:none; cursor:${oIdx === 0 ? 'default' : 'pointer'}; opacity:${oIdx === 0 ? '0.15' : '0.5'}; font-size:8px; line-height:1; padding:1px 2px" ${oIdx === 0 ? 'disabled' : ''} onmouseover="if(!this.disabled)this.style.opacity='1'" onmouseout="if(!this.disabled)this.style.opacity='0.5'">▲</button>
+                                            <button type="button" onclick="event.stopPropagation(); moveOpt('${f.id}', ${oIdx}, 1, ${isP})" title="Опустити вниз" style="background:none; border:none; cursor:${oIdx === f.options.length - 1 ? 'default' : 'pointer'}; opacity:${oIdx === f.options.length - 1 ? '0.15' : '0.5'}; font-size:8px; line-height:1; padding:1px 2px" ${oIdx === f.options.length - 1 ? 'disabled' : ''} onmouseover="if(!this.disabled)this.style.opacity='1'" onmouseout="if(!this.disabled)this.style.opacity='0.5'">▼</button>
+                                        </div>
+                                        <button onclick="delOpt('${f.id}','${o.value}',${isP})" style="opacity:0.3; background:none; border:none; cursor:pointer; font-size:14px; padding:0 4px" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.3'" title="Видалити варіант">&times;</button>
+                                    </div>
+                                `;
                                 oRow.appendChild(olc);
                                 Object.keys(Schema.categories).forEach(cid => {
                                     const isC = UIState.collapsed.includes(cid); const ps = valid.filter(p => p.category === cid);
@@ -1467,9 +1484,30 @@
                                 const mfLc = document.createElement('td');
                                 mfLc.className = 'col-sticky';
                                 mfLc.style.paddingLeft = '40px';
-                                mfLc.style.background = '#fff';
+                                mfLc.style.background = mf.isMultiplier ? '#fffbeb' : '#fff'; // Light yellow for multipliers
                                 const typeIcon = { 'number': '🔢', 'select': '📋', 'multiselect': '📑', 'multiselect_qty': '📋', 'checkbox_qty': '☑️', 'checkbox': '✅', 'select_yes_no': '🔽' }[mf.type] || '🎯';
-                                mfLc.innerHTML = `<div style="display:flex; align-items:center; gap:6px; width:100%"><span style="font-size:10px; opacity:0.6" title="${mf.type}">${typeIcon}</span><input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})"><button onclick="event.stopPropagation(); changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" class="gear-btn" title="Налаштування" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; opacity:0.4" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">⚙️</button><button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button></div>`;
+                                const multBadge = mf.isMultiplier ? '<span style="background:#f59e0b; color:white; font-size:9px; padding:1px 4px; border-radius:4px; font-weight:800; margin-right:4px">МНОЖНИК</span>' : '';
+                                mfLc.innerHTML = `
+                                    <div class="mf-draggable" style="display:flex; align-items:center; gap:6px; width:100%; position:relative" draggable="true" 
+                                        ondragstart="handleMfDragStart(event, '${f.id}', ${mfIdx}, ${isP})"
+                                        ondragover="handleMfDragOver(event)"
+                                        ondrop="handleMfDrop(event, '${f.id}', ${mfIdx}, ${isP})">
+                                        
+                                        <!-- Drag Handle -->
+                                        <span class="drag-handle" style="cursor:grab; color:#94a3b8; font-size:16px; padding:0 5px; user-select:none;" title="Перетягніть для зміни порядку">☰</span>
+                                        
+                                        ${multBadge}
+                                        <span style="font-size:10px; opacity:0.6" title="${mf.type}">${typeIcon}</span>
+                                        <input class="cell-input" style="text-align:left; font-weight:600; font-size:12px; flex:1; width:0; min-width:50px" value="${mf.label}" onfocus="this.select()" onchange="updModalFieldLabel('${f.id}', ${mfIdx}, this.value, ${isP})">
+                                        
+                                        <div style="display:inline-flex; flex-direction:column; gap:1px; margin:0 2px">
+                                            <button type="button" onclick="event.stopPropagation(); moveModalField('${f.id}', ${mfIdx}, -1, ${isP})" title="Підняти вгору" style="background:none; border:none; cursor:${mfIdx === 0 ? 'default' : 'pointer'}; opacity:${mfIdx === 0 ? '0.15' : '0.5'}; font-size:8px; line-height:1; padding:1px 2px" ${mfIdx === 0 ? 'disabled' : ''} onmouseover="if(!this.disabled)this.style.opacity='1'" onmouseout="if(!this.disabled)this.style.opacity='0.5'">▲</button>
+                                            <button type="button" onclick="event.stopPropagation(); moveModalField('${f.id}', ${mfIdx}, 1, ${isP})" title="Опустити вниз" style="background:none; border:none; cursor:${mfIdx === f.modalFields.length - 1 ? 'default' : 'pointer'}; opacity:${mfIdx === f.modalFields.length - 1 ? '0.15' : '0.5'}; font-size:8px; line-height:1; padding:1px 2px" ${mfIdx === f.modalFields.length - 1 ? 'disabled' : ''} onmouseover="if(!this.disabled)this.style.opacity='1'" onmouseout="if(!this.disabled)this.style.opacity='0.5'">▼</button>
+                                        </div>
+
+                                        <button onclick="event.stopPropagation(); changeModalFieldType('${f.id}', ${mfIdx}, ${isP})" class="gear-btn" title="Налаштування" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; opacity:0.4" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">⚙️</button>
+                                        <button onclick="event.stopPropagation(); delModalField('${f.id}', ${mfIdx}, ${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; padding:2px 6px; opacity:0.6" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="Видалити поле з модалки">❌</button>
+                                    </div>`;
                                 mfRow.appendChild(mfLc);
 
                                 // Add process columns for modal field (WITH TOTALS)
@@ -1555,7 +1593,20 @@
                                             optLc.className = 'col-sticky';
                                             optLc.style.paddingLeft = '60px';
                                             optLc.style.background = '#fafafa';
-                                            optLc.innerHTML = `∟ <input class="cell-input" style="width:auto; text-align:left" value="${opt.label}" onfocus="this.select()" onchange="updModalFieldOptionLabel('${f.id}', ${mfIdx}, '${opt.value}', this.value, ${isP})"><button onclick="delModalFieldOption('${f.id}', ${mfIdx}, '${opt.value}', ${isP})" style="opacity:0.2; background:none; border:none; cursor:pointer">&times;</button>`;
+                                            optLc.innerHTML = `
+                                                <div class="mf-opt-draggable" style="display:flex; align-items:center; gap:4px; width:100%" draggable="true"
+                                                    ondragstart="handleMfOptDragStart(event, '${f.id}', ${mfIdx}, ${optIdx}, ${isP})"
+                                                    ondragover="handleMfOptDragOver(event)"
+                                                    ondrop="handleMfOptDrop(event, '${f.id}', ${mfIdx}, ${optIdx}, ${isP})">
+                                                    <span class="drag-handle" style="cursor:grab; color:#94a3b8; font-size:16px; padding:0 3px; user-select:none;" title="Перетягніть для зміни порядку">☰</span>
+                                                    <span style="color:#94a3b8; font-size:12px; user-select:none;">∟</span>
+                                                    <input class="cell-input" style="width:auto; text-align:left; flex:1; min-width:60px" value="${opt.label}" onfocus="this.select()" onchange="updModalFieldOptionLabel('${f.id}', ${mfIdx}, '${opt.value}', this.value, ${isP})">
+                                                    <div style="display:inline-flex; flex-direction:column; gap:1px; margin:0 2px">
+                                                        <button type="button" onclick="event.stopPropagation(); moveModalFieldOption('${f.id}', ${mfIdx}, ${optIdx}, -1, ${isP})" title="Підняти вгору" style="background:none; border:none; cursor:${optIdx === 0 ? 'default' : 'pointer'}; opacity:${optIdx === 0 ? '0.15' : '0.5'}; font-size:8px; line-height:1; padding:1px 2px" ${optIdx === 0 ? 'disabled' : ''} onmouseover="if(!this.disabled)this.style.opacity='1'" onmouseout="if(!this.disabled)this.style.opacity='0.5'">▲</button>
+                                                        <button type="button" onclick="event.stopPropagation(); moveModalFieldOption('${f.id}', ${mfIdx}, ${optIdx}, 1, ${isP})" title="Опустити вниз" style="background:none; border:none; cursor:${optIdx === mf.options.length - 1 ? 'default' : 'pointer'}; opacity:${optIdx === mf.options.length - 1 ? '0.15' : '0.5'}; font-size:8px; line-height:1; padding:1px 2px" ${optIdx === mf.options.length - 1 ? 'disabled' : ''} onmouseover="if(!this.disabled)this.style.opacity='1'" onmouseout="if(!this.disabled)this.style.opacity='0.5'">▼</button>
+                                                    </div>
+                                                    <button onclick="delModalFieldOption('${f.id}', ${mfIdx}, '${opt.value}', ${isP})" style="opacity:0.3; background:none; border:none; cursor:pointer; font-size:14px; padding:0 4px" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.3'" title="Видалити варіант">&times;</button>
+                                                </div>`;
                                             optRow.appendChild(optLc);
 
                                             // Add process columns for option (WITH TOTALS)
@@ -1823,7 +1874,7 @@
             const formula = document.getElementById('formulaInput').value;
             const testValues = [1, 5, 10, 20];
 
-            if (!formula.startsWith('=')) {
+            if (!formula.trim()) {
                 testValues.forEach(qty => {
                     document.getElementById(`prev_${qty}`).innerText = '-';
                     document.getElementById(`prev_${qty}`).style.color = '#94a3b8';
@@ -1845,7 +1896,7 @@
         }
 
         function evaluateFormulaPreview(formula, qty) {
-            let expr = formula.substring(1).trim();
+            let expr = formula.startsWith('=') ? formula.substring(1).trim() : formula.trim();
             if (!expr) return 0;
 
             // Replacing variables. Order matters! 
@@ -1860,13 +1911,15 @@
             // 3. Handle @sum (Points of row * qty)
             expr = expr.replace(/@sum/g, (1000 * qty).toString());
 
-            // 4. Handle @qty / val
+            // 4. Handle @qty / val / x
             expr = expr.replace(/@qty/g, qty);
             expr = expr.replace(/\bval\b/g, qty);
+            expr = expr.replace(/\bx\b/g, qty);
 
             // Replace common math functions
             expr = expr.replace(/min\(/g, 'Math.min(').replace(/max\(/g, 'Math.max(');
             expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(');
+            expr = expr.replace(/abs\(/g, 'Math.abs(');
 
             // Safe evaluation via Function constructor
             try {
@@ -1878,7 +1931,8 @@
         }
 
         function saveFormula() {
-            const val = document.getElementById('formulaInput').value.trim();
+            let val = document.getElementById('formulaInput').value.trim();
+            if (val && !val.startsWith('=')) val = '=' + val;
             if (formulaSaveFn) formulaSaveFn(val);
             closeModal('formulaModal');
         }
@@ -2140,6 +2194,11 @@
                     </select>
                 </div>
 
+                <div style="margin-bottom:20px; display:flex; align-items:center; gap:8px">
+                    <input id="mfNewIsMultiplier" type="checkbox" style="width:18px; height:18px; cursor:pointer">
+                    <label for="mfNewIsMultiplier" style="font-size:14px; color:#1e293b; cursor:pointer">Це множник (множить всю суму модалки)</label>
+                </div>
+
                 <div style="display:flex;gap:10px;justify-content:flex-end">
                     <button id="mfNewCancelBtn" style="padding:10px 20px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
                     <button id="mfNewSaveBtn" style="padding:10px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;cursor:pointer;font-weight:600">Додати поле в модалку</button>
@@ -2166,7 +2225,8 @@
                 const newMf = {
                     id: 'mf' + Date.now(),
                     label: label,
-                    type: type
+                    type: type,
+                    isMultiplier: document.getElementById('mfNewIsMultiplier').checked
                 };
 
                 // Add default options for select types
@@ -2206,6 +2266,10 @@
                     <option value="multiselect" ${mf.type === 'multiselect' ? 'selected' : ''}>📑 Множинний вибір (multiselect)</option>
                     <option value="multiselect_qty" ${mf.type === 'multiselect_qty' ? 'selected' : ''}>📋 Множинний вибір + кількість (multiselect_qty)</option>
                 </select>
+                <div style="margin-bottom:15px; display:flex; align-items:center; gap:8px">
+                    <input id="mfTypeIsMultiplier" type="checkbox" ${mf.isMultiplier ? 'checked' : ''} style="width:18px; height:18px; cursor:pointer">
+                    <label for="mfTypeIsMultiplier" style="font-size:14px; color:#1e293b; cursor:pointer">Це множник (множить всю суму модалки)</label>
+                </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end">
                     <button id="mfTypeCancelBtn" style="padding:8px 16px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
                     <button id="mfTypeSaveBtn" style="padding:8px 16px;border:none;background:#3b82f6;color:white;border-radius:6px;cursor:pointer;font-weight:600">Зберегти</button>
@@ -2218,16 +2282,185 @@
             document.getElementById('mfTypeCancelBtn').onclick = () => overlay.remove();
             document.getElementById('mfTypeSaveBtn').onclick = () => {
                 const selectedType = document.getElementById('mfTypeSelect').value;
+                const isMult = document.getElementById('mfTypeIsMultiplier').checked;
+
                 if (selectedType !== mf.type) {
                     mf.type = selectedType;
                     if ((selectedType === 'select' || selectedType === 'multiselect' || selectedType === 'multiselect_qty') && !mf.options) {
                         mf.options = [{ value: 'opt1', label: 'Варіант 1' }];
                     }
-                    markDirty();
-                    renderMatrix();
                 }
+                
+                if (mf.isMultiplier !== isMult) {
+                    mf.isMultiplier = isMult;
+                }
+                
+                markDirty();
+                renderMatrix();
                 overlay.remove();
             };
+        }
+
+        // --- Drag and Drop for Modal Fields ---
+        let dragSrcMf = null;
+
+        function handleMfDragStart(e, buttonId, idx, isP) {
+            dragSrcMf = { buttonId, idx, isP };
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', String(idx));
+            e.currentTarget.style.opacity = '0.4';
+        }
+
+        function handleMfDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleMfDrop(e, buttonId, targetIdx, isP) {
+            if (e.stopPropagation) e.stopPropagation();
+
+            // Restore opacity
+            const draggables = document.querySelectorAll('.mf-draggable');
+            draggables.forEach(d => d.style.opacity = '1');
+
+            if (!dragSrcMf) return false;
+            if (dragSrcMf.buttonId !== buttonId || dragSrcMf.isP !== isP) return false;
+            if (dragSrcMf.idx === targetIdx) return false;
+
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (!field || !field.modalFields) return false;
+
+            // Reorder
+            const movedItem = field.modalFields.splice(dragSrcMf.idx, 1)[0];
+            field.modalFields.splice(targetIdx, 0, movedItem);
+
+            markDirty();
+            renderMatrix();
+            return false;
+        }
+
+
+
+        // --- Drag and Drop for Options ---
+        let dragSrcOpt = null;
+
+        function handleOptDragStart(e, fieldId, idx, isP) {
+            dragSrcOpt = { fieldId, idx, isP };
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', String(idx));
+            const el = e.currentTarget || e.target.closest('.opt-draggable');
+            if (el) el.style.opacity = '0.4';
+        }
+
+        function handleOptDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleOptDrop(e, fieldId, targetIdx, isP) {
+            if (e.stopPropagation) e.stopPropagation();
+
+            const draggables = document.querySelectorAll('.opt-draggable');
+            draggables.forEach(d => d.style.opacity = '1');
+
+            if (!dragSrcOpt) return false;
+            if (dragSrcOpt.fieldId !== fieldId || dragSrcOpt.isP !== isP) return false;
+            if (dragSrcOpt.idx === targetIdx) return false;
+
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === fieldId);
+            if (!field || !field.options) return false;
+
+            // Reorder
+            const movedItem = field.options.splice(dragSrcOpt.idx, 1)[0];
+            field.options.splice(targetIdx, 0, movedItem);
+
+            markDirty();
+            renderMatrix();
+            return false;
+        }
+
+        function moveOpt(fieldId, optIdx, direction, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === fieldId);
+            if (!field || !field.options) return;
+            const targetIdx = optIdx + direction;
+            if (targetIdx < 0 || targetIdx >= field.options.length) return;
+            const movedItem = field.options.splice(optIdx, 1)[0];
+            field.options.splice(targetIdx, 0, movedItem);
+            markDirty();
+            renderMatrix();
+        }
+
+        // --- Drag and Drop & Ordering for Modal Field Options ---
+        let dragSrcMfOpt = null;
+
+        function handleMfOptDragStart(e, buttonId, mfIdx, optIdx, isP) {
+            dragSrcMfOpt = { buttonId, mfIdx, optIdx, isP };
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', String(optIdx));
+            const el = e.currentTarget || e.target.closest('.mf-opt-draggable');
+            if (el) el.style.opacity = '0.4';
+        }
+
+        function handleMfOptDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleMfOptDrop(e, buttonId, mfIdx, targetIdx, isP) {
+            if (e.stopPropagation) e.stopPropagation();
+
+            const draggables = document.querySelectorAll('.mf-opt-draggable');
+            draggables.forEach(d => d.style.opacity = '1');
+
+            if (!dragSrcMfOpt) return false;
+            if (dragSrcMfOpt.buttonId !== buttonId || dragSrcMfOpt.mfIdx !== mfIdx || dragSrcMfOpt.isP !== isP) return false;
+            if (dragSrcMfOpt.optIdx === targetIdx) return false;
+
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (!field || !field.modalFields || !field.modalFields[mfIdx]) return false;
+            const opts = field.modalFields[mfIdx].options;
+            if (!opts) return false;
+
+            // Reorder
+            const movedItem = opts.splice(dragSrcMfOpt.optIdx, 1)[0];
+            opts.splice(targetIdx, 0, movedItem);
+
+            markDirty();
+            renderMatrix();
+            return false;
+        }
+
+        function moveModalFieldOption(buttonId, mfIdx, optIdx, direction, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (!field || !field.modalFields || !field.modalFields[mfIdx]) return;
+            const opts = field.modalFields[mfIdx].options;
+            if (!opts) return;
+            const targetIdx = optIdx + direction;
+            if (targetIdx < 0 || targetIdx >= opts.length) return;
+            const movedItem = opts.splice(optIdx, 1)[0];
+            opts.splice(targetIdx, 0, movedItem);
+            markDirty();
+            renderMatrix();
+        }
+
+        function moveModalField(buttonId, mfIdx, direction, isP) {
+            const fields = isP ? Schema.products.fields : Schema.fields;
+            const field = fields.find(f => f.id === buttonId);
+            if (!field || !field.modalFields) return;
+            const targetIdx = mfIdx + direction;
+            if (targetIdx < 0 || targetIdx >= field.modalFields.length) return;
+            const movedItem = field.modalFields.splice(mfIdx, 1)[0];
+            field.modalFields.splice(targetIdx, 0, movedItem);
+            markDirty();
+            renderMatrix();
         }
 
         function updFLab(id, v, isP) { (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id).label = v; markDirty(); renderSidebar(); }
@@ -2508,6 +2741,9 @@
                     else if (f.type === 'number') {
                         row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><input type="number" class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="number" value="${f.default || 0}" style="width:100%; padding:6px 10px; font-size:12px" oninput="recalcPreviewTotal('${button.id}')">`;
                     }
+                    else if (f.type === 'text') {
+                        row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><input type="text" class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="text" value="${f.default || ''}" style="width:100%; padding:6px 10px; font-size:12px">`;
+                    }
                     content.appendChild(row);
                 });
 
@@ -2594,26 +2830,43 @@
                     });
                 }
 
-                // Handle Select/Multiselect Options separately as they have their own rows in matrix
-                if (f.type === 'select' || f.type === 'multiselect') {
+                // Handle Select/Multiselect Options separately
+                if (f.type === 'select' || f.type === 'multiselect' || f.type === 'multiselect_qty') {
+                    const isMultQty = f.type === 'multiselect_qty';
                     let selectedOpts = [];
+
                     if (f.type === 'select') {
                         const sel = container.querySelector(`select[data-fid="${f.id}"]`);
-                        if (sel) selectedOpts = [sel.value];
-                    } else {
-                        selectedOpts = Array.from(container.querySelectorAll(`.preview-ms-check[data-fid="${f.id}"]:checked`)).map(el => el.value);
+                        if (sel) selectedOpts = [{ value: sel.value, qty: 1 }];
+                    } else if (f.type === 'multiselect') {
+                        selectedOpts = Array.from(container.querySelectorAll(`.preview-ms-check[data-fid="${f.id}"]:checked`)).map(el => ({ value: el.value, qty: 1 }));
+                    } else if (isMultQty) {
+                        selectedOpts = Array.from(container.querySelectorAll(`.preview-ms-qty-check[data-fid="${f.id}"]:checked`)).map(el => {
+                            const qtyInp = container.querySelector(`.preview-ms-qty-input[data-fid="${f.id}"][data-value="${el.value}"]`);
+                            return { value: el.value, qty: Math.max(0, parseInt(qtyInp?.value || 1)) };
+                        });
                     }
 
-                    selectedOpts.forEach(optVal => {
+                    selectedOpts.forEach(opt => {
                         const optRuleKey = `${btnId}_${f.id}`;
                         Schema.processes.forEach(p => {
-                            if (Schema.modalFieldRules?.[optRuleKey]?.[optVal]?.[p.id]) {
-                                total += Number(Schema.modalFieldRules[optRuleKey][optVal][p.id]) || 0;
+                            if (Schema.modalFieldRules?.[optRuleKey]?.[opt.value]?.[p.id]) {
+                                total += (Number(Schema.modalFieldRules[optRuleKey][opt.value][p.id]) || 0) * opt.qty;
                             }
                         });
                     });
                 }
             });
+
+            // Множник на основі властивості isMultiplier
+            const multField = button.modalFields.find(mf => mf.isMultiplier);
+            if (multField) {
+                const multInput = container.querySelector(`.preview-input[data-fid="${multField.id}"]`);
+                if (multInput) {
+                    const mVal = parseFloat(multInput.value) || 1;
+                    total *= mVal;
+                }
+            }
 
             const totalEl = document.getElementById(`preview_total_${btnId}`);
             if (totalEl) totalEl.innerText = `Всього: ${total.toLocaleString()}`;
