@@ -525,11 +525,12 @@ const Schema = {
             "groupId": "g_main",
             "label": "Форма вироба",
             "type": "select",
+            "default": "o1789383283336",
             "layout": {
                 "inpBorder": "#000000"
             },
             "helpContent": "",
-            "placeholderText": "",
+            "placeholderText": "Виберіть форму...",
             "options": [
                 {
                     "value": "o1789383283336",

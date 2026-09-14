@@ -86,6 +86,9 @@ const Engine = {
                 transition: all 0.2s ease;
                 height: 100%; /* Fill grid cell height */
             }
+            .field.hidden {
+                display: none !important;
+            }
             .field label { 
                 margin-bottom: 8px;
                 font-weight: 600;
@@ -466,13 +469,19 @@ const Engine = {
 
         if (field.type === 'select') {
             const select = document.createElement('select');
+            select.id = 'input_' + field.id;
             const pText = field.placeholderText || field.label || 'Виберіть...';
+            const defaultValue = (this.state[field.id] !== undefined) 
+                ? this.state[field.id] 
+                : (field.default !== undefined ? field.default : "");
 
             const placeholder = document.createElement('option');
             placeholder.value = "";
             placeholder.textContent = pText;
             placeholder.disabled = true;
-            placeholder.selected = true;
+            if (!defaultValue) {
+                placeholder.selected = true;
+            }
             select.appendChild(placeholder);
 
             const opts = field.options && field.options.length > 0 ? field.options : [{ value: 'default', label: 'Default' }];
@@ -480,14 +489,14 @@ const Engine = {
                 const option = document.createElement('option');
                 option.value = opt.value;
                 option.textContent = opt.label;
+                if (defaultValue && String(opt.value) === String(defaultValue)) {
+                    option.selected = true;
+                }
                 select.appendChild(option);
             });
             applyStyleToInput(select);
-            if (this.state[field.id] !== undefined) {
-                select.value = this.state[field.id];
-            } else {
-                this.state[field.id] = "";
-            }
+            select.value = defaultValue;
+            this.state[field.id] = defaultValue;
             inputElement = select;
             inputWrapper.appendChild(inputElement);
 
@@ -844,12 +853,14 @@ const Engine = {
 
         // Generic Event Listener (for simple inputs)
         if (inputElement) {
-            inputElement.addEventListener('input', (e) => {
+            const handleEvent = (e) => {
                 let val = e.target.value;
                 if (field.type === 'checkbox') val = e.target.checked ? 1 : 0;
                 this.state[field.id] = val;
                 this.calculate();
-            });
+            };
+            inputElement.addEventListener('input', handleEvent);
+            inputElement.addEventListener('change', handleEvent);
         }
 
         wrapper.appendChild(inputContainer);
@@ -1176,9 +1187,11 @@ const Engine = {
             const isVisible = allowed.map(String).includes(String(parentVal));
 
             if (isVisible) {
-                wrapper.style.display = '';
+                wrapper.classList.remove('hidden');
+                wrapper.style.removeProperty('display');
             } else {
-                wrapper.style.display = 'none';
+                wrapper.classList.add('hidden');
+                wrapper.style.setProperty('display', 'none', 'important');
                 if (this.state[f.id] !== 0 && this.state[f.id] !== '') {
                     this.state[f.id] = (f.type === 'number') ? 0 : '';
                     const inp = document.getElementById('input_' + f.id);
