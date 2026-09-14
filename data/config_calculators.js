@@ -1,32 +1,10 @@
 window.CalculatorConfig = [
     {
-        "id": "schema_novyy_kal_kulyator_733",
-        "title": "Кухні",
-        "icon": "images/кухня.png",
-        "file": "data/schema_novyy_kal_kulyator_733.js",
-        "desc": "Детальний розрахунок поінтів кухонних меблів за операціями (конструювання, проєктування, монтаж)"
-    },
-    {
-        "id": "schema_novyy_kal_kulyator_177",
-        "title": "Шафи та гардероби",
-        "icon": "images/шафа.png",
-        "file": "data/schema_novyy_kal_kulyator_177.js",
-        "desc": "Розрахунок шаф-купе, розпашних шаф, фасадів та внутрішнього наповнення"
-    },
-    {
         "id": "schema_stand_kuhonne_napovnennya",
         "title": "Стенд: Кухонне наповнення",
         "icon": "🗄️",
         "file": "data/schema_stand_kuhonne_napovnennya.js",
-        "desc": "Функціональна фурнітура (01.01.02), підзона Кухонне наповнення (Львів). Корпус + модулі + наповнення, за протоколом наради з керівником. Бали орієнтовні.",
-        "isPlaceholder": false
-    },
-    {
-        "id": "schema_garderobni_systemy_673",
-        "title": "Гардеробні системи",
-        "icon": "images/гардеробні системи.png",
-        "file": "data/schema_garderobni_systemy_673.js",
-        "desc": "Розрахунок гардеробних систем, стелажів та алюмінієвих профілів",
+        "desc": "",
         "isPlaceholder": false
     },
     {
