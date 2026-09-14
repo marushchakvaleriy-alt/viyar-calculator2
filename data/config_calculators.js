@@ -12,7 +12,7 @@ window.CalculatorConfig = [
         "title": "Стенд: Гардеробне наповнення",
         "icon": "👔",
         "file": "data/schema_stand_garderobne_napovnennya.js",
-        "desc": "Функціональна фурнітура (01.01.02), підзона Гардеробне наповнення та Джокери (пантографи, брючниці, полиці для взуття, штанги). Корпус + модулі + наповнення.",
+        "desc": "",
         "isPlaceholder": false
     },
     {
