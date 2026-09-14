@@ -310,7 +310,7 @@ const Schema = {
             "label": "Висота стін, мм",
             "type": "number",
             "step": 100,
-            "default": "",
+            "default": 2400,
             "layout": {
                 "width": "w-50"
             },
@@ -324,7 +324,7 @@ const Schema = {
             "allowDecimal": true,
             "readOnly": true,
             "formula": "=((f_wall_1_width + f_wall_2_width + f_wall_3_width + f_wall_4_width) * f_corpus_height) / 1000000",
-            "default": "",
+            "default": 0,
             "layout": {
                 "width": "w-50"
             },
@@ -336,7 +336,7 @@ const Schema = {
             "label": "Ширина стіни 1, мм",
             "type": "number",
             "step": 100,
-            "default": "",
+            "default": 3000,
             "layout": {
                 "width": "w-50"
             },
@@ -500,23 +500,6 @@ const Schema = {
                             "label": "Системи організацій для шухляд"
                         }
                     ]
-                },
-                {
-                    "id": "mf_content_qty",
-                    "label": "Кількість (шт)",
-                    "type": "number",
-                    "default": 1,
-                    "isMultiplier": true
-                },
-                {
-                    "id": "mf_content_light",
-                    "label": "З підсвіткою",
-                    "type": "checkbox"
-                },
-                {
-                    "id": "mf_content_lock",
-                    "label": "З замками",
-                    "type": "checkbox"
                 }
             ]
         },
@@ -525,12 +508,11 @@ const Schema = {
             "groupId": "g_main",
             "label": "Форма вироба",
             "type": "select",
-            "default": "o1789383283336",
             "layout": {
                 "inpBorder": "#000000"
             },
             "helpContent": "",
-            "placeholderText": "Виберіть форму...",
+            "placeholderText": "",
             "options": [
                 {
                     "value": "o1789383283336",
