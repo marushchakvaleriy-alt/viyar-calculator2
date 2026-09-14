@@ -320,6 +320,8 @@ const Engine = {
         const l = field.layout || {};
         const widthClass = l.width || 'w-100';
         const wrapper = document.createElement('div');
+        wrapper.id = 'field_wrapper_' + field.id;
+        wrapper.dataset.fieldId = field.id;
         wrapper.className = `field ${widthClass}${field.hidden ? ' hidden' : ''}`;
 
         // Apply wrapper-level styling
@@ -1156,6 +1158,36 @@ const Engine = {
         return points;
     },
 
+    // --- CONDITIONAL VISIBILITY (DEPENDS ON) ---
+    updateConditionalVisibility() {
+        if (!Schema || !Schema.fields) return;
+
+        Schema.fields.forEach(f => {
+            if (!f.dependsOn || !f.dependsOn.field) return;
+
+            const wrapper = document.getElementById('field_wrapper_' + f.id);
+            if (!wrapper) return;
+
+            const parentVal = this.state[f.dependsOn.field];
+            const allowed = Array.isArray(f.dependsOn.values)
+                ? f.dependsOn.values
+                : (f.dependsOn.value !== undefined ? [f.dependsOn.value] : []);
+
+            const isVisible = allowed.map(String).includes(String(parentVal));
+
+            if (isVisible) {
+                wrapper.style.display = '';
+            } else {
+                wrapper.style.display = 'none';
+                if (this.state[f.id] !== 0 && this.state[f.id] !== '') {
+                    this.state[f.id] = (f.type === 'number') ? 0 : '';
+                    const inp = document.getElementById('input_' + f.id);
+                    if (inp) inp.value = '';
+                }
+            }
+        });
+    },
+
     // --- COMPUTED / FORMULA FIELDS ---
     evaluateComputedFields() {
         if (!Schema || !Schema.fields) return;
@@ -1206,6 +1238,9 @@ const Engine = {
         // Variables for Pass 2
         const catSums = {};
         Object.keys(Schema.categories || {}).forEach(cid => catSums[cid] = 0);
+
+        // PASS -1: Update Conditional Visibility of fields based on dependsOn
+        this.updateConditionalVisibility();
 
         // PASS 0: Evaluate Computed Form Fields (e.g. Area = Width * Height)
         this.evaluateComputedFields();

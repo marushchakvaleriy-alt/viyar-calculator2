@@ -305,42 +305,99 @@ const Schema = {
             "helpContent": "Разовий бал за ознайомлення з ТЗ/кресленнями на весь стенд."
         },
         {
-            "id": "f_corpus_width",
-            "groupId": "g_corpus",
-            "label": "Ширина корпусу, мм",
-            "type": "number",
-            "step": 100,
-            "default": "",
-            "layout": {
-                "width": "w-33"
-            },
-            "helpContent": "Введіть ширину каркасу/стіни в міліметрах (наприклад, 3000)."
-        },
-        {
             "id": "f_corpus_height",
             "groupId": "g_corpus",
-            "label": "Висота корпусу, мм",
+            "label": "Висота стін, мм",
             "type": "number",
             "step": 100,
-            "default": "",
+            "default": 2400,
             "layout": {
-                "width": "w-33"
+                "width": "w-50"
             },
-            "helpContent": "Введіть висоту каркасу/стіни в міліметрах (наприклад, 2400)."
+            "helpContent": "Висота стін/каркасу стенду в міліметрах (наприклад, 2400)."
         },
         {
             "id": "f_corpus_area",
             "groupId": "g_corpus",
-            "label": "Площа корпусу (стіни), м²",
+            "label": "Загальна площа стін, м²",
             "type": "number",
             "allowDecimal": true,
             "readOnly": true,
-            "formula": "=(f_corpus_width * f_corpus_height) / 1000000",
+            "formula": "=((f_wall_1_width + f_wall_2_width + f_wall_3_width + f_wall_4_width) * f_corpus_height) / 1000000",
             "default": 0,
             "layout": {
-                "width": "w-33"
+                "width": "w-50"
             },
-            "helpContent": "Автоматично розраховується: (Ширина × Висота) / 1 000 000. Бали вартості нараховуються саме за цією площею."
+            "helpContent": "Сумарна площа всіх стін: (Ш1 + Ш2 + Ш3 + Ш4) × Висота / 1 000 000. Саме вона рахує вартість!"
+        },
+        {
+            "id": "f_wall_1_width",
+            "groupId": "g_corpus",
+            "label": "Ширина стіни 1, мм",
+            "type": "number",
+            "step": 100,
+            "default": 3000,
+            "layout": {
+                "width": "w-50"
+            },
+            "helpContent": "Ширина першої (основної) стіни в міліметрах."
+        },
+        {
+            "id": "f_wall_2_width",
+            "groupId": "g_corpus",
+            "label": "Ширина стіни 2, мм",
+            "type": "number",
+            "step": 100,
+            "default": "",
+            "dependsOn": {
+                "field": "f1789383248090",
+                "values": [
+                    "o1789383316905",
+                    "o1789383324903",
+                    "o1789383333252"
+                ]
+            },
+            "layout": {
+                "width": "w-50"
+            },
+            "helpContent": "Ширина другої стіни (з'являється для Г-, П- або G-подібних форм)."
+        },
+        {
+            "id": "f_wall_3_width",
+            "groupId": "g_corpus",
+            "label": "Ширина стіни 3, мм",
+            "type": "number",
+            "step": 100,
+            "default": "",
+            "dependsOn": {
+                "field": "f1789383248090",
+                "values": [
+                    "o1789383324903",
+                    "o1789383333252"
+                ]
+            },
+            "layout": {
+                "width": "w-50"
+            },
+            "helpContent": "Ширина третьої стіни (з'являється для П- або G-подібних форм)."
+        },
+        {
+            "id": "f_wall_4_width",
+            "groupId": "g_corpus",
+            "label": "Ширина стіни 4, мм",
+            "type": "number",
+            "step": 100,
+            "default": "",
+            "dependsOn": {
+                "field": "f1789383248090",
+                "values": [
+                    "o1789383333252"
+                ]
+            },
+            "layout": {
+                "width": "w-50"
+            },
+            "helpContent": "Ширина четвертої стіни (з'являється для G-по периметру)."
         },
         {
             "id": "f_add_module",

@@ -347,15 +347,42 @@
                         placeholder="Текст, який з'явиться при наведенні на [?]"></textarea>
                 </div>
                 <div class="form-group" id="numberSettings" style="display:none">
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <div style="flex:1">
+                            <label class="form-label">Крок зміни (step)</label>
+                            <input type="number" id="fStep" class="form-input" placeholder="1 (або 100 для мм)">
+                        </div>
+                    </div>
                     <label
                         style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:10px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0">
                         <input type="checkbox" id="fAllowDecimal" style="width:18px; height:18px">
                         <div>
                             <span style="font-weight:600">Дозволити дробові числа</span>
-                            <div style="font-size:11px; color:#64748b">Можна вводити 1.5, 2,7 тощо. Округлення вверх.
-                            </div>
+                            <div style="font-size:11px; color:#64748b">Можна вводити 1.5, 2.7 тощо. Точні десяткові значення.</div>
                         </div>
                     </label>
+                </div>
+
+                <div class="form-group" style="padding-top:12px; border-top:1px solid #e2e8f0;">
+                    <label class="form-label" style="font-weight:700; color:#2563eb">🧮 Авто-розрахунок (Формула значення)</label>
+                    <input type="text" id="fFormula" class="form-input" placeholder="=(f_wall_1_width + f_wall_2_width) * f_corpus_height / 1000000" style="font-family:monospace; font-size:12px;">
+                    <div style="font-size:11px; color:#64748b; margin-top:4px">Вкажіть формулу зі змінними полів (f_xxx) для автоматичного підрахунку значення поля (наприклад, площі).</div>
+                    <label style="display:flex; align-items:center; gap:8px; margin-top:8px; cursor:pointer;">
+                        <input type="checkbox" id="fReadOnly" style="width:16px; height:16px">
+                        <span style="font-size:13px; font-weight:600;">Тільки для читання (блокувати ручний ввід)</span>
+                    </label>
+                </div>
+
+                <div class="form-group" style="padding-top:12px; border-top:1px solid #e2e8f0;">
+                    <label class="form-label" style="font-weight:700; color:#2563eb">🔗 Умовна видимість (Показувати якщо)</label>
+                    <div style="font-size:11px; color:#64748b; margin-bottom:8px">Наприклад: показувати поле "Стіна 2" лише якщо у "Формі виробу" обрано "Г-подібна" або "П-подібна".</div>
+                    <select id="fDependsField" class="form-input" onchange="updateDependsValuesOptions()">
+                        <option value="">-- Завжди показувати (без умов) --</option>
+                    </select>
+                    <div id="dependsValuesContainer" style="display:none; margin-top:10px;">
+                        <label class="form-label" style="font-size:12px">Показувати при варіантах (позначте галочками):</label>
+                        <div id="dependsValuesList" style="display:flex; flex-direction:column; gap:6px; max-height:140px; overflow-y:auto; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;"></div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -2602,7 +2629,8 @@
         async function saveData() { if ('showSaveFilePicker' in window) { try { const h = await window.showSaveFilePicker({ suggestedName: 'schema.js', types: [{ accept: { 'text/javascript': ['.js'] } }] }); const w = await h.createWritable(); await w.write(`const Schema = ${JSON.stringify(Schema, null, 4)};\n\nwindow.Schema = Schema;`); await w.close(); markClean(); alert('💾 Збережено!'); } catch (e) { if (e.name !== 'AbortError') alert(e.message); } } else { alert('Збереження недоступне.'); console.log(Schema); } }
 
         function openFModal(id, isP) {
-            const f = (isP ? Schema.products.fields : Schema.fields).find(f => f.id === id);
+            const allFields = isP ? Schema.products.fields : Schema.fields;
+            const f = allFields.find(x => x.id === id);
             document.getElementById('fId').value = id;
             document.getElementById('fName').value = f.label || '';
             document.getElementById('fType').value = f.type;
@@ -2612,10 +2640,86 @@
             document.getElementById('fLabelYes').value = f.labelYes || '';
             document.getElementById('fLabelNo').value = f.labelNo || '';
             document.getElementById('fAllowDecimal').checked = !!f.allowDecimal;
+            document.getElementById('fStep').value = f.step !== undefined ? f.step : '';
+            document.getElementById('fFormula').value = f.formula || '';
+            document.getElementById('fReadOnly').checked = !!f.readOnly;
             document.getElementById('fieldModal').dataset.mode = isP ? 'prod' : 'calc';
+
+            // Populate dependsOn selector
+            const depSelect = document.getElementById('fDependsField');
+            depSelect.innerHTML = '<option value="">-- Завжди показувати (без умов) --</option>';
+            allFields.filter(x => x.id !== id && (x.type === 'select' || x.type === 'select_yes_no' || x.type === 'checkbox')).forEach(other => {
+                const opt = document.createElement('option');
+                opt.value = other.id;
+                opt.textContent = `${other.label || other.id} (${other.type})`;
+                if (f.dependsOn && f.dependsOn.field === other.id) opt.selected = true;
+                depSelect.appendChild(opt);
+            });
+
+            updateDependsValuesOptions(f.dependsOn);
+
             toggleFieldSettings(f.type);
             document.getElementById('fieldModal').style.display = 'flex';
         }
+
+        function updateDependsValuesOptions(existingDependsOn = null) {
+            const isP = document.getElementById('fieldModal').dataset.mode === 'prod';
+            const allFields = isP ? Schema.products.fields : Schema.fields;
+            const parentFieldId = document.getElementById('fDependsField').value;
+            const container = document.getElementById('dependsValuesContainer');
+            const list = document.getElementById('dependsValuesList');
+            list.innerHTML = '';
+
+            if (!parentFieldId) {
+                container.style.display = 'none';
+                return;
+            }
+
+            const parentField = allFields.find(x => x.id === parentFieldId);
+            if (!parentField) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+
+            let optionsList = [];
+            if (parentField.type === 'select' && parentField.options) {
+                optionsList = parentField.options;
+            } else if (parentField.type === 'select_yes_no') {
+                optionsList = [
+                    { value: '1', label: parentField.labelYes || 'Так' },
+                    { value: '0', label: parentField.labelNo || 'Ні' }
+                ];
+            } else if (parentField.type === 'checkbox') {
+                optionsList = [
+                    { value: '1', label: 'Увімкнено (чекбокс активний)' },
+                    { value: '0', label: 'Вимкнено' }
+                ];
+            }
+
+            const currentSelectedValues = existingDependsOn && existingDependsOn.values
+                ? existingDependsOn.values.map(String)
+                : (existingDependsOn && existingDependsOn.value !== undefined ? [String(existingDependsOn.value)] : []);
+
+            optionsList.forEach(opt => {
+                const row = document.createElement('label');
+                row.style.cssText = 'display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px;';
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.className = 'depends-val-chk';
+                chk.value = String(opt.value);
+                if (currentSelectedValues.includes(String(opt.value))) chk.checked = true;
+
+                const text = document.createElement('span');
+                text.textContent = opt.label;
+
+                row.appendChild(chk);
+                row.appendChild(text);
+                list.appendChild(row);
+            });
+        }
+
         function toggleFieldSettings(type) {
             document.getElementById('btnTextInput').style.display = (type === 'action_button' || type === 'checkbox_qty' || type === 'select_modal') ? 'block' : 'none';
             document.getElementById('selectLabels').style.display = (type === 'select_modal') ? 'block' : 'none';
@@ -2648,9 +2752,35 @@
             }
             if (f.type === 'number' || f.type === 'checkbox_qty') {
                 f.allowDecimal = document.getElementById('fAllowDecimal').checked;
+                const stepVal = Number(document.getElementById('fStep').value);
+                if (stepVal > 0) f.step = stepVal;
+                else delete f.step;
             } else {
                 delete f.allowDecimal;
+                delete f.step;
             }
+
+            // Formula, readOnly
+            const formulaVal = document.getElementById('fFormula').value.trim();
+            if (formulaVal) f.formula = formulaVal;
+            else delete f.formula;
+
+            if (document.getElementById('fReadOnly').checked) f.readOnly = true;
+            else delete f.readOnly;
+
+            // DependsOn
+            const depField = document.getElementById('fDependsField').value;
+            if (depField) {
+                const checkedVals = Array.from(document.querySelectorAll('.depends-val-chk:checked')).map(c => c.value);
+                if (checkedVals.length > 0) {
+                    f.dependsOn = { field: depField, values: checkedVals };
+                } else {
+                    delete f.dependsOn;
+                }
+            } else {
+                delete f.dependsOn;
+            }
+
             markDirty();
             closeModal('fieldModal');
             renderMatrix();
