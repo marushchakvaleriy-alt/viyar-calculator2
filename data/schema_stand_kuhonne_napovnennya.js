@@ -310,7 +310,7 @@ const Schema = {
             "label": "Висота стін, мм",
             "type": "number",
             "step": 100,
-            "default": 2400,
+            "default": "",
             "layout": {
                 "width": "w-50"
             },
@@ -324,7 +324,7 @@ const Schema = {
             "allowDecimal": true,
             "readOnly": true,
             "formula": "=((f_wall_1_width + f_wall_2_width + f_wall_3_width + f_wall_4_width) * f_corpus_height) / 1000000",
-            "default": 0,
+            "default": "",
             "layout": {
                 "width": "w-50"
             },
@@ -336,7 +336,7 @@ const Schema = {
             "label": "Ширина стіни 1, мм",
             "type": "number",
             "step": 100,
-            "default": 3000,
+            "default": "",
             "layout": {
                 "width": "w-50"
             },
