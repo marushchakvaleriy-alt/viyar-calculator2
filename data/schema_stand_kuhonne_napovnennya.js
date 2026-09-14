@@ -461,7 +461,7 @@ const Schema = {
                 {
                     "id": "mf_content_type",
                     "label": "Тип елемента",
-                    "type": "select",
+                    "type": "multiselect_qty",
                     "options": [
                         {
                             "value": "cargo_150",
@@ -499,7 +499,8 @@ const Schema = {
                             "value": "hinge_glass",
                             "label": "Системи організацій для шухляд"
                         }
-                    ]
+                    ],
+                    "isMultiplier": false
                 }
             ]
         },

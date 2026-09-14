@@ -2211,13 +2211,13 @@
                 <div style="margin-bottom:20px">
                     <label style="display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px">Тип поля</label>
                     <select id="mfNewType" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px">
-                        <option value="number">🔢 Число (number)</option>
-                        <option value="select">📋 Випадаючий список (select)</option>
-                        <option value="select_yes_no">🔽 Вибір Так/Ні (select_yes_no)</option>
-                        <option value="checkbox">✅ Чекбокс (checkbox)</option>
-                        <option value="checkbox_qty">☑️ Чекбокс з кількістю (checkbox_qty)</option>
-                        <option value="multiselect">📑 Множинний вибір (multiselect)</option>
-                        <option value="multiselect_qty">📋 Множинний вибір + кількість (multiselect_qty)</option>
+                        <option value="number">🔢 Число (ручне введення)</option>
+                        <option value="select">📋 Випадаючий список (один варіант із списку)</option>
+                        <option value="multiselect">☑️ Список чекбоксів (можна обрати кілька)</option>
+                        <option value="multiselect_qty">☑️🔢 Список чекбоксів + кількість (до кожного варіанту)</option>
+                        <option value="checkbox">✅ Одинарний чекбокс Так/Ні (одне поле, без варіантів)</option>
+                        <option value="checkbox_qty">☑️ Одинарний чекбокс + кількість (одне поле)</option>
+                        <option value="select_yes_no">🔽 Випадаючий список Так/Ні</option>
                     </select>
                 </div>
 
@@ -2275,27 +2275,36 @@
             const field = fields.find(f => f.id === buttonId);
             if (!field || !field.modalFields[mfIdx]) return;
             const mf = field.modalFields[mfIdx];
+            const optCount = mf.options ? mf.options.length : 0;
 
             // Create mini-modal with select
             const overlay = document.createElement('div');
             overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center';
 
             const modal = document.createElement('div');
-            modal.style.cssText = 'background:white;padding:20px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:280px';
+            modal.style.cssText = 'background:white;padding:24px 30px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.2);min-width:360px;max-width:480px';
             modal.innerHTML = `
-                <h4 style="margin:0 0 15px 0;font-size:14px;color:#334155">Тип поля для "${mf.label}"</h4>
-                <select id="mfTypeSelect" style="width:100%;padding:10px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:15px">
-                    <option value="number" ${mf.type === 'number' ? 'selected' : ''}>🔢 Число (number)</option>
-                    <option value="select" ${mf.type === 'select' ? 'selected' : ''}>📋 Випадаючий список (select)</option>
+                <h4 style="margin:0 0 15px 0;font-size:15px;font-weight:700;color:#1e293b">Тип поля для "${mf.label}"</h4>
+                <select id="mfTypeSelect" style="width:100%;padding:10px;font-size:13px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:12px">
+                    <option value="select" ${mf.type === 'select' ? 'selected' : ''}>📋 Випадаючий список (один варіант із списку)</option>
+                    <option value="multiselect" ${mf.type === 'multiselect' ? 'selected' : ''}>☑️ Список чекбоксів (можна обрати кілька)</option>
+                    <option value="multiselect_qty" ${mf.type === 'multiselect_qty' ? 'selected' : ''}>☑️🔢 Список чекбоксів + кількість (до кожного)</option>
+                    <option value="number" ${mf.type === 'number' ? 'selected' : ''}>🔢 Число (ручне введення)</option>
+                    <option value="checkbox" ${mf.type === 'checkbox' ? 'selected' : ''}>✅ Одинарний чекбокс Так/Ні (одне поле, без варіантів)</option>
+                    <option value="checkbox_qty" ${mf.type === 'checkbox_qty' ? 'selected' : ''}>☑️ Одинарний чекбокс + кількість (одне поле)</option>
                     <option value="select_yes_no" ${mf.type === 'select_yes_no' ? 'selected' : ''}>🔽 Вибір Так/Ні (select_yes_no)</option>
-                    <option value="checkbox" ${mf.type === 'checkbox' ? 'selected' : ''}>✅ Чекбокс (checkbox)</option>
-                    <option value="checkbox_qty" ${mf.type === 'checkbox_qty' ? 'selected' : ''}>☑️ Чекбокс з кількістю (checkbox_qty)</option>
-                    <option value="multiselect" ${mf.type === 'multiselect' ? 'selected' : ''}>📑 Множинний вибір (multiselect)</option>
-                    <option value="multiselect_qty" ${mf.type === 'multiselect_qty' ? 'selected' : ''}>📋 Множинний вибір + кількість (multiselect_qty)</option>
                 </select>
+
+                <div id="mfTypeWarning" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 12px; font-size:12px; color:#92400e; margin-bottom:15px; line-height:1.4">
+                    ⚠️ <b>Увага:</b> у цього поля є список із <b>${optCount} варіантів</b>.<br>
+                    Одинарний чекбокс — це лише 1 галочка Так/Ні (список буде приховано).<br>
+                    👉 Якщо вам потрібні чекбокси для <b>кожного варіанту</b> списку, оберіть:<br>
+                    <span style="font-weight:600; color:#1e293b">"☑️ Список чекбоксів"</span> або <span style="font-weight:600; color:#1e293b">"☑️🔢 Список чекбоксів + кількість"</span>.
+                </div>
+
                 <div style="margin-bottom:15px; display:flex; align-items:center; gap:8px">
                     <input id="mfTypeIsMultiplier" type="checkbox" ${mf.isMultiplier ? 'checked' : ''} style="width:18px; height:18px; cursor:pointer">
-                    <label for="mfTypeIsMultiplier" style="font-size:14px; color:#1e293b; cursor:pointer">Це множник (множить всю суму модалки)</label>
+                    <label for="mfTypeIsMultiplier" style="font-size:13px; color:#1e293b; cursor:pointer">Це множник (множить всю суму модалки)</label>
                 </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end">
                     <button id="mfTypeCancelBtn" style="padding:8px 16px;border:1px solid #e2e8f0;background:white;border-radius:6px;cursor:pointer">Скасувати</button>
@@ -2305,10 +2314,22 @@
             overlay.appendChild(modal);
             document.body.appendChild(overlay);
 
+            const typeSel = document.getElementById('mfTypeSelect');
+            const warnBox = document.getElementById('mfTypeWarning');
+            function updateWarn() {
+                if (optCount > 0 && (typeSel.value === 'checkbox' || typeSel.value === 'checkbox_qty' || typeSel.value === 'number' || typeSel.value === 'select_yes_no')) {
+                    warnBox.style.display = 'block';
+                } else {
+                    warnBox.style.display = 'none';
+                }
+            }
+            typeSel.onchange = updateWarn;
+            updateWarn();
+
             overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
             document.getElementById('mfTypeCancelBtn').onclick = () => overlay.remove();
             document.getElementById('mfTypeSaveBtn').onclick = () => {
-                const selectedType = document.getElementById('mfTypeSelect').value;
+                const selectedType = typeSel.value;
                 const isMult = document.getElementById('mfTypeIsMultiplier').checked;
 
                 if (selectedType !== mf.type) {
