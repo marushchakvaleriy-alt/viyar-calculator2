@@ -340,7 +340,17 @@ const Schema = {
             "layout": {
                 "width": "w-50"
             },
-            "helpContent": "Ширина першої (основної) стіни в міліметрах."
+            "helpContent": "Ширина першої (основної) стіни в міліметрах.",
+            "allowDecimal": false,
+            "dependsOn": {
+                "field": "f1789383248090",
+                "values": [
+                    "o1789383283336",
+                    "o1789383316905",
+                    "o1789383324903",
+                    "o1789383333252"
+                ]
+            }
         },
         {
             "id": "f_wall_2_width",
@@ -360,7 +370,8 @@ const Schema = {
             "layout": {
                 "width": "w-50"
             },
-            "helpContent": "Ширина другої стіни (з'являється для Г-, П- або G-подібних форм)."
+            "helpContent": "Ширина другої стіни (з'являється для Г-, П- або G-подібних форм).",
+            "allowDecimal": false
         },
         {
             "id": "f_wall_3_width",
@@ -379,7 +390,8 @@ const Schema = {
             "layout": {
                 "width": "w-50"
             },
-            "helpContent": "Ширина третьої стіни (з'являється для П- або G-подібних форм)."
+            "helpContent": "Ширина третьої стіни (з'являється для П- або G-подібних форм).",
+            "allowDecimal": false
         },
         {
             "id": "f_wall_4_width",
@@ -397,7 +409,8 @@ const Schema = {
             "layout": {
                 "width": "w-50"
             },
-            "helpContent": "Ширина четвертої стіни (з'являється для G-по периметру)."
+            "helpContent": "Ширина четвертої стіни (з'являється для G-по периметру).",
+            "allowDecimal": false
         },
         {
             "id": "f_add_module",
