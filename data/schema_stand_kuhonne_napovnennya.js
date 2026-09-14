@@ -81,11 +81,6 @@ const Schema = {
             "category": "cat_construction"
         },
         {
-            "id": "pr_c11",
-            "name": "Кф. доровартісного мат.",
-            "category": "cat_construction"
-        },
-        {
             "id": "pr_c12",
             "name": "ф-ра проджект",
             "category": "cat_construction"
@@ -93,11 +88,6 @@ const Schema = {
         {
             "id": "pr_c13",
             "name": "ОДК",
-            "category": "cat_construction"
-        },
-        {
-            "id": "pr_c14",
-            "name": "Заміна-корегув. матеріалу",
             "category": "cat_construction"
         },
         {
@@ -292,6 +282,10 @@ const Schema = {
                 "titleWeight": 700,
                 "headerColor": "#2563eb"
             }
+        },
+        {
+            "id": "g1789389742715",
+            "title": "Підсвітка"
         }
     ],
     "fields": [
@@ -498,6 +492,10 @@ const Schema = {
                         {
                             "value": "hinge_glass",
                             "label": "Системи організацій для шухляд"
+                        },
+                        {
+                            "value": "opt1789389443338",
+                            "label": "Торцеві планки"
                         }
                     ],
                     "isMultiplier": false
@@ -548,6 +546,17 @@ const Schema = {
             "id": "f1789384434554",
             "groupId": "g_modules",
             "label": "Стійка горизонтальна",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1789389748503",
+            "groupId": "g1789389742715",
+            "label": "Кількість Світових ліній",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000"
