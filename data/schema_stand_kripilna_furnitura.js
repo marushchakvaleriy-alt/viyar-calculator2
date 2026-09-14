@@ -81,12 +81,36 @@ const Schema = {
             "helpContent": "Разовий бал за ознайомлення з ТЗ на весь стенд кріплень."
         },
         {
+            "id": "f_corpus_width",
+            "groupId": "g_corpus",
+            "label": "Ширина стенду, мм",
+            "type": "number",
+            "step": 100,
+            "default": "",
+            "layout": { "width": "w-33" },
+            "helpContent": "Введіть ширину стенду/щита в міліметрах (наприклад, 3000)."
+        },
+        {
+            "id": "f_corpus_height",
+            "groupId": "g_corpus",
+            "label": "Висота стенду, мм",
+            "type": "number",
+            "step": 100,
+            "default": "",
+            "layout": { "width": "w-33" },
+            "helpContent": "Введіть висоту стенду/щита в міліметрах (наприклад, 2400)."
+        },
+        {
             "id": "f_corpus_area",
             "groupId": "g_corpus",
             "label": "Площа основи стенду (стіни/щита), м²",
             "type": "number",
+            "allowDecimal": true,
+            "readOnly": true,
+            "formula": "=(f_corpus_width * f_corpus_height) / 1000000",
             "default": 0,
-            "helpContent": "Загальна площа стенду (ширина х висота)."
+            "layout": { "width": "w-33" },
+            "helpContent": "Автоматично розраховується: (Ширина × Висота) / 1 000 000. Бали вартості нараховуються саме за цією площею."
         }
     ],
     "products": { "groups": [], "fields": [] },

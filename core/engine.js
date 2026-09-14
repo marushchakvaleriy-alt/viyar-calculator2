@@ -730,7 +730,7 @@ const Engine = {
 
         } else if (field.type === 'number') {
             const numContainer = document.createElement('div');
-            numContainer.style.cssText = 'display:flex; align-items:center; width:100%; border:1px solid rgba(255,255,255,0.15); border-radius:8px; overflow:hidden; background:rgba(255,255,255,0.05);';
+            numContainer.style.cssText = 'display:flex; align-items:center; width:100%; border:1px solid rgba(255,255,255,0.15); border-radius:8px; overflow:hidden; background:rgba(255,255,255,0.05); position:relative;';
             
             // Light theme support
             if (document.body.classList.contains('light-theme') || (Schema.layout && Schema.layout.theme === 'light')) {
@@ -738,7 +738,8 @@ const Engine = {
                 numContainer.style.background = '#ffffff';
             }
 
-            const step = field.allowDecimal ? 0.1 : 1;
+            const isComputed = !!field.formula || !!field.readOnly;
+            const step = field.step || (field.allowDecimal ? 0.1 : 1);
 
             const btnMinus = document.createElement('button');
             btnMinus.type = 'button';
@@ -746,16 +747,28 @@ const Engine = {
             btnMinus.style.cssText = 'width:38px; height:38px; border:none; background:rgba(120,120,120,0.12); color:inherit; font-size:18px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; transition:0.2s; flex-shrink:0;';
 
             const input = document.createElement('input');
+            input.id = 'input_' + field.id;
             input.type = 'number';
             input.min = 0;
             input.step = step;
             input.style.cssText = 'flex:1; width:100%; min-width:0; text-align:center; border:none; background:transparent; color:inherit; font-size:15px; font-weight:700; padding:8px 4px; outline:none; -moz-appearance:textfield;';
             if (l.placeholder) input.placeholder = l.placeholder;
 
+            if (isComputed) {
+                input.readOnly = true;
+                input.style.cursor = 'default';
+                numContainer.style.background = '#f8fafc';
+                numContainer.style.border = '1.5px dashed #94a3b8';
+                btnMinus.style.display = 'none';
+            }
+
             const btnPlus = document.createElement('button');
             btnPlus.type = 'button';
             btnPlus.textContent = '+';
             btnPlus.style.cssText = 'width:38px; height:38px; border:none; background:rgba(120,120,120,0.12); color:inherit; font-size:18px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; transition:0.2s; flex-shrink:0;';
+            if (isComputed) {
+                btnPlus.style.display = 'none';
+            }
 
             if (this.state[field.id] !== undefined) {
                 input.value = this.state[field.id] !== '' ? this.state[field.id] : '';
@@ -767,7 +780,7 @@ const Engine = {
             const updateVal = (newVal) => {
                 let val = Math.max(0, Number(newVal) || 0);
                 if (field.allowDecimal) {
-                    val = Math.round(val * 10) / 10;
+                    val = Math.round(val * 100) / 100;
                 } else {
                     val = Math.round(val);
                 }
@@ -802,6 +815,14 @@ const Engine = {
             numContainer.appendChild(btnMinus);
             numContainer.appendChild(input);
             numContainer.appendChild(btnPlus);
+
+            if (isComputed) {
+                const autoBadge = document.createElement('span');
+                autoBadge.style.cssText = 'position:absolute; right:8px; font-size:11px; font-weight:700; color:#3b82f6; background:#eff6ff; padding:2px 6px; border-radius:4px; pointer-events:none;';
+                autoBadge.textContent = 'авто';
+                numContainer.appendChild(autoBadge);
+            }
+
             inputWrapper.appendChild(numContainer);
             inputElement = null; // Handled manually
 
@@ -1135,6 +1156,47 @@ const Engine = {
         return points;
     },
 
+    // --- COMPUTED / FORMULA FIELDS ---
+    evaluateComputedFields() {
+        if (!Schema || !Schema.fields) return;
+
+        Schema.fields.forEach(f => {
+            if (!f.formula) return;
+
+            let expr = String(f.formula).trim();
+            if (expr.startsWith('=')) expr = expr.substring(1).trim();
+
+            // Replace field IDs (e.g. f_corpus_width) with their values from this.state
+            expr = expr.replace(/\b(f_[a-zA-Z0-9_]+)\b/g, (match, fId) => {
+                const val = this.state[fId];
+                return (Number(val) || 0);
+            });
+
+            try {
+                expr = expr.replace(/min\(/g, 'Math.min(').replace(/max\(/g, 'Math.max(');
+                expr = expr.replace(/ceil\(/g, 'Math.ceil(').replace(/floor\(/g, 'Math.floor(').replace(/round\(/g, 'Math.round(');
+                const res = new Function(`return (${expr})`)();
+                let finalVal = (isNaN(res) || !isFinite(res)) ? 0 : Number(res);
+
+                if (f.allowDecimal) {
+                    finalVal = Math.round(finalVal * 100) / 100;
+                } else {
+                    finalVal = Math.round(finalVal);
+                }
+
+                this.state[f.id] = finalVal;
+
+                // Sync DOM input if rendered
+                const inputEl = document.getElementById('input_' + f.id);
+                if (inputEl) {
+                    inputEl.value = (finalVal === 0 && !f.default) ? '' : finalVal;
+                }
+            } catch (e) {
+                console.warn(`Formula evaluation error for ${f.id}:`, e);
+            }
+        });
+    },
+
     // --- CALCULATION KERNEL ---
     calculate() {
         this.detailedMatrix = {}; // Reset details
@@ -1144,6 +1206,9 @@ const Engine = {
         // Variables for Pass 2
         const catSums = {};
         Object.keys(Schema.categories || {}).forEach(cid => catSums[cid] = 0);
+
+        // PASS 0: Evaluate Computed Form Fields (e.g. Area = Width * Height)
+        this.evaluateComputedFields();
 
         // PASS 1: Raw Processes and Simple Rules
         this.processPass1(points, catSums);
@@ -1215,10 +1280,10 @@ const Engine = {
                 const active = ruleSet[val];
                 if (active) this.applyPoints(active, points, null, catSums, fDef);
             } else if (fDef.type === 'number' || fDef.type === 'checkbox' || fDef.type === 'select_yes_no') {
-                // Apply Math.ceil() for decimal fields
+                // Apply Math.ceil() for decimal fields only if roundUp is explicitly set
                 let processedVal = val;
                 if (fDef.type === 'number' && fDef.allowDecimal) {
-                    processedVal = Math.ceil(Number(val) || 0);
+                    processedVal = fDef.roundUp ? Math.ceil(Number(val) || 0) : (Number(val) || 0);
                 }
                 this.applyPoints(ruleSet, points, processedVal, catSums, fDef);
             } else if (fDef.type === 'checkbox_qty') {
