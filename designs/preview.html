@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вибір дизайну калькулятора — 3 сучасні концепції</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0F172A;
+            color: #FFFFFF;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* TOP SWITCHER BAR */
+        .showcase-bar {
+            background: #1E293B;
+            border-bottom: 1px solid #334155;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .showcase-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .showcase-brand h2 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #F8FAFC;
+        }
+
+        .showcase-brand span {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        .tabs-group {
+            display: flex;
+            background: #0F172A;
+            padding: 4px;
+            border-radius: 999px;
+            border: 1px solid #334155;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            border: none;
+            background: transparent;
+            color: #94A3B8;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            color: #FFFFFF;
+        }
+
+        .tab-btn.active {
+            background: #2563EB;
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+        }
+
+        .open-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #334155;
+            color: #F8FAFC;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .open-tab-btn:hover {
+            background: #475569;
+        }
+
+        /* LIVE IFRAME VIEWPORT */
+        .preview-frame-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            background: #F8FAFC;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="showcase-bar">
+        <div class="showcase-brand">
+            <h2>🎨 Виберіть найкращий дизайн</h2>
+            <span>(Всі варіанти 100% світлі, без темного фону)</span>
+        </div>
+
+        <div class="tabs-group">
+            <button class="tab-btn active" onclick="switchConcept('variant8_viyar_aurora_fusion.html', this)">
+                💙 8. ViyarPro Aurora Fusion (Скло + ВіЯр)
+            </button>
+            <button class="tab-btn" onclick="switchConcept('variant7_viyar_style.html', this)">
+                🏢 7. Viyar Офіційний Корпоративний
+            </button>
+            <button class="tab-btn" onclick="switchConcept('variant5_aurora_glass.html', this)">
+                ✨ 5. Aurora Glow & Glass
+            </button>
+            <button class="tab-btn" onclick="switchConcept('variant6_vibrant_bento.html', this)">
+                🎨 6. Blueprint Mesh
+            </button>
+        </div>
+
+        <a id="external-link" href="variant8_viyar_aurora_fusion.html" target="_blank" class="open-tab-btn">
+            ↗ Відкрити на весь екран
+        </a>
+    </div>
+
+    <!-- PREVIEW FRAME -->
+    <div class="preview-frame-container">
+        <iframe id="preview-frame" src="variant8_viyar_aurora_fusion.html"></iframe>
+    </div>
+
+    <script>
+        function switchConcept(url, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('preview-frame').src = url;
+            document.getElementById('external-link').href = url;
+        }
+    </script>
+</body>
+</html>

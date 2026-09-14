@@ -14,19 +14,19 @@ window.CalculatorConfig = [
         "desc": "Розрахунок шаф-купе, розпашних шаф, фасадів та внутрішнього наповнення"
     },
     {
-        "id": "schema_garderobni_systemy_673",
-        "title": "Гардеробні системи",
-        "icon": "images/гардеробні системи.png",
-        "file": "data/schema_garderobni_systemy_673.js",
-        "desc": "Розрахунок гардеробних систем, стелажів та алюмінієвих профілів",
-        "isPlaceholder": false
-    },
-    {
         "id": "schema_stand_kuhonne_napovnennya",
         "title": "Стенд: Кухонне наповнення",
         "icon": "🗄️",
         "file": "data/schema_stand_kuhonne_napovnennya.js",
         "desc": "Функціональна фурнітура (01.01.02), підзона Кухонне наповнення (Львів). Корпус + модулі + наповнення, за протоколом наради з керівником. Бали орієнтовні.",
+        "isPlaceholder": false
+    },
+    {
+        "id": "schema_garderobni_systemy_673",
+        "title": "Гардеробні системи",
+        "icon": "images/гардеробні системи.png",
+        "file": "data/schema_garderobni_systemy_673.js",
+        "desc": "Розрахунок гардеробних систем, стелажів та алюмінієвих профілів",
         "isPlaceholder": false
     },
     {
@@ -141,4 +141,4 @@ window.CalculatorConfig = [
         "desc": "Зона 01.02.03. Ще не розроблено.",
         "isPlaceholder": true
     }
-];
+]; 

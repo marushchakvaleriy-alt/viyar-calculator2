@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Концепт 4 — Dribbble Pro Max (Bento Grid & Soft UI)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --canvas: #F8FAFC;
+            --surface: #FFFFFF;
+            --surface-subtle: #F1F5F9;
+            --surface-hover: #F8FAFC;
+            --border: #E2E8F0;
+            --border-hover: #CBD5E1;
+            --border-focus: #3B82F6;
+            
+            --brand-50: #EFF6FF;
+            --brand-100: #DBEAFE;
+            --brand-500: #3B82F6;
+            --brand-600: #2563EB;
+            --brand-700: #1D4ED8;
+            
+            --emerald-50: #ECFDF5;
+            --emerald-500: #10B981;
+            --purple-50: #FAF5FF;
+            --purple-500: #8B5CF6;
+            --amber-50: #FFFBEB;
+            --amber-500: #F59E0B;
+
+            --text-900: #0F172A;
+            --text-700: #334155;
+            --text-500: #64748B;
+            --text-400: #94A3B8;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-pill: 9999px;
+
+            --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+            --shadow-card: 0 4px 16px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+            --shadow-float: 0 20px 30px -10px rgba(15, 23, 42, 0.08), 0 10px 15px -5px rgba(15, 23, 42, 0.03);
+            --shadow-glow: 0 0 24px rgba(37, 99, 235, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--canvas);
+            color: var(--text-900);
+            line-height: 1.5;
+            padding: 24px 20px 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        /* TOP NAVIGATION */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            color: var(--text-700);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .back-link:hover {
+            color: var(--brand-600);
+            border-color: var(--brand-100);
+            transform: translateX(-2px);
+        }
+
+        .tag-dribbble {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #FFEDD5 0%, #FED7AA 100%);
+            color: #C2410C;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #FDBA74;
+        }
+
+        /* HERO BENTO HEADER */
+        .hero-banner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .hero-title-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            color: var(--brand-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+        }
+
+        .hero-title-area h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-900);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-badge {
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            background: #F1F5F9;
+            color: var(--text-700);
+            border-radius: 6px;
+        }
+
+        .hero-title-area p {
+            font-size: 13.5px;
+            color: var(--text-500);
+            margin-top: 2px;
+        }
+
+        /* PROCESS SELECTOR CHIPS */
+        .process-chips-wrapper {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .p-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text-700);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .p-chip input { display: none; }
+
+        .p-chip.active-const {
+            background: var(--brand-50);
+            border-color: var(--brand-500);
+            color: var(--brand-600);
+        }
+
+        .p-chip.active-proj {
+            background: var(--purple-50);
+            border-color: var(--purple-500);
+            color: #7C3AED;
+        }
+
+        .p-chip.active-mont {
+            background: var(--emerald-50);
+            border-color: var(--emerald-500);
+            color: #059669;
+        }
+
+        /* 2-COLUMN LAYOUT */
+        .bento-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 980px) {
+            .bento-layout { grid-template-columns: 1fr; }
+        }
+
+        /* BENTO CARDS */
+        .bento-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bento-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-float);
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--surface-subtle);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-900);
+        }
+
+        .card-title-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: var(--surface-subtle);
+            color: var(--text-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bento-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 620px) {
+            .bento-grid-2 { grid-template-columns: 1fr; }
+        }
+
+        .field-unit {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-700);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .field-sub {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-400);
+        }
+
+        /* DRIBBBLE SELECT */
+        .select-field-box {
+            position: relative;
+        }
+
+        .select-field {
+            width: 100%;
+            padding: 11px 40px 11px 14px;
+            background-color: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-900);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.15s ease;
+        }
+
+        .select-field:focus {
+            border-color: var(--brand-500);
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.12);
+        }
+
+        .select-icon-arrow {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-400);
+        }
+
+        /* TACTILE NUMBER STEPPER */
+        .stepper-widget {
+            display: flex;
+            align-items: center;
+            background: #F8FAFC;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 3px;
+            transition: all 0.15s ease;
+        }
+
+        .stepper-widget:focus-within {
+            background: #FFFFFF;
+            border-color: var(--brand-500);
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.12);
+        }
+
+        .step-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .step-btn:hover {
+            background: var(--brand-600);
+            border-color: var(--brand-600);
+            color: #FFFFFF;
+        }
+
+        .step-btn:active {
+            transform: scale(0.94);
+        }
+
+        .step-value-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-900);
+            outline: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* STICKY RESULTS CARD */
+        .results-bento-hud {
+            position: sticky;
+            top: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 26px;
+            box-shadow: var(--shadow-float);
+        }
+
+        .hud-top-label {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-400);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-hero-bento {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+        }
+
+        .score-hero-bento::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .score-badge-sub {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94A3B8;
+            margin-bottom: 6px;
+        }
+
+        .score-big-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 46px;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .score-big-unit {
+            font-size: 13px;
+            font-weight: 600;
+            color: #60A5FA;
+            margin-top: 6px;
+        }
+
+        /* PROCESS ROWS */
+        .hud-process-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .hud-row-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .hud-row-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-700);
+        }
+
+        .hud-row-meta strong {
+            font-weight: 700;
+            color: var(--text-900);
+        }
+
+        .hud-progress-bg {
+            height: 6px;
+            background: var(--surface-subtle);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+        }
+
+        .hud-progress-bar {
+            height: 100%;
+            border-radius: var(--radius-pill);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ACTIONS */
+        .hud-actions-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .btn-bento-subtle {
+            padding: 11px;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-bento-subtle:hover {
+            border-color: var(--brand-500);
+            color: var(--brand-600);
+            background: var(--brand-50);
+        }
+
+        .btn-bento-save {
+            width: 100%;
+            padding: 13px;
+            background: var(--brand-600);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-bento-save:hover {
+            background: var(--brand-700);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TOP NAV -->
+        <div class="top-navbar">
+            <a href="preview.html" class="back-link">
+                <i data-lucide="arrow-left" style="width:16px; height:16px;"></i>
+                До списку концепцій
+            </a>
+            <div class="tag-dribbble">
+                <i data-lucide="sparkles" style="width:14px; height:14px;"></i>
+                UI/UX Pro Max Edition
+            </div>
+        </div>
+
+        <!-- HERO BANNER -->
+        <div class="hero-banner">
+            <div class="hero-title-area">
+                <div class="hero-icon-box">
+                    <i data-lucide="utensils" style="width:26px; height:26px;"></i>
+                </div>
+                <div>
+                    <h1>Кухні <span class="hero-badge">v2.2 Pro Max</span></h1>
+                    <p>Кошторисний розрахунок трудовитрат конструктора, проєктувальника та монтажу</p>
+                </div>
+            </div>
+
+            <div class="process-chips-wrapper">
+                <label class="p-chip active-const" id="chip-c">
+                    <input type="checkbox" checked onchange="toggleProc('c', this)">
+                    <i data-lucide="ruler" style="width:15px; height:15px;"></i>
+                    Конструювання
+                </label>
+                <label class="p-chip active-proj" id="chip-p">
+                    <input type="checkbox" checked onchange="toggleProc('p', this)">
+                    <i data-lucide="file-spreadsheet" style="width:15px; height:15px;"></i>
+                    Проєктування
+                </label>
+                <label class="p-chip active-mont" id="chip-m">
+                    <input type="checkbox" checked onchange="toggleProc('m', this)">
+                    <i data-lucide="wrench" style="width:15px; height:15px;"></i>
+                    Монтаж
+                </label>
+            </div>
+        </div>
+
+        <!-- BENTO LAYOUT -->
+        <div class="bento-layout">
+            <!-- MAIN CARDS -->
+            <div class="bento-cards-stack">
+
+                <!-- CARD 1 -->
+                <div class="bento-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <div class="card-title-icon"><i data-lucide="layout-grid" style="width:18px; height:18px;"></i></div>
+                            1. Геометрія та планування
+                        </div>
+                    </div>
+                    <div class="bento-grid-2">
+                        <div class="field-unit">
+                            <label class="field-label">Форма кухні</label>
+                            <div class="select-field-box">
+                                <select class="select-field" id="b_shape" onchange="runDribbble()">
+                                    <option value="0">Пряма класична (Базова)</option>
+                                    <option value="12">Кутова (Г-подібна) (+12 б)</option>
+                                    <option value="20">П-подібна (+20 б)</option>
+                                    <option value="30">Острівна багаторівнева (+30 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-icon-arrow" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Кухонний острів</label>
+                            <div class="select-field-box">
+                                <select class="select-field" id="b_island" onchange="runDribbble()">
+                                    <option value="0">Без острова</option>
+                                    <option value="15">Острів стандартний (+15 б)</option>
+                                    <option value="25">Острів з мийкою / плитою (+25 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-icon-arrow" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Складність приміщення <span class="field-sub">Кути, ніші</span></label>
+                            <div class="select-field-box">
+                                <select class="select-field" id="b_walls" onchange="runDribbble()">
+                                    <option value="0">Стандартні кути 90°</option>
+                                    <option value="10">Непрямі кути, вентиляція (+10 б)</option>
+                                    <option value="18">Складні виступи, колони (+18 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-icon-arrow" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Вбудована техніка <span class="field-sub">Одиниць</span></label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_tech', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_tech" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_tech', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="bento-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <div class="card-title-icon"><i data-lucide="package" style="width:18px; height:18px;"></i></div>
+                            2. Корпусні модулі та секції
+                        </div>
+                    </div>
+                    <div class="bento-grid-2">
+                        <div class="field-unit">
+                            <label class="field-label">Нижні шафи (тумби) <span class="field-sub">шт</span></label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_lower', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_lower" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_lower', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Верхні навісні шафи <span class="field-sub">шт</span></label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_upper', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_upper" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_upper', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Пенали та колони <span class="field-sub">шт</span></label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_tall', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_tall" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_tall', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Антресольні секції <span class="field-sub">шт</span></label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_antresol', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_antresol" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_antresol', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="bento-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <div class="card-title-icon"><i data-lucide="sliders" style="width:18px; height:18px;"></i></div>
+                            3. Фурнітура, механізми та LED
+                        </div>
+                    </div>
+                    <div class="bento-grid-2">
+                        <div class="field-unit">
+                            <label class="field-label">Шухляди (Blum / Hettich)</label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_drw', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_drw" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_drw', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Підйомники (Aventos)</label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_lift', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_lift" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_lift', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">Карго / Сушки / Висувні</label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_cargo', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_cargo" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_cargo', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-unit">
+                            <label class="field-label">LED-підсвітка <span class="field-sub">Ліній</span></label>
+                            <div class="stepper-widget">
+                                <button class="step-btn" onclick="stepD('b_led', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="b_led" class="step-value-input" value="0" readonly>
+                                <button class="step-btn" onclick="stepD('b_led', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT HUD -->
+            <div class="bento-hud-column">
+                <div class="results-bento-hud">
+                    <div class="hud-top-label">
+                        <i data-lucide="pie-chart" style="width:15px; height:15px; color:#3B82F6;"></i>
+                        Підсумок кошторису
+                    </div>
+
+                    <div class="score-hero-bento">
+                        <div class="score-badge-sub">Загальний бал</div>
+                        <div class="score-big-num" id="d_total">0</div>
+                        <div class="score-big-unit">ViPoint</div>
+                    </div>
+
+                    <div class="hud-process-rows">
+                        <!-- C -->
+                        <div class="hud-row-item" id="d-row-c">
+                            <div class="hud-row-meta">
+                                <span>📐 Конструювання</span>
+                                <strong id="d-val-c">0 ViPoint</strong>
+                            </div>
+                            <div class="hud-progress-bg">
+                                <div class="hud-progress-bar" id="d-bar-c" style="width: 0%; background: #2563EB;"></div>
+                            </div>
+                        </div>
+
+                        <!-- P -->
+                        <div class="hud-row-item" id="d-row-p">
+                            <div class="hud-row-meta">
+                                <span>📋 Проєктування</span>
+                                <strong id="d-val-p">0 ViPoint</strong>
+                            </div>
+                            <div class="hud-progress-bg">
+                                <div class="hud-progress-bar" id="d-bar-p" style="width: 0%; background: #8B5CF6;"></div>
+                            </div>
+                        </div>
+
+                        <!-- M -->
+                        <div class="hud-row-item" id="d-row-m">
+                            <div class="hud-row-meta">
+                                <span>🔨 Монтаж</span>
+                                <strong id="d-val-m">0 ViPoint</strong>
+                            </div>
+                            <div class="hud-progress-bg">
+                                <div class="hud-progress-bar" id="d-bar-m" style="width: 0%; background: #10B981;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hud-actions-2">
+                        <button class="btn-bento-subtle" onclick="alert('Детальний розрахунок!')">
+                            <i data-lucide="file-text" style="width:15px; height:15px;"></i>
+                            Деталі
+                        </button>
+                        <button class="btn-bento-subtle" onclick="dReset()">
+                            <i data-lucide="rotate-ccw" style="width:15px; height:15px;"></i>
+                            Скинути
+                        </button>
+                    </div>
+
+                    <button class="btn-bento-save" onclick="alert('Успішно збережено!')">
+                        <i data-lucide="save" style="width:16px; height:16px;"></i>
+                        Зберегти розрахунок
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const pState = { c: true, p: true, m: true };
+
+        function toggleProc(k, chk) {
+            pState[k] = chk.checked;
+            const chip = document.getElementById('chip-' + k);
+            const row = document.getElementById('d-row-' + k);
+            
+            const activeClasses = { c: 'active-const', p: 'active-proj', m: 'active-mont' };
+            if (chk.checked) {
+                chip.classList.add(activeClasses[k]);
+                row.style.opacity = '1';
+            } else {
+                chip.classList.remove(activeClasses[k]);
+                row.style.opacity = '0.35';
+            }
+            runDribbble();
+        }
+
+        function stepD(id, d) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + d;
+            if (val < 0) val = 0;
+            el.value = val;
+            runDribbble();
+        }
+
+        function runDribbble() {
+            const sh = parseInt(document.getElementById('b_shape').value, 10);
+            const is = parseInt(document.getElementById('b_island').value, 10);
+            const wl = parseInt(document.getElementById('b_walls').value, 10);
+            const tc = parseInt(document.getElementById('b_tech').value, 10);
+            const lw = parseInt(document.getElementById('b_lower').value, 10);
+            const up = parseInt(document.getElementById('b_upper').value, 10);
+            const tl = parseInt(document.getElementById('b_tall').value, 10);
+            const an = parseInt(document.getElementById('b_antresol').value, 10);
+            const dr = parseInt(document.getElementById('b_drw').value, 10);
+            const lf = parseInt(document.getElementById('b_lift').value, 10);
+            const cg = parseInt(document.getElementById('b_cargo').value, 10);
+            const ld = parseInt(document.getElementById('b_led').value, 10);
+
+            const c = (sh * 0.5) + (is * 0.4) + (wl * 0.5) + (tc * 3) + (lw * 4) + (up * 3.5) + (tl * 7) + (an * 3) + (dr * 2.5) + (lf * 3) + (cg * 2) + (ld * 4);
+            const p = (sh * 0.3) + (is * 0.3) + (wl * 0.3) + (tc * 2) + (lw * 2) + (up * 2) + (tl * 4) + (an * 2) + (dr * 1) + (lf * 1.5) + (cg * 1) + (ld * 2);
+            const m = (sh * 0.2) + (is * 0.3) + (wl * 0.2) + (tc * 4) + (lw * 5) + (up * 4.5) + (tl * 8) + (an * 4) + (dr * 2) + (lf * 2.5) + (cg * 2.5) + (ld * 5);
+
+            const rc = Math.round(c);
+            const rp = Math.round(p);
+            const rm = Math.round(m);
+
+            document.getElementById('d-val-c').innerText = rc + ' ViPoint';
+            document.getElementById('d-val-p').innerText = rp + ' ViPoint';
+            document.getElementById('d-val-m').innerText = rm + ' ViPoint';
+
+            let tot = 0;
+            if (pState.c) tot += rc;
+            if (pState.p) tot += rp;
+            if (pState.m) tot += rm;
+
+            document.getElementById('d_total').innerText = tot;
+
+            const max = Math.max(rc, rp, rm, 1);
+            document.getElementById('d-bar-c').style.width = ((rc / max) * 100) + '%';
+            document.getElementById('d-bar-p').style.width = ((rp / max) * 100) + '%';
+            document.getElementById('d-bar-m').style.width = ((rm / max) * 100) + '%';
+        }
+
+        function dReset() {
+            document.querySelectorAll('.step-value-input').forEach(i => i.value = '0');
+            document.querySelectorAll('.select-field').forEach(s => s.selectedIndex = 0);
+            runDribbble();
+        }
+
+        runDribbble();
+    </script>
+</body>
+</html>

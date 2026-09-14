@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Концепт 5 — Aurora Glow & Crystal Glassmorphism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-card: rgba(255, 255, 255, 0.82);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --glass-inner: rgba(255, 255, 255, 0.55);
+            --text-primary: #0F172A;
+            --text-secondary: #334155;
+            --text-muted: #64748B;
+            --blue-grad: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+            --purple-grad: linear-gradient(135deg, #7C3AED 0%, #C026D3 100%);
+            --emerald-grad: linear-gradient(135deg, #059669 0%, #10B981 100%);
+            --amber-grad: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px 20px 80px;
+            position: relative;
+            overflow-x: hidden;
+            background-color: #F8FAFC;
+        }
+
+        /* DYNAMIC AURORA BACKGROUND */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #F0F9FF 0%, #FAF5FF 50%, #FFF7ED 100%);
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.65;
+            animation: floatBlob 16s ease-in-out infinite alternate;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #93C5FD 0%, #60A5FA 100%);
+            top: -100px;
+            left: -100px;
+            animation-duration: 18s;
+        }
+
+        .blob-2 {
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, #DDD6FE 0%, #C084FC 100%);
+            top: 30%;
+            right: -80px;
+            animation-duration: 22s;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, #FED7AA 0%, #FDBA74 100%);
+            bottom: -80px;
+            left: 30%;
+            animation-duration: 15s;
+            animation-delay: -8s;
+        }
+
+        .blob-4 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #A7F3D0 0%, #6EE7B7 100%);
+            top: 60%;
+            left: -50px;
+            animation-duration: 20s;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 40px) scale(1.1); }
+            100% { transform: translate(-40px, 60px) scale(0.95); }
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TOP NAV */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .back-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s;
+        }
+        .back-pill:hover {
+            color: #2563EB;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        .aurora-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(239, 246, 255, 0.9) 0%, rgba(250, 245, 255, 0.9) 100%);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(192, 132, 252, 0.4);
+            border-radius: 999px;
+            color: #7C3AED;
+            font-size: 12.5px;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.12);
+        }
+
+        /* HERO GLASS BANNER */
+        .glass-hero {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 26px 32px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+        }
+
+        .hero-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .icon-orb {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
+        }
+
+        .hero-left h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1E3A8A 0%, #6D28D9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-left p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* PROCESS TOGGLE PILLS */
+        .process-chips-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .glass-proc-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: 999px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            color: var(--text-secondary);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-proc-chip input { display: none; }
+
+        .glass-proc-chip.c-active {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border-color: #3B82F6;
+            color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .glass-proc-chip.p-active {
+            background: linear-gradient(135deg, #FAF5FF 0%, #EDE9FE 100%);
+            border-color: #8B5CF6;
+            color: #6D28D9;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .glass-proc-chip.m-active {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            border-color: #10B981;
+            color: #047857;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* GRID */
+        .glass-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 980px) {
+            .glass-layout { grid-template-columns: 1fr; }
+        }
+
+        /* GLASS CARD */
+        .glass-card {
+            background: var(--glass-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px -12px rgba(99, 102, 241, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+        }
+
+        .card-top-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1.5px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .card-tag-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 249, 255, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563EB;
+        }
+
+        .card-top-title h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .glass-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 620px) {
+            .glass-inputs-grid { grid-template-columns: 1fr; }
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .input-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-label span {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* CRYSTAL SELECT */
+        .crystal-select-box {
+            position: relative;
+        }
+
+        .crystal-select {
+            width: 100%;
+            padding: 12px 38px 12px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(203, 213, 225, 0.7);
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .crystal-select:focus {
+            background: #FFFFFF;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.18);
+        }
+
+        .select-chevron {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+        }
+
+        /* JUICY STEPPER */
+        .juicy-stepper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1.5px solid rgba(203, 213, 225, 0.7);
+            border-radius: 14px;
+            padding: 3px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .juicy-stepper:focus-within {
+            background: #FFFFFF;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3.5px rgba(59, 130, 246, 0.18);
+        }
+
+        .j-btn {
+            width: 38px;
+            height: 38px;
+            background: rgba(241, 245, 249, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .j-btn:hover {
+            background: #3B82F6;
+            border-color: #3B82F6;
+            color: #FFFFFF;
+            transform: scale(1.05);
+        }
+
+        .j-btn:active {
+            transform: scale(0.95);
+        }
+
+        .j-val {
+            flex: 1;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 15.5px;
+            font-weight: 800;
+            color: var(--text-primary);
+            outline: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* STICKY GLASS HUD */
+        .glass-hud {
+            position: sticky;
+            top: 24px;
+            background: var(--glass-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 26px;
+            padding: 28px;
+            box-shadow: 0 20px 45px -15px rgba(59, 130, 246, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+
+        .hud-header {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .glow-score-card {
+            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #8B5CF6 100%);
+            border-radius: 20px;
+            padding: 26px 20px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+        }
+
+        .glow-score-card::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            filter: blur(20px);
+        }
+
+        .score-title-tag {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #BFDBFE;
+            margin-bottom: 6px;
+        }
+
+        .score-huge-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .score-unit-sub {
+            font-size: 13px;
+            font-weight: 600;
+            color: #E0E7FF;
+            margin-top: 6px;
+        }
+
+        /* ROWS */
+        .hud-process-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .hud-card-row {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .hud-card-row.disabled {
+            opacity: 0.35;
+            filter: grayscale(1);
+        }
+
+        .row-meta-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .row-meta-text strong {
+            color: var(--text-primary);
+        }
+
+        .glow-prog-bg {
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .glow-prog-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ACTIONS */
+        .btn-aurora-save {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-aurora-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.45);
+        }
+
+        .btn-aurora-reset {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(203, 213, 225, 0.7);
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.15s;
+        }
+
+        .btn-aurora-reset:hover {
+            color: var(--text-primary);
+            background: #FFFFFF;
+            border-color: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AURORA GLOW CANVAS -->
+    <div class="aurora-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+
+    <div class="container">
+        <!-- TOP NAV -->
+        <div class="nav-bar">
+            <a href="preview.html" class="back-pill">
+                <i data-lucide="arrow-left" style="width:16px; height:16px;"></i>
+                До вибору стилів
+            </a>
+            <div class="aurora-badge">
+                <i data-lucide="sparkles" style="width:14px; height:14px;"></i>
+                Концепт 5: Aurora Glow & Glass
+            </div>
+        </div>
+
+        <!-- HERO BANNER -->
+        <div class="glass-hero">
+            <div class="hero-left">
+                <div class="icon-orb">
+                    <i data-lucide="sparkles" style="width:28px; height:28px;"></i>
+                </div>
+                <div>
+                    <h1>Кухонний калькулятор</h1>
+                    <p>Живий динамічний розрахунок з анімованим скляним фоном</p>
+                </div>
+            </div>
+
+            <div class="process-chips-group">
+                <label class="glass-proc-chip c-active" id="chip-g-c">
+                    <input type="checkbox" checked onchange="toggleAurora('c', this)">
+                    <i data-lucide="ruler" style="width:15px; height:15px;"></i>
+                    Конструювання
+                </label>
+                <label class="glass-proc-chip p-active" id="chip-g-p">
+                    <input type="checkbox" checked onchange="toggleAurora('p', this)">
+                    <i data-lucide="file-spreadsheet" style="width:15px; height:15px;"></i>
+                    Проєктування
+                </label>
+                <label class="glass-proc-chip m-active" id="chip-g-m">
+                    <input type="checkbox" checked onchange="toggleAurora('m', this)">
+                    <i data-lucide="wrench" style="width:15px; height:15px;"></i>
+                    Монтаж
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT -->
+        <div class="glass-layout">
+            <div class="glass-cards-column">
+
+                <!-- CARD 1 -->
+                <div class="glass-card">
+                    <div class="card-top-title">
+                        <div class="card-tag-icon"><i data-lucide="layout" style="width:20px; height:20px;"></i></div>
+                        <h3>1. Форма та габарити кухні</h3>
+                    </div>
+                    <div class="glass-inputs-grid">
+                        <div class="input-wrapper">
+                            <label class="input-label">Форма гарнітуру</label>
+                            <div class="crystal-select-box">
+                                <select class="crystal-select" id="g_shape" onchange="runAurora()">
+                                    <option value="0">Пряма класична (Базова)</option>
+                                    <option value="12">Кутова (Г-подібна) (+12 б)</option>
+                                    <option value="20">П-подібна (+20 б)</option>
+                                    <option value="30">Острівна багаторівнева (+30 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Кухонний острів</label>
+                            <div class="crystal-select-box">
+                                <select class="crystal-select" id="g_island" onchange="runAurora()">
+                                    <option value="0">Без острова</option>
+                                    <option value="15">Острів стандартний (+15 б)</option>
+                                    <option value="25">Острів з мийкою / варильною (+25 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Складність стін <span>Кути / Ніші</span></label>
+                            <div class="crystal-select-box">
+                                <select class="crystal-select" id="g_walls" onchange="runAurora()">
+                                    <option value="0">Прямі кути 90°</option>
+                                    <option value="10">Непрямі кути, вентиляція (+10 б)</option>
+                                    <option value="18">Складні виступи, колони (+18 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Вбудована техніка <span>шт</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_tech', -1)">−</button>
+                                <input type="text" id="g_tech" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_tech', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="glass-card">
+                    <div class="card-top-title">
+                        <div class="card-tag-icon"><i data-lucide="package" style="width:20px; height:20px;"></i></div>
+                        <h3>2. Модулі та шафи</h3>
+                    </div>
+                    <div class="glass-inputs-grid">
+                        <div class="input-wrapper">
+                            <label class="input-label">Нижні модулі (тумби) <span>шт</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_lower', -1)">−</button>
+                                <input type="text" id="g_lower" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_lower', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Верхні навісні шафи <span>шт</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_upper', -1)">−</button>
+                                <input type="text" id="g_upper" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_upper', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Пенали та колони <span>шт</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_tall', -1)">−</button>
+                                <input type="text" id="g_tall" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_tall', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Антресольні секції <span>шт</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_antresol', -1)">−</button>
+                                <input type="text" id="g_antresol" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_antresol', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="glass-card">
+                    <div class="card-top-title">
+                        <div class="card-tag-icon"><i data-lucide="sliders" style="width:20px; height:20px;"></i></div>
+                        <h3>3. Фурнітура та LED освітлення</h3>
+                    </div>
+                    <div class="glass-inputs-grid">
+                        <div class="input-wrapper">
+                            <label class="input-label">Висувні шухляди <span>Blum / Hettich</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_drw', -1)">−</button>
+                                <input type="text" id="g_drw" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_drw', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Підйомні механізми <span>Aventos</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_lift', -1)">−</button>
+                                <input type="text" id="g_lift" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_lift', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label class="input-label">Врізна LED-підсвітка <span>Ліній</span></label>
+                            <div class="juicy-stepper">
+                                <button class="j-btn" onclick="stepA('g_led', -1)">−</button>
+                                <input type="text" id="g_led" class="j-val" value="0" readonly>
+                                <button class="j-btn" onclick="stepA('g_led', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT STICKY HUD -->
+            <div class="glass-hud-column">
+                <div class="glass-hud">
+                    <div class="hud-header">
+                        <i data-lucide="zap" style="width:15px; height:15px; color:#EAB308;"></i>
+                        Підсумок кошторису
+                    </div>
+
+                    <div class="glow-score-card">
+                        <div class="score-title-tag">Загальний бал</div>
+                        <div class="score-huge-text" id="g_tot">0</div>
+                        <div class="score-unit-sub">ViPoint</div>
+                    </div>
+
+                    <div class="hud-process-list">
+                        <!-- C -->
+                        <div class="hud-card-row" id="g-row-c">
+                            <div class="row-meta-text">
+                                <span>📐 Конструювання</span>
+                                <strong id="g-val-c">0 ViPoint</strong>
+                            </div>
+                            <div class="glow-prog-bg">
+                                <div class="glow-prog-fill" id="g-bar-c" style="width: 0%; background: var(--blue-grad);"></div>
+                            </div>
+                        </div>
+
+                        <!-- P -->
+                        <div class="hud-card-row" id="g-row-p">
+                            <div class="row-meta-text">
+                                <span>📋 Проєктування</span>
+                                <strong id="g-val-p">0 ViPoint</strong>
+                            </div>
+                            <div class="glow-prog-bg">
+                                <div class="glow-prog-fill" id="g-bar-p" style="width: 0%; background: var(--purple-grad);"></div>
+                            </div>
+                        </div>
+
+                        <!-- M -->
+                        <div class="hud-card-row" id="g-row-m">
+                            <div class="row-meta-text">
+                                <span>🔨 Монтаж</span>
+                                <strong id="g-val-m">0 ViPoint</strong>
+                            </div>
+                            <div class="glow-prog-bg">
+                                <div class="glow-prog-fill" id="g-bar-m" style="width: 0%; background: var(--emerald-grad);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-aurora-save" onclick="alert('Збережено в базу!')">
+                        <i data-lucide="save" style="width:17px; height:17px;"></i>
+                        Зберегти розрахунок
+                    </button>
+
+                    <button class="btn-aurora-reset" onclick="aReset()">
+                        🔄 Скинути значення
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const aState = { c: true, p: true, m: true };
+
+        function toggleAurora(k, chk) {
+            aState[k] = chk.checked;
+            const chip = document.getElementById('chip-g-' + k);
+            const row = document.getElementById('g-row-' + k);
+            const cls = { c: 'c-active', p: 'p-active', m: 'm-active' };
+
+            if (chk.checked) {
+                chip.classList.add(cls[k]);
+                row.classList.remove('disabled');
+            } else {
+                chip.classList.remove(cls[k]);
+                row.classList.add('disabled');
+            }
+            runAurora();
+        }
+
+        function stepA(id, d) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + d;
+            if (val < 0) val = 0;
+            el.value = val;
+            runAurora();
+        }
+
+        function runAurora() {
+            const sh = parseInt(document.getElementById('g_shape').value, 10);
+            const is = parseInt(document.getElementById('g_island').value, 10);
+            const wl = parseInt(document.getElementById('g_walls').value, 10);
+            const tc = parseInt(document.getElementById('g_tech').value, 10);
+            const lw = parseInt(document.getElementById('g_lower').value, 10);
+            const up = parseInt(document.getElementById('g_upper').value, 10);
+            const tl = parseInt(document.getElementById('g_tall').value, 10);
+            const an = parseInt(document.getElementById('g_antresol').value, 10);
+            const dr = parseInt(document.getElementById('g_drw').value, 10);
+            const lf = parseInt(document.getElementById('g_lift').value, 10);
+            const ld = parseInt(document.getElementById('g_led').value, 10);
+
+            const c = (sh * 0.5) + (is * 0.4) + (wl * 0.5) + (tc * 3) + (lw * 4) + (up * 3.5) + (tl * 7) + (an * 3) + (dr * 2.5) + (lf * 3) + (ld * 4);
+            const p = (sh * 0.3) + (is * 0.3) + (wl * 0.3) + (tc * 2) + (lw * 2) + (up * 2) + (tl * 4) + (an * 2) + (dr * 1) + (lf * 1.5) + (ld * 2);
+            const m = (sh * 0.2) + (is * 0.3) + (wl * 0.2) + (tc * 4) + (lw * 5) + (up * 4.5) + (tl * 8) + (an * 4) + (dr * 2) + (lf * 2.5) + (ld * 5);
+
+            const rc = Math.round(c);
+            const rp = Math.round(p);
+            const rm = Math.round(m);
+
+            document.getElementById('g-val-c').innerText = rc + ' ViPoint';
+            document.getElementById('g-val-p').innerText = rp + ' ViPoint';
+            document.getElementById('g-val-m').innerText = rm + ' ViPoint';
+
+            let tot = 0;
+            if (aState.c) tot += rc;
+            if (aState.p) tot += rp;
+            if (aState.m) tot += rm;
+
+            document.getElementById('g_tot').innerText = tot;
+
+            const max = Math.max(rc, rp, rm, 1);
+            document.getElementById('g-bar-c').style.width = ((rc / max) * 100) + '%';
+            document.getElementById('g-bar-p').style.width = ((rp / max) * 100) + '%';
+            document.getElementById('g-bar-m').style.width = ((rm / max) * 100) + '%';
+        }
+
+        function aReset() {
+            document.querySelectorAll('.j-val').forEach(i => i.value = '0');
+            document.querySelectorAll('.crystal-select').forEach(s => s.selectedIndex = 0);
+            runAurora();
+        }
+
+        runAurora();
+    </script>
+</body>
+</html>

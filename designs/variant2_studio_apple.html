@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Варіант 2 — Studio & Apple Card Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F1F5F9;
+            --card-bg: #FFFFFF;
+            --primary: #0284C7;
+            --primary-light: #E0F2FE;
+            --primary-dark: #0369A1;
+            --text-title: #0F172A;
+            --text-body: #334155;
+            --text-sub: #64748B;
+            --border: #E2E8F0;
+            --border-active: #38BDF8;
+            --radius-xl: 20px;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+            --shadow-active: 0 10px 25px -5px rgba(2, 132, 199, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #F8FAFC;
+            color: var(--text-title);
+            padding: 28px 20px 80px;
+        }
+
+        .wrapper {
+            max-width: 1220px;
+            margin: 0 auto;
+        }
+
+        /* TOP NAVIGATION */
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .back-pill {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text-sub);
+            font-size: 13.5px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+        .back-pill:hover {
+            color: var(--primary);
+            border-color: var(--primary-light);
+            transform: translateX(-2px);
+        }
+
+        .tag-pill {
+            padding: 6px 16px;
+            background: #FEF3C7;
+            color: #92400E;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #FDE68A;
+        }
+
+        /* HERO APP BAR */
+        .hero-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 22px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .hero-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.12);
+        }
+
+        .hero-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-title);
+            letter-spacing: -0.01em;
+        }
+
+        .hero-text p {
+            font-size: 13.5px;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        /* SEGMENTED TOGGLE SWITCHERS */
+        .segmented-group {
+            display: flex;
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: 999px;
+            gap: 4px;
+        }
+
+        .segment-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .segment-btn.active {
+            background: #FFFFFF;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        /* GRID SYSTEM */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .layout-grid { grid-template-columns: 1fr; }
+        }
+
+        /* STUDIO CARDS */
+        .studio-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s ease;
+        }
+
+        .studio-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+
+        .card-top {
+            padding: 16px 24px;
+            background: linear-gradient(to right, #F8FAFC, #FFFFFF);
+            border-bottom: 1px solid #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            font-size: 18px;
+        }
+
+        .card-top h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1E293B;
+            letter-spacing: -0.01em;
+        }
+
+        .card-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 640px) {
+            .card-body { grid-template-columns: 1fr; }
+        }
+
+        .input-block {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .input-block label {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-body);
+        }
+
+        /* PILL SELECT */
+        .pill-select {
+            width: 100%;
+            padding: 11px 36px 11px 16px;
+            background-color: #F8FAFC;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-title);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.2s;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 14px center;
+            background-repeat: no-repeat;
+            background-size: 15px;
+        }
+
+        .pill-select:focus {
+            background-color: #FFFFFF;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.12);
+        }
+
+        /* CARD STEPPER */
+        .card-stepper {
+            display: flex;
+            align-items: center;
+            background: #F8FAFC;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 3px;
+            transition: all 0.2s;
+        }
+
+        .card-stepper:focus-within {
+            background: #FFFFFF;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.12);
+        }
+
+        .c-step-btn {
+            width: 36px;
+            height: 36px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-body);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .c-step-btn:hover {
+            background: var(--primary);
+            color: #FFFFFF;
+            border-color: var(--primary);
+        }
+
+        .c-step-val {
+            flex: 1;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-title);
+            outline: none;
+        }
+
+        /* RIGHT CARD RESULTS WIDGET */
+        .results-widget {
+            position: sticky;
+            top: 24px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 28px 24px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .widget-title {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-sub);
+            margin-bottom: 20px;
+        }
+
+        .score-circle-display {
+            background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%);
+            border-radius: 20px;
+            padding: 24px;
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-circle-display::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+        }
+
+        .score-tag {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.85;
+            margin-bottom: 6px;
+        }
+
+        .score-number {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .score-unit {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .breakdown-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: #F8FAFC;
+            border-radius: var(--radius-md);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-body);
+        }
+
+        .breakdown-item.disabled {
+            opacity: 0.4;
+            text-decoration: line-through;
+        }
+
+        .breakdown-item strong {
+            font-weight: 800;
+            color: var(--text-title);
+        }
+
+        .btn-widget-primary {
+            width: 100%;
+            padding: 14px;
+            background: #0F172A;
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+
+        .btn-widget-primary:hover {
+            background: #1E293B;
+            transform: translateY(-1px);
+        }
+
+        .btn-widget-secondary {
+            width: 100%;
+            padding: 11px;
+            background: #FFFFFF;
+            color: var(--text-sub);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.15s;
+        }
+
+        .btn-widget-secondary:hover {
+            border-color: #CBD5E1;
+            color: var(--text-title);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <!-- TOP BAR -->
+        <div class="nav-header">
+            <a href="preview.html" class="back-pill">← Назад до концептів</a>
+            <div class="tag-pill">Концепт 2: Studio Apple Card</div>
+        </div>
+
+        <!-- HERO BAR -->
+        <div class="hero-bar">
+            <div class="hero-left">
+                <div class="hero-icon">🍳</div>
+                <div class="hero-text">
+                    <h1>Кухонний калькулятор</h1>
+                    <p>Швидкий розрахунок вартості робіт конструктора та монтажника</p>
+                </div>
+            </div>
+
+            <div class="segmented-group">
+                <button class="segment-btn active" id="btn-c" onclick="toggleProcess('c')">📐 Конструктор</button>
+                <button class="segment-btn active" id="btn-p" onclick="toggleProcess('p')">📋 Проєктувальник</button>
+                <button class="segment-btn active" id="btn-m" onclick="toggleProcess('m')">🔨 Монтажник</button>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="layout-grid">
+            <!-- FORM CARDS -->
+            <div class="cards-column">
+
+                <!-- CARD 1 -->
+                <div class="studio-card">
+                    <div class="card-top">
+                        <span class="card-icon">📐</span>
+                        <h3>1. Конфігурація та параметри приміщення</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-block">
+                            <label>Тип та форма кухні</label>
+                            <select class="pill-select" id="shape" onchange="calc()">
+                                <option value="0">Пряма класична (Базова)</option>
+                                <option value="12">Кутова (Г-подібна) (+12 б)</option>
+                                <option value="20">П-подібна (+20 б)</option>
+                                <option value="30">Острівна багаторівнева (+30 б)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Кухонний острів</label>
+                            <select class="pill-select" id="island" onchange="calc()">
+                                <option value="0">Відсутній</option>
+                                <option value="15">Окремий острів (+15 б)</option>
+                                <option value="25">Острів з комунікаціями (+25 б)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Складність стін та ніш</label>
+                            <select class="pill-select" id="walls" onchange="calc()">
+                                <option value="0">Рівні стіни 90°</option>
+                                <option value="10">Непрямі кути, вентиляція (+10 б)</option>
+                                <option value="18">Складні ніші, колони (+18 б)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Одиниць вбудованої техніки</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('tech', -1)">−</button>
+                                <input type="text" id="tech" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('tech', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="studio-card">
+                    <div class="card-top">
+                        <span class="card-icon">📦</span>
+                        <h3>2. Модулі, ящики та наповнення</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-block">
+                            <label>Нижні шафи (тумби)</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('b_mod', -1)">−</button>
+                                <input type="text" id="b_mod" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('b_mod', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Верхні навісні модулі</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('t_mod', -1)">−</button>
+                                <input type="text" id="t_mod" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('t_mod', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Пенали / Шафи під техніку</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('tall_mod', -1)">−</button>
+                                <input type="text" id="tall_mod" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('tall_mod', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Висувні шухляди (комплекти)</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('drawers', -1)">−</button>
+                                <input type="text" id="drawers" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('drawers', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="studio-card">
+                    <div class="card-top">
+                        <span class="card-icon">💡</span>
+                        <h3>3. Підсвітка та спеціальні механізми</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-block">
+                            <label>Підйомники фасаду (Aventos)</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('lifts', -1)">−</button>
+                                <input type="text" id="lifts" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('lifts', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="input-block">
+                            <label>Врізна LED-підсвітка (лінії)</label>
+                            <div class="card-stepper">
+                                <button class="c-step-btn" onclick="step('led', -1)">−</button>
+                                <input type="text" id="led" class="c-step-val" value="0" readonly>
+                                <button class="c-step-btn" onclick="step('led', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT WIDGET -->
+            <div class="widget-column">
+                <div class="results-widget">
+                    <div class="widget-title">Підсумок розрахунку</div>
+
+                    <div class="score-circle-display">
+                        <div class="score-tag">Загальний бал</div>
+                        <div class="score-number" id="tot_score">0</div>
+                        <div class="score-unit">ViPoint</div>
+                    </div>
+
+                    <div class="breakdown-box">
+                        <div class="breakdown-item" id="row-c">
+                            <span>📐 Конструювання</span>
+                            <strong id="val-c">0 б</strong>
+                        </div>
+                        <div class="breakdown-item" id="row-p">
+                            <span>📋 Проєктування</span>
+                            <strong id="val-p">0 б</strong>
+                        </div>
+                        <div class="breakdown-item" id="row-m">
+                            <span>🔨 Монтаж</span>
+                            <strong id="val-m">0 б</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn-widget-primary" onclick="alert('Розрахунок збережено!')">
+                        💾 Зберегти в базу
+                    </button>
+
+                    <button class="btn-widget-secondary" onclick="resetAll()">
+                        🔄 Скинути форму
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const active = { c: true, p: true, m: true };
+
+        function toggleProcess(k) {
+            active[k] = !active[k];
+            const btn = document.getElementById('btn-' + k);
+            const row = document.getElementById('row-' + k);
+            if (active[k]) {
+                btn.classList.add('active');
+                row.classList.remove('disabled');
+            } else {
+                btn.classList.remove('active');
+                row.classList.add('disabled');
+            }
+            calc();
+        }
+
+        function step(id, d) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + d;
+            if (val < 0) val = 0;
+            el.value = val;
+            calc();
+        }
+
+        function calc() {
+            const shape = parseInt(document.getElementById('shape').value, 10);
+            const island = parseInt(document.getElementById('island').value, 10);
+            const walls = parseInt(document.getElementById('walls').value, 10);
+            const tech = parseInt(document.getElementById('tech').value, 10);
+            const b = parseInt(document.getElementById('b_mod').value, 10);
+            const t = parseInt(document.getElementById('t_mod').value, 10);
+            const tall = parseInt(document.getElementById('tall_mod').value, 10);
+            const drw = parseInt(document.getElementById('drawers').value, 10);
+            const lft = parseInt(document.getElementById('lifts').value, 10);
+            const led = parseInt(document.getElementById('led').value, 10);
+
+            const c = (shape * 0.5) + (island * 0.4) + (walls * 0.5) + (tech * 3) + (b * 4) + (t * 3.5) + (tall * 7) + (drw * 2.5) + (lft * 3) + (led * 4);
+            const p = (shape * 0.3) + (island * 0.3) + (walls * 0.3) + (tech * 2) + (b * 2) + (t * 2) + (tall * 4) + (drw * 1) + (lft * 1.5) + (led * 2);
+            const m = (shape * 0.2) + (island * 0.3) + (walls * 0.2) + (tech * 4) + (b * 5) + (t * 4.5) + (tall * 8) + (drw * 2) + (lft * 2.5) + (led * 5);
+
+            const rc = Math.round(c);
+            const rp = Math.round(p);
+            const rm = Math.round(m);
+
+            document.getElementById('val-c').innerText = rc + ' б';
+            document.getElementById('val-p').innerText = rp + ' б';
+            document.getElementById('val-m').innerText = rm + ' б';
+
+            let grand = 0;
+            if (active.c) grand += rc;
+            if (active.p) grand += rp;
+            if (active.m) grand += rm;
+
+            document.getElementById('tot_score').innerText = grand;
+        }
+
+        function resetAll() {
+            document.querySelectorAll('.c-step-val').forEach(i => i.value = '0');
+            document.querySelectorAll('.pill-select').forEach(s => s.selectedIndex = 0);
+            calc();
+        }
+
+        calc();
+    </script>
+</body>
+</html>

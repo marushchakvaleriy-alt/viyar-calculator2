@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Варіант 3 — Compact Pro (Швидкісний інженерний)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #F3F4F6;
+            --panel-bg: #FFFFFF;
+            --border: #D1D5DB;
+            --border-light: #E5E7EB;
+            --primary: #1D4ED8;
+            --primary-bg: #EFF6FF;
+            --text-dark: #111827;
+            --text-mid: #4B5563;
+            --text-dim: #9CA3AF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-canvas);
+            color: var(--text-dark);
+            padding: 20px;
+        }
+
+        .pro-container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .pro-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 16px;
+        }
+
+        .pro-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pro-title-group h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .pro-badge {
+            font-size: 11px;
+            font-weight: 700;
+            background: #DBEAFE;
+            color: #1E40AF;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .pro-toggles {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pro-toggle-btn {
+            border: 1px solid var(--border-light);
+            background: #F9FAFB;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-mid);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .pro-toggle-btn.active {
+            background: #1E40AF;
+            color: #FFFFFF;
+            border-color: #1E40AF;
+        }
+
+        /* MAIN GRID */
+        .pro-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 16px;
+            align-items: start;
+        }
+
+        /* COMPACT CARD SECTIONS */
+        .pro-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .pro-card-header {
+            background: #F9FAFB;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--text-mid);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pro-card-body {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .pro-card-body { grid-template-columns: 1fr; }
+            .pro-grid { grid-template-columns: 1fr; }
+        }
+
+        .pro-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .pro-field label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-mid);
+        }
+
+        .pro-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-dark);
+            background: #FFFFFF;
+            outline: none;
+        }
+
+        .pro-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+        }
+
+        /* COMPACT STEPPER */
+        .pro-stepper {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #FFFFFF;
+            overflow: hidden;
+        }
+
+        .pro-stepper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+        }
+
+        .p-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #F3F4F6;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .p-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .p-input {
+            flex: 1;
+            border: none;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            outline: none;
+            background: transparent;
+        }
+
+        /* SIDEBAR HUD */
+        .pro-sidebar {
+            position: sticky;
+            top: 20px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .hud-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+
+        .hud-score {
+            font-size: 34px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+
+        .hud-score span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-mid);
+        }
+
+        .hud-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+
+        .hud-table td {
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .hud-table td:last-child {
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .pro-action-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background 0.15s;
+        }
+
+        .pro-action-btn:hover {
+            background: #1E40AF;
+        }
+
+        .pro-reset-btn {
+            width: 100%;
+            padding: 8px;
+            background: #F9FAFB;
+            color: var(--text-mid);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .pro-reset-btn:hover {
+            background: #F3F4F6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pro-container">
+        <!-- TOP HEADER -->
+        <div class="pro-top">
+            <div class="pro-title-group">
+                <a href="preview.html" style="text-decoration:none; color:var(--text-mid); font-size:13px; font-weight:600;">← Назад</a>
+                <span style="color:#D1D5DB">|</span>
+                <h1>Кухні</h1>
+                <span class="pro-badge">V2 Pro Engineering</span>
+            </div>
+
+            <div class="pro-toggles">
+                <button class="pro-toggle-btn active" id="p-btn-1" onclick="toggleP(1)">Конструювання</button>
+                <button class="pro-toggle-btn active" id="p-btn-2" onclick="toggleP(2)">Проєктування</button>
+                <button class="pro-toggle-btn active" id="p-btn-3" onclick="toggleP(3)">Монтаж</button>
+            </div>
+        </div>
+
+        <div class="pro-grid">
+            <div class="pro-main">
+
+                <!-- CARD 1 -->
+                <div class="pro-card">
+                    <div class="pro-card-header">
+                        <span>1. Геометрія приміщення</span>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-field">
+                            <label>Форма гарнітуру</label>
+                            <select class="pro-select" id="p_shape" onchange="runP()">
+                                <option value="0">Пряма (0 б)</option>
+                                <option value="12">Кутова (+12 б)</option>
+                                <option value="20">П-подібна (+20 б)</option>
+                                <option value="30">Острівна (+30 б)</option>
+                            </select>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>Острів</label>
+                            <select class="pro-select" id="p_island" onchange="runP()">
+                                <option value="0">Без острова</option>
+                                <option value="15">Стандарт (+15 б)</option>
+                                <option value="25">З мийкою (+25 б)</option>
+                            </select>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>Складність стін</label>
+                            <select class="pro-select" id="p_walls" onchange="runP()">
+                                <option value="0">Стандартні кути</option>
+                                <option value="8">Ніші / Кути (+8 б)</option>
+                                <option value="16">Складні (+16 б)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="pro-card">
+                    <div class="pro-card-header">
+                        <span>2. Модулі (Кількість одиниць)</span>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-field">
+                            <label>Нижні модулі</label>
+                            <div class="pro-stepper">
+                                <button class="p-btn" onclick="pStep('p_b', -1)">−</button>
+                                <input type="text" id="p_b" class="p-input" value="0" readonly>
+                                <button class="p-btn" onclick="pStep('p_b', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>Верхні навісні</label>
+                            <div class="pro-stepper">
+                                <button class="p-btn" onclick="pStep('p_t', -1)">−</button>
+                                <input type="text" id="p_t" class="p-input" value="0" readonly>
+                                <button class="p-btn" onclick="pStep('p_t', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>Пенали / Колони</label>
+                            <div class="pro-stepper">
+                                <button class="p-btn" onclick="pStep('p_tall', -1)">−</button>
+                                <input type="text" id="p_tall" class="p-input" value="0" readonly>
+                                <button class="p-btn" onclick="pStep('p_tall', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>Шухляди</label>
+                            <div class="pro-stepper">
+                                <button class="p-btn" onclick="pStep('p_drw', -1)">−</button>
+                                <input type="text" id="p_drw" class="p-input" value="0" readonly>
+                                <button class="p-btn" onclick="pStep('p_drw', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>Aventos підйомники</label>
+                            <div class="pro-stepper">
+                                <button class="p-btn" onclick="pStep('p_lft', -1)">−</button>
+                                <input type="text" id="p_lft" class="p-input" value="0" readonly>
+                                <button class="p-btn" onclick="pStep('p_lft', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="pro-field">
+                            <label>LED підсвітка (ліній)</label>
+                            <div class="pro-stepper">
+                                <button class="p-btn" onclick="pStep('p_led', -1)">−</button>
+                                <input type="text" id="p_led" class="p-input" value="0" readonly>
+                                <button class="p-btn" onclick="pStep('p_led', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- HUD SIDEBAR -->
+            <div class="pro-sidebar">
+                <div class="hud-label">Підсумок кошторису</div>
+                <div class="hud-score" id="p_total">0 <span>ViPoint</span></div>
+
+                <table class="hud-table">
+                    <tr id="p_row_1">
+                        <td>Конструювання</td>
+                        <td id="p_val_1">0 б</td>
+                    </tr>
+                    <tr id="p_row_2">
+                        <td>Проєктування</td>
+                        <td id="p_val_2">0 б</td>
+                    </tr>
+                    <tr id="p_row_3">
+                        <td>Монтаж</td>
+                        <td id="p_val_3">0 б</td>
+                    </tr>
+                </table>
+
+                <button class="pro-action-btn" onclick="alert('Збережено!')">💾 Зберегти кошторис</button>
+                <button class="pro-reset-btn" onclick="pReset()">🔄 Очистити</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pActive = { 1: true, 2: true, 3: true };
+
+        function toggleP(n) {
+            pActive[n] = !pActive[n];
+            document.getElementById('p-btn-' + n).classList.toggle('active');
+            document.getElementById('p_row_' + n).style.opacity = pActive[n] ? '1' : '0.35';
+            runP();
+        }
+
+        function pStep(id, d) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + d;
+            if (val < 0) val = 0;
+            el.value = val;
+            runP();
+        }
+
+        function runP() {
+            const sh = parseInt(document.getElementById('p_shape').value, 10);
+            const is = parseInt(document.getElementById('p_island').value, 10);
+            const wl = parseInt(document.getElementById('p_walls').value, 10);
+            const b = parseInt(document.getElementById('p_b').value, 10);
+            const t = parseInt(document.getElementById('p_t').value, 10);
+            const tl = parseInt(document.getElementById('p_tall').value, 10);
+            const drw = parseInt(document.getElementById('p_drw').value, 10);
+            const lft = parseInt(document.getElementById('p_lft').value, 10);
+            const led = parseInt(document.getElementById('p_led').value, 10);
+
+            const v1 = Math.round((sh * 0.5) + (is * 0.4) + (wl * 0.5) + (b * 4) + (t * 3.5) + (tl * 7) + (drw * 2.5) + (lft * 3) + (led * 4));
+            const v2 = Math.round((sh * 0.3) + (is * 0.3) + (wl * 0.3) + (b * 2) + (t * 2) + (tl * 4) + (drw * 1) + (lft * 1.5) + (led * 2));
+            const v3 = Math.round((sh * 0.2) + (is * 0.3) + (wl * 0.2) + (b * 5) + (t * 4.5) + (tl * 8) + (drw * 2) + (lft * 2.5) + (led * 5));
+
+            document.getElementById('p_val_1').innerText = v1 + ' б';
+            document.getElementById('p_val_2').innerText = v2 + ' б';
+            document.getElementById('p_val_3').innerText = v3 + ' б';
+
+            let tot = 0;
+            if (pActive[1]) tot += v1;
+            if (pActive[2]) tot += v2;
+            if (pActive[3]) tot += v3;
+
+            document.getElementById('p_total').innerHTML = `${tot} <span>ViPoint</span>`;
+        }
+
+        function pReset() {
+            document.querySelectorAll('.p-input').forEach(i => i.value = '0');
+            document.querySelectorAll('.pro-select').forEach(s => s.selectedIndex = 0);
+            runP();
+        }
+
+        runP();
+    </script>
+</body>
+</html>

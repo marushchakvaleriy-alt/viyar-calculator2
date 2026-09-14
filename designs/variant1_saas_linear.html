@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Варіант 1 — Modern SaaS (Linear / Stripe Style)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --border-subtle: #E2E8F0;
+            --border-hover: #CBD5E1;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #94A3B8;
+            --accent-blue: #2563EB;
+            --accent-blue-light: #EFF6FF;
+            --accent-blue-border: #BFDBFE;
+            --accent-emerald: #10B981;
+            --accent-purple: #8B5CF6;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            --shadow-float: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 24px 20px 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* TOP NAVIGATION */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .nav-back:hover {
+            color: var(--accent-blue);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .badge-style-tag {
+            padding: 6px 14px;
+            background: #EFF6FF;
+            color: #1E40AF;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #DBEAFE;
+        }
+
+        /* HEADER CARD */
+        .calc-header-card {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .calc-title-area h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calc-title-area p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        .process-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .process-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid var(--border-subtle);
+            background: #F8FAFC;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .process-chip input {
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
+
+        .process-chip.active {
+            background: var(--accent-blue-light);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* MAIN TWO-COLUMN GRID */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 960px) {
+            .main-layout { grid-template-columns: 1fr; }
+        }
+
+        /* FORM SECTIONS */
+        .form-section {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-section:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .section-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #1E293B;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .icon-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #EFF6FF;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .fields-grid { grid-template-columns: 1fr; }
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .field-label .hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* CUSTOM MODERN SELECT */
+        .select-wrapper {
+            position: relative;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 10px 36px 10px 14px;
+            background-color: #FFFFFF;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-primary);
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .custom-select:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #64748B;
+            font-size: 11px;
+        }
+
+        /* MODERN STEPPER INPUT */
+        .stepper-control {
+            display: flex;
+            align-items: center;
+            background: #F8FAFC;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: all 0.15s ease;
+        }
+
+        .stepper-control:focus-within {
+            border-color: var(--accent-blue);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .stepper-btn {
+            width: 38px;
+            height: 38px;
+            background: transparent;
+            border: none;
+            color: #475569;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .stepper-btn:hover {
+            background: #E2E8F0;
+            color: var(--accent-blue);
+        }
+
+        .stepper-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            outline: none;
+            padding: 8px 4px;
+        }
+
+        /* STICKY RESULTS PANEL */
+        .sticky-summary {
+            position: sticky;
+            top: 24px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-float);
+        }
+
+        .summary-header {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-hero-card {
+            background: linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 100%);
+            border: 1.5px solid #DBEAFE;
+            border-radius: var(--radius-md);
+            padding: 20px 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-hero-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+        }
+
+        .score-hero-value {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--accent-blue);
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .score-hero-value span {
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748B;
+            letter-spacing: normal;
+        }
+
+        /* PROCESS ROWS WITH MINI BARS */
+        .process-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .process-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .process-row-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .process-bar-bg {
+            height: 6px;
+            background: #F1F5F9;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .process-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        /* ACTION BUTTONS */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .btn-outline {
+            padding: 10px;
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background: var(--accent-blue-light);
+        }
+
+        .btn-primary-save {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            transition: all 0.2s;
+        }
+
+        .btn-primary-save:hover {
+            background: #1D4ED8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <a href="preview.html" class="nav-back">← До списку концептів</a>
+            <div class="badge-style-tag">Концепт 1: Modern SaaS (Linear / Stripe)</div>
+        </div>
+
+        <!-- HEADER CARD -->
+        <div class="calc-header-card">
+            <div class="calc-title-area">
+                <h1>Кухні <span style="font-size:12px; font-weight:700; background:#E2E8F0; padding:2px 8px; border-radius:6px; color:#475569;">v2.2 Pro</span></h1>
+                <p>Розрахунок поінтів за операціями конструювання, проєктування та монтажу</p>
+            </div>
+            <div class="process-chips">
+                <label class="process-chip active" id="chip-const">
+                    <input type="checkbox" checked onchange="toggleProcess(this, 'const')">
+                    <span>📐 Конструювання</span>
+                </label>
+                <label class="process-chip active" id="chip-proj">
+                    <input type="checkbox" checked onchange="toggleProcess(this, 'proj')">
+                    <span>📋 Проєктування</span>
+                </label>
+                <label class="process-chip active" id="chip-mont">
+                    <input type="checkbox" checked onchange="toggleProcess(this, 'mont')">
+                    <span>🔨 Монтаж</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT -->
+        <div class="main-layout">
+            <!-- LEFT FORM -->
+            <div class="form-column">
+
+                <!-- SECTION 1: ОСНОВНІ ПАРАМЕТРИ -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="icon-badge">1</span>
+                            Основні параметри кухні
+                        </div>
+                    </div>
+                    <div class="fields-grid">
+                        <div class="field-group">
+                            <label class="field-label">Форма кухні</label>
+                            <div class="select-wrapper">
+                                <select class="custom-select" id="kitchen_shape" onchange="recalc()">
+                                    <option value="0">Пряма (Базова)</option>
+                                    <option value="12">Г-подібна (Кутова) (+12 б)</option>
+                                    <option value="20">П-подібна (+20 б)</option>
+                                    <option value="30">Острівна / Складна (+30 б)</option>
+                                </select>
+                                <span class="select-arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Наявність острова</label>
+                            <div class="select-wrapper">
+                                <select class="custom-select" id="kitchen_island" onchange="recalc()">
+                                    <option value="0">Без острова</option>
+                                    <option value="15">Острів стандартний (+15 б)</option>
+                                    <option value="25">Острів з мийкою / варильною (+25 б)</option>
+                                </select>
+                                <span class="select-arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Нестандартна геометрія <span class="hint">Стіни, кути</span></label>
+                            <div class="select-wrapper">
+                                <select class="custom-select" id="kitchen_angles" onchange="recalc()">
+                                    <option value="0">Стандартні кути 90°</option>
+                                    <option value="8">Розгорнуті кути / ніші (+8 б)</option>
+                                    <option value="16">Складні виступи, колони (+16 б)</option>
+                                </select>
+                                <span class="select-arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Вбудована техніка <span class="hint">Одиниць</span></label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('tech_count', -1)">−</button>
+                                <input type="text" id="tech_count" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('tech_count', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: МОДУЛІ ТА СЕКЦІЇ -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="icon-badge">2</span>
+                            Кількість модулів та секцій
+                        </div>
+                    </div>
+                    <div class="fields-grid">
+                        <div class="field-group">
+                            <label class="field-label">Нижні модулі <span class="hint">шт</span></label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('bottom_mods', -1)">−</button>
+                                <input type="text" id="bottom_mods" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('bottom_mods', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Верхні модулі <span class="hint">шт</span></label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('top_mods', -1)">−</button>
+                                <input type="text" id="top_mods" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('top_mods', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Пенали та колони <span class="hint">шт</span></label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('tall_mods', -1)">−</button>
+                                <input type="text" id="tall_mods" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('tall_mods', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Антресольні секції <span class="hint">шт</span></label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('antresol_mods', -1)">−</button>
+                                <input type="text" id="antresol_mods" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('antresol_mods', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: ФУРНІТУРА ТА МЕХАНІЗМИ -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="icon-badge">3</span>
+                            Фурнітура та наповнення
+                        </div>
+                    </div>
+                    <div class="fields-grid">
+                        <div class="field-group">
+                            <label class="field-label">Висувні ящики (Blum/Hettich)</label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('drawers_count', -1)">−</button>
+                                <input type="text" id="drawers_count" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('drawers_count', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Підйомні механізми (Aventos)</label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('lifts_count', -1)">−</button>
+                                <input type="text" id="lifts_count" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('lifts_count', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Карго / Сушки / Кошики</label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('cargo_count', -1)">−</button>
+                                <input type="text" id="cargo_count" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('cargo_count', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">LED-підсвітка <span class="hint">Ліній</span></label>
+                            <div class="stepper-control">
+                                <button class="stepper-btn" onclick="stepVal('led_lines', -1)">−</button>
+                                <input type="text" id="led_lines" class="stepper-input" value="0" readonly>
+                                <button class="stepper-btn" onclick="stepVal('led_lines', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT STICKY SUMMARY -->
+            <div class="sticky-column">
+                <div class="sticky-summary">
+                    <div class="summary-header">
+                        <span>●</span> Результати розрахунку
+                    </div>
+
+                    <div class="score-hero-card">
+                        <div class="score-hero-label">Загальний бал</div>
+                        <div class="score-hero-value" id="grand_total">0 <span>ViPoint</span></div>
+                    </div>
+
+                    <div class="process-list">
+                        <!-- Construction -->
+                        <div class="process-row" id="row-const">
+                            <div class="process-row-meta">
+                                <span>📐 Конструювання</span>
+                                <span id="score-const">0 ViPoint</span>
+                            </div>
+                            <div class="process-bar-bg">
+                                <div class="process-bar-fill" id="bar-const" style="width: 0%; background: #2563EB;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Designing -->
+                        <div class="process-row" id="row-proj">
+                            <div class="process-row-meta">
+                                <span>📋 Проєктування</span>
+                                <span id="score-proj">0 ViPoint</span>
+                            </div>
+                            <div class="process-bar-bg">
+                                <div class="process-bar-fill" id="bar-proj" style="width: 0%; background: #8B5CF6;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Installation -->
+                        <div class="process-row" id="row-mont">
+                            <div class="process-row-meta">
+                                <span>🔨 Монтаж</span>
+                                <span id="score-mont">0 ViPoint</span>
+                            </div>
+                            <div class="process-bar-bg">
+                                <div class="process-bar-fill" id="bar-mont" style="width: 0%; background: #10B981;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-grid">
+                        <button class="btn-outline" onclick="alert('Деталізований кошторис!')">📋 Деталі</button>
+                        <button class="btn-outline" onclick="resetForm()">🔄 Скинути</button>
+                    </div>
+
+                    <button class="btn-primary-save" onclick="alert('Збережено в базу розрахунків!')">
+                        💾 Зберегти розрахунок
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const activeProcesses = {
+            const: true,
+            proj: true,
+            mont: true
+        };
+
+        function toggleProcess(checkbox, type) {
+            activeProcesses[type] = checkbox.checked;
+            const chip = document.getElementById('chip-' + type);
+            const row = document.getElementById('row-' + type);
+            if (checkbox.checked) {
+                chip.classList.add('active');
+                row.style.opacity = '1';
+            } else {
+                chip.classList.remove('active');
+                row.style.opacity = '0.35';
+            }
+            recalc();
+        }
+
+        function stepVal(id, delta) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + delta;
+            if (val < 0) val = 0;
+            el.value = val;
+            recalc();
+        }
+
+        function recalc() {
+            const shape = parseInt(document.getElementById('kitchen_shape').value, 10);
+            const island = parseInt(document.getElementById('kitchen_island').value, 10);
+            const angles = parseInt(document.getElementById('kitchen_angles').value, 10);
+            const tech = parseInt(document.getElementById('tech_count').value, 10);
+            const bMods = parseInt(document.getElementById('bottom_mods').value, 10);
+            const tMods = parseInt(document.getElementById('top_mods').value, 10);
+            const tall = parseInt(document.getElementById('tall_mods').value, 10);
+            const ant = parseInt(document.getElementById('antresol_mods').value, 10);
+            const drawers = parseInt(document.getElementById('drawers_count').value, 10);
+            const lifts = parseInt(document.getElementById('lifts_count').value, 10);
+            const cargo = parseInt(document.getElementById('cargo_count').value, 10);
+            const led = parseInt(document.getElementById('led_lines').value, 10);
+
+            // Calculation formulas
+            const constPts = (shape * 0.5) + (island * 0.4) + (angles * 0.6) + (tech * 3) + 
+                             (bMods * 4) + (tMods * 3.5) + (tall * 7) + (ant * 3) + 
+                             (drawers * 2.5) + (lifts * 3) + (cargo * 2) + (led * 4);
+
+            const projPts = (shape * 0.3) + (island * 0.3) + (angles * 0.4) + (tech * 2) + 
+                            (bMods * 2) + (tMods * 2) + (tall * 4) + (ant * 2) + 
+                            (drawers * 1) + (lifts * 1.5) + (cargo * 1) + (led * 2);
+
+            const montPts = (shape * 0.2) + (island * 0.3) + (angles * 0.4) + (tech * 4) + 
+                            (bMods * 5) + (tMods * 4.5) + (tall * 8) + (ant * 4) + 
+                            (drawers * 2) + (lifts * 2.5) + (cargo * 2.5) + (led * 5);
+
+            const sConst = Math.round(constPts);
+            const sProj = Math.round(projPts);
+            const sMont = Math.round(montPts);
+
+            document.getElementById('score-const').innerText = `${sConst} ViPoint`;
+            document.getElementById('score-proj').innerText = `${sProj} ViPoint`;
+            document.getElementById('score-mont').innerText = `${sMont} ViPoint`;
+
+            let grand = 0;
+            if (activeProcesses.const) grand += sConst;
+            if (activeProcesses.proj) grand += sProj;
+            if (activeProcesses.mont) grand += sMont;
+
+            document.getElementById('grand_total').innerHTML = `${grand} <span>ViPoint</span>`;
+
+            // Progress bar animations
+            const maxVal = Math.max(sConst, sProj, sMont, 1);
+            document.getElementById('bar-const').style.width = ((sConst / maxVal) * 100) + '%';
+            document.getElementById('bar-proj').style.width = ((sProj / maxVal) * 100) + '%';
+            document.getElementById('bar-mont').style.width = ((sMont / maxVal) * 100) + '%';
+        }
+
+        function resetForm() {
+            document.querySelectorAll('.stepper-input').forEach(i => i.value = '0');
+            document.querySelectorAll('.custom-select').forEach(s => s.selectedIndex = 0);
+            recalc();
+        }
+
+        // Initial zero recalc
+        recalc();
+    </script>
+</body>
+</html>

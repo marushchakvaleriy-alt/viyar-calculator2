@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Концепт 8 — ViyarPro Aurora & Frosted Glass Fusion</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            /* Viyar Pro Fusion Tokens */
+            --viyar-blue: #195EE6;
+            --viyar-blue-gradient: linear-gradient(135deg, #195EE6 0%, #0B46BD 100%);
+            --glass-card: rgba(255, 255, 255, 0.82);
+            --glass-border: rgba(255, 255, 255, 0.95);
+            --text-dark: #111827;
+            --text-muted: #64748B;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 0 0 80px 0;
+            position: relative;
+            background-color: #F4F7FC;
+            overflow-x: hidden;
+        }
+
+        /* VIYAR AURORA BACKGROUND MESH */
+        .viyar-aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 50%, #F0FDF4 100%);
+        }
+
+        .aurora-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: orbFloat 18s ease-in-out infinite alternate;
+        }
+
+        .orb-viyar-blue {
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, #60A5FA 0%, #2563EB 100%);
+            top: -120px;
+            left: -100px;
+        }
+
+        .orb-viyar-purple {
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, #C084FC 0%, #7C3AED 100%);
+            top: 30%;
+            right: -100px;
+            animation-duration: 22s;
+            animation-delay: -6s;
+        }
+
+        .orb-viyar-emerald {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, #6EE7B7 0%, #059669 100%);
+            bottom: -80px;
+            left: 30%;
+            animation-duration: 16s;
+            animation-delay: -10s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 40px) scale(1.1); }
+            100% { transform: translate(-40px, 50px) scale(0.95); }
+        }
+
+        /* TOP NAVIGATION */
+        .viyar-glass-top {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+            padding: 12px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .top-inner-wrap {
+            max-width: 1260px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-box span.name {
+            font-size: 26px;
+            font-weight: 900;
+            color: #111827;
+            letter-spacing: -0.04em;
+        }
+
+        .logo-box span.pro {
+            color: var(--viyar-blue);
+        }
+
+        .logo-box .badge {
+            font-size: 11px;
+            font-weight: 800;
+            background: var(--viyar-blue-gradient);
+            color: #FFFFFF;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .nav-actions-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-back-gallery {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(226, 232, 240, 0.8);
+            border-radius: 999px;
+            color: #334155;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-back-gallery:hover {
+            color: var(--viyar-blue);
+            transform: translateY(-1px);
+        }
+
+        .btn-viyar-cat {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--viyar-blue-gradient);
+            color: #FFFFFF;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(25, 94, 230, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-viyar-cat:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(25, 94, 230, 0.4);
+        }
+
+        /* MAIN CONTAINER */
+        .page-content-box {
+            max-width: 1260px;
+            margin: 24px auto 0;
+            padding: 0 20px;
+        }
+
+        /* HERO GLASS BANNER */
+        .hero-banner-glass {
+            background: var(--glass-card);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 24px 30px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 20px 40px -15px rgba(25, 94, 230, 0.08);
+            position: relative;
+        }
+
+        .hero-banner-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--viyar-blue);
+            border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+        }
+
+        .hero-text-col h1 {
+            font-size: 24px;
+            font-weight: 900;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-text-col p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .process-chips-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .v-fusion-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            color: #475569;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .v-fusion-chip input { display: none; }
+
+        .v-fusion-chip.c-on {
+            background: #EFF6FF;
+            border-color: #3B82F6;
+            color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .v-fusion-chip.p-on {
+            background: #FAF5FF;
+            border-color: #8B5CF6;
+            color: #6D28D9;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .v-fusion-chip.m-on {
+            background: #ECFDF5;
+            border-color: #10B981;
+            color: #047857;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* GRID */
+        .fusion-grid {
+            display: grid;
+            grid-template-columns: 1fr 370px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .fusion-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CARDS */
+        .fusion-card {
+            background: var(--glass-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 26px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fusion-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px -10px rgba(25, 94, 230, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+        }
+
+        .fusion-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1.5px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .fusion-card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .f-num-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: var(--viyar-blue-gradient);
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(25, 94, 230, 0.25);
+        }
+
+        .inputs-2-cols {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 620px) {
+            .inputs-2-cols { grid-template-columns: 1fr; }
+        }
+
+        .f-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .f-field label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .f-field label span {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        /* VIYAR FUSION SELECT */
+        .f-select-box {
+            position: relative;
+        }
+
+        .f-select {
+            width: 100%;
+            padding: 11px 38px 11px 14px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(203, 213, 225, 0.8);
+            border-radius: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #111827;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .f-select:focus {
+            background: #FFFFFF;
+            border-color: var(--viyar-blue);
+            box-shadow: 0 0 0 3.5px rgba(25, 94, 230, 0.16);
+        }
+
+        .f-select-chevron {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+        }
+
+        /* VIYAR STEPPER */
+        .f-stepper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(203, 213, 225, 0.8);
+            border-radius: 12px;
+            padding: 3px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .f-stepper:focus-within {
+            background: #FFFFFF;
+            border-color: var(--viyar-blue);
+            box-shadow: 0 0 0 3.5px rgba(25, 94, 230, 0.16);
+        }
+
+        .f-btn {
+            width: 36px;
+            height: 36px;
+            background: #F1F5F9;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 8px;
+            color: #334155;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .f-btn:hover {
+            background: var(--viyar-blue);
+            color: #FFFFFF;
+            border-color: var(--viyar-blue);
+            transform: scale(1.05);
+        }
+
+        .f-btn:active {
+            transform: scale(0.95);
+        }
+
+        .f-val {
+            flex: 1;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 800;
+            color: #111827;
+            outline: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* STICKY FUSION HUD */
+        .fusion-sticky-hud {
+            position: sticky;
+            top: 80px;
+            background: var(--glass-card);
+            backdrop-filter: blur(24px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: 0 20px 45px -15px rgba(25, 94, 230, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+
+        .hud-label-fusion {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* VIPOINT HERO CARD */
+        .fusion-score-card {
+            background: linear-gradient(135deg, #195EE6 0%, #0D4BC4 60%, #4338CA 100%);
+            border-radius: 20px;
+            padding: 26px 20px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(25, 94, 230, 0.35);
+        }
+
+        .fusion-score-card::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            filter: blur(15px);
+        }
+
+        .score-tag-f {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #BFDBFE;
+            margin-bottom: 4px;
+        }
+
+        .score-digits-f {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .score-unit-f {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #E0E7FF;
+            margin-top: 6px;
+        }
+
+        /* BREAKDOWN */
+        .f-breakdown-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .f-breakdown-item {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #334155;
+            transition: all 0.2s;
+        }
+
+        .f-breakdown-item.disabled {
+            opacity: 0.35;
+            text-decoration: line-through;
+        }
+
+        .f-breakdown-item strong {
+            font-weight: 800;
+            color: #111827;
+            font-size: 14px;
+        }
+
+        /* ACTION BUTTONS */
+        .btn-fusion-save {
+            width: 100%;
+            padding: 14px;
+            background: var(--viyar-blue-gradient);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 22px rgba(25, 94, 230, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-fusion-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(25, 94, 230, 0.45);
+        }
+
+        .btn-fusion-reset {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(203, 213, 225, 0.8);
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748B;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.15s;
+        }
+
+        .btn-fusion-reset:hover {
+            color: #111827;
+            background: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AURORA GLOW BACKGROUND -->
+    <div class="viyar-aurora-bg">
+        <div class="aurora-orb orb-viyar-blue"></div>
+        <div class="aurora-orb orb-viyar-purple"></div>
+        <div class="aurora-orb orb-viyar-emerald"></div>
+    </div>
+
+    <!-- TOP VIYAR GLASS BAR -->
+    <header class="viyar-glass-top">
+        <div class="top-inner-wrap">
+            <a href="preview.html" class="logo-box">
+                <span class="name">viyar<span class="pro">pro</span></span>
+                <span class="badge">Калькулятор</span>
+            </a>
+
+            <div class="nav-actions-top">
+                <a href="preview.html" class="btn-back-gallery">
+                    <i data-lucide="arrow-left" style="width:15px; height:15px;"></i>
+                    До списку дизайнів
+                </a>
+                <a href="javascript:void(0)" class="btn-viyar-cat" onclick="alert('База ВіЯр!')">
+                    <i data-lucide="layers" style="width:16px; height:16px;"></i>
+                    Матеріали ВіЯр
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content-box">
+        <!-- HERO BANNER -->
+        <div class="hero-banner-glass">
+            <div class="hero-text-col">
+                <h1>Кухонні меблі <span style="font-size:12px; font-weight:800; background:#EFF6FF; color:#1D4ED8; padding:3px 8px; border-radius:6px;">ViPoint Pro</span></h1>
+                <p>Розрахунок поінтів за виробничими операціями ВіЯр (Конструювання, Проєктування, Монтаж)</p>
+            </div>
+
+            <div class="process-chips-bar">
+                <label class="v-fusion-chip c-on" id="chip-f-c">
+                    <input type="checkbox" checked onchange="toggleFusion('c', this)">
+                    <i data-lucide="ruler" style="width:16px; height:16px;"></i>
+                    Конструювання
+                </label>
+                <label class="v-fusion-chip p-on" id="chip-f-p">
+                    <input type="checkbox" checked onchange="toggleFusion('p', this)">
+                    <i data-lucide="file-spreadsheet" style="width:16px; height:16px;"></i>
+                    Проєктування
+                </label>
+                <label class="v-fusion-chip m-on" id="chip-f-m">
+                    <input type="checkbox" checked onchange="toggleFusion('m', this)">
+                    <i data-lucide="wrench" style="width:16px; height:16px;"></i>
+                    Монтаж
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="fusion-grid">
+            <div class="cards-stack">
+
+                <!-- SECTION 1 -->
+                <div class="fusion-card">
+                    <div class="fusion-card-header">
+                        <div class="fusion-card-title">
+                            <span class="f-num-badge">1</span>
+                            Конфігурація та планування
+                        </div>
+                    </div>
+                    <div class="inputs-2-cols">
+                        <div class="f-field">
+                            <label>Форма гарнітуру</label>
+                            <div class="f-select-box">
+                                <select class="f-select" id="f_shape" onchange="runFusion()">
+                                    <option value="0">Пряма класична (Базова)</option>
+                                    <option value="12">Кутова (Г-подібна) (+12 б)</option>
+                                    <option value="20">П-подібна (+20 б)</option>
+                                    <option value="30">Острівна багаторівнева (+30 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="f-select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Кухонний острів</label>
+                            <div class="f-select-box">
+                                <select class="f-select" id="f_island" onchange="runFusion()">
+                                    <option value="0">Без острова</option>
+                                    <option value="15">Острів стандартний (+15 б)</option>
+                                    <option value="25">Острів з комунікаціями (+25 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="f-select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Складність геометрії <span>Ніші / Кути</span></label>
+                            <div class="f-select-box">
+                                <select class="f-select" id="f_walls" onchange="runFusion()">
+                                    <option value="0">Прямі кути 90°</option>
+                                    <option value="10">Непрямі кути, вентиляція (+10 б)</option>
+                                    <option value="18">Складні виступи, колони (+18 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="f-select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Вбудована техніка <span>шт</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_tech', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_tech" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_tech', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="fusion-card">
+                    <div class="fusion-card-header">
+                        <div class="fusion-card-title">
+                            <span class="f-num-badge">2</span>
+                            Корпусні модулі та секції
+                        </div>
+                    </div>
+                    <div class="inputs-2-cols">
+                        <div class="f-field">
+                            <label>Нижні тумби <span>шт</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_lower', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_lower" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_lower', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Верхні навісні шафи <span>шт</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_upper', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_upper" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_upper', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Пенали та колони <span>шт</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_tall', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_tall" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_tall', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Антресолі <span>шт</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_antresol', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_antresol" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_antresol', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="fusion-card">
+                    <div class="fusion-card-header">
+                        <div class="fusion-card-title">
+                            <span class="f-num-badge">3</span>
+                            Фурнітура та LED
+                        </div>
+                    </div>
+                    <div class="inputs-2-cols">
+                        <div class="f-field">
+                            <label>Висувні шухляди <span>Blum / Hettich</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_drw', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_drw" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_drw', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Підйомники <span>Aventos</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_lift', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_lift" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_lift', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="f-field">
+                            <label>Врізна LED-підсвітка <span>Ліній</span></label>
+                            <div class="f-stepper">
+                                <button class="f-btn" onclick="stepF('f_led', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="f_led" class="f-val" value="0" readonly>
+                                <button class="f-btn" onclick="stepF('f_led', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT HUD -->
+            <div class="fusion-hud-col">
+                <div class="fusion-sticky-hud">
+                    <div class="hud-label-fusion">
+                        <i data-lucide="pie-chart" style="width:16px; height:16px; color:#195EE6;"></i>
+                        Підсумок розрахунку
+                    </div>
+
+                    <div class="fusion-score-card">
+                        <div class="score-tag-f">Загальний бал</div>
+                        <div class="score-digits-f" id="f_tot">0</div>
+                        <div class="score-unit-f">ViPoint</div>
+                    </div>
+
+                    <div class="f-breakdown-list">
+                        <div class="f-breakdown-item" id="f-row-c">
+                            <span>📐 Конструювання</span>
+                            <strong id="f-val-c">0 ViPoint</strong>
+                        </div>
+                        <div class="f-breakdown-item" id="f-row-p">
+                            <span>📋 Проєктування</span>
+                            <strong id="f-val-p">0 ViPoint</strong>
+                        </div>
+                        <div class="f-breakdown-item" id="f-row-m">
+                            <span>🔨 Монтаж</span>
+                            <strong id="f-val-m">0 ViPoint</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn-fusion-save" onclick="alert('Збережено в базу розрахунків ВіЯр!')">
+                        <i data-lucide="save" style="width:18px; height:18px;"></i>
+                        Зберегти розрахунок
+                    </button>
+
+                    <button class="btn-fusion-reset" onclick="fReset()">
+                        🔄 Скинути значення
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const fState = { c: true, p: true, m: true };
+
+        function toggleFusion(k, chk) {
+            fState[k] = chk.checked;
+            const chip = document.getElementById('chip-f-' + k);
+            const row = document.getElementById('f-row-' + k);
+            const cls = { c: 'c-on', p: 'p-on', m: 'm-on' };
+
+            if (chk.checked) {
+                chip.classList.add(cls[k]);
+                row.classList.remove('disabled');
+            } else {
+                chip.classList.remove(cls[k]);
+                row.classList.add('disabled');
+            }
+            runFusion();
+        }
+
+        function stepF(id, d) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + d;
+            if (val < 0) val = 0;
+            el.value = val;
+            runFusion();
+        }
+
+        function runFusion() {
+            const sh = parseInt(document.getElementById('f_shape').value, 10);
+            const is = parseInt(document.getElementById('f_island').value, 10);
+            const wl = parseInt(document.getElementById('f_walls').value, 10);
+            const tc = parseInt(document.getElementById('f_tech').value, 10);
+            const lw = parseInt(document.getElementById('f_lower').value, 10);
+            const up = parseInt(document.getElementById('f_upper').value, 10);
+            const tl = parseInt(document.getElementById('f_tall').value, 10);
+            const an = parseInt(document.getElementById('f_antresol').value, 10);
+            const dr = parseInt(document.getElementById('f_drw').value, 10);
+            const lf = parseInt(document.getElementById('f_lift').value, 10);
+            const ld = parseInt(document.getElementById('f_led').value, 10);
+
+            const c = (sh * 0.5) + (is * 0.4) + (wl * 0.5) + (tc * 3) + (lw * 4) + (up * 3.5) + (tl * 7) + (an * 3) + (dr * 2.5) + (lf * 3) + (ld * 4);
+            const p = (sh * 0.3) + (is * 0.3) + (wl * 0.3) + (tc * 2) + (lw * 2) + (up * 2) + (tl * 4) + (an * 2) + (dr * 1) + (lf * 1.5) + (ld * 2);
+            const m = (sh * 0.2) + (is * 0.3) + (wl * 0.2) + (tc * 4) + (lw * 5) + (up * 4.5) + (tl * 8) + (an * 4) + (dr * 2) + (lf * 2.5) + (ld * 5);
+
+            const rc = Math.round(c);
+            const rp = Math.round(p);
+            const rm = Math.round(m);
+
+            document.getElementById('f-val-c').innerText = rc + ' ViPoint';
+            document.getElementById('f-val-p').innerText = rp + ' ViPoint';
+            document.getElementById('f-val-m').innerText = rm + ' ViPoint';
+
+            let tot = 0;
+            if (fState.c) tot += rc;
+            if (fState.p) tot += rp;
+            if (fState.m) tot += rm;
+
+            document.getElementById('f_tot').innerText = tot;
+        }
+
+        function fReset() {
+            document.querySelectorAll('.f-val').forEach(i => i.value = '0');
+            document.querySelectorAll('.f-select').forEach(s => s.selectedIndex = 0);
+            runFusion();
+        }
+
+        runFusion();
+    </script>
+</body>
+</html>

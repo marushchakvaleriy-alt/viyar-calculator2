@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Концепт 7 — Viyar & ViyarPro Офіційний Стиль</title>
+    <!-- Fonts: Montserrat + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            /* Viyar Official Palette */
+            --viyar-blue: #195EE6;
+            --viyar-blue-hover: #104BC4;
+            --viyar-blue-light: #EFF5FF;
+            --viyar-blue-border: #CBE0FF;
+            --viyar-dark: #111827;
+            --viyar-red: #E30613;
+            --viyar-orange: #FF6B00;
+            --viyar-teal: #0D9488;
+            --viyar-green: #10B981;
+            
+            --bg-body: #F4F6FA;
+            --card-bg: #FFFFFF;
+            --border-light: #E2E6EE;
+            --border-hover: #CBD2DE;
+            --text-main: #191F2D;
+            --text-secondary: #4B5569;
+            --text-muted: #8896AB;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-pill: 9999px;
+
+            --shadow-viyar: 0 4px 16px -2px rgba(25, 94, 230, 0.06), 0 2px 6px -1px rgba(17, 24, 39, 0.04);
+            --shadow-float: 0 16px 36px -8px rgba(25, 94, 230, 0.12), 0 4px 12px rgba(17, 24, 39, 0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 0 0 80px 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* VIYAR TOP CORPORATE HEADER */
+        .viyar-top-bar {
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .top-bar-inner {
+            max-width: 1260px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .viyar-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* VIYAR OFFICIAL LOGO */
+        .viyar-logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viyar-logo-text {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            color: #111827;
+        }
+
+        .viyar-logo-text span {
+            color: var(--viyar-blue);
+        }
+
+        .viyar-pro-badge {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, #195EE6 0%, #0D52D6 100%);
+            color: #FFFFFF;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .viyar-nav-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .nav-btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border: 1.5px solid var(--border-light);
+            background: #FFFFFF;
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .nav-btn-outline:hover {
+            border-color: var(--viyar-blue);
+            color: var(--viyar-blue);
+            background: var(--viyar-blue-light);
+        }
+
+        .nav-catalog-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--viyar-blue);
+            color: #FFFFFF;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(25, 94, 230, 0.25);
+        }
+
+        .nav-catalog-btn:hover {
+            background: var(--viyar-blue-hover);
+            transform: translateY(-1px);
+        }
+
+        /* PAGE CONTAINER */
+        .main-container {
+            max-width: 1260px;
+            margin: 24px auto 0;
+            padding: 0 20px;
+        }
+
+        /* HERO CARD BANNER */
+        .viyar-hero-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: var(--shadow-viyar);
+            position: relative;
+        }
+
+        .viyar-hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--viyar-blue);
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        }
+
+        .hero-left-col h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--viyar-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-left-col p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* PROCESS TOGGLE CHIPS (VIYAR STYLE) */
+        .process-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .v-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid var(--border-light);
+            background: #F8FAFC;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .v-chip input { display: none; }
+
+        .v-chip.active-c {
+            background: var(--viyar-blue-light);
+            border-color: var(--viyar-blue);
+            color: var(--viyar-blue);
+        }
+
+        .v-chip.active-p {
+            background: #FAF5FF;
+            border-color: #8B5CF6;
+            color: #7C3AED;
+        }
+
+        .v-chip.active-m {
+            background: #ECFDF5;
+            border-color: #10B981;
+            color: #059669;
+        }
+
+        /* MAIN TWO-COLUMN GRID */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .calc-grid { grid-template-columns: 1fr; }
+        }
+
+        /* FORM SECTION CARDS */
+        .viyar-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 24px 26px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-viyar);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .viyar-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 8px 24px rgba(25, 94, 230, 0.08);
+        }
+
+        .card-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-header-title {
+            font-size: 14.5px;
+            font-weight: 800;
+            color: var(--viyar-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-num-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: var(--viyar-blue-light);
+            color: var(--viyar-blue);
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fields-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 620px) {
+            .fields-layout { grid-template-columns: 1fr; }
+        }
+
+        .field-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-item label {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .field-item label span {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        /* VIYAR SELECT */
+        .v-select-wrapper {
+            position: relative;
+        }
+
+        .v-select-input {
+            width: 100%;
+            padding: 10px 38px 10px 14px;
+            background-color: #FFFFFF;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.15s ease;
+        }
+
+        .v-select-input:focus {
+            border-color: var(--viyar-blue);
+            box-shadow: 0 0 0 3px rgba(25, 94, 230, 0.14);
+        }
+
+        .v-select-chevron {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+        }
+
+        /* VIYAR STEPPER CONTROL */
+        .v-stepper-box {
+            display: flex;
+            align-items: center;
+            background: #F8FAFC;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: all 0.15s ease;
+        }
+
+        .v-stepper-box:focus-within {
+            background: #FFFFFF;
+            border-color: var(--viyar-blue);
+            box-shadow: 0 0 0 3px rgba(25, 94, 230, 0.14);
+        }
+
+        .v-step-action {
+            width: 36px;
+            height: 38px;
+            background: #FFFFFF;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .v-step-action:hover {
+            background: var(--viyar-blue);
+            color: #FFFFFF;
+        }
+
+        .v-step-val {
+            flex: 1;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-main);
+            outline: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* STICKY RESULTS PANEL (VIYAR PRO VIPOINT HUD) */
+        .viyar-sticky-hud {
+            position: sticky;
+            top: 80px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-float);
+        }
+
+        .hud-title-bar {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hud-title-bar::before {
+            content: '';
+            width: 4px;
+            height: 14px;
+            background: var(--viyar-blue);
+            border-radius: 2px;
+        }
+
+        /* VIPOINT TOTAL DISPLAY */
+        .viyar-score-hero {
+            background: linear-gradient(135deg, #195EE6 0%, #0D4BC4 100%);
+            border-radius: var(--radius-md);
+            padding: 22px 18px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(25, 94, 230, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viyar-score-hero::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .score-hero-tag {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #BFDBFE;
+            margin-bottom: 4px;
+        }
+
+        .score-hero-digits {
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .score-hero-unit {
+            font-size: 13px;
+            font-weight: 700;
+            color: #E0E7FF;
+            margin-top: 4px;
+        }
+
+        /* CATEGORY BREAKDOWN ROWS */
+        .category-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .cat-item-row {
+            padding: 10px 14px;
+            background: #F8FAFC;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+        }
+
+        .cat-item-row.disabled {
+            opacity: 0.35;
+            text-decoration: line-through;
+        }
+
+        .cat-item-row strong {
+            font-weight: 800;
+            color: var(--viyar-dark);
+            font-size: 14px;
+        }
+
+        /* ACTION BUTTONS */
+        .hud-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .btn-viyar-secondary {
+            padding: 10px;
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-viyar-secondary:hover {
+            border-color: var(--viyar-blue);
+            color: var(--viyar-blue);
+            background: var(--viyar-blue-light);
+        }
+
+        .btn-viyar-save {
+            width: 100%;
+            padding: 13px;
+            background: var(--viyar-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(25, 94, 230, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-viyar-save:hover {
+            background: var(--viyar-blue-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(25, 94, 230, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP VIYAR BAR -->
+    <header class="viyar-top-bar">
+        <div class="top-bar-inner">
+            <div class="viyar-brand-group">
+                <a href="preview.html" class="viyar-logo-link">
+                    <span class="viyar-logo-text">viyar<span>pro</span></span>
+                    <span class="viyar-pro-badge">Калькулятор</span>
+                </a>
+            </div>
+
+            <div class="viyar-nav-links">
+                <a href="preview.html" class="nav-btn-outline">
+                    <i data-lucide="arrow-left" style="width:15px; height:15px;"></i>
+                    До вибору дизайнів
+                </a>
+                <a href="javascript:void(0)" class="nav-catalog-btn" onclick="alert('Відкриття каталогу матеріалів ВіЯр')">
+                    <i data-lucide="layers" style="width:16px; height:16px;"></i>
+                    База ВіЯр
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- HERO BANNER -->
+        <div class="viyar-hero-card">
+            <div class="hero-left-col">
+                <h1>Кухонні меблі <span style="font-size:12px; font-weight:700; color:var(--viyar-blue); background:var(--viyar-blue-light); padding:2px 8px; border-radius:4px;">v2.2 ViPoint</span></h1>
+                <p>Розрахунок поінтів за технологічними операціями ВіЯр (Конструювання, Проєктування, Монтаж)</p>
+            </div>
+
+            <div class="process-chips">
+                <label class="v-chip active-c" id="chip-v-c">
+                    <input type="checkbox" checked onchange="toggleViyar('c', this)">
+                    <i data-lucide="ruler" style="width:15px; height:15px;"></i>
+                    Конструювання
+                </label>
+                <label class="v-chip active-p" id="chip-v-p">
+                    <input type="checkbox" checked onchange="toggleViyar('p', this)">
+                    <i data-lucide="file-spreadsheet" style="width:15px; height:15px;"></i>
+                    Проєктування
+                </label>
+                <label class="v-chip active-m" id="chip-v-m">
+                    <input type="checkbox" checked onchange="toggleViyar('m', this)">
+                    <i data-lucide="wrench" style="width:15px; height:15px;"></i>
+                    Монтаж
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN CALC GRID -->
+        <div class="calc-grid">
+            <!-- LEFT FORM -->
+            <div class="form-column">
+
+                <!-- SECTION 1 -->
+                <div class="viyar-card">
+                    <div class="card-header-bar">
+                        <div class="card-header-title">
+                            <span class="header-num-badge">1</span>
+                            Конфігурація та планування
+                        </div>
+                    </div>
+                    <div class="fields-layout">
+                        <div class="field-item">
+                            <label>Форма гарнітуру</label>
+                            <div class="v-select-wrapper">
+                                <select class="v-select-input" id="vy_shape" onchange="runViyarCalc()">
+                                    <option value="0">Пряма класична (Базова)</option>
+                                    <option value="12">Кутова (Г-подібна) (+12 б)</option>
+                                    <option value="20">П-подібна (+20 б)</option>
+                                    <option value="30">Острівна багаторівнева (+30 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="v-select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Кухонний острів</label>
+                            <div class="v-select-wrapper">
+                                <select class="v-select-input" id="vy_island" onchange="runViyarCalc()">
+                                    <option value="0">Без острова</option>
+                                    <option value="15">Острів стандартний (+15 б)</option>
+                                    <option value="25">Острів з мийкою / варильною (+25 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="v-select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Складність геометрії <span>Ніші / Кути</span></label>
+                            <div class="v-select-wrapper">
+                                <select class="v-select-input" id="vy_walls" onchange="runViyarCalc()">
+                                    <option value="0">Прямі кути 90°</option>
+                                    <option value="10">Непрямі кути, вентиляція (+10 б)</option>
+                                    <option value="18">Складні виступи, колони (+18 б)</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="v-select-chevron" style="width:16px; height:16px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Вбудована техніка <span>шт</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_tech', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_tech" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_tech', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="viyar-card">
+                    <div class="card-header-bar">
+                        <div class="card-header-title">
+                            <span class="header-num-badge">2</span>
+                            Корпусні модулі та секції
+                        </div>
+                    </div>
+                    <div class="fields-layout">
+                        <div class="field-item">
+                            <label>Нижні шафи (тумби) <span>шт</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_lower', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_lower" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_lower', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Верхні навісні секції <span>шт</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_upper', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_upper" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_upper', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Пенали та колони <span>шт</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_tall', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_tall" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_tall', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Антресольні блоки <span>шт</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_antresol', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_antresol" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_antresol', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="viyar-card">
+                    <div class="card-header-bar">
+                        <div class="card-header-title">
+                            <span class="header-num-badge">3</span>
+                            Фурнітура та LED освітлення
+                        </div>
+                    </div>
+                    <div class="fields-layout">
+                        <div class="field-item">
+                            <label>Висувні шухляди <span>Blum / Hettich</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_drw', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_drw" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_drw', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Підйомні механізми <span>Aventos</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_lift', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_lift" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_lift', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <label>Врізна LED-підсвітка <span>Ліній</span></label>
+                            <div class="v-stepper-box">
+                                <button class="v-step-action" onclick="stepVy('vy_led', -1)"><i data-lucide="minus" style="width:14px; height:14px;"></i></button>
+                                <input type="text" id="vy_led" class="v-step-val" value="0" readonly>
+                                <button class="v-step-action" onclick="stepVy('vy_led', 1)"><i data-lucide="plus" style="width:14px; height:14px;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT HUD (VIYAR PRO VIPOINT PANEL) -->
+            <div class="hud-column">
+                <div class="viyar-sticky-hud">
+                    <div class="hud-title-bar">
+                        Результати розрахунку
+                    </div>
+
+                    <div class="viyar-score-hero">
+                        <div class="score-hero-tag">Загальний бал</div>
+                        <div class="score-hero-digits" id="vy_tot">0</div>
+                        <div class="score-hero-unit">ViPoint</div>
+                    </div>
+
+                    <div class="category-breakdown">
+                        <div class="cat-item-row" id="vy-row-c">
+                            <span>📐 Конструювання</span>
+                            <strong id="vy-val-c">0 ViPoint</strong>
+                        </div>
+                        <div class="cat-item-row" id="vy-row-p">
+                            <span>📋 Проєктування</span>
+                            <strong id="vy-val-p">0 ViPoint</strong>
+                        </div>
+                        <div class="cat-item-row" id="vy-row-m">
+                            <span>🔨 Монтаж</span>
+                            <strong id="vy-val-m">0 ViPoint</strong>
+                        </div>
+                    </div>
+
+                    <div class="hud-actions-grid">
+                        <button class="btn-viyar-secondary" onclick="alert('Деталізована специфікація поінтів!')">
+                            <i data-lucide="file-text" style="width:15px; height:15px;"></i>
+                            Деталі
+                        </button>
+                        <button class="btn-viyar-secondary" onclick="vyReset()">
+                            <i data-lucide="rotate-ccw" style="width:15px; height:15px;"></i>
+                            Скинути
+                        </button>
+                    </div>
+
+                    <button class="btn-viyar-save" onclick="alert('Збережено в базу розрахунків ВіЯр!')">
+                        <i data-lucide="save" style="width:17px; height:17px;"></i>
+                        Зберегти розрахунок
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const vyState = { c: true, p: true, m: true };
+
+        function toggleViyar(k, chk) {
+            vyState[k] = chk.checked;
+            const chip = document.getElementById('chip-v-' + k);
+            const row = document.getElementById('vy-row-' + k);
+            const cls = { c: 'active-c', p: 'active-p', m: 'active-m' };
+
+            if (chk.checked) {
+                chip.classList.add(cls[k]);
+                row.classList.remove('disabled');
+            } else {
+                chip.classList.remove(cls[k]);
+                row.classList.add('disabled');
+            }
+            runViyarCalc();
+        }
+
+        function stepVy(id, d) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0, 10) + d;
+            if (val < 0) val = 0;
+            el.value = val;
+            runViyarCalc();
+        }
+
+        function runViyarCalc() {
+            const sh = parseInt(document.getElementById('vy_shape').value, 10);
+            const is = parseInt(document.getElementById('vy_island').value, 10);
+            const wl = parseInt(document.getElementById('vy_walls').value, 10);
+            const tc = parseInt(document.getElementById('vy_tech').value, 10);
+            const lw = parseInt(document.getElementById('vy_lower').value, 10);
+            const up = parseInt(document.getElementById('vy_upper').value, 10);
+            const tl = parseInt(document.getElementById('vy_tall').value, 10);
+            const an = parseInt(document.getElementById('vy_antresol').value, 10);
+            const dr = parseInt(document.getElementById('vy_drw').value, 10);
+            const lf = parseInt(document.getElementById('vy_lift').value, 10);
+            const ld = parseInt(document.getElementById('vy_led').value, 10);
+
+            const c = (sh * 0.5) + (is * 0.4) + (wl * 0.5) + (tc * 3) + (lw * 4) + (up * 3.5) + (tl * 7) + (an * 3) + (dr * 2.5) + (lf * 3) + (ld * 4);
+            const p = (sh * 0.3) + (is * 0.3) + (wl * 0.3) + (tc * 2) + (lw * 2) + (up * 2) + (tl * 4) + (an * 2) + (dr * 1) + (lf * 1.5) + (ld * 2);
+            const m = (sh * 0.2) + (is * 0.3) + (wl * 0.2) + (tc * 4) + (lw * 5) + (up * 4.5) + (tl * 8) + (an * 4) + (dr * 2) + (lf * 2.5) + (ld * 5);
+
+            const rc = Math.round(c);
+            const rp = Math.round(p);
+            const rm = Math.round(m);
+
+            document.getElementById('vy-val-c').innerText = rc + ' ViPoint';
+            document.getElementById('vy-val-p').innerText = rp + ' ViPoint';
+            document.getElementById('vy-val-m').innerText = rm + ' ViPoint';
+
+            let tot = 0;
+            if (vyState.c) tot += rc;
+            if (vyState.p) tot += rp;
+            if (vyState.m) tot += rm;
+
+            document.getElementById('vy_tot').innerText = tot;
+        }
+
+        function vyReset() {
+            document.querySelectorAll('.v-step-val').forEach(i => i.value = '0');
+            document.querySelectorAll('.v-select-input').forEach(s => s.selectedIndex = 0);
+            runViyarCalc();
+        }
+
+        runViyarCalc();
+    </script>
+</body>
+</html>
