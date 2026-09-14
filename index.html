@@ -416,6 +416,21 @@
             </div>
         </div>
 
+        <!-- Category Navigation & Breadcrumb -->
+        <div id="categoryNav" style="display:none; align-items:center; justify-content:space-between; margin-bottom:24px; background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); padding:14px 22px; border-radius:18px; border:1px solid rgba(255,255,255,0.25); text-align:left;">
+            <button onclick="navigateToCategory(null)" style="background:#ffffff; color:#1e40af; border:none; padding:10px 20px; border-radius:24px; font-weight:700; cursor:pointer; font-size:14px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:transform 0.15s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                <span style="font-size:18px">←</span> Всі напрямки
+            </button>
+            <div style="text-align:right;">
+                <div id="categoryActiveTitle" style="font-size:20px; font-weight:800; color:#ffffff; text-shadow:0 2px 4px rgba(0,0,0,0.3);">
+                    ФУНКЦІОНАЛЬНА ФУРНІТУРА
+                </div>
+                <div id="categoryActiveSubtitle" style="font-size:12px; opacity:0.85; color:#ffffff; margin-top:2px;">
+                    Оберіть зону експозиції або стенд для розрахунку
+                </div>
+            </div>
+        </div>
+
         <!-- Dynamic Content -->
         <div id="calculatorsGrid" class="grid"></div>
         <!-- Loading Indicator -->
@@ -632,10 +647,35 @@
                 bgCanvas.style.backgroundPosition = 'center';
             }
         }
+        // Category Navigation State
+        let activeCategoryId = null;
+
+        function checkHashNavigation() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#category=')) {
+                activeCategoryId = decodeURIComponent(hash.replace('#category=', ''));
+            } else {
+                activeCategoryId = null;
+            }
+            renderCalculators();
+        }
+
+        window.addEventListener('hashchange', checkHashNavigation);
+
+        function navigateToCategory(catId) {
+            activeCategoryId = catId;
+            if (catId) {
+                window.location.hash = 'category=' + encodeURIComponent(catId);
+            } else {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+                renderCalculators();
+            }
+        }
+
         // Check auth on load
         window.onload = function () {
             applyDashboardConfig();
-            renderCalculators();
+            checkHashNavigation();
             if (sessionStorage.getItem('isAdmin') === 'true') {
                 document.getElementById('logoutBtn').style.display = 'block';
             }
@@ -644,6 +684,9 @@
         function renderCalculators() {
             const grid = document.getElementById('calculatorsGrid');
             const loading = document.getElementById('loading');
+            const catNav = document.getElementById('categoryNav');
+            const catTitle = document.getElementById('categoryActiveTitle');
+            const catSub = document.getElementById('categoryActiveSubtitle');
             grid.innerHTML = '';
 
             const configs = window.CalculatorConfig || [];
@@ -667,23 +710,50 @@
             grid.style.alignItems = 'stretch';
             grid.style.justifyItems = 'stretch';
 
-            configs.forEach(conf => {
+            let itemsToRender = [];
+            let isInsideCategory = false;
+
+            if (activeCategoryId) {
+                const activeCat = configs.find(c => c.id === activeCategoryId && c.isCategory);
+                if (activeCat && activeCat.items) {
+                    itemsToRender = activeCat.items;
+                    isInsideCategory = true;
+                    if (catNav) {
+                        catNav.style.display = 'flex';
+                        if (catTitle) catTitle.innerText = activeCat.title;
+                        if (catSub) catSub.innerText = activeCat.desc || 'Оберіть зону експозиції або стенд для розрахунку';
+                    }
+                }
+            }
+
+            if (!isInsideCategory) {
+                itemsToRender = configs;
+                if (catNav) catNav.style.display = 'none';
+            }
+
+            itemsToRender.forEach(conf => {
                 const cardTitleWeight = dbCfg.cardTitleWeight || '800';
                 const placeholderBg = dbCfg.placeholderBg || '';
                 const placeholderBadge = dbCfg.placeholderBadgeText || 'Скоро';
 
                 const a = document.createElement('a');
-                a.href = `core/calculator.html?config=${conf.file}`;
                 a.className = 'card';
-                if (conf.isPlaceholder) {
+
+                if (conf.isCategory) {
+                    a.href = `#category=${encodeURIComponent(conf.id)}`;
+                    a.onclick = function (e) {
+                        e.preventDefault();
+                        navigateToCategory(conf.id);
+                    };
+                } else if (conf.isPlaceholder) {
                     a.href = '#';
+                } else {
+                    a.href = `core/calculator.html?config=${conf.file}`;
                 }
 
                 const colSpan = conf.colSpan || 1;
                 a.style.padding = `${cardPadding}px`;
                 a.style.gridColumn = `span ${colSpan}`;
-
-                // Add flex layout to ensure equal heights
                 a.style.display = 'flex';
                 a.style.flexDirection = 'column';
                 a.style.justifyContent = 'space-between';
@@ -696,28 +766,39 @@
                 }
 
                 let badgeHtml = '';
-                if (conf.isPlaceholder) {
+                if (conf.isCategory) {
+                    const countText = conf.items ? `${conf.items.length} калькуляторів` : 'Категорія';
+                    badgeHtml = `<div class="badge" style="background:#0284c7; color:white;">${conf.badge || countText}</div>`;
+                } else if (conf.isPlaceholder) {
                     badgeHtml = `<div class="badge" style="background:${dbCfg.themeColor || '#1e88e5'}">${placeholderBadge}</div>`;
                 } else if (conf.badge) {
                     badgeHtml = `<div class="badge" style="background:${dbCfg.themeColor || '#1e88e5'}">${conf.badge}</div>`;
                 }
 
                 const isImage = (conf.icon && (conf.icon.includes('/') || conf.icon.includes('.')));
-                const iconHtml = isImage ? `<img src="${encodeURI(conf.icon)}" style="height:${cardIconSize}px; display:block; margin: 0 auto 20px; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px; margin-bottom: 20px;">${conf.icon}</div>`;
+                const iconHtml = isImage ? `<img src="${encodeURI(conf.icon)}" style="height:${cardIconSize}px; display:block; margin: 0 auto 16px; object-fit: contain;">` : `<div style="font-size:${cardIconSize}px; margin-bottom: 16px;">${conf.icon}</div>`;
+
+                let footerActionHtml = '';
+                if (conf.isCategory) {
+                    footerActionHtml = `<div style="margin-top:14px; font-size:12px; font-weight:700; color:#38bdf8; display:inline-flex; align-items:center; gap:6px; background:rgba(14,165,233,0.15); padding:6px 14px; border-radius:12px; border:1px solid rgba(14,165,233,0.3)">Відкрити підрозділ <span style="font-size:14px">→</span></div>`;
+                } else if (!conf.isPlaceholder) {
+                    footerActionHtml = `<div style="margin-top:14px; font-size:11px; font-weight:600; color:#cbd5e1; opacity:0.8">Розрахувати в калькуляторі ➔</div>`;
+                }
 
                 a.innerHTML = `
                     <div style="flex-grow: 1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align: center;">
                         ${badgeHtml}
-                        <div style="height: ${cardIconSize}px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <div style="height: ${cardIconSize}px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
                             ${iconHtml}
                         </div>
                         <div class="card-title" style="font-size:${cardTitleSize}px; color:${conf.isPlaceholder ? 'inherit' : cardTitleColor}; font-weight: ${cardTitleWeight}; margin-bottom: 8px; line-height: 1.2;">${conf.title}</div>
                         <div class="card-desc" style="font-size:${cardDescSize}px; color:${conf.isPlaceholder ? 'inherit' : cardDescColor}; opacity:0.8; line-height: 1.4; max-width: 250px;">${conf.desc || ''}</div>
+                        ${footerActionHtml}
                     </div>
                 `;
+
                 if (!conf.isPlaceholder) {
                     a.classList.add('glass-card');
-                    // Ensure css variables are set for glass card
                     a.style.setProperty('--glass-bg', `rgba(255, 255, 255, ${dbCfg.glassOpacity || 0.1})`);
                     a.style.setProperty('--glass-blur', `${dbCfg.glassBlur || 10}px`);
                 }
@@ -764,6 +845,32 @@
             const configs = window.CalculatorConfig || [];
 
             configs.forEach(conf => {
+                if (conf.isCategory && conf.items) {
+                    const catHeader = document.createElement('div');
+                    catHeader.style.cssText = 'font-size:12px; font-weight:800; color:#1e40af; margin-top:12px; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #bfdbfe; padding-bottom:4px; text-align:left;';
+                    catHeader.innerHTML = `${conf.icon || '📁'} ${conf.title}`;
+                    list.appendChild(catHeader);
+
+                    conf.items.forEach(sub => {
+                        const btn = document.createElement('button');
+                        btn.className = 'modal-btn';
+                        btn.style.background = 'white';
+                        btn.style.color = '#1e40af';
+                        btn.style.border = '1px solid #93c5fd';
+                        btn.style.marginBottom = '6px';
+                        btn.style.padding = '8px 12px';
+                        btn.style.textAlign = 'left';
+                        btn.innerHTML = `<span style="font-size:16px">${sub.icon || '📄'}</span> <b>${sub.title}</b><br><span style="font-size:10px; opacity:0.6">${sub.file}</span>`;
+                        btn.onclick = function () {
+                            window.location.href = 'core/admin.html?config=' + sub.file;
+                        };
+                        btn.onmouseover = function () { this.style.background = '#eff6ff'; };
+                        btn.onmouseout = function () { this.style.background = 'white'; };
+                        list.appendChild(btn);
+                    });
+                    return;
+                }
+
                 if (conf.isPlaceholder) return;
 
                 const btn = document.createElement('button');
@@ -771,7 +878,7 @@
                 btn.style.background = 'white';
                 btn.style.color = '#1e40af';
                 btn.style.border = '1px solid #1e40af';
-                btn.style.marginBottom = '0';
+                btn.style.marginBottom = '6px';
                 const isImage = (conf.icon && (conf.icon.includes('/') || conf.icon.includes('.')));
                 const finalIconSrc = isImage ? encodeURI(conf.icon) : '';
                 const iconHtml = isImage ? `<img src="${finalIconSrc}" style="height:20px; vertical-align:middle; margin-right:5px; object-fit:contain">` : `<span style="font-size:16px">${conf.icon}</span>`;

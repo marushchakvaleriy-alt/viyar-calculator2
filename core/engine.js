@@ -1731,8 +1731,12 @@ const Engine = {
 
         // 1. Try to find in CalculatorConfig (Global list)
         if (window.CalculatorConfig && window.currentConfigFile) {
-            // Normalize paths for comparison (remove 'data/' prefix if needed or match partial)
-            const found = window.CalculatorConfig.find(c => window.currentConfigFile.includes(c.file) || c.file.includes(window.currentConfigFile));
+            let allConfigItems = [];
+            window.CalculatorConfig.forEach(c => {
+                if (c.items) allConfigItems.push(...c.items);
+                else allConfigItems.push(c);
+            });
+            const found = allConfigItems.find(c => c.file && (window.currentConfigFile.includes(c.file) || c.file.includes(window.currentConfigFile)));
             if (found && found.title) bestName = found.title;
         }
 

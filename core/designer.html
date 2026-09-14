@@ -2257,15 +2257,29 @@
             const group = document.getElementById('calcOptions');
             if (window.CalculatorConfig) {
                 // Clear existing just in case
-                group.innerHTML = '';
                 window.CalculatorConfig.forEach(conf => {
-                    const opt = document.createElement('option');
-                    opt.value = conf.file;
-                    const isImg = conf.icon && (conf.icon.includes('/') || conf.icon.includes('.'));
-                    const iconDisplay = isImg ? '🖼️' : conf.icon;
-                    opt.textContent = `${iconDisplay} ${conf.title}`;
-                    if (window.currentConfigFile === conf.file) opt.selected = true;
-                    group.appendChild(opt);
+                    if (conf.items && conf.items.length > 0) {
+                        const optgroup = document.createElement('optgroup');
+                        optgroup.label = (conf.icon ? conf.icon + ' ' : '') + conf.title;
+                        conf.items.forEach(sub => {
+                            const opt = document.createElement('option');
+                            opt.value = sub.file;
+                            const isImg = sub.icon && (sub.icon.includes('/') || sub.icon.includes('.'));
+                            const iconDisplay = isImg ? '🖼️' : sub.icon;
+                            opt.textContent = `${iconDisplay} ${sub.title}`;
+                            if (window.currentConfigFile === sub.file) opt.selected = true;
+                            optgroup.appendChild(opt);
+                        });
+                        group.appendChild(optgroup);
+                    } else if (conf.file) {
+                        const opt = document.createElement('option');
+                        opt.value = conf.file;
+                        const isImg = conf.icon && (conf.icon.includes('/') || conf.icon.includes('.'));
+                        const iconDisplay = isImg ? '🖼️' : conf.icon;
+                        opt.textContent = `${iconDisplay} ${conf.title}`;
+                        if (window.currentConfigFile === conf.file) opt.selected = true;
+                        group.appendChild(opt);
+                    }
                 });
             } else {
                 // Fallback if absolutely nothing works

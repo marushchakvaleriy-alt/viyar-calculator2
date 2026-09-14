@@ -562,14 +562,28 @@
 
             select.innerHTML = '';
             window.CalculatorConfig.forEach(conf => {
-                const opt = document.createElement('option');
-                opt.value = conf.file;
-                opt.textContent = conf.title;
-                // Normalize for comparison
-                const currentRel = window.currentConfigFile.replace('../', '');
-                const confRel = conf.file.replace('../', '');
-                if (currentRel === confRel) opt.selected = true;
-                select.appendChild(opt);
+                if (conf.items && conf.items.length > 0) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = (conf.icon ? conf.icon + ' ' : '') + conf.title;
+                    conf.items.forEach(sub => {
+                        const opt = document.createElement('option');
+                        opt.value = sub.file;
+                        opt.textContent = (sub.icon ? sub.icon + ' ' : '') + sub.title;
+                        const currentRel = (window.currentConfigFile || '').replace('../', '');
+                        const subRel = (sub.file || '').replace('../', '');
+                        if (currentRel === subRel) opt.selected = true;
+                        optgroup.appendChild(opt);
+                    });
+                    select.appendChild(optgroup);
+                } else if (conf.file) {
+                    const opt = document.createElement('option');
+                    opt.value = conf.file;
+                    opt.textContent = (conf.icon ? conf.icon + ' ' : '') + conf.title;
+                    const currentRel = (window.currentConfigFile || '').replace('../', '');
+                    const confRel = (conf.file || '').replace('../', '');
+                    if (currentRel === confRel) opt.selected = true;
+                    select.appendChild(opt);
+                }
             });
         }
 
