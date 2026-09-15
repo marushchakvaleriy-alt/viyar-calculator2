@@ -5,7 +5,7 @@ window.CalculatorConfig = [
         "icon": "🛠️",
         "desc": "Кухонне наповнення, напрямні, завіси, кріплення, гардеробне наповнення, стенд розпродажу",
         "isCategory": true,
-        "badge": "4 калькуляторів",
+        "badge": "3 калькуляторів",
         "items": [
             {
                 "id": "schema_stand_kuhonne_napovnennya",
@@ -29,14 +29,6 @@ window.CalculatorConfig = [
                 "icon": "🔩",
                 "file": "data/schema_stand_kripilna_furnitura.js",
                 "desc": "Зразки стяжок, навісів, полкотримачів, кутиків",
-                "isPlaceholder": false
-            },
-            {
-                "id": "schema_stand_garderobne_napovnennya",
-                "title": "Зона Джокерів та Гардеробного наповнення",
-                "icon": "👔",
-                "file": "data/schema_stand_garderobne_napovnennya.js",
-                "desc": "Гардеробні пантографи, кошики, брючниці, труби Джокер",
                 "isPlaceholder": false
             }
         ]
