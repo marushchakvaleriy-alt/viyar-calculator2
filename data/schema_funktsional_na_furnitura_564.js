@@ -324,7 +324,8 @@ const Schema = {
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
-                "width": "w-33"
+                "width": "w-33",
+                "textAlign": "center"
             },
             "helpContent": "",
             "allowDecimal": false
@@ -336,7 +337,8 @@ const Schema = {
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
-                "width": "w-33"
+                "width": "w-33",
+                "textAlign": "center"
             },
             "helpContent": "",
             "allowDecimal": false
