@@ -265,8 +265,8 @@ const Schema = {
                 "inpBorder": "#000000"
             },
             "helpContent": "",
-            "allowDecimal": false,
-            "formula": "=(f_width * f_height) / 1000000",
+            "allowDecimal": true,
+            "formula": "=(f1789479447252 * f1789479695285) / 1000000",
             "readOnly": true
         },
         {

@@ -1211,8 +1211,19 @@ const Engine = {
             let expr = String(f.formula).trim();
             if (expr.startsWith('=')) expr = expr.substring(1).trim();
 
-            // Replace field IDs (e.g. f_corpus_width) with their values from this.state
-            expr = expr.replace(/\b(f_[a-zA-Z0-9_]+)\b/g, (match, fId) => {
+            // Replace field IDs (e.g. f_corpus_width or f1726...) with their values from this.state
+            if (Schema && Schema.fields) {
+                Schema.fields.forEach(otherField => {
+                    if (otherField.id && otherField.id !== f.id) {
+                        const regex = new RegExp(`\\b${otherField.id}\\b`, 'g');
+                        expr = expr.replace(regex, () => {
+                            const val = this.state[otherField.id];
+                            return (Number(val) || 0);
+                        });
+                    }
+                });
+            }
+            expr = expr.replace(/\b(f_?[a-zA-Z0-9_]+)\b/g, (match, fId) => {
                 const val = this.state[fId];
                 return (Number(val) || 0);
             });

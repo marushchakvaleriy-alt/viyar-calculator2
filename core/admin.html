@@ -364,9 +364,21 @@
                 </div>
 
                 <div class="form-group" style="padding-top:12px; border-top:1px solid #e2e8f0;">
-                    <label class="form-label" style="font-weight:700; color:#2563eb">🧮 Авто-розрахунок (Формула значення)</label>
-                    <input type="text" id="fFormula" class="form-input" placeholder="=(f_wall_1_width + f_wall_2_width) * f_corpus_height / 1000000" style="font-family:monospace; font-size:12px;">
-                    <div style="font-size:11px; color:#64748b; margin-top:4px">Вкажіть формулу зі змінними полів (f_xxx) для автоматичного підрахунку значення поля (наприклад, площі).</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <label class="form-label" style="font-weight:700; color:#2563eb; margin:0">🧮 Авто-розрахунок (Формула значення)</label>
+                        <button type="button" id="btnAutoAreaQuick" onclick="applyAreaFormulaQuick()" style="display:none; background:#eff6ff; color:#1d4ed8; border:1px solid #93c5fd; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;" title="Автоматично скласти формулу площі на основі ширини та висоти">📐 Формула площі (Ш × В / 1 000 000)</button>
+                    </div>
+                    <input type="text" id="fFormula" class="form-input" placeholder="=(f_width * f_height) / 1000000" style="font-family:monospace; font-size:13px; font-weight:600; color:#0f172a;">
+                    
+                    <div id="formulaHelpersWrapper" style="margin-top:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:8px 10px;">
+                        <div style="font-size:11px; font-weight:600; color:#475569; margin-bottom:6px;">Клікніть поле, щоб вставити його у формулу:</div>
+                        <div id="formulaVarBadges" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+                    </div>
+
+                    <div style="font-size:11px; color:#64748b; margin-top:6px">
+                        💡 <b>Формула площі:</b> починається зі знаку <code>=</code>, наприклад: <code>=(ID_ширини * ID_висоти) / 1000000</code>
+                    </div>
+
                     <label style="display:flex; align-items:center; gap:8px; margin-top:8px; cursor:pointer;">
                         <input type="checkbox" id="fReadOnly" style="width:16px; height:16px">
                         <span style="font-size:13px; font-weight:600;">Тільки для читання (блокувати ручний ввід)</span>
@@ -2691,10 +2703,69 @@
                 depSelect.appendChild(opt);
             });
 
+            // Formula variable helper buttons
+            const formulaBadges = document.getElementById('formulaVarBadges');
+            const btnAutoArea = document.getElementById('btnAutoAreaQuick');
+            if (formulaBadges) {
+                formulaBadges.innerHTML = '';
+                const numFields = allFields.filter(x => x.id !== id && (x.type === 'number' || x.type === 'checkbox' || x.type === 'checkbox_qty'));
+                
+                if (numFields.length === 0) {
+                    formulaBadges.innerHTML = '<span style="font-size:11px; color:#94a3b8">Немає інших числових полів</span>';
+                } else {
+                    numFields.forEach(nf => {
+                        const b = document.createElement('button');
+                        b.type = 'button';
+                        b.style.cssText = 'background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; padding:3px 8px; font-size:11px; font-weight:600; color:#1e293b; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 1px 2px rgba(0,0,0,0.05);';
+                        b.innerHTML = `<span style="color:#2563eb">➕</span> ${nf.label || nf.id}`;
+                        b.title = `Вставити змінну ${nf.id} (${nf.label})`;
+                        b.onclick = () => insertFormulaVar(nf.id);
+                        formulaBadges.appendChild(b);
+                    });
+                }
+
+                // Detect if we have width and height fields to offer a 1-click area formula
+                const widthField = allFields.find(x => x.id !== id && /ширин|width/i.test(x.label || x.id));
+                const heightField = allFields.find(x => x.id !== id && /висот|height/i.test(x.label || x.id));
+                if (btnAutoArea) {
+                    if (widthField && heightField) {
+                        btnAutoArea.style.display = 'inline-block';
+                        btnAutoArea.dataset.wId = widthField.id;
+                        btnAutoArea.dataset.hId = heightField.id;
+                    } else {
+                        btnAutoArea.style.display = 'none';
+                    }
+                }
+            }
+
             updateDependsValuesOptions(f.dependsOn);
 
             toggleFieldSettings(f.type);
             document.getElementById('fieldModal').style.display = 'flex';
+        }
+
+        function insertFormulaVar(varId) {
+            const inp = document.getElementById('fFormula');
+            if (!inp) return;
+            const start = inp.selectionStart ?? inp.value.length;
+            const end = inp.selectionEnd ?? inp.value.length;
+            const val = inp.value;
+            inp.value = val.substring(0, start) + varId + val.substring(end);
+            inp.focus();
+            const newPos = start + varId.length;
+            inp.setSelectionRange(newPos, newPos);
+        }
+
+        function applyAreaFormulaQuick() {
+            const btn = document.getElementById('btnAutoAreaQuick');
+            if (!btn) return;
+            const wId = btn.dataset.wId;
+            const hId = btn.dataset.hId;
+            if (!wId || !hId) return;
+            const inp = document.getElementById('fFormula');
+            inp.value = `=(${wId} * ${hId}) / 1000000`;
+            document.getElementById('fReadOnly').checked = true;
+            document.getElementById('fAllowDecimal').checked = true;
         }
 
         function updateDependsValuesOptions(existingDependsOn = null) {
