@@ -272,7 +272,16 @@ const Schema = {
         {
             "id": "f1789479447252",
             "groupId": "g_main",
-            "label": "Нова дія",
+            "label": "ширина",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        },
+        {
+            "id": "f1789479695285",
+            "groupId": "g_main",
+            "label": "висота",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000"
