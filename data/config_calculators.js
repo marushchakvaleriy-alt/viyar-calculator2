@@ -1,14 +1,5 @@
 window.CalculatorConfig = [
     {
-        "id": "cat_funkc_furnitura",
-        "title": "ФУНКЦІОНАЛЬНА ФУРНІТУРА",
-        "icon": "🛠️",
-        "desc": "Кухонне наповнення, напрямні, завіси, кріплення, гардеробне наповнення, стенд розпродажу",
-        "isCategory": true,
-        "badge": "0 калькуляторів",
-        "items": []
-    },
-    {
         "id": "schema_stand_skladski_mebli",
         "title": "Складські меблі",
         "icon": "📦",
@@ -23,5 +14,12 @@ window.CalculatorConfig = [
         "file": "data/schema_stand_kuhonni_komplektuyuchi.js",
         "desc": "Мийки, змішувачі, техніка, витяжки",
         "isPlaceholder": true
+    },
+    {
+        "id": "schema_funktsional_na_furnitura_564",
+        "title": "Функціональна фурнітура",
+        "icon": "📦",
+        "file": "data/schema_funktsional_na_furnitura_564.js",
+        "desc": "Опис нового калькулятора"
     }
 ]; 
