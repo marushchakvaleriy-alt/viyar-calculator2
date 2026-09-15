@@ -2767,10 +2767,46 @@
 
                 const colSpan = conf.colSpan || 1;
 
+                const isCat = !!(conf.isCategory || (conf.items && conf.items.length > 0));
+
+                let subItemsHtml = '';
+                if (isCat && conf.items) {
+                    subItemsHtml = `
+                        <div style="margin-top:10px; background:rgba(14,165,233,0.08); border:1.5px dashed #0284c7; border-radius:8px; padding:10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:700; color:#38bdf8">📁 Вкладені калькулятори (${conf.items.length}):</span>
+                                <button type="button" onclick="addSubCalcToCategory(${idx}); event.stopPropagation();" style="background:#0284c7; color:white; border:none; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer" title="Додати новий вкладений калькулятор">➕ Додати</button>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:6px;">
+                                ${conf.items.map((sub, sIdx) => `
+                                    <div style="display:flex; align-items:center; gap:6px; background:rgba(15,23,42,0.6); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1)">
+                                        <input type="text" value="${sub.icon || '📄'}" oninput="updateSubCalc(${idx}, ${sIdx}, 'icon', this.value)" style="width:32px; text-align:center; font-size:12px; padding:3px; background:rgba(255,255,255,0.1); border:1px solid #475569; color:white; border-radius:4px" onclick="event.stopPropagation()">
+                                        <div style="flex:1; min-width:0;">
+                                            <input type="text" value="${sub.title}" oninput="updateSubCalc(${idx}, ${sIdx}, 'title', this.value)" style="width:100%; font-size:12px; font-weight:700; padding:3px 6px; background:rgba(255,255,255,0.08); border:1px solid #475569; color:white; border-radius:4px" onclick="event.stopPropagation()">
+                                            <div style="font-size:9px; opacity:0.6; color:#94a3b8; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">${sub.file || ''}</div>
+                                        </div>
+                                        <button type="button" onclick="removeSubCalcFromCategory(${idx}, ${sIdx}); event.stopPropagation();" style="background:#ef4444; color:white; border:none; border-radius:6px; width:26px; height:26px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0" title="Видалити цей калькулятор">🗑️</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div style="margin-top:10px; text-align:right">
+                                <button type="button" onclick="convertCategoryToRegularCalc(${idx}); event.stopPropagation();" style="background:none; border:none; color:#f87171; font-size:11px; cursor:pointer; text-decoration:underline">❌ Видалити всі вкладені (зробити звичайним калькулятором)</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    subItemsHtml = `
+                        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                            <div style="font-size:10px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1" title="${conf.file || ''}">📄 ${conf.file || 'Немає файлу'}</div>
+                            <button type="button" onclick="convertToCategory(${idx}); event.stopPropagation();" style="background:rgba(255,255,255,0.1); color:#38bdf8; border:1px solid rgba(56,189,248,0.4); padding:3px 8px; border-radius:6px; font-size:10px; cursor:pointer" title="Зробити групою з вкладеними калькуляторами">📁 Зробити категорією</button>
+                        </div>
+                    `;
+                }
+
                 item.innerHTML = `
                     <button onclick="removeCalcFromConfig(${idx}); event.stopPropagation();" 
                             style="position:absolute; right:8px; top:8px; background:#ef4444; border:none; color:white; cursor:pointer; width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; transition:0.2s; z-index:10" 
-                            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'" title="Видалити">🗑️</button>
+                            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'" title="Видалити всю картку">🗑️</button>
 
                     <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center; padding-right:25px">
                         <div style="position:relative">
@@ -2802,10 +2838,13 @@
                                 onclick="event.stopPropagation()">
                             <span>🔒 Заглушка (Скоро)</span>
                         </label>
+                        ${isCat ? '<span style="background:#0284c7; color:white; font-size:9px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase">📁 Категорія</span>' : ''}
                     </div>
                     <textarea oninput="updateCalcInConfig(${idx}, 'desc', this.value)"
                         onclick="event.stopPropagation()"
-                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:var(--text-dim); border-radius:6px; font-size:11px; resize:vertical; padding:8px; min-height:40px" placeholder="Опис для картки...">${conf.desc || ''}</textarea>
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:var(--text-dim); border-radius:6px; font-size:11px; resize:vertical; padding:8px; min-height:40px; margin-top:6px" placeholder="Опис для картки...">${conf.desc || ''}</textarea>
+
+                    ${subItemsHtml}
                 `;
                 list.appendChild(item);
 
@@ -2834,6 +2873,130 @@
                 window.CalculatorConfig = newConfig;
                 updateDashboardPreview();
             });
+        }
+
+        async function removeSubCalcFromCategory(catIdx, subIdx) {
+            const cat = window.CalculatorConfig[catIdx];
+            if (!cat || !cat.items) return;
+            const subTitle = cat.items[subIdx] ? cat.items[subIdx].title : '';
+            if (!confirm(`Видалити калькулятор "${subTitle}" з цієї категорії?`)) return;
+            cat.items.splice(subIdx, 1);
+            cat.badge = `${cat.items.length} калькуляторів`;
+            renderCalculatorsEditorUI();
+            updateDashboardPreview();
+            await saveCalculatorsConfig(true);
+        }
+
+        async function addSubCalcToCategory(catIdx) {
+            const cat = window.CalculatorConfig[catIdx];
+            if (!cat) return;
+            if (!cat.items) cat.items = [];
+            
+            const userTitle = prompt('Введіть назву калькулятора для додавання в категорію:', 'Новий калькулятор');
+            if (!userTitle) return;
+
+            function translit(str) {
+                const map = {
+                    'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'є': 'ye', 'ж': 'zh', 'з': 'z', 'и': 'y', 'і': 'i', 'ї': 'yi', 'й': 'y',
+                    'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts',
+                    'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ь': '', 'ю': 'yu', 'я': 'ya'
+                };
+                return str.toLowerCase().split('').map(c => map[c] || (/[a-z0-9]/.test(c) ? c : '_')).join('').replace(/_+/g, '_');
+            }
+
+            const slug = translit(userTitle);
+            const id = 'schema_' + slug + '_' + Math.floor(Math.random() * 1000);
+            const filename = 'data/' + id + '.js';
+
+            const newSub = {
+                id: id,
+                title: userTitle,
+                icon: '📄',
+                file: filename,
+                desc: '',
+                isPlaceholder: false
+            };
+
+            const defaultSchema = {
+                "meta": { "version": "v.1", "title": userTitle, "lastUpdated": new Date().toISOString().split('T')[0] },
+                "categories": {
+                    "cat_construction": { "name": "Конструювання", "color": "#e0f2fe" },
+                    "cat_design": { "name": "Проєктування", "color": "#f3e8ff" },
+                    "cat_assembly": { "name": "Збірка", "color": "#fef9c3" },
+                    "cat_installation": { "name": "Монтаж", "color": "#dcfce7" }
+                },
+                "processes": [
+                    { "id": "pr_c1", "name": "ознайомлення з ТЗ", "category": "cat_construction" },
+                    { "id": "pr_c2", "name": "моделювання приміщення", "category": "cat_construction" },
+                    { "id": "pr_d1", "name": "ознайомлення з ТЗ", "category": "cat_design" },
+                    { "id": "pr_a1", "name": "Комплектування", "category": "cat_assembly" },
+                    { "id": "pr_i1", "name": "перевірка приміщення", "category": "cat_installation" },
+                    { "id": "pr_i6", "name": "Монтаж", "category": "cat_installation" }
+                ],
+                "groups": [{ "id": "g_main", "title": "Основні параметри" }],
+                "fields": [],
+                "products": { "groups": [], "fields": [] },
+                "rules": {}
+            };
+            const fileContent = `const Schema = ${JSON.stringify(defaultSchema, null, 4)};\nwindow.Schema = Schema;`;
+
+            try {
+                await fetch('http://localhost:5005', {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename, content: fileContent })
+                });
+            } catch (e) {
+                console.warn("Локальний сервер недоступний");
+            }
+
+            cat.items.push(newSub);
+            cat.badge = `${cat.items.length} калькуляторів`;
+            renderCalculatorsEditorUI();
+            updateDashboardPreview();
+            await saveCalculatorsConfig(true);
+        }
+
+        function updateSubCalc(catIdx, subIdx, prop, val) {
+            const cat = window.CalculatorConfig[catIdx];
+            if (!cat || !cat.items || !cat.items[subIdx]) return;
+            cat.items[subIdx][prop] = val;
+            renderDashboardCardsPreview();
+        }
+
+        async function convertCategoryToRegularCalc(catIdx) {
+            const cat = window.CalculatorConfig[catIdx];
+            if (!cat) return;
+            if (!confirm(`Перетворити "${cat.title}" на звичайний окремий калькулятор? Всі вкладені калькулятори буде вилучено.`)) return;
+            delete cat.isCategory;
+            delete cat.items;
+            delete cat.badge;
+            cat.file = "data/schema_stand_kuhonne_napovnennya.js";
+            cat.desc = "Корпус стенду, кількість модулів та наповнення фурнітурою";
+            renderCalculatorsEditorUI();
+            updateDashboardPreview();
+            await saveCalculatorsConfig(true);
+        }
+
+        async function convertToCategory(idx) {
+            const conf = window.CalculatorConfig[idx];
+            if (!conf) return;
+            if (!confirm(`Зробити "${conf.title}" категорією (папкою), яка містить вкладені калькулятори?`)) return;
+            conf.isCategory = true;
+            conf.items = [
+                {
+                    id: conf.id + '_sub1',
+                    title: conf.title + ' (Основний)',
+                    icon: conf.icon || '📄',
+                    file: conf.file || 'data/schema_stand_kuhonne_napovnennya.js',
+                    desc: '',
+                    isPlaceholder: false
+                }
+            ];
+            delete conf.file;
+            conf.badge = '1 калькулятор';
+            renderCalculatorsEditorUI();
+            updateDashboardPreview();
+            await saveCalculatorsConfig(true);
         }
 
         function getDragAfterSidebarElement(container, y) {
@@ -2987,7 +3150,7 @@
             await saveCalculatorsConfig();
         }
 
-        async function saveCalculatorsConfig() {
+        async function saveCalculatorsConfig(isSilent = false) {
             const configToSave = window.CalculatorConfig.map(conf => {
                 const clean = { ...conf };
                 delete clean._previewIcon;
@@ -3002,11 +3165,9 @@
                     body: JSON.stringify({ filename: filename, content: content })
                 });
                 if (response.ok) {
-                    alert('✅ Список калькуляторів збережено!\n🌐 Зміни відправлено на GitHub!\n🔄 Сторінка оновиться через 2 секунди...');
-                    // Автоматичне оновлення сторінки через 2 секунди
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
+                    if (!isSilent) {
+                        alert('✅ Список калькуляторів збережено!');
+                    }
                     return;
                 }
             } catch (e) { }
