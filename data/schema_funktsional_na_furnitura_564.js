@@ -257,25 +257,13 @@ const Schema = {
     ],
     "fields": [
         {
-            "id": "f1789479349868",
-            "groupId": "g_main",
-            "label": "Корпус",
-            "type": "number",
-            "layout": {
-                "inpBorder": "#000000"
-            },
-            "helpContent": "",
-            "allowDecimal": true,
-            "formula": "=(f1789479447252 * f1789479695285) / 1000000",
-            "readOnly": true
-        },
-        {
             "id": "f1789479447252",
             "groupId": "g_main",
             "label": "ширина(мм)",
             "type": "number",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-33"
             }
         },
         {
@@ -284,8 +272,23 @@ const Schema = {
             "label": "висота(мм)",
             "type": "number",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-33"
             }
+        },
+        {
+            "id": "f1789479349868",
+            "groupId": "g_main",
+            "label": "Корпус",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-33"
+            },
+            "helpContent": "",
+            "allowDecimal": true,
+            "formula": "=(f1789479447252 * f1789479695285) / 1000000",
+            "readOnly": true
         }
     ],
     "products": {
