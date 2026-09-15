@@ -272,7 +272,7 @@ const Schema = {
         {
             "id": "f1789479447252",
             "groupId": "g_main",
-            "label": "ширина",
+            "label": "ширина(мм)",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000"
@@ -281,7 +281,7 @@ const Schema = {
         {
             "id": "f1789479695285",
             "groupId": "g_main",
-            "label": "висота",
+            "label": "висота(мм)",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000"
