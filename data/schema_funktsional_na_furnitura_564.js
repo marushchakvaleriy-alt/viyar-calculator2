@@ -290,7 +290,7 @@ const Schema = {
                 "width": "w-33",
                 "helpImg": "images/hints/стіна.jpg",
                 "glass": true,
-                "shadow": "deep"
+                "shadow": "none"
             },
             "helpContent": "",
             "allowDecimal": true,
