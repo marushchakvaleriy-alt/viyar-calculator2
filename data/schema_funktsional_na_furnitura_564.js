@@ -253,6 +253,10 @@ const Schema = {
         {
             "id": "g_main",
             "title": "Основні параметри"
+        },
+        {
+            "id": "g1789481047588",
+            "title": "КОНСТРУКТИВ"
         }
     ],
     "fields": [
@@ -289,6 +293,26 @@ const Schema = {
             "allowDecimal": true,
             "formula": "=(f1789479447252 * f1789479695285) / 1000000",
             "readOnly": true
+        },
+        {
+            "id": "f1789481017862",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        },
+        {
+            "id": "f1789481049587",
+            "groupId": "g1789481047588",
+            "label": "Модулі",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
         }
     ],
     "products": {
