@@ -298,15 +298,6 @@ const Schema = {
             "readOnly": true
         },
         {
-            "id": "f1789481017862",
-            "groupId": "g_main",
-            "label": "Нова дія",
-            "type": "number",
-            "layout": {
-                "inpBorder": "#000000"
-            }
-        },
-        {
             "id": "f1789481049587",
             "groupId": "g1789481047588",
             "label": "Модулі",
