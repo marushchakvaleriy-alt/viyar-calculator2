@@ -255,7 +255,30 @@ const Schema = {
             "title": "Основні параметри"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "id": "f1789479349868",
+            "groupId": "g_main",
+            "label": "Корпус",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false,
+            "formula": "=(f_width * f_height) / 1000000",
+            "readOnly": true
+        },
+        {
+            "id": "f1789479447252",
+            "groupId": "g_main",
+            "label": "Нова дія",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        }
+    ],
     "products": {
         "groups": [],
         "fields": []
