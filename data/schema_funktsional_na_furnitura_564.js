@@ -311,7 +311,8 @@ const Schema = {
             "layout": {
                 "inpBorder": "#000000",
                 "width": "w-33",
-                "flexDirection": "column"
+                "flexDirection": "column",
+                "textAlign": "center"
             },
             "helpContent": "",
             "allowDecimal": false
