@@ -5,7 +5,7 @@ window.CalculatorConfig = [
         "icon": "🛠️",
         "desc": "Кухонне наповнення, напрямні, завіси, кріплення, гардеробне наповнення, стенд розпродажу",
         "isCategory": true,
-        "badge": "2 калькуляторів",
+        "badge": "1 калькуляторів",
         "items": [
             {
                 "id": "schema_stand_kuhonne_napovnennya",
@@ -13,14 +13,6 @@ window.CalculatorConfig = [
                 "icon": "🗄️",
                 "file": "data/schema_stand_kuhonne_napovnennya.js",
                 "desc": "Карго, сушки, підіймачі, органайзери, сміттєві системи",
-                "isPlaceholder": false
-            },
-            {
-                "id": "schema_stand_napryamni_zavisy",
-                "title": "Зона напрямних, завіс та підіймачів",
-                "icon": "🔧",
-                "file": "data/schema_stand_napryamni_zavisy.js",
-                "desc": "Стенди систем висування, петель, підіймальних механізмів",
                 "isPlaceholder": false
             }
         ]
