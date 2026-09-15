@@ -309,7 +309,8 @@ const Schema = {
             "label": "Модулі",
             "type": "number",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-33"
             },
             "helpContent": "",
             "allowDecimal": false
@@ -320,7 +321,8 @@ const Schema = {
             "label": "Стілька вертикальна",
             "type": "number",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-33"
             },
             "helpContent": "",
             "allowDecimal": false
@@ -331,7 +333,8 @@ const Schema = {
             "label": "Стілька вертикальна",
             "type": "number",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-33"
             },
             "helpContent": "",
             "allowDecimal": false
