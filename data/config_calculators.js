@@ -5,7 +5,7 @@ window.CalculatorConfig = [
         "icon": "🛠️",
         "desc": "Кухонне наповнення, напрямні, завіси, кріплення, гардеробне наповнення, стенд розпродажу",
         "isCategory": true,
-        "badge": "3 калькуляторів",
+        "badge": "2 калькуляторів",
         "items": [
             {
                 "id": "schema_stand_kuhonne_napovnennya",
@@ -21,14 +21,6 @@ window.CalculatorConfig = [
                 "icon": "🔧",
                 "file": "data/schema_stand_napryamni_zavisy.js",
                 "desc": "Стенди систем висування, петель, підіймальних механізмів",
-                "isPlaceholder": false
-            },
-            {
-                "id": "schema_stand_kripilna_furnitura",
-                "title": "Зона кріпильної фурнітури",
-                "icon": "🔩",
-                "file": "data/schema_stand_kripilna_furnitura.js",
-                "desc": "Зразки стяжок, навісів, полкотримачів, кутиків",
                 "isPlaceholder": false
             }
         ]
