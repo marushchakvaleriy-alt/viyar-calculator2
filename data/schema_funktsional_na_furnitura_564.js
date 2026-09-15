@@ -287,7 +287,8 @@ const Schema = {
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
-                "width": "w-33"
+                "width": "w-33",
+                "helpImg": "images/hints/стіна.jpg"
             },
             "helpContent": "",
             "allowDecimal": true,
