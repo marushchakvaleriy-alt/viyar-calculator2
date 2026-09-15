@@ -313,6 +313,28 @@ const Schema = {
             },
             "helpContent": "",
             "allowDecimal": false
+        },
+        {
+            "id": "f1789481114025",
+            "groupId": "g1789481047588",
+            "label": "Стілька вертикальна",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
+            "id": "f1789481134462",
+            "groupId": "g1789481047588",
+            "label": "Стілька вертикальна",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
         }
     ],
     "products": {
