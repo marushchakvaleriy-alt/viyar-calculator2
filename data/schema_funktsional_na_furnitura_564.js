@@ -289,7 +289,8 @@ const Schema = {
                 "inpBorder": "#000000",
                 "width": "w-33",
                 "helpImg": "images/hints/стіна.jpg",
-                "glass": true
+                "glass": true,
+                "shadow": "deep"
             },
             "helpContent": "",
             "allowDecimal": true,
