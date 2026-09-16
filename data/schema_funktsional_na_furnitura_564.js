@@ -287,7 +287,7 @@ const Schema = {
         {
             "id": "f1789479349868",
             "groupId": "g_main",
-            "label": "Корпус, кв.м",
+            "label": "Корпус, м²",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
@@ -790,6 +790,16 @@ const Schema = {
                     "isMultiplier": false
                 }
             ]
+        },
+        {
+            "id": "f1789542347378",
+            "groupId": "g1789481047588",
+            "label": "Конструкція 45°",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": ""
         }
     ],
     "products": {
