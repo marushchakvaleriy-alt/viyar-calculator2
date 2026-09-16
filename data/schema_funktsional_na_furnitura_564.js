@@ -298,7 +298,7 @@ const Schema = {
         {
             "id": "f1789479349868",
             "groupId": "g_main",
-            "label": "Корпус, м²",
+            "label": "Корпус, м³",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
