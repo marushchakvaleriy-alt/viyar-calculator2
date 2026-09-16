@@ -422,7 +422,21 @@ const Schema = {
             "default": "",
             "placeholderText": "",
             "labelYes": "",
-            "labelNo": ""
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf1789539858337",
+                    "label": "Елементи напрямних,завіс та підіймачів",
+                    "type": "multiselect",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Варіант 1"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "products": {
