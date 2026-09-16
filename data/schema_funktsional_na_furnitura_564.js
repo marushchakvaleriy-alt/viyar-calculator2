@@ -806,7 +806,497 @@ const Schema = {
         "groups": [],
         "fields": []
     },
-    "rules": {},
-    "modalFieldRules": {}
+    "rules": {
+        "f1789479447252": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        },
+        "f1789479695285": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        },
+        "f1789479349868": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        },
+        "f1789481049587": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        },
+        "f1789481114025": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        },
+        "f1789481134462": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        },
+        "f1789542347378": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        }
+    },
+    "modalFieldRules": {
+        "f1789538740557_mf_kitchen_hardware": {
+            "cargo_low": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "cargo_high": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "magic_corners": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "kitchen_baskets": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "countertop_plates": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "dish_dryers": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "sink_trays": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "kitchen_plinths": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "shelves": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "waste_systems": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "drawer_org": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789539703093_mf_drawers": {
+            "opt_easys": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_metabox": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hidden_slides": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_telescopic_slides": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_roller_slides": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_pullout_shelves": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_sliding_tables": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_metal_box_drawers": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_facade_adjust": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789539703093_mf_hinges": {
+            "opt_hinge_accessories": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hinge_dsp_mdf": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hinge_frame": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hinge_glass": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hinge_hidden": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hinge_special": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_hinge_joinery": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789539703093_mf_p2o": {
+            "opt_p2o_auto": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_p2o_mounts": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_p2o_magnetic": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_p2o_mortise": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_p2o_surface": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789539703093_mf_lifts_up": {
+            "opt_gas_lift": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_lift_hafele": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_lift_muller": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_lift_universal": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789539703093_mf_lifts_down": {
+            "opt_gas_lift_reverse": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_kiaro": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_door_limiters": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_lift_bar_hinges": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789541033848_mf_wardrobe_content": {
+            "opt_trousers": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_laundry_baskets": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_shoe_racks": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_microlifts_tie": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_wardrobe_drawer_org": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_pantographs": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_ironing_board": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_foxydry": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_mirror_muller": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_facade_mount_muller": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789541033848_mf_joker_systems": {
+            "opt_joker_system": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_cosma": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_ferro_fiori": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_lumine_tubes": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_polysystem": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789542100000_mf_connecting_hardware": {
+            "opt_corpus_ties": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_intersec_ties": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_brackets_plates": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_bed_ties": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_shelf_ties": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_countertop_ties": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_dowels_lamellas": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789542100000_mf_fastener_hardware": {
+            "opt_bolts_studs": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_nuts_washers": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_screws_euroscrews": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_dowels_anchors": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_dvp_fasteners": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_glass_mirror_fasteners": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_bushings_spacers": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            },
+            "opt_self_tapping_screws": {
+                "pr_c1": 1,
+                "pr_d1": 1,
+                "pr_a1": 1,
+                "pr_i1": 1
+            }
+        },
+        "f1789541892287_mf1789541958625": {
+            "pr_c1": 1,
+            "pr_d1": 1,
+            "pr_a1": 1,
+            "pr_i1": 1
+        }
+    }
 };
 window.Schema = Schema;
