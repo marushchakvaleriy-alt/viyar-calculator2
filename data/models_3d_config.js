@@ -9,10 +9,10 @@ window.MODELS_3D_CONFIG = [
     {
         "id": "stand_parametric_carcass",
         "title": "🛠️ Параметричний каркас (Стійки + Полиці)",
-        "schemaMatch": "*",
-        "targetGroup": "g_main",
+        "schemaMatch": "data/schema_funktsional_na_furnitura_564",
+        "targetGroup": "g1789481047588",
         "type": "elastic",
-        "modelUrl": "",
+        "modelUrl": "../Модельки/ImageToStl.com_Стіна.gltf",
         "baseDims": {
             "width": 3000,
             "height": 2400,
