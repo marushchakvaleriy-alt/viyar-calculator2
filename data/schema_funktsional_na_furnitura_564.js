@@ -416,27 +416,172 @@ const Schema = {
             "label": "Напрямні, завіси та підіймачі",
             "type": "select_modal",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-100"
             },
-            "helpContent": "",
-            "default": "",
-            "placeholderText": "",
-            "labelYes": "",
-            "labelNo": "",
+            "helpContent": "Оберіть механізми за підгрупами та вкажіть їхню кількість.",
+            "default": "➕ Додати: напрямні, завіси, підіймачі",
             "modalFields": [
                 {
-                    "id": "mf1789539858337",
-                    "label": "Елементи наповнення",
-                    "type": "multiselect",
+                    "id": "mf_drawers",
+                    "label": "📁 Висувні механізми",
+                    "type": "multiselect_qty",
                     "isMultiplier": false,
                     "options": [
                         {
-                            "value": "opt1",
-                            "label": "Варіант 1"
+                            "value": "opt_easys",
+                            "label": "Easys електро-механічна система відчинення шухляд Hettich"
+                        },
+                        {
+                            "value": "opt_metabox",
+                            "label": "Метабокс (Розпродаж)"
+                        },
+                        {
+                            "value": "opt_hidden_slides",
+                            "label": "Направляючі Прихованого монтажу"
+                        },
+                        {
+                            "value": "opt_telescopic_slides",
+                            "label": "Направляючі Телескопічні"
+                        },
+                        {
+                            "value": "opt_roller_slides",
+                            "label": "Роликові направляючі (Розпродаж)"
+                        },
+                        {
+                            "value": "opt_pullout_shelves",
+                            "label": "Системи висувних полиць"
+                        },
+                        {
+                            "value": "opt_sliding_tables",
+                            "label": "Системи для розсувних столів"
+                        },
+                        {
+                            "value": "opt_metal_box_drawers",
+                            "label": "Системи шухляд з металевими боковинами"
+                        },
+                        {
+                            "value": "opt_facade_adjust",
+                            "label": "Універсальне регулювання фасаду шухляди"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_hinges",
+                    "label": "🚪 Завіси",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_hinge_accessories",
+                            "label": "Аксесуари для завіс"
+                        },
+                        {
+                            "value": "opt_hinge_dsp_mdf",
+                            "label": "Завіси для фасадів з ДСП/МДФ"
+                        },
+                        {
+                            "value": "opt_hinge_frame",
+                            "label": "Завіси для фасадів з рамкового профілю"
+                        },
+                        {
+                            "value": "opt_hinge_glass",
+                            "label": "Завіси для фасадів зі скла"
+                        },
+                        {
+                            "value": "opt_hinge_hidden",
+                            "label": "Завіси прихованого монтажу"
+                        },
+                        {
+                            "value": "opt_hinge_special",
+                            "label": "Спеціальні завіси"
+                        },
+                        {
+                            "value": "opt_hinge_joinery",
+                            "label": "Столярні завіси"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_p2o",
+                    "label": "🔘 Механізми для фасадів без ручок (P2O)",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_p2o_auto",
+                            "label": "Автоматичні механізми P2O"
+                        },
+                        {
+                            "value": "opt_p2o_mounts",
+                            "label": "Кріплення і відповідні планки для P2O"
+                        },
+                        {
+                            "value": "opt_p2o_magnetic",
+                            "label": "Магнітні замки"
+                        },
+                        {
+                            "value": "opt_p2o_mortise",
+                            "label": "Механізми P2O врізні"
+                        },
+                        {
+                            "value": "opt_p2o_surface",
+                            "label": "Механізми P2O накладні"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_lifts_up",
+                    "label": "🔼 Підіймачі (відкриття фасаду вгору)",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_gas_lift",
+                            "label": "Газовий ліфт"
+                        },
+                        {
+                            "value": "opt_lift_hafele",
+                            "label": "Підіймачі Hafele"
+                        },
+                        {
+                            "value": "opt_lift_muller",
+                            "label": "Підіймачі Muller"
+                        },
+                        {
+                            "value": "opt_lift_universal",
+                            "label": "Універсальні механізми"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_lifts_down",
+                    "label": "🔽 Механізми (відкриття фасаду вниз)",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_gas_lift_reverse",
+                            "label": "Газліфти зворотньої дії"
+                        },
+                        {
+                            "value": "opt_kiaro",
+                            "label": "Механізми Italiana Ferramenta KIARO"
+                        },
+                        {
+                            "value": "opt_door_limiters",
+                            "label": "Обмежувачі відкривання дверей"
+                        },
+                        {
+                            "value": "opt_lift_bar_hinges",
+                            "label": "Барні завіси для підіймачів"
                         }
                     ]
                 }
-            ]
+            ],
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
         }
     ],
     "products": {
