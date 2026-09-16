@@ -68,12 +68,9 @@
         m3dScene = new THREE.Scene();
         m3dScene.background = new THREE.Color(0x0b1329);
 
-        // Туман для глибини
-        m3dScene.fog = new THREE.FogExp2(0x0b1329, 0.00015);
-
         // Камера
-        m3dCamera = new THREE.PerspectiveCamera(42, w / h, 10, 50000);
-        m3dCamera.position.set(3800, 2400, 5000);
+        m3dCamera = new THREE.PerspectiveCamera(40, w / h, 10, 50000);
+        m3dCamera.position.set(4000, 2500, 5500);
 
         // Рендерер
         m3dRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -82,7 +79,7 @@
         m3dRenderer.shadowMap.enabled = true;
         m3dRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
         m3dRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-        m3dRenderer.toneMappingExposure = 1.1;
+        m3dRenderer.toneMappingExposure = 1.15;
 
         container.appendChild(m3dRenderer.domElement);
 
@@ -92,29 +89,29 @@
             m3dControls.enableDamping = true;
             m3dControls.dampingFactor = 0.08;
             m3dControls.maxPolarAngle = Math.PI / 2 + 0.05; // не падати під підлогу
-            m3dControls.minDistance = 300;
-            m3dControls.maxDistance = 25000;
+            m3dControls.minDistance = 200;
+            m3dControls.maxDistance = 35000;
             m3dControls.target.set(0, 1200, 0);
         }
 
         // Освітлення
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
         m3dScene.add(ambientLight);
 
-        const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.5);
+        const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.6);
         hemiLight.position.set(0, 5000, 0);
         m3dScene.add(hemiLight);
 
-        const keyLight = new THREE.DirectionalLight(0xffffff, 0.85);
-        keyLight.position.set(4000, 6000, 4000);
+        const keyLight = new THREE.DirectionalLight(0xffffff, 0.95);
+        keyLight.position.set(4000, 6000, 5000);
         m3dScene.add(keyLight);
 
-        const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.35);
-        fillLight.position.set(-4000, 2000, -3000);
+        const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.45);
+        fillLight.position.set(-4000, 3000, -3000);
         m3dScene.add(fillLight);
 
         // Підлога та сітка
-        const grid = new THREE.GridHelper(12000, 60, 0x1e293b, 0x1e293b);
+        const grid = new THREE.GridHelper(10000, 40, 0x334155, 0x1e293b);
         grid.position.y = 0;
         m3dScene.add(grid);
 
@@ -194,21 +191,41 @@
             });
         }
 
-        // 3. Поля поточної схеми (для ширини і висоти)
-        if (widthSelect && heightSelect && window.Schema && window.Schema.fields) {
-            widthSelect.innerHTML = '<option value="">-- Автовизначення або виберіть --</option>';
-            heightSelect.innerHTML = '<option value="">-- Автовизначення або виберіть --</option>';
+        // 3. Поля поточної схеми (для ширини, висоти, вертикальних стійок та полиць)
+        const vertSelect = document.getElementById('m3dVerticalField');
+        const horizSelect = document.getElementById('m3dHorizontalField');
+
+        if (window.Schema && window.Schema.fields) {
+            if (widthSelect) widthSelect.innerHTML = '<option value="">-- Автовизначення або виберіть --</option>';
+            if (heightSelect) heightSelect.innerHTML = '<option value="">-- Автовизначення або виберіть --</option>';
+            if (vertSelect) vertSelect.innerHTML = '<option value="">-- Оберіть поле для верт. стійок --</option>';
+            if (horizSelect) horizSelect.innerHTML = '<option value="">-- Оберіть поле для гориз. полиць --</option>';
 
             window.Schema.fields.forEach(f => {
-                const optW = document.createElement('option');
-                optW.value = f.id;
-                optW.textContent = `${f.label} (${f.id})`;
-                widthSelect.appendChild(optW);
-
-                const optH = document.createElement('option');
-                optH.value = f.id;
-                optH.textContent = `${f.label} (${f.id})`;
-                heightSelect.appendChild(optH);
+                if (widthSelect) {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = `${f.label} (${f.id})`;
+                    widthSelect.appendChild(opt);
+                }
+                if (heightSelect) {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = `${f.label} (${f.id})`;
+                    heightSelect.appendChild(opt);
+                }
+                if (vertSelect) {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = `${f.label} (${f.id})`;
+                    vertSelect.appendChild(opt);
+                }
+                if (horizSelect) {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = `${f.label} (${f.id})`;
+                    horizSelect.appendChild(opt);
+                }
             });
         }
     };
@@ -439,6 +456,32 @@
         const isGlb = url.toLowerCase().endsWith('.glb') || url.toLowerCase().endsWith('.gltf');
         const isObj = url.toLowerCase().endsWith('.obj');
 
+        const tryFallbackMemory = () => {
+            if (window.TEST_STAND_GLTF && isGlb) {
+                try {
+                    const loader = new THREE.GLTFLoader();
+                    loader.parse(JSON.stringify(window.TEST_STAND_GLTF), '', (loadedMem) => {
+                        setupLoadedObject(loadedMem.scene, item);
+                        if (badge) {
+                            badge.innerText = '✅ Завантажено (Резерв)';
+                            badge.style.background = 'rgba(16, 185, 129, 0.25)';
+                            badge.style.color = '#34d399';
+                        }
+                    });
+                } catch(e) {
+                    console.warn('m3d: Memory fallback failed', e);
+                }
+            } else {
+                const fallbackGroup = createParametricFallback(item);
+                setupLoadedObject(fallbackGroup, item);
+                if (badge) {
+                    badge.innerText = '📦 Каркас (Тест)';
+                    badge.style.background = 'rgba(148, 163, 184, 0.25)';
+                    badge.style.color = '#94a3b8';
+                }
+            }
+        };
+
         if (isGlb && typeof THREE.GLTFLoader !== 'undefined') {
             const loader = new THREE.GLTFLoader();
             loader.load(
@@ -453,11 +496,19 @@
                 },
                 undefined,
                 (err) => {
-                    console.error('Помилка завантаження GLTF:', err);
-                    if (badge) {
-                        badge.innerText = '❌ Помилка файлу';
-                        badge.style.background = 'rgba(239, 68, 68, 0.25)';
-                        badge.style.color = '#f87171';
+                    console.warn('m3d: Помилка первинного шляху GLTF, спроба відносного шляху...', url);
+                    if (url.startsWith('../')) {
+                        const altUrl = url.replace('../', '');
+                        loader.load(altUrl, (gltfAlt) => {
+                            setupLoadedObject(gltfAlt.scene, item);
+                            if (badge) {
+                                badge.innerText = '✅ Завантажено';
+                                badge.style.background = 'rgba(16, 185, 129, 0.25)';
+                                badge.style.color = '#34d399';
+                            }
+                        }, undefined, () => tryFallbackMemory());
+                    } else {
+                        tryFallbackMemory();
                     }
                 }
             );
@@ -476,62 +527,131 @@
                 undefined,
                 (err) => {
                     console.error('Помилка завантаження OBJ:', err);
-                    if (badge) {
-                        badge.innerText = '❌ Помилка файлу';
-                        badge.style.background = 'rgba(239, 68, 68, 0.25)';
-                        badge.style.color = '#f87171';
-                    }
+                    tryFallbackMemory();
                 }
             );
         } else {
-            // Fallback: Створюємо параметричний 3D-бокс
-            const fallbackGroup = createParametricFallback(item);
-            setupLoadedObject(fallbackGroup, item);
-            if (badge) {
-                badge.innerText = '📦 Каркас (Тест)';
-                badge.style.background = 'rgba(148, 163, 184, 0.25)';
-                badge.style.color = '#94a3b8';
-            }
+            tryFallbackMemory();
         }
     };
 
-    function setupLoadedObject(obj, config) {
+    function setupLoadedObject(model, config) {
         m3dCurrentModelGroup = new THREE.Group();
 
-        // Розраховуємо обмежувальний паралелепіпед моделі
-        const bbox = new THREE.Box3().setFromObject(obj);
-        const center = bbox.getCenter(new THREE.Vector3());
-        const size = bbox.getSize(new THREE.Vector3());
+        const base = config.baseDims || { width: 5256, height: 2548, depth: 583 };
 
-        // Центруємо геометрію по X і Z, підлога на Y = 0
-        obj.position.set(-center.x, -bbox.min.y, -center.z);
-
-        // Налаштування матеріалів та контурних ліній (Edges)
-        const showEdges = config.edges !== false;
-        obj.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-
-                if (showEdges && child.geometry) {
-                    const edgesGeo = new THREE.EdgesGeometry(child.geometry, 25);
-                    const lineMat = new THREE.LineBasicMaterial({ color: 0x0f172a, linewidth: 1 });
-                    const wire = new THREE.LineSegments(edgesGeo, lineMat);
-                    child.add(wire);
-                }
-            }
+        const meshes = [];
+        model.traverse(child => {
+            if (child.isMesh && child.geometry) meshes.push(child);
         });
 
-        m3dCurrentModelGroup.add(obj);
+        if (meshes.length > 0) {
+            // Розраховуємо первинний bounding box моделі
+            const totalBox = new THREE.Box3();
+            meshes.forEach(m => {
+                m.geometry.computeBoundingBox();
+                totalBox.union(m.geometry.boundingBox);
+            });
+
+            const rawSize = new THREE.Vector3();
+            totalBox.getSize(rawSize);
+            const rawCenter = new THREE.Vector3();
+            totalBox.getCenter(rawCenter);
+
+            // Орієнтація: якщо Z-up (CAD/STL конвертери: висота Y менша за глибину Z)
+            const mCenter = new THREE.Matrix4().makeTranslation(-rawCenter.x, -rawCenter.y, -rawCenter.z);
+            const mRotX = new THREE.Matrix4().makeRotationX(-Math.PI / 2);
+            const mRotY = new THREE.Matrix4().makeRotationY(Math.PI);
+
+            const M = new THREE.Matrix4();
+            if (rawSize.y < rawSize.z * 0.5) {
+                M.multiply(mRotY);
+                M.multiply(mRotX);
+            }
+            M.multiply(mCenter);
+
+            const tempBox = totalBox.clone().applyMatrix4(M);
+            const curW = Math.max(1, tempBox.max.x - tempBox.min.x);
+            const curH = Math.max(1, tempBox.max.y - tempBox.min.y);
+            const curD = Math.max(1, tempBox.max.z - tempBox.min.z);
+
+            // Масштабуємо у точні міліметри базових габаритів
+            const realScaleX = (base.width || 5256) / curW;
+            const realScaleY = (base.height || 2548) / curH;
+            const realScaleZ = (base.depth || 583) / curD;
+
+            const mScale = new THREE.Matrix4().makeScale(realScaleX, realScaleY, realScaleZ);
+            const scaledBox = tempBox.clone().applyMatrix4(mScale);
+            const scaledCenter = new THREE.Vector3();
+            scaledBox.getCenter(scaledCenter);
+
+            // Вирівнюємо на підлогу (Y = 0) та центруємо по X, Z
+            const shift = new THREE.Matrix4().makeTranslation(-scaledCenter.x, -scaledBox.min.y, -scaledCenter.z);
+            const finalM = new THREE.Matrix4().multiply(shift).multiply(mScale).multiply(M);
+
+            const solidMaterial = new THREE.MeshStandardMaterial({
+                color: config.color || 0x64748b,
+                roughness: 0.65,
+                metalness: 0.05,
+                side: THREE.DoubleSide
+            });
+
+            const edgeMaterial = new THREE.LineBasicMaterial({
+                color: 0x1e293b,
+                linewidth: 1
+            });
+
+            meshes.forEach(m => {
+                m.geometry.applyMatrix4(finalM);
+                m.geometry.computeBoundingBox();
+                m.geometry.computeVertexNormals();
+
+                m.position.set(0, 0, 0);
+                m.rotation.set(0, 0, 0);
+                m.scale.set(1, 1, 1);
+
+                m.castShadow = true;
+                m.receiveShadow = true;
+                m.material = solidMaterial.clone();
+
+                if (config.edges !== false) {
+                    try {
+                        const eg = new THREE.EdgesGeometry(m.geometry, 25);
+                        const wire = new THREE.LineSegments(eg, edgeMaterial);
+                        m.add(wire);
+                    } catch (e) {}
+                }
+
+                m3dCurrentModelGroup.add(m);
+            });
+        } else {
+            m3dCurrentModelGroup.add(model);
+        }
+
         m3dScene.add(m3dCurrentModelGroup);
+        m3dCurrentModelGroup.userData.baseDims = { ...base };
 
-        // Зберігаємо первинний розмір
-        m3dCurrentModelGroup.userData.originalSize = size.clone();
-        m3dCurrentModelGroup.userData.baseDims = config.baseDims || { width: 5256, height: 2548, depth: 583 };
-
-        // Застосовуємо поточні тестові розміри та малюємо розмірні лінії
+        // Застосовуємо масштабування повзунків
         m3dApplyScaling();
-        m3dResetCamera();
+
+        // Центруємо камеру навколо моделі на ідеальну відстань (заповнює 75% огляду)
+        fitCameraToObject(m3dCurrentModelGroup);
+    }
+
+    function fitCameraToObject(object) {
+        if (!m3dCamera || !m3dControls || !object) return;
+        const box = new THREE.Box3().setFromObject(object);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const fov = m3dCamera.fov * (Math.PI / 180);
+        let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+        cameraZ *= 1.35; // Комфортний відступ камери
+
+        m3dCamera.position.set(center.x + cameraZ * 0.75, center.y + cameraZ * 0.35, center.z + cameraZ * 0.95);
+        m3dControls.target.set(center.x, center.y, center.z);
+        m3dControls.update();
     }
 
     // Створення демонстраційного каркасу, якщо файл відсутній
@@ -588,7 +708,6 @@
         m3dDimLinesGroup.clear();
 
         const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, linewidth: 2 });
-        const arrowColor = 0x38bdf8;
 
         const halfW = w / 2;
         const halfD = d / 2;
@@ -688,13 +807,9 @@
 
     // Скидання ракурсу камери
     window.m3dResetCamera = function () {
-        if (!m3dCamera || !m3dControls) return;
-        const w = m3dTestDims.width || 5000;
-        const h = m3dTestDims.height || 2500;
-
-        m3dCamera.position.set(w * 0.75, h * 0.9, w * 0.95);
-        m3dControls.target.set(0, h * 0.45, 0);
-        m3dControls.update();
+        if (m3dCurrentModelGroup) {
+            fitCameraToObject(m3dCurrentModelGroup);
+        }
     };
 
     // Збереження ВСІЄЇ конфігурації у файл models_3d_config.js

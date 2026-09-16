@@ -14,7 +14,8 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <script src="../data/models_3d_config.js?v=2"></script>
-    <script src="admin_3d_manager.js?v=1"></script>
+    <script src="../data/test_model_data.js"></script>
+    <script src="admin_3d_manager.js?v=2"></script>
     <!-- Dynamic Schema Loader -->
     <script>
         (function () {
@@ -570,10 +571,11 @@
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
                                 <div>
-                                    <label class="form-label" style="font-weight: 600; font-size: 12px;">Тип поведінки</label>
+                                    <label class="form-label" style="font-weight: 600; font-size: 12px;">Тип поведінки / Джерело</label>
                                     <select id="m3dType" class="form-input" onchange="m3dOnTypeChange()">
-                                        <option value="elastic">📐 Еластична (тягнеться під Ш/В/Г)</option>
-                                        <option value="static">🔍 Статична (фіксований зразок 360°)</option>
+                                        <option value="elastic">📐 Еластична 3D-модель (GLTF/GLB)</option>
+                                        <option value="parametric">🛠️ Параметричний каркас (Стійки + Полиці)</option>
+                                        <option value="static">🔍 Статична модель (Фіксований зразок 360°)</option>
                                     </select>
                                 </div>
                                 <div>
@@ -585,18 +587,53 @@
                                 </div>
                             </div>
 
-                            <div class="form-group" style="margin-bottom: 12px;">
+                            <div class="form-group" id="m3dUrlGroup" style="margin-bottom: 12px;">
                                 <label class="form-label" style="font-weight: 600; font-size: 12px;">Шлях до файлу моделі (.gltf, .glb, .obj)</label>
-                                <input type="text" id="m3dUrl" class="form-input" required placeholder="../Модельки/ImageToStl.com_Стіна.gltf">
+                                <input type="text" id="m3dUrl" class="form-input" placeholder="../Модельки/ImageToStl.com_Стіна.gltf">
                                 <div style="display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap;">
                                     <span style="font-size: 11px; color: #64748b; align-self: center;">Швидкий вибір:</span>
                                     <button type="button" class="btn-mini" onclick="document.getElementById('m3dUrl').value='../Модельки/ImageToStl.com_Стіна.gltf'; m3dLoadCurrentIntoPreview();" style="font-size: 11px; padding: 2px 6px; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; border-radius: 4px; cursor: pointer;">Стіна.gltf</button>
                                 </div>
                             </div>
 
+                            <!-- Parametric Additional Settings (Стійки та полиці) -->
+                            <div id="m3dParametricSettings" style="display: none; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+                                <div style="font-size: 12px; font-weight: 700; color: #065f46; margin-bottom: 8px;">🛠️ Параметри генератора каркасу (без файлу)</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                                    <div>
+                                        <label style="font-size: 11px; color: #047857; font-weight: 600;">Поле верт. стійок</label>
+                                        <select id="m3dVerticalField" class="form-input" style="padding: 6px; font-size: 12px;"></select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; color: #047857; font-weight: 600;">Поле гориз. полиць</label>
+                                        <select id="m3dHorizontalField" class="form-input" style="padding: 6px; font-size: 12px;"></select>
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                                    <div>
+                                        <label style="font-size: 11px; color: #047857;">Цоколь (80 мм)</label>
+                                        <select id="m3dPlinth" class="form-input" style="padding: 6px; font-size: 12px;">
+                                            <option value="true">Є цоколь</option>
+                                            <option value="false">Без цоколя</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; color: #047857;">Задня стінка</label>
+                                        <select id="m3dBack" class="form-input" style="padding: 6px; font-size: 12px;">
+                                            <option value="true">Є (ДВП/ХДФ)</option>
+                                            <option value="false">Відкрита ніша</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; color: #047857;">Товщина ДСП</label>
+                                        <input type="number" id="m3dThickness" class="form-input" value="18" style="padding: 6px; font-size: 12px;">
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Dimensions Box -->
                             <div id="m3dElasticSettings" style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
-                                <div style="font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Базові заводські габарити моделі (мм)</div>
+                                <div style="font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Базові габарити виробу (мм)</div>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px;">
                                     <div>
                                         <label style="font-size: 11px; color: #64748b;">Ширина (W)</label>
@@ -689,6 +726,24 @@
                                     <span id="m3dValD" style="font-weight: 700; color: #38bdf8;">583 мм</span>
                                 </div>
                                 <input type="range" id="m3dSliderD" min="200" max="1500" step="20" value="583" style="width: 100%; cursor: pointer;" oninput="m3dOnSliderInput()">
+                            </div>
+                        </div>
+
+                        <!-- Parametric Sliders Row (Стійки та полиці) -->
+                        <div id="m3dParametricSlidersRow" style="display: none; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.15);">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; margin-bottom: 4px;">
+                                    <span>Стійки вертикальні:</span>
+                                    <span id="m3dValVert" style="font-weight: 700; color: #34d399;">2 шт</span>
+                                </div>
+                                <input type="range" id="m3dSliderVert" min="0" max="8" step="1" value="2" style="width: 100%; cursor: pointer;" oninput="m3dOnSliderInput()">
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; margin-bottom: 4px;">
+                                    <span>Стійки горизонт. (полиці):</span>
+                                    <span id="m3dValHoriz" style="font-weight: 700; color: #34d399;">4 шт</span>
+                                </div>
+                                <input type="range" id="m3dSliderHoriz" min="0" max="16" step="1" value="4" style="width: 100%; cursor: pointer;" oninput="m3dOnSliderInput()">
                             </div>
                         </div>
 
