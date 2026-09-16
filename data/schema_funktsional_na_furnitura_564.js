@@ -770,15 +770,6 @@ const Schema = {
             "labelNo": ""
         },
         {
-            "id": "f1789541881042",
-            "groupId": "g1789481047588",
-            "label": "Нова дія",
-            "type": "number",
-            "layout": {
-                "inpBorder": "#000000"
-            }
-        },
-        {
             "id": "f1789541892287",
             "groupId": "g1789481047588",
             "label": "Підсвітка",
