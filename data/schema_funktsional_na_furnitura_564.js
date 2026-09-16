@@ -345,7 +345,7 @@ const Schema = {
             "id": "f1789538740557",
             "groupId": "g1789538738995",
             "label": "Кухонне наповнення",
-            "type": "action_button",
+            "type": "select_modal",
             "layout": {
                 "inpBorder": "#000000",
                 "width": "w-100"
@@ -404,20 +404,22 @@ const Schema = {
                             "label": "Системи організацій для шухляд"
                         }
                     ]
-                },
-                {
-                    "id": "mf1789539618104",
-                    "label": "напрямні, завіси та підіймачі",
-                    "type": "multiselect_qty",
-                    "isMultiplier": false,
-                    "options": [
-                        {
-                            "value": "opt1",
-                            "label": "Варіант 1"
-                        }
-                    ]
                 }
-            ]
+            ],
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
+        },
+        {
+            "id": "f1789539703093",
+            "groupId": "g1789538738995",
+            "label": "напрямні, завіси та підіймачі",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
         }
     ],
     "products": {
