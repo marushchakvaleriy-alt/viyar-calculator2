@@ -345,33 +345,75 @@ const Schema = {
             "id": "f1789538740557",
             "groupId": "g1789538738995",
             "label": "Кухонне наповнення",
-            "type": "select_modal",
+            "type": "action_button",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-100"
             },
-            "helpContent": "",
-            "default": "+Додати наповнення",
-            "placeholderText": "+Додати наповнення",
-            "labelYes": "",
-            "labelNo": "",
+            "helpContent": "Оберіть елементи кухонного наповнення та вкажіть їх кількість.",
+            "default": "➕ Додати наповнення",
             "modalFields": [
                 {
-                    "id": "mf1789538934958",
-                    "label": "Нове поле",
-                    "type": "multiselect",
+                    "id": "mf_kitchen_hardware",
+                    "label": "Елементи кухонного наповнення",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "cargo_low",
+                            "label": "Карго низьке"
+                        },
+                        {
+                            "value": "cargo_high",
+                            "label": "Карго високе"
+                        },
+                        {
+                            "value": "magic_corners",
+                            "label": "Магічні кути"
+                        },
+                        {
+                            "value": "kitchen_baskets",
+                            "label": "Кошики кухонні"
+                        },
+                        {
+                            "value": "countertop_plates",
+                            "label": "Накладки для стільниць"
+                        },
+                        {
+                            "value": "dish_dryers",
+                            "label": "Сушарки і піддони"
+                        },
+                        {
+                            "value": "sink_trays",
+                            "label": "Піддони під мийку"
+                        },
+                        {
+                            "value": "kitchen_plinths",
+                            "label": "Бортики кухонні"
+                        },
+                        {
+                            "value": "shelves",
+                            "label": "Полички"
+                        },
+                        {
+                            "value": "waste_systems",
+                            "label": "Системи для (сортування) сміття"
+                        },
+                        {
+                            "value": "drawer_org",
+                            "label": "Системи організацій для шухляд"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf1789539618104",
+                    "label": "напрямні, завіси та підіймачі",
+                    "type": "multiselect_qty",
                     "isMultiplier": false,
                     "options": [
                         {
                             "value": "opt1",
                             "label": "Варіант 1"
-                        },
-                        {
-                            "value": "opt1789538938959",
-                            "label": "Варіант 2"
-                        },
-                        {
-                            "value": "opt1789538940539",
-                            "label": "Варіант 3"
                         }
                     ]
                 }
