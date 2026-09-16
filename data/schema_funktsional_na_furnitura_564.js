@@ -309,7 +309,7 @@ const Schema = {
             },
             "helpContent": "",
             "allowDecimal": true,
-            "formula": "=(f1789479447252 * f1789479695285*f1789553323868)/1000000",
+            "formula": "=(f1789479447252 * f1789479695285*f1789553323868)/1000000000",
             "readOnly": true
         },
         {
