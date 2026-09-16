@@ -414,12 +414,15 @@ const Schema = {
             "id": "f1789539703093",
             "groupId": "g1789538738995",
             "label": "напрямні, завіси та підіймачі",
-            "type": "number",
+            "type": "select_modal",
             "layout": {
                 "inpBorder": "#000000"
             },
             "helpContent": "",
-            "allowDecimal": false
+            "default": "",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
         }
     ],
     "products": {
