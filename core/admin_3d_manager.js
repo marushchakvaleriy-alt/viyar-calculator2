@@ -254,10 +254,19 @@
                 gap: 8px;
             `;
 
-            const isElastic = item.type === 'elastic';
-            const badgeBg = isElastic ? '#e0f2fe' : '#fef3c7';
-            const badgeColor = isElastic ? '#0369a1' : '#92400e';
-            const badgeText = isElastic ? '📐 Еластична' : '🔍 Статична';
+            let badgeBg = '#e0f2fe';
+            let badgeColor = '#0369a1';
+            let badgeText = '📐 Еластична';
+
+            if (item.type === 'parametric') {
+                badgeBg = '#dcfce7';
+                badgeColor = '#15803d';
+                badgeText = '🛠️ Каркас';
+            } else if (item.type === 'static') {
+                badgeBg = '#fef3c7';
+                badgeColor = '#92400e';
+                badgeText = '🔍 Статична';
+            }
 
             card.innerHTML = `
                 <div style="flex: 1; min-width: 0;">
@@ -307,6 +316,22 @@
         document.getElementById('m3dWidthField').value = bindings.widthField || '';
         document.getElementById('m3dHeightField').value = bindings.heightField || '';
 
+        if (document.getElementById('m3dVerticalField')) {
+            document.getElementById('m3dVerticalField').value = bindings.verticalField || '';
+        }
+        if (document.getElementById('m3dHorizontalField')) {
+            document.getElementById('m3dHorizontalField').value = bindings.horizontalField || '';
+        }
+        if (document.getElementById('m3dPlinth')) {
+            document.getElementById('m3dPlinth').value = item.hasPlinth !== false ? 'true' : 'false';
+        }
+        if (document.getElementById('m3dBack')) {
+            document.getElementById('m3dBack').value = item.hasBack !== false ? 'true' : 'false';
+        }
+        if (document.getElementById('m3dThickness')) {
+            document.getElementById('m3dThickness').value = item.thickness || 18;
+        }
+
         m3dOnTypeChange();
 
         // Оновлюємо тестові слайдери габаритів під базові цієї моделі
@@ -328,19 +353,24 @@
             title: "Новий 3D Стенд",
             schemaMatch: "*",
             targetGroup: "g_main",
-            type: "elastic",
-            modelUrl: "../Модельки/ImageToStl.com_Стіна.gltf",
+            type: "parametric",
+            modelUrl: "",
             baseDims: {
-                width: 5256,
-                height: 2548,
-                depth: 583
+                width: 3000,
+                height: 2400,
+                depth: 600
             },
             bindings: {
                 widthField: "",
                 heightField: "",
-                defaultDepth: 583
+                verticalField: "",
+                horizontalField: "",
+                defaultDepth: 600
             },
-            color: 0x64748b,
+            hasPlinth: true,
+            hasBack: true,
+            thickness: 18,
+            color: 0x475569,
             edges: true
         };
 
@@ -373,12 +403,29 @@
         }
     };
 
-    // Зміна типу моделі (elastic vs static)
+    // Зміна типу моделі (elastic vs parametric vs static)
     window.m3dOnTypeChange = function () {
         const type = document.getElementById('m3dType').value;
         const elasticBox = document.getElementById('m3dElasticSettings');
-        if (elasticBox) {
-            elasticBox.style.display = (type === 'elastic') ? 'block' : 'none';
+        const paramBox = document.getElementById('m3dParametricSettings');
+        const urlGroup = document.getElementById('m3dUrlGroup');
+        const paramSliders = document.getElementById('m3dParametricSlidersRow');
+
+        if (type === 'parametric') {
+            if (elasticBox) elasticBox.style.display = 'block';
+            if (paramBox) paramBox.style.display = 'block';
+            if (urlGroup) urlGroup.style.display = 'none';
+            if (paramSliders) paramSliders.style.display = 'grid';
+        } else if (type === 'elastic') {
+            if (elasticBox) elasticBox.style.display = 'block';
+            if (paramBox) paramBox.style.display = 'none';
+            if (urlGroup) urlGroup.style.display = 'block';
+            if (paramSliders) paramSliders.style.display = 'none';
+        } else { // static
+            if (elasticBox) elasticBox.style.display = 'none';
+            if (paramBox) paramBox.style.display = 'none';
+            if (urlGroup) urlGroup.style.display = 'block';
+            if (paramSliders) paramSliders.style.display = 'none';
         }
     };
 
@@ -393,7 +440,7 @@
         item.targetGroup = document.getElementById('m3dGroup').value;
         item.type = document.getElementById('m3dType').value;
         item.edges = document.getElementById('m3dEdges').value === 'true';
-        item.modelUrl = document.getElementById('m3dUrl').value.trim();
+        item.modelUrl = document.getElementById('m3dUrl') ? document.getElementById('m3dUrl').value.trim() : '';
 
         item.baseDims = {
             width: Number(document.getElementById('m3dBaseW').value) || 5256,
@@ -404,8 +451,14 @@
         item.bindings = {
             widthField: document.getElementById('m3dWidthField').value,
             heightField: document.getElementById('m3dHeightField').value,
+            verticalField: document.getElementById('m3dVerticalField') ? document.getElementById('m3dVerticalField').value : '',
+            horizontalField: document.getElementById('m3dHorizontalField') ? document.getElementById('m3dHorizontalField').value : '',
             defaultDepth: item.baseDims.depth
         };
+
+        item.hasPlinth = document.getElementById('m3dPlinth') ? document.getElementById('m3dPlinth').value === 'true' : true;
+        item.hasBack = document.getElementById('m3dBack') ? document.getElementById('m3dBack').value === 'true' : true;
+        item.thickness = document.getElementById('m3dThickness') ? Number(document.getElementById('m3dThickness').value) || 18 : 18;
 
         m3dRenderModelsList();
         m3dLoadCurrentIntoPreview();
@@ -423,6 +476,131 @@
         }
     };
 
+    // Процедурний генератор параметричного каркасу з ДСП
+    function buildParametricCarcass(w, h, d, vertCount, horizCount, options = {}) {
+        const group = new THREE.Group();
+
+        const T = Number(options.thickness) || 18;
+        const hasPlinth = options.hasPlinth !== false;
+        const plinthH = hasPlinth ? 80 : 0;
+        const hasBack = options.hasBack !== false;
+
+        const mainColor = options.color || 0x475569;
+        const boardMat = new THREE.MeshStandardMaterial({
+            color: mainColor,
+            roughness: 0.65,
+            metalness: 0.05,
+            side: THREE.DoubleSide
+        });
+
+        const edgeMat = new THREE.LineBasicMaterial({
+            color: 0x0f172a,
+            linewidth: 1.5
+        });
+
+        const addBoard = (bw, bh, bd, x, y, z) => {
+            const geo = new THREE.BoxGeometry(bw, bh, bd);
+            const mesh = new THREE.Mesh(geo, boardMat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
+            const edges = new THREE.EdgesGeometry(geo);
+            const wire = new THREE.LineSegments(edges, edgeMat);
+            mesh.add(wire);
+
+            group.add(mesh);
+            return mesh;
+        };
+
+        const carcassH = h - plinthH;
+        const innerH = carcassH - 2 * T;
+        const innerCenterY = plinthH + T + innerH / 2;
+
+        // 1. Боковина ліва
+        addBoard(T, carcassH, d, -w / 2 + T / 2, plinthH + carcassH / 2, 0);
+
+        // 2. Боковина права
+        addBoard(T, carcassH, d, w / 2 - T / 2, plinthH + carcassH / 2, 0);
+
+        // 3. Дно
+        addBoard(w - 2 * T, T, d, 0, plinthH + T / 2, 0);
+
+        // 4. Дах
+        addBoard(w - 2 * T, T, d, 0, h - T / 2, 0);
+
+        // 5. Цокольні планки
+        if (hasPlinth && plinthH > 0) {
+            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, d / 2 - 30);
+            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, -d / 2 + 30);
+        }
+
+        // 6. Задня стінка (ДВП/ХДФ 4 мм)
+        if (hasBack) {
+            const backMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 });
+            const backGeo = new THREE.BoxGeometry(w - 2 * T, innerH, 4);
+            const backMesh = new THREE.Mesh(backGeo, backMat);
+            backMesh.position.set(0, innerCenterY, -d / 2 + 3);
+            group.add(backMesh);
+        }
+
+        // 7. Стійки вертикальні (N шт)
+        const N = Math.max(0, parseInt(vertCount) || 0);
+        const sectionCount = N + 1;
+        const totalDividersThickness = N * T;
+        const usefulWidth = (w - 2 * T) - totalDividersThickness;
+        const sectionW = usefulWidth / sectionCount;
+        const sectionCentersX = [];
+
+        let currentLeft = -w / 2 + T;
+        for (let s = 0; s < sectionCount; s++) {
+            sectionCentersX.push(currentLeft + sectionW / 2);
+            currentLeft += sectionW;
+            if (s < N) {
+                // Додаємо вертикальну перегородку
+                const divX = currentLeft + T / 2;
+                addBoard(T, innerH, d - (hasBack ? 10 : 0), divX, innerCenterY, (hasBack ? 4 : 0));
+                currentLeft += T;
+            }
+        }
+
+        // 8. Горизонтальні полиці (M шт)
+        const M = Math.max(0, parseInt(horizCount) || 0);
+        if (M > 0) {
+            const shelfDepth = d - (hasBack ? 20 : 10);
+            const shelfZ = hasBack ? 5 : 0;
+
+            if (N === 0) {
+                // Полиці на всю ширину
+                const shelfGap = innerH / (M + 1);
+                for (let i = 1; i <= M; i++) {
+                    const sy = plinthH + T + i * shelfGap;
+                    addBoard(w - 2 * T, T, shelfDepth, 0, sy, shelfZ);
+                }
+            } else {
+                // Рівномірно розподіляємо полиці по секціях
+                const shelvesPerSec = Math.floor(M / sectionCount);
+                let remainder = M % sectionCount;
+
+                for (let s = 0; s < sectionCount; s++) {
+                    const countInThisSec = shelvesPerSec + (remainder > 0 ? 1 : 0);
+                    if (remainder > 0) remainder--;
+
+                    if (countInThisSec > 0) {
+                        const gap = innerH / (countInThisSec + 1);
+                        const scX = sectionCentersX[s];
+                        for (let j = 1; j <= countInThisSec; j++) {
+                            const sy = plinthH + T + j * gap;
+                            addBoard(sectionW, T, shelfDepth, scX, sy, shelfZ);
+                        }
+                    }
+                }
+            }
+        }
+
+        return group;
+    }
+
     // Завантаження моделі у 3D сцену
     window.m3dLoadCurrentIntoPreview = function () {
         if (!m3dScene) return;
@@ -431,12 +609,6 @@
         if (!item) return;
 
         const badge = document.getElementById('m3dStatusBadge');
-        if (badge) {
-            badge.innerText = '⏳ Завантаження...';
-            badge.style.background = 'rgba(245, 158, 11, 0.25)';
-            badge.style.color = '#fbbf24';
-        }
-
         const titleEl = document.getElementById('m3dPreviewTitle');
         if (titleEl) titleEl.innerText = item.title || '3D Огляд';
 
@@ -444,6 +616,49 @@
         if (m3dCurrentModelGroup) {
             m3dScene.remove(m3dCurrentModelGroup);
             m3dCurrentModelGroup = null;
+        }
+
+        // 1. Якщо це параметричний режим (будуємо каркас)
+        if (item.type === 'parametric') {
+            const sV = document.getElementById('m3dSliderVert');
+            const sHr = document.getElementById('m3dSliderHoriz');
+            const vertCount = sV ? parseInt(sV.value) || 0 : 2;
+            const horizCount = sHr ? parseInt(sHr.value) || 0 : 4;
+
+            const carcass = buildParametricCarcass(
+                m3dTestDims.width,
+                m3dTestDims.height,
+                m3dTestDims.depth,
+                vertCount,
+                horizCount,
+                {
+                    thickness: item.thickness || 18,
+                    hasPlinth: item.hasPlinth !== false,
+                    hasBack: item.hasBack !== false,
+                    color: item.color || 0x475569,
+                    edges: item.edges !== false
+                }
+            );
+
+            m3dCurrentModelGroup = carcass;
+            m3dScene.add(m3dCurrentModelGroup);
+
+            updateDimensionLines(m3dTestDims.width, m3dTestDims.height, m3dTestDims.depth);
+            fitCameraToObject(m3dCurrentModelGroup);
+
+            if (badge) {
+                badge.innerText = '🛠️ Параметричний каркас';
+                badge.style.background = 'rgba(16, 185, 129, 0.25)';
+                badge.style.color = '#34d399';
+            }
+            return;
+        }
+
+        // 2. Якщо завантажуємо зовнішній файл (GLTF / OBJ)
+        if (badge) {
+            badge.innerText = '⏳ Завантаження...';
+            badge.style.background = 'rgba(245, 158, 11, 0.25)';
+            badge.style.color = '#fbbf24';
         }
 
         const url = item.modelUrl;

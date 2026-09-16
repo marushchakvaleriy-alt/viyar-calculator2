@@ -10,7 +10,7 @@ window.MODELS_3D_CONFIG = [
         "id": "stand_wall_funkc",
         "title": "3D Стенд корпусу (Стіна)",
         "schemaMatch": "*",
-        "targetGroup": "g1789538738995",
+        "targetGroup": "g_main",
         "type": "elastic",
         "modelUrl": "../Модельки/ImageToStl.com_Стіна.gltf",
         "baseDims": {
@@ -39,14 +39,8 @@ window.MODELS_3D_CONFIG = [
             "depth": 583
         },
         "bindings": {
-            "widthLabelMatch": [
-                "ширина",
-                "width"
-            ],
-            "heightLabelMatch": [
-                "висота",
-                "height"
-            ],
+            "widthField": "",
+            "heightField": "",
             "defaultDepth": 583
         },
         "color": 6583435,
