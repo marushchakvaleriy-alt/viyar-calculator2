@@ -290,7 +290,8 @@ const Schema = {
             "label": "Глибина",
             "type": "number",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-33"
             },
             "helpContent": "",
             "allowDecimal": false
