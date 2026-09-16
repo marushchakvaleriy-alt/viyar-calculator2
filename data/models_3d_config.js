@@ -11,19 +11,23 @@ window.MODELS_3D_CONFIG = [
         "title": "🛠️ Параметричний каркас (Стійки + Полиці)",
         "schemaMatch": "data/schema_funktsional_na_furnitura_564",
         "targetGroup": "g1789481047588",
-        "type": "elastic",
-        "modelUrl": "../Модельки/ImageToStl.com_Стіна.gltf",
+        "targetGroups": [
+            "g_main",
+            "g1789481047588"
+        ],
+        "type": "parametric",
+        "modelUrl": "",
         "baseDims": {
-            "width": 3000,
-            "height": 2400,
-            "depth": 583
+            "width": 300,
+            "height": 300,
+            "depth": 500
         },
         "bindings": {
-            "widthField": "f1789479447252",
-            "heightField": "f1789479695285",
+            "widthField": "",
+            "heightField": "",
             "verticalField": "f1789481114025",
             "horizontalField": "f1789481134462",
-            "defaultDepth": 583
+            "defaultDepth": 500
         },
         "hasPlinth": true,
         "hasBack": true,
@@ -34,7 +38,7 @@ window.MODELS_3D_CONFIG = [
     {
         "id": "stand_wall_funkc",
         "title": "3D Стенд корпусу (GLTF Стіна)",
-        "schemaMatch": "*",
+        "schemaMatch": "data/schema_funktsional_na_furnitura_564",
         "targetGroup": "g_main",
         "type": "elastic",
         "modelUrl": "../Модельки/ImageToStl.com_Стіна.gltf",
@@ -46,10 +50,15 @@ window.MODELS_3D_CONFIG = [
         "bindings": {
             "widthField": "f1789479447252",
             "heightField": "f1789479695285",
+            "verticalField": "",
+            "horizontalField": "",
             "defaultDepth": 583
         },
         "color": 6583435,
-        "edges": true
+        "edges": true,
+        "hasPlinth": true,
+        "hasBack": true,
+        "thickness": 18
     }
 ];
 

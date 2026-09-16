@@ -521,7 +521,10 @@ const Viewer3D = {
 
         // Parametric Mode: procedural carcass generation without loading external files
         if (cfg.type === 'parametric') {
-            this.renderParametricModel(w, h, d, vertCount, horizCount);
+            const initW = w > 0 ? w : (this.baseDims.width || 3000);
+            const initH = h > 0 ? h : (this.baseDims.height || 2400);
+            const initD = d > 0 ? d : (this.baseDims.depth || 583);
+            this.renderParametricModel(initW, initH, initD, vertCount, horizCount);
             if (this.customModelGroup.visible) {
                 this.fitCameraToObject(this.customModelGroup);
             }
@@ -833,22 +836,13 @@ const Viewer3D = {
         this.currentHorizCount = hCount;
 
         const emptyHint = document.getElementById('viewer3d-empty-hint');
-
-        if (rawW <= 0 && rawH <= 0) {
-            this.customModelGroup.visible = false;
-            this.dimensionsGroup.visible = false;
-            if (this.labelWidth) this.labelWidth.style.display = 'none';
-            if (this.labelHeight) this.labelHeight.style.display = 'none';
-            if (this.labelDepth) this.labelDepth.style.display = 'none';
-            if (emptyHint) emptyHint.style.display = 'flex';
-            if (this.badgeDims) {
-                this.badgeDims.innerText = 'Габарити: введіть ширину або висоту...';
-            }
-            return;
-        }
-
         if (emptyHint) emptyHint.style.display = 'none';
         this.customModelGroup.visible = true;
+
+        // Effective dimensions: if not set in form, use model baseDims (e.g. 3000x2400x583)
+        const effW = rawW > 0 ? Math.max(200, rawW) : (this.baseDims.width || 3000);
+        const effH = rawH > 0 ? Math.max(300, rawH) : (this.baseDims.height || 2400);
+        const effD = rawD > 0 ? Math.max(150, rawD) : (this.baseDims.depth || 583);
 
         // Clear previous meshes
         while (this.customModelGroup.children.length > 0) {
@@ -858,9 +852,6 @@ const Viewer3D = {
             obj.traverse(c => { if (c.geometry) c.geometry.dispose(); });
         }
 
-        const effW = Math.max(200, rawW);
-        const effH = Math.max(300, rawH);
-        const effD = Math.max(150, rawD);
 
         const carcass = this.buildParametricCarcass(
             effW,
