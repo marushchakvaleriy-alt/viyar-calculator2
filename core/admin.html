@@ -3107,6 +3107,63 @@
             const totalEl = document.getElementById(`preview_total_${btnId}`);
             if (totalEl) totalEl.innerText = `Всього: ${total.toLocaleString()}`;
         }
+
+        function handlePreviewMsQtyChange(chk, btnId) {
+            const parent = chk.closest('.preview-ms-item');
+            if (parent) {
+                const inp = parent.querySelector('.preview-ms-qty-input');
+                if (inp) {
+                    if (chk.checked) {
+                        inp.disabled = false;
+                        inp.style.background = '#ffffff';
+                        inp.style.color = '#111827';
+                        inp.style.borderColor = '#d1d5db';
+                        inp.style.cursor = 'text';
+                        const cur = parseInt(inp.value) || 0;
+                        if (cur <= 0) inp.value = 1;
+                        inp.focus();
+                        inp.select();
+                    } else {
+                        inp.disabled = true;
+                        inp.style.background = '#f9fafb';
+                        inp.style.color = '#9ca3af';
+                        inp.style.borderColor = '#e5e7eb';
+                        inp.style.cursor = 'not-allowed';
+                        inp.value = 0;
+                    }
+                }
+            }
+            recalcPreviewTotal(btnId);
+        }
+
+        function handlePreviewCheckboxQtyChange(chk, btnId, fid) {
+            const container = document.getElementById(`preview_content_${btnId}`);
+            if (container) {
+                const inp = container.querySelector(`input[data-fid="${fid}"][data-type="checkbox_qty_qty"]`);
+                if (inp) {
+                    if (chk.checked) {
+                        inp.disabled = false;
+                        inp.style.background = '#ffffff';
+                        inp.style.color = '#111827';
+                        inp.style.borderColor = '#d1d5db';
+                        inp.style.cursor = 'text';
+                        const cur = parseInt(inp.value) || 0;
+                        if (cur <= 0) inp.value = 1;
+                        inp.focus();
+                        inp.select();
+                    } else {
+                        inp.disabled = true;
+                        inp.style.background = '#f9fafb';
+                        inp.style.color = '#9ca3af';
+                        inp.style.borderColor = '#e5e7eb';
+                        inp.style.cursor = 'not-allowed';
+                        inp.value = 0;
+                    }
+                }
+            }
+            recalcPreviewTotal(btnId);
+        }
+
         function handleCSV(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { e.target.result.split('\n').forEach(l => { const c = l.split(';'); if (c[1] && c[1].length > 2) Schema.fields.push({ id: 'f_csv_' + Math.random().toString(36).substr(2, 5), groupId: Schema.groups[0].id, label: c[1], type: 'number' }); }); renderMatrix(); }; r.readAsText(f, 'windows-1251'); }
         function openProcsModal() {
             renderProcsEditor();

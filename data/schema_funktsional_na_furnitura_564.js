@@ -675,6 +675,130 @@ const Schema = {
             "placeholderText": "",
             "labelYes": "",
             "labelNo": ""
+        },
+        {
+            "id": "f1789542100000",
+            "groupId": "g1789538738995",
+            "label": "Зона кріпильної фурнітури",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-100"
+            },
+            "helpContent": "Оберіть з'єднувальну та кріпильну фурнітуру за підгрупами та вкажіть кількість.",
+            "default": "➕ Додати: кріпильна та з'єднувальна фурнітура",
+            "modalFields": [
+                {
+                    "id": "mf_connecting_hardware",
+                    "label": "🔩 З'єднувальна фурнітура (конфірмати, мініфікси, рафікси та ін.)",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_corpus_ties",
+                            "label": "Корпусні стяжки (конфірмати, мініфікси та ін.)"
+                        },
+                        {
+                            "value": "opt_intersec_ties",
+                            "label": "Міжсекційні стяжки"
+                        },
+                        {
+                            "value": "opt_brackets_plates",
+                            "label": "Монтажні куточки та пластини"
+                        },
+                        {
+                            "value": "opt_bed_ties",
+                            "label": "Стяжки для ліжок"
+                        },
+                        {
+                            "value": "opt_shelf_ties",
+                            "label": "Стяжки для полиць (рафікси та ін.)"
+                        },
+                        {
+                            "value": "opt_countertop_ties",
+                            "label": "Стяжки для стільниць"
+                        },
+                        {
+                            "value": "opt_dowels_lamellas",
+                            "label": "Шканти та ламелі"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_fastener_hardware",
+                    "label": "🪛 Кріпильна фурнітура (саморізи, гвинти, єврогвинти та ін.)",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_bolts_studs",
+                            "label": "Болти та шпильки"
+                        },
+                        {
+                            "value": "opt_nuts_washers",
+                            "label": "Гайки та шайби"
+                        },
+                        {
+                            "value": "opt_screws_euroscrews",
+                            "label": "Гвинти та єврогвинти"
+                        },
+                        {
+                            "value": "opt_dowels_anchors",
+                            "label": "Дюбелі, анкери та шуруп-крюки (Будівельні кріплення)"
+                        },
+                        {
+                            "value": "opt_dvp_fasteners",
+                            "label": "Кріплення для ДВП (ЛХДФ)"
+                        },
+                        {
+                            "value": "opt_glass_mirror_fasteners",
+                            "label": "Кріплення для скла та дзеркал"
+                        },
+                        {
+                            "value": "opt_bushings_spacers",
+                            "label": "Муфти, втулки та прокладки"
+                        },
+                        {
+                            "value": "opt_self_tapping_screws",
+                            "label": "Саморізи та шурупи"
+                        }
+                    ]
+                }
+            ],
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
+        },
+        {
+            "id": "f1789541881042",
+            "groupId": "g1789481047588",
+            "label": "Нова дія",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            }
+        },
+        {
+            "id": "f1789541892287",
+            "groupId": "g1789481047588",
+            "label": "Підсвітка",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf1789541958625",
+                    "label": "Кількість світових ліній",
+                    "type": "number",
+                    "isMultiplier": false
+                }
+            ]
         }
     ],
     "products": {
