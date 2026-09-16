@@ -587,7 +587,7 @@ const Schema = {
             "id": "f1789541033848",
             "groupId": "g1789538738995",
             "label": "Зона Джокерів та Гардеробного наповнення",
-            "type": "action_button",
+            "type": "select_modal",
             "layout": {
                 "inpBorder": "#000000",
                 "width": "w-100"
@@ -671,7 +671,10 @@ const Schema = {
                         }
                     ]
                 }
-            ]
+            ],
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
         }
     ],
     "products": {
