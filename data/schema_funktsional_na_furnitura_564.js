@@ -355,7 +355,7 @@ const Schema = {
             "modalFields": [
                 {
                     "id": "mf_kitchen_hardware",
-                    "label": "Елементи кухонного наповнення",
+                    "label": "Елементи наповнення",
                     "type": "multiselect_qty",
                     "isMultiplier": false,
                     "options": [
@@ -426,7 +426,7 @@ const Schema = {
             "modalFields": [
                 {
                     "id": "mf1789539858337",
-                    "label": "Елементи напрямних,завіс та підіймачів",
+                    "label": "Елементи наповнення",
                     "type": "multiselect",
                     "isMultiplier": false,
                     "options": [
