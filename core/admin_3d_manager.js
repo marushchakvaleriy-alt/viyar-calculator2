@@ -641,6 +641,8 @@
             );
 
             m3dCurrentModelGroup = carcass;
+            m3dCurrentModelGroup.userData.isParametric = true;
+            m3dCurrentModelGroup.userData.baseDims = { ...m3dTestDims };
             m3dScene.add(m3dCurrentModelGroup);
 
             updateDimensionLines(m3dTestDims.width, m3dTestDims.height, m3dTestDims.depth);
@@ -898,6 +900,45 @@
     function m3dApplyScaling() {
         if (!m3dCurrentModelGroup) return;
 
+        const item = (window.MODELS_3D_CONFIG || []).find(m => m.id === m3dSelectedId);
+        if (item && item.type === 'parametric') {
+            const sV = document.getElementById('m3dSliderVert');
+            const sHr = document.getElementById('m3dSliderHoriz');
+            const vertCount = sV ? parseInt(sV.value) || 0 : 2;
+            const horizCount = sHr ? parseInt(sHr.value) || 0 : 4;
+
+            m3dScene.remove(m3dCurrentModelGroup);
+            m3dCurrentModelGroup = buildParametricCarcass(
+                m3dTestDims.width,
+                m3dTestDims.height,
+                m3dTestDims.depth,
+                vertCount,
+                horizCount,
+                {
+                    thickness: item.thickness || 18,
+                    hasPlinth: item.hasPlinth !== false,
+                    hasBack: item.hasBack !== false,
+                    color: item.color || 0x475569,
+                    edges: item.edges !== false
+                }
+            );
+            m3dCurrentModelGroup.userData.isParametric = true;
+            m3dCurrentModelGroup.userData.baseDims = { ...m3dTestDims };
+            m3dScene.add(m3dCurrentModelGroup);
+
+            // Оновлюємо бейдж
+            const bW = document.getElementById('m3dBadgeW');
+            const bH = document.getElementById('m3dBadgeH');
+            const bD = document.getElementById('m3dBadgeD');
+            if (bW) bW.innerText = Math.round(m3dTestDims.width);
+            if (bH) bH.innerText = Math.round(m3dTestDims.height);
+            if (bD) bD.innerText = Math.round(m3dTestDims.depth);
+
+            // Оновлюємо розмірні стрілки в 3D сцені
+            updateDimensionLines(m3dTestDims.width, m3dTestDims.height, m3dTestDims.depth);
+            return;
+        }
+
         const base = m3dCurrentModelGroup.userData.baseDims || { width: 5256, height: 2548, depth: 583 };
         const scaleX = (m3dTestDims.width || base.width) / base.width;
         const scaleY = (m3dTestDims.height || base.height) / base.height;
@@ -975,14 +1016,23 @@
         const sW = document.getElementById('m3dSliderW');
         const sH = document.getElementById('m3dSliderH');
         const sD = document.getElementById('m3dSliderD');
+        const sV = document.getElementById('m3dSliderVert');
+        const sHr = document.getElementById('m3dSliderHoriz');
 
-        m3dTestDims.width = Number(sW.value);
-        m3dTestDims.height = Number(sH.value);
-        m3dTestDims.depth = Number(sD.value);
+        if (sW) m3dTestDims.width = Number(sW.value);
+        if (sH) m3dTestDims.height = Number(sH.value);
+        if (sD) m3dTestDims.depth = Number(sD.value);
 
-        document.getElementById('m3dValW').innerText = m3dTestDims.width + ' мм';
-        document.getElementById('m3dValH').innerText = m3dTestDims.height + ' мм';
-        document.getElementById('m3dValD').innerText = m3dTestDims.depth + ' мм';
+        if (document.getElementById('m3dValW')) document.getElementById('m3dValW').innerText = m3dTestDims.width + ' мм';
+        if (document.getElementById('m3dValH')) document.getElementById('m3dValH').innerText = m3dTestDims.height + ' мм';
+        if (document.getElementById('m3dValD')) document.getElementById('m3dValD').innerText = m3dTestDims.depth + ' мм';
+
+        if (sV && document.getElementById('m3dValVert')) {
+            document.getElementById('m3dValVert').innerText = sV.value + ' шт';
+        }
+        if (sHr && document.getElementById('m3dValHoriz')) {
+            document.getElementById('m3dValHoriz').innerText = sHr.value + ' шт';
+        }
 
         m3dApplyScaling();
     };
@@ -991,6 +1041,8 @@
         const sW = document.getElementById('m3dSliderW');
         const sH = document.getElementById('m3dSliderH');
         const sD = document.getElementById('m3dSliderD');
+        const sV = document.getElementById('m3dSliderVert');
+        const sHr = document.getElementById('m3dSliderHoriz');
 
         if (sW) {
             sW.value = m3dTestDims.width;
@@ -1003,6 +1055,12 @@
         if (sD) {
             sD.value = m3dTestDims.depth;
             document.getElementById('m3dValD').innerText = m3dTestDims.depth + ' мм';
+        }
+        if (sV && document.getElementById('m3dValVert')) {
+            document.getElementById('m3dValVert').innerText = sV.value + ' шт';
+        }
+        if (sHr && document.getElementById('m3dValHoriz')) {
+            document.getElementById('m3dValHoriz').innerText = sHr.value + ' шт';
         }
     }
 

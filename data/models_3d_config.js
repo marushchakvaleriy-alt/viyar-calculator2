@@ -11,7 +11,7 @@ window.MODELS_3D_CONFIG = [
         "title": "3D Стенд корпусу (Стіна)",
         "schemaMatch": "*",
         "targetGroup": "g_main",
-        "type": "elastic",
+        "type": "parametric",
         "modelUrl": "../Модельки/ImageToStl.com_Стіна.gltf",
         "baseDims": {
             "width": 5256,
