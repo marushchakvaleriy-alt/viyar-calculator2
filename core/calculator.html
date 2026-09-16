@@ -1009,17 +1009,23 @@
                     const selectedVals = Array.isArray(currentVal) ? currentVal : [];
                     let items = (f.options || []).map(o => {
                         const isSelected = selectedVals.some(v => v.value === o.value || v === o.value);
-                        const qty = selectedVals.find(v => v.value === o.value)?.qty || 1;
+                        const savedQty = selectedVals.find(v => v.value === o.value)?.qty;
+                        const qty = isSelected ? (savedQty || 1) : 0;
+                        const disabledAttr = isSelected ? '' : 'disabled';
+                        const inputStyle = isSelected 
+                            ? 'width:70px; padding:4px 8px; border:1px solid #d1d5db; border-radius:6px; text-align:center; background:#ffffff; color:#111827; cursor:text;'
+                            : 'width:70px; padding:4px 8px; border:1px solid #e5e7eb; border-radius:6px; text-align:center; background:#f9fafb; color:#9ca3af; cursor:not-allowed;';
 
                         return `
                         <div class="multiselect-item" style="display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #e5e7eb;">
                             <label style="${checkLabelStyle}">
-                                <input type="checkbox" class="ms-qty-check" data-fid="${f.id}" value="${o.value}" ${isSelected ? 'checked' : ''} onchange="recalcModalTotal()">
+                                <input type="checkbox" class="ms-qty-check" data-fid="${f.id}" value="${o.value}" ${isSelected ? 'checked' : ''} onchange="handleMsQtyCheckChange(this)">
                                 <span>${o.label}</span>
                             </label>
-                            <input type="number" class="ms-qty-input" data-value="${o.value}" data-fid="${f.id}" value="${qty}" min="1" 
+                            <input type="number" class="ms-qty-input" data-value="${o.value}" data-fid="${f.id}" value="${qty}" min="0" 
+                                   ${disabledAttr}
                                    oninput="recalcModalTotal()" 
-                                   style="width:70px; padding:4px 8px; border:1px solid #d1d5db; border-radius:6px; text-align:center;">
+                                   style="${inputStyle}">
                         </div>
                     `;
                     }).join('');
@@ -1043,10 +1049,12 @@
                 else if (f.type === 'checkbox_qty') {
                     row.className = 'pg-check-row';
                     const isChecked = currentVal ? currentVal.checked : false;
-                    const qVal = currentVal ? currentVal.qty : 1;
+                    const qVal = isChecked ? (currentVal ? currentVal.qty : 1) : 0;
+                    const disAttr = isChecked ? '' : 'disabled';
+                    const disStyle = isChecked ? '' : 'style="background:#f9fafb; color:#9ca3af; cursor:not-allowed; border:1px solid #e5e7eb;"';
                     row.innerHTML = `
-                        <label class="pg-check-label"><input type="checkbox" id="chk_${f.id}" data-fid="${f.id}" ${isChecked ? 'checked' : ''} onchange="recalcModalTotal()"> ${f.label}</label>
-                        <input type="number" class="pg-check-qty" id="qty_${f.id}" name="field_q_${f.id}_${Date.now()}" value="${qVal}" oninput="recalcModalTotal()" autocomplete="new-password">
+                        <label class="pg-check-label"><input type="checkbox" id="chk_${f.id}" data-fid="${f.id}" ${isChecked ? 'checked' : ''} onchange="handleSingleCheckQtyChange(this, 'qty_${f.id}')"> ${f.label}</label>
+                        <input type="number" class="pg-check-qty" id="qty_${f.id}" name="field_q_${f.id}_${Date.now()}" value="${qVal}" min="0" ${disAttr} ${disStyle} oninput="recalcModalTotal()" autocomplete="new-password">
                     `;
                 }
                 else if (f.type === 'checkbox') {
@@ -1060,6 +1068,63 @@
 
             // Initial Calc
             setTimeout(recalcModalTotal, 50);
+        }
+
+        function handleMsQtyCheckChange(chk) {
+            const parent = chk.closest('.multiselect-item');
+            if (parent) {
+                const input = parent.querySelector('.ms-qty-input');
+                if (input) {
+                    if (chk.checked) {
+                        input.disabled = false;
+                        input.style.background = '#ffffff';
+                        input.style.color = '#111827';
+                        input.style.borderColor = '#d1d5db';
+                        input.style.cursor = 'text';
+                        const cur = parseInt(input.value) || 0;
+                        if (cur <= 0) {
+                            input.value = 1;
+                        }
+                        input.focus();
+                        input.select();
+                    } else {
+                        input.disabled = true;
+                        input.style.background = '#f9fafb';
+                        input.style.color = '#9ca3af';
+                        input.style.borderColor = '#e5e7eb';
+                        input.style.cursor = 'not-allowed';
+                        input.value = 0;
+                    }
+                }
+            }
+            recalcModalTotal();
+        }
+
+        function handleSingleCheckQtyChange(chk, qtyInputId) {
+            const input = document.getElementById(qtyInputId);
+            if (input) {
+                if (chk.checked) {
+                    input.disabled = false;
+                    input.style.background = '#ffffff';
+                    input.style.color = '#111827';
+                    input.style.borderColor = '#d1d5db';
+                    input.style.cursor = 'text';
+                    const cur = parseInt(input.value) || 0;
+                    if (cur <= 0) {
+                        input.value = 1;
+                    }
+                    input.focus();
+                    input.select();
+                } else {
+                    input.disabled = true;
+                    input.style.background = '#f9fafb';
+                    input.style.color = '#9ca3af';
+                    input.style.borderColor = '#e5e7eb';
+                    input.style.cursor = 'not-allowed';
+                    input.value = 0;
+                }
+            }
+            recalcModalTotal();
         }
 
         function recalcModalTotal() {

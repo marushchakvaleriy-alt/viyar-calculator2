@@ -2952,12 +2952,12 @@
                     }
                     else if (f.type === 'multiselect_qty') {
                         let items = (f.options || []).map(o => `
-                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; padding:4px 0; border-bottom:1px solid #eee;">
+                            <div class="preview-ms-item" style="display:flex; align-items:center; gap:8px; margin-bottom:4px; padding:4px 0; border-bottom:1px solid #eee;">
                                 <label style="flex:1; display:flex; align-items:center; gap:6px; cursor:pointer; margin:0;">
-                                    <input type="checkbox" class="preview-input preview-ms-qty-check" data-bid="${button.id}" data-fid="${f.id}" data-type="multiselect_qty" value="${o.value}" onchange="recalcPreviewTotal('${button.id}')">
+                                    <input type="checkbox" class="preview-input preview-ms-qty-check" data-bid="${button.id}" data-fid="${f.id}" data-type="multiselect_qty" value="${o.value}" onchange="handlePreviewMsQtyChange(this, '${button.id}')">
                                     <span style="font-size:12px">${o.label}</span>
                                 </label>
-                                <input type="number" value="1" class="preview-ms-qty-input" data-value="${o.value}" data-bid="${button.id}" data-fid="${f.id}" min="1" oninput="recalcPreviewTotal('${button.id}')" style="width:60px; padding:4px 8px; font-size:11px; border:1px solid #d1d5db; border-radius:4px;">
+                                <input type="number" value="0" disabled class="preview-ms-qty-input" data-value="${o.value}" data-bid="${button.id}" data-fid="${f.id}" min="0" oninput="recalcPreviewTotal('${button.id}')" style="width:60px; padding:4px 8px; font-size:11px; border:1px solid #e5e7eb; border-radius:4px; text-align:center; background:#f9fafb; color:#9ca3af; cursor:not-allowed;">
                             </div>
                         `).join('');
 
@@ -2972,7 +2972,7 @@
                         row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox" style="width:18px; height:18px" onchange="recalcPreviewTotal('${button.id}')"><label style="font-size:12px; font-weight:500">${f.label}</label></div>`;
                     }
                     else if (f.type === 'checkbox_qty') {
-                        row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox_qty_check" style="width:18px; height:18px" onchange="recalcPreviewTotal('${button.id}')"><label style="flex:1; font-size:12px; font-weight:500">${f.label}</label><input type="number" value="1" class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox_qty_qty" style="width:60px; padding:4px 8px" oninput="recalcPreviewTotal('${button.id}')"></div>`;
+                        row.innerHTML = `<div style="display:flex; align-items:center; gap:8px"><input type="checkbox" class="preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox_qty_check" style="width:18px; height:18px" onchange="handlePreviewCheckboxQtyChange(this, '${button.id}', '${f.id}')"><label style="flex:1; font-size:12px; font-weight:500">${f.label}</label><input type="number" value="0" disabled class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="checkbox_qty_qty" style="width:60px; padding:4px 8px; text-align:center; background:#f9fafb; color:#9ca3af; cursor:not-allowed; border:1px solid #e5e7eb;" oninput="recalcPreviewTotal('${button.id}')"></div>`;
                     }
                     else if (f.type === 'number') {
                         row.innerHTML = `<label style="display:block; font-size:12px; font-weight:500; margin-bottom:5px">${f.label}</label><input type="number" class="form-input preview-input" data-bid="${button.id}" data-fid="${f.id}" data-type="number" value="${f.default || 0}" style="width:100%; padding:6px 10px; font-size:12px" oninput="recalcPreviewTotal('${button.id}')">`;
