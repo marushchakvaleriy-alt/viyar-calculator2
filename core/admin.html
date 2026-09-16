@@ -298,7 +298,10 @@
     <div id="fieldModal" class="modal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>⚙️ Налаштування Поля</h3>
+                <div style="display:flex; align-items:center; gap:10px">
+                    <h3 style="margin:0">⚙️ Налаштування Поля</h3>
+                    <span id="fIdBadge" style="font-size:11px; font-weight:600; color:#475569; background:#f1f5f9; border:1px solid #cbd5e1; padding:2px 8px; border-radius:6px; font-family:monospace; cursor:pointer;" title="Клікніть, щоб скопіювати ID"></span>
+                </div>
                 <button onclick="closeModal('fieldModal')"
                     style="background:none; border:none; font-size:24px; color:#94a3b8; cursor:pointer">&times;</button>
             </div>
@@ -1323,7 +1326,7 @@
                             <span class="drag-handle" style="opacity:0.2; cursor:grab" title="Перетягнути рядок">☰</span>
                             <span style="font-size:8px; opacity:0.3; min-width:20px">${f.type.substring(0, 3)}</span>
                             <input class="cell-input" style="text-align:left; font-weight:700; flex:1; width:0; min-width:50px" value="${f.label}" onfocus="this.select()" onchange="updFLab('${f.id}',this.value,${isP})">
-                            <button onclick="event.stopPropagation(); openFModal('${f.id}',${isP})" class="gear-btn" title="Налаштування">⚙️</button>
+                            <button onclick="event.stopPropagation(); openFModal('${f.id}',${isP})" class="gear-btn" title="Налаштування (ID: ${f.id})">⚙️</button>
                             <button onclick="event.stopPropagation(); delField('${f.id}',${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; padding:2px 6px; transition:0.2s" onmouseover="this.style.color='#dc2626'; this.style.transform='scale(1.2)'" onmouseout="this.style.color='#ef4444'; this.style.transform='scale(1)'" title="Видалити поле">❌</button>
                         </div>`;
                     fRow.appendChild(labelTd);
@@ -2679,6 +2682,16 @@
             const allFields = isP ? Schema.products.fields : Schema.fields;
             const f = allFields.find(x => x.id === id);
             document.getElementById('fId').value = id;
+            const idBadge = document.getElementById('fIdBadge');
+            if (idBadge) {
+                idBadge.innerText = id;
+                idBadge.title = `Клікніть, щоб скопіювати ID: ${id}`;
+                idBadge.onclick = () => {
+                    navigator.clipboard.writeText(id);
+                    idBadge.innerText = 'Скопійовано!';
+                    setTimeout(() => idBadge.innerText = id, 1000);
+                };
+            }
             document.getElementById('fName').value = f.label || '';
             document.getElementById('fType').value = f.type;
             document.getElementById('fHelp').value = f.helpContent || '';

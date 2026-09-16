@@ -48,6 +48,32 @@ const Engine = {
         return findIn(Schema.fields);
     },
 
+    notify3DViewer(fieldId, val, eventType = 'input') {
+        if (!window.Viewer3D || !window.find3DModelConfig) return;
+
+        const cfg = window.find3DModelConfig(window.currentConfigFile, 'g_main');
+        if (!cfg) return;
+
+        const fieldDef = this.getFieldDef(fieldId);
+        const fieldLabel = (fieldDef?.label || '').toLowerCase();
+        const b = cfg.bindings || {};
+
+        const isWidth = b.widthField === fieldId || fieldLabel.includes('ширина') || fieldLabel.includes('width');
+        const isHeight = b.heightField === fieldId || fieldLabel.includes('висота') || fieldLabel.includes('height');
+        const isDepth = b.depthField === fieldId || fieldLabel.includes('глибина') || fieldLabel.includes('depth');
+        const isTargetGroup = fieldDef?.groupId === cfg.targetGroup;
+
+        if (isWidth || isHeight || isDepth || isTargetGroup) {
+            // Auto-open 3D window on focus, click, or typing
+            if (!window.Viewer3D.isOpen) {
+                window.Viewer3D.openWithConfig(cfg, this.state);
+            }
+            if (eventType !== 'focus') {
+                window.Viewer3D.onFieldChanged(fieldId, val);
+            }
+        }
+    },
+
     injectStyles() {
         if (document.getElementById('engine-grid-styles')) return;
         const style = document.createElement('style');
@@ -296,7 +322,31 @@ const Engine = {
             }
             if (titleStyles) header.style.cssText = titleStyles;
 
-            header.textContent = (gl.showNumbering ? `${idx + 1}. ` : '') + (group.title || 'Group');
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = (gl.showNumbering ? `${idx + 1}. ` : '') + (group.title || 'Group');
+            header.appendChild(titleSpan);
+
+            // 3D Stand Live Trigger Button
+            if (window.find3DModelConfig && window.Viewer3D) {
+                const cfg = window.find3DModelConfig(window.currentConfigFile, group.id);
+                if (cfg) {
+                    const btn3D = document.createElement('button');
+                    btn3D.type = 'button';
+                    btn3D.className = 'btn-3d-trigger';
+                    btn3D.innerHTML = '<span>📦 3D Стенд</span>';
+                    btn3D.title = 'Відкрити live 3D огляд стенду';
+                    btn3D.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (window.Viewer3D.isOpen) {
+                            window.Viewer3D.close();
+                        } else {
+                            window.Viewer3D.openWithConfig(cfg, this.state);
+                        }
+                    };
+                    header.appendChild(btn3D);
+                }
+            }
             groupEl.appendChild(header);
 
             const body = document.createElement('div');
@@ -812,6 +862,7 @@ const Engine = {
                 input.value = val === 0 && !field.default ? '' : val;
                 this.state[field.id] = val;
                 this.calculate();
+                this.notify3DViewer(field.id, val);
             };
 
             btnMinus.onmouseover = () => btnMinus.style.background = 'rgba(120,120,120,0.25)';
@@ -835,6 +886,11 @@ const Engine = {
                 let val = Math.max(0, Number(raw) || 0);
                 this.state[field.id] = val;
                 this.calculate();
+                this.notify3DViewer(field.id, val, 'input');
+            });
+
+            input.addEventListener('focus', () => {
+                this.notify3DViewer(field.id, input.value, 'focus');
             });
 
             numContainer.appendChild(btnMinus);
@@ -872,9 +928,13 @@ const Engine = {
                 if (field.type === 'checkbox') val = e.target.checked ? 1 : 0;
                 this.state[field.id] = val;
                 this.calculate();
+                this.notify3DViewer(field.id, val, 'input');
             };
             inputElement.addEventListener('input', handleEvent);
             inputElement.addEventListener('change', handleEvent);
+            inputElement.addEventListener('focus', () => {
+                this.notify3DViewer(field.id, inputElement.value, 'focus');
+            });
         }
 
         wrapper.appendChild(inputContainer);

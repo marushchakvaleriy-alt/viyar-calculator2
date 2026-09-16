@@ -285,6 +285,17 @@ const Schema = {
             }
         },
         {
+            "id": "f1789553323868",
+            "groupId": "g_main",
+            "label": "Глибина",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "allowDecimal": false
+        },
+        {
             "id": "f1789479349868",
             "groupId": "g_main",
             "label": "Корпус, м²",
@@ -298,7 +309,7 @@ const Schema = {
             },
             "helpContent": "",
             "allowDecimal": true,
-            "formula": "=(f1789479447252 * f1789479695285) / 1000000",
+            "formula": "=(f1789479447252 * f1789479695285*f1789553323868) / 1000000",
             "readOnly": true
         },
         {
