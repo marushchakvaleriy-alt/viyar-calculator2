@@ -2295,9 +2295,9 @@
             else window.location.href = 'designer.html?config=' + val;
         }
 
-        function handleSave() {
-            if (window.currentMode === 'dashboard') saveDashboardConfig();
-            else saveLayout();
+        async function handleSave() {
+            if (window.currentMode === 'dashboard') await handleGlobalSave();
+            else await saveLayout();
         }
 
         function activateDashboardMode() {
@@ -2607,12 +2607,13 @@
                 card.onmouseleave = () => { if (card.querySelector('.edit-hint')) card.querySelector('.edit-hint').style.opacity = '0'; };
 
                 card.addEventListener('dragstart', () => card.classList.add('dragging'));
-                card.addEventListener('dragend', () => {
+                card.addEventListener('dragend', async () => {
                     card.classList.remove('dragging');
                     const dragItems = [...grid.querySelectorAll('.dashboard-card-drag')];
                     const newOrderIndices = dragItems.map(el => parseInt(el.dataset.idx));
                     window.CalculatorConfig = newOrderIndices.map(i => window.CalculatorConfig[i]);
                     updateDashboardPreview();
+                    await saveCalculatorsConfig(true);
                 });
 
                 grid.appendChild(card);
@@ -2866,12 +2867,13 @@
                 }
             });
 
-            list.addEventListener('drop', () => {
+            list.addEventListener('drop', async () => {
                 const dragItems = [...list.querySelectorAll('.calc-edit-item')];
                 const newOrderIndices = dragItems.map(el => parseInt(el.dataset.idx));
                 const newConfig = newOrderIndices.map(i => window.CalculatorConfig[i]);
                 window.CalculatorConfig = newConfig;
                 updateDashboardPreview();
+                await saveCalculatorsConfig(true);
             });
         }
 
@@ -3026,11 +3028,14 @@
             // but for now isPlaceholder is just a flag.
         }
 
-        function removeCalcFromConfig(idx) {
-            if (!confirm('Видалити цей калькулятор зі списку?')) return;
+        async function removeCalcFromConfig(idx) {
+            const conf = window.CalculatorConfig[idx];
+            const title = conf ? conf.title : '';
+            if (!confirm(`Видалити калькулятор "${title}" зі списку?`)) return;
             window.CalculatorConfig.splice(idx, 1);
             updateDashboardPreview();
             renderCalculatorsEditorUI(); // Re-render list after deletion
+            await saveCalculatorsConfig(true);
         }
 
         async function addNewCalculatorToConfig() {
