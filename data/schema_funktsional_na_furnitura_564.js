@@ -257,6 +257,10 @@ const Schema = {
         {
             "id": "g1789481047588",
             "title": "КОНСТРУКТИВ"
+        },
+        {
+            "id": "g1789538738995",
+            "title": "НАПОВНЕННЯ"
         }
     ],
     "fields": [
@@ -336,6 +340,20 @@ const Schema = {
             },
             "helpContent": "",
             "allowDecimal": false
+        },
+        {
+            "id": "f1789538740557",
+            "groupId": "g1789538738995",
+            "label": "Кухонне наповнення",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "+Додати наповнення",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": ""
         }
     ],
     "products": {

@@ -139,6 +139,14 @@ const Engine = {
                 display: inline-flex;
                 align-items: center;
                 margin-left: 6px;
+                z-index: 20;
+            }
+            .help-container:hover {
+                z-index: 999999;
+            }
+            .field:has(.help-container:hover) {
+                z-index: 999999 !important;
+                position: relative;
             }
             .help-icon {
                 width: 16px;
@@ -163,13 +171,13 @@ const Engine = {
                 color: #fff;
                 padding: 12px;
                 border-radius: 10px;
-                width: 250px;
-                z-index: 1000;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+                width: 280px;
+                z-index: 999999;
+                box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.6);
                 font-size: 12px;
                 line-height: 1.4;
                 opacity: 0;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 pointer-events: none;
             }
             .help-tooltip::after {
@@ -189,7 +197,7 @@ const Engine = {
             }
             .help-tooltip img {
                 width: 100%;
-                max-height: 180px;
+                max-height: 220px;
                 height: auto;
                 border-radius: 6px;
                 margin-bottom: 8px;
@@ -364,6 +372,14 @@ const Engine = {
         if (helpText || l.helpImg) {
             const helpContainer = document.createElement('span');
             helpContainer.className = 'help-container';
+            helpContainer.addEventListener('mouseenter', () => {
+                const parentField = helpContainer.closest('.field');
+                if (parentField) parentField.style.zIndex = '999999';
+            });
+            helpContainer.addEventListener('mouseleave', () => {
+                const parentField = helpContainer.closest('.field');
+                if (parentField) parentField.style.zIndex = '';
+            });
 
             const helpIcon = document.createElement('span');
             helpIcon.className = 'help-icon';
@@ -378,21 +394,19 @@ const Engine = {
                 // Base path resolution
                 let src = l.helpImg;
                 if (src.startsWith('images/')) {
-                    // If it's just 'images/name.jpg', try to see if it should be in hints/
-                    // though we also have a fallback below.
                     src = '../' + src;
                 }
 
-                img.src = src;
+                img.src = encodeURI(src);
 
-                // Fallback mechanism: if image doesn't load from root images/, try images/hints/
+                // Fallback mechanism: try switching between images/ and images/hints/
                 img.onerror = () => {
                     if (l.helpImg.startsWith('images/') && !l.helpImg.includes('images/hints/')) {
                         const fallbackSrc = '../images/hints/' + l.helpImg.replace('images/', '');
-                        if (img.src !== window.location.origin + fallbackSrc.replace('..', '')) {
-                            console.log("Image fallback triggered for:", l.helpImg);
-                            img.src = fallbackSrc;
-                        }
+                        img.src = encodeURI(fallbackSrc);
+                    } else if (l.helpImg.includes('images/hints/')) {
+                        const rootFallback = '../images/' + l.helpImg.replace('images/hints/', '');
+                        img.src = encodeURI(rootFallback);
                     }
                 };
 
