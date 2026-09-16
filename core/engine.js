@@ -578,7 +578,7 @@ const Engine = {
             selectContainer.style.width = '100%';
 
             const select = document.createElement('select');
-            const pText = field.placeholderText || field.label || 'Виберіть...';
+            const pText = field.placeholderText || '-- Виберіть --';
             const placeholder = document.createElement('option');
             placeholder.value = "placeholder";
             placeholder.textContent = pText;

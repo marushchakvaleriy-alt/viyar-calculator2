@@ -351,7 +351,7 @@ const Schema = {
             },
             "helpContent": "",
             "default": "+Додати наповнення",
-            "placeholderText": "",
+            "placeholderText": "+Додати наповнення",
             "labelYes": "",
             "labelNo": "",
             "modalFields": [
