@@ -21,6 +21,14 @@ const Engine = {
         Object.keys(Schema.categories || {}).forEach(cid => this.activeCategories.add(cid));
 
         this.injectStyles();
+
+        // Initialize hidden and non-rendered fields in state
+        (Schema.fields || []).forEach(f => {
+            if (f.hidden && this.state[f.id] === undefined) {
+                this.state[f.id] = f.default !== undefined ? f.default : (f.type === 'number' ? 0 : '');
+            }
+        });
+
         this.renderForm();
         this.calculate(); // Initial calculation
     },

@@ -386,6 +386,11 @@
                         <input type="checkbox" id="fReadOnly" style="width:16px; height:16px">
                         <span style="font-size:13px; font-weight:600;">Тільки для читання (блокувати ручний ввід)</span>
                     </label>
+
+                    <label style="display:flex; align-items:center; gap:8px; margin-top:8px; cursor:pointer;">
+                        <input type="checkbox" id="fHidden" style="width:16px; height:16px">
+                        <span style="font-size:13px; font-weight:600; color:#0369a1;">👁️ Приховати у формі клієнта (розрахункове поле — в матриці залишається)</span>
+                    </label>
                 </div>
 
                 <div class="form-group" style="padding-top:12px; border-top:1px solid #e2e8f0;">
@@ -1325,6 +1330,7 @@
                         <div style="display:flex; align-items:center; gap:6px; width:100%">
                             <span class="drag-handle" style="opacity:0.2; cursor:grab" title="Перетягнути рядок">☰</span>
                             <span style="font-size:8px; opacity:0.3; min-width:20px">${f.type.substring(0, 3)}</span>
+                            ${f.hidden ? '<span style="font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:1px 5px; border-radius:4px; font-weight:700" title="Приховано у формі клієнта (розрахункове поле)">👁️ приховано</span>' : ''}
                             <input class="cell-input" style="text-align:left; font-weight:700; flex:1; width:0; min-width:50px" value="${f.label}" onfocus="this.select()" onchange="updFLab('${f.id}',this.value,${isP})">
                             <button onclick="event.stopPropagation(); openFModal('${f.id}',${isP})" class="gear-btn" title="Налаштування (ID: ${f.id})">⚙️</button>
                             <button onclick="event.stopPropagation(); delField('${f.id}',${isP})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; padding:2px 6px; transition:0.2s" onmouseover="this.style.color='#dc2626'; this.style.transform='scale(1.2)'" onmouseout="this.style.color='#ef4444'; this.style.transform='scale(1)'" title="Видалити поле">❌</button>
@@ -2703,6 +2709,7 @@
             document.getElementById('fStep').value = f.step !== undefined ? f.step : '';
             document.getElementById('fFormula').value = f.formula || '';
             document.getElementById('fReadOnly').checked = !!f.readOnly;
+            document.getElementById('fHidden').checked = !!f.hidden;
             document.getElementById('fieldModal').dataset.mode = isP ? 'prod' : 'calc';
 
             // Populate dependsOn selector
@@ -2886,6 +2893,9 @@
 
             if (document.getElementById('fReadOnly').checked) f.readOnly = true;
             else delete f.readOnly;
+
+            if (document.getElementById('fHidden').checked) f.hidden = true;
+            else delete f.hidden;
 
             // DependsOn
             const depField = document.getElementById('fDependsField').value;
