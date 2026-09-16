@@ -29,7 +29,7 @@ window.MODELS_3D_CONFIG = [
             "horizontalField": "f1789481134462",
             "defaultDepth": 500
         },
-        "hasPlinth": true,
+        "hasPlinth": false,
         "hasBack": true,
         "thickness": 18,
         "color": 4675945,
