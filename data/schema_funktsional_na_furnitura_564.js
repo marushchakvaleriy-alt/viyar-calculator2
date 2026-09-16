@@ -318,7 +318,7 @@ const Schema = {
         {
             "id": "f1789481114025",
             "groupId": "g1789481047588",
-            "label": "Стілька вертикальна",
+            "label": "Стійка вертикальна",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
@@ -331,7 +331,7 @@ const Schema = {
         {
             "id": "f1789481134462",
             "groupId": "g1789481047588",
-            "label": "Стілька вертикальна",
+            "label": "Стійка горизонтальна",
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
@@ -587,15 +587,91 @@ const Schema = {
             "id": "f1789541033848",
             "groupId": "g1789538738995",
             "label": "Зона Джокерів та Гардеробного наповнення",
-            "type": "select_modal",
+            "type": "action_button",
             "layout": {
-                "inpBorder": "#000000"
+                "inpBorder": "#000000",
+                "width": "w-100"
             },
-            "helpContent": "",
-            "default": "",
-            "placeholderText": "",
-            "labelYes": "",
-            "labelNo": ""
+            "helpContent": "Оберіть елементи гардеробного наповнення та системи джокерів за підгрупами.",
+            "default": "➕ Додати: Джокери та гардеробне наповнення",
+            "modalFields": [
+                {
+                    "id": "mf_wardrobe_content",
+                    "label": "👔 Гардеробне наповнення",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_trousers",
+                            "label": "Брючниці"
+                        },
+                        {
+                            "value": "opt_laundry_baskets",
+                            "label": "Кошики для одягу та білизни"
+                        },
+                        {
+                            "value": "opt_shoe_racks",
+                            "label": "Кошики, полиці для взуття"
+                        },
+                        {
+                            "value": "opt_microlifts_tie",
+                            "label": "Мікроліфти, галстучниці"
+                        },
+                        {
+                            "value": "opt_wardrobe_drawer_org",
+                            "label": "Організації для шухляд"
+                        },
+                        {
+                            "value": "opt_pantographs",
+                            "label": "Пантографи"
+                        },
+                        {
+                            "value": "opt_ironing_board",
+                            "label": "Прасувальна дошка"
+                        },
+                        {
+                            "value": "opt_foxydry",
+                            "label": "Сушарки для білизни Foxydry"
+                        },
+                        {
+                            "value": "opt_mirror_muller",
+                            "label": "Дзеркало гардеробне 935*308*31 Muller"
+                        },
+                        {
+                            "value": "opt_facade_mount_muller",
+                            "label": "Кріплення фасадів для гардеробного наповнення Muller"
+                        }
+                    ]
+                },
+                {
+                    "id": "mf_joker_systems",
+                    "label": "🏗️ Гардеробні системи (Джокери)",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt_joker_system",
+                            "label": "Joker System"
+                        },
+                        {
+                            "value": "opt_cosma",
+                            "label": "Гардеробна система Cosma"
+                        },
+                        {
+                            "value": "opt_ferro_fiori",
+                            "label": "Гардеробна система Ferro Fiori"
+                        },
+                        {
+                            "value": "opt_lumine_tubes",
+                            "label": "Гардеробні труби Lumine"
+                        },
+                        {
+                            "value": "opt_polysystem",
+                            "label": "Полісистема"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "products": {
