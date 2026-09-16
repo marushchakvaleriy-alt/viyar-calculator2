@@ -794,7 +794,7 @@ const Schema = {
         {
             "id": "f1789542347378",
             "groupId": "g1789481047588",
-            "label": "Конструкція 45°",
+            "label": "Наявність з'єднання під  45°",
             "type": "select_yes_no",
             "layout": {
                 "inpBorder": "#000000"
