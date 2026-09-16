@@ -23,6 +23,8 @@ const Viewer3D = {
     // Geometry & Elasticity
     baseDims: { width: 5256, height: 2548, depth: 583 },
     currentDims: { width: 5256, height: 2548, depth: 583 },
+    currentVertCount: 0,
+    currentHorizCount: 0,
     modelScaleMultiplier: 1,
     loadedModelUrl: null,
 
@@ -499,6 +501,12 @@ const Viewer3D = {
             if (cfg.bindings.depthField && formValues[cfg.bindings.depthField] !== undefined) {
                 d = parseFloat(formValues[cfg.bindings.depthField]) || d;
             }
+            if (cfg.bindings.verticalField && formValues[cfg.bindings.verticalField] !== undefined) {
+                vertCount = parseInt(formValues[cfg.bindings.verticalField]) || 0;
+            }
+            if (cfg.bindings.horizontalField && formValues[cfg.bindings.horizontalField] !== undefined) {
+                horizCount = parseInt(formValues[cfg.bindings.horizontalField]) || 0;
+            }
         }
 
         this.baseDims = {
@@ -508,6 +516,19 @@ const Viewer3D = {
         };
 
         this.currentDims = { width: w, height: h, depth: d };
+        this.currentVertCount = vertCount;
+        this.currentHorizCount = horizCount;
+
+        // Parametric Mode: procedural carcass generation without loading external files
+        if (cfg.type === 'parametric') {
+            this.renderParametricModel(w, h, d, vertCount, horizCount);
+            if (this.customModelGroup.visible) {
+                this.fitCameraToObject(this.customModelGroup);
+            }
+            this.onResize();
+            this.updateTriggerButtons(true);
+            return;
+        }
 
         // Load model if not already loaded
         if (this.loadedModelUrl !== cfg.modelUrl) {
@@ -671,6 +692,208 @@ const Viewer3D = {
         this.customModelGroup.rotation.set(0, 0, 0);
         this.customModelGroup.scale.set(1, 1, 1);
         this.scene.updateMatrixWorld(true);
+    },
+
+    // Procedural Parametric Carcass Generator
+    buildParametricCarcass(w, h, d, vertCount, horizCount, options = {}) {
+        const group = new THREE.Group();
+
+        const T = Number(options.thickness) || 18;
+        const hasPlinth = options.hasPlinth !== false;
+        const plinthH = hasPlinth ? 80 : 0;
+        const hasBack = options.hasBack !== false;
+
+        const mainColor = options.color || 0x475569;
+        const boardMat = new THREE.MeshStandardMaterial({
+            color: mainColor,
+            roughness: 0.65,
+            metalness: 0.05,
+            side: THREE.DoubleSide
+        });
+
+        const edgeMat = new THREE.LineBasicMaterial({
+            color: 0x0f172a,
+            linewidth: 1.5
+        });
+
+        const addBoard = (bw, bh, bd, x, y, z) => {
+            const geo = new THREE.BoxGeometry(bw, bh, bd);
+            const mesh = new THREE.Mesh(geo, boardMat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
+            if (options.edges !== false) {
+                const edges = new THREE.EdgesGeometry(geo);
+                const wire = new THREE.LineSegments(edges, edgeMat);
+                mesh.add(wire);
+            }
+
+            group.add(mesh);
+            return mesh;
+        };
+
+        const carcassH = h - plinthH;
+        const innerH = carcassH - 2 * T;
+        const innerCenterY = plinthH + T + innerH / 2;
+
+        // 1. Боковина ліва
+        addBoard(T, carcassH, d, -w / 2 + T / 2, plinthH + carcassH / 2, 0);
+
+        // 2. Боковина права
+        addBoard(T, carcassH, d, w / 2 - T / 2, plinthH + carcassH / 2, 0);
+
+        // 3. Дно
+        addBoard(w - 2 * T, T, d, 0, plinthH + T / 2, 0);
+
+        // 4. Дах
+        addBoard(w - 2 * T, T, d, 0, h - T / 2, 0);
+
+        // 5. Цокольні планки
+        if (hasPlinth && plinthH > 0) {
+            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, d / 2 - 30);
+            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, -d / 2 + 30);
+        }
+
+        // 6. Задня стінка (ДВП/ХДФ 4 мм)
+        if (hasBack) {
+            const backMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 });
+            const backGeo = new THREE.BoxGeometry(w - 2 * T, innerH, 4);
+            const backMesh = new THREE.Mesh(backGeo, backMat);
+            backMesh.position.set(0, innerCenterY, -d / 2 + 3);
+            group.add(backMesh);
+        }
+
+        // 7. Стійки вертикальні (N шт)
+        const N = Math.max(0, parseInt(vertCount) || 0);
+        const sectionCount = N + 1;
+        const totalDividersThickness = N * T;
+        const usefulWidth = (w - 2 * T) - totalDividersThickness;
+        const sectionW = usefulWidth / sectionCount;
+        const sectionCentersX = [];
+
+        let currentLeft = -w / 2 + T;
+        for (let s = 0; s < sectionCount; s++) {
+            sectionCentersX.push(currentLeft + sectionW / 2);
+            currentLeft += sectionW;
+            if (s < N) {
+                const divX = currentLeft + T / 2;
+                addBoard(T, innerH, d - (hasBack ? 10 : 0), divX, innerCenterY, (hasBack ? 4 : 0));
+                currentLeft += T;
+            }
+        }
+
+        // 8. Горизонтальні полиці (M шт)
+        const M = Math.max(0, parseInt(horizCount) || 0);
+        if (M > 0) {
+            const shelfDepth = d - (hasBack ? 20 : 10);
+            const shelfZ = hasBack ? 5 : 0;
+
+            if (N === 0) {
+                const shelfGap = innerH / (M + 1);
+                for (let i = 1; i <= M; i++) {
+                    const sy = plinthH + T + i * shelfGap;
+                    addBoard(w - 2 * T, T, shelfDepth, 0, sy, shelfZ);
+                }
+            } else {
+                const shelvesPerSec = Math.floor(M / sectionCount);
+                let remainder = M % sectionCount;
+
+                for (let s = 0; s < sectionCount; s++) {
+                    const countInThisSec = shelvesPerSec + (remainder > 0 ? 1 : 0);
+                    if (remainder > 0) remainder--;
+
+                    if (countInThisSec > 0) {
+                        const gap = innerH / (countInThisSec + 1);
+                        const scX = sectionCentersX[s];
+                        for (let j = 1; j <= countInThisSec; j++) {
+                            const sy = plinthH + T + j * gap;
+                            addBoard(sectionW, T, shelfDepth, scX, sy, shelfZ);
+                        }
+                    }
+                }
+            }
+        }
+
+        return group;
+    },
+
+    // Rendering Parametric Carcass Model
+    renderParametricModel(targetW, targetH, targetD, vertCount, horizCount) {
+        if (!this.customModelGroup) return;
+
+        const rawW = parseFloat(targetW) || 0;
+        const rawH = parseFloat(targetH) || 0;
+        const rawD = parseFloat(targetD) || this.baseDims.depth || 583;
+        const vCount = Math.max(0, parseInt(vertCount) || 0);
+        const hCount = Math.max(0, parseInt(horizCount) || 0);
+
+        this.currentDims = { width: rawW, height: rawH, depth: rawD };
+        this.currentVertCount = vCount;
+        this.currentHorizCount = hCount;
+
+        const emptyHint = document.getElementById('viewer3d-empty-hint');
+
+        if (rawW <= 0 && rawH <= 0) {
+            this.customModelGroup.visible = false;
+            this.dimensionsGroup.visible = false;
+            if (this.labelWidth) this.labelWidth.style.display = 'none';
+            if (this.labelHeight) this.labelHeight.style.display = 'none';
+            if (this.labelDepth) this.labelDepth.style.display = 'none';
+            if (emptyHint) emptyHint.style.display = 'flex';
+            if (this.badgeDims) {
+                this.badgeDims.innerText = 'Габарити: введіть ширину або висоту...';
+            }
+            return;
+        }
+
+        if (emptyHint) emptyHint.style.display = 'none';
+        this.customModelGroup.visible = true;
+
+        // Clear previous meshes
+        while (this.customModelGroup.children.length > 0) {
+            const obj = this.customModelGroup.children[0];
+            this.customModelGroup.remove(obj);
+            if (obj.geometry) obj.geometry.dispose();
+            obj.traverse(c => { if (c.geometry) c.geometry.dispose(); });
+        }
+
+        const effW = Math.max(200, rawW);
+        const effH = Math.max(300, rawH);
+        const effD = Math.max(150, rawD);
+
+        const carcass = this.buildParametricCarcass(
+            effW,
+            effH,
+            effD,
+            vCount,
+            hCount,
+            {
+                thickness: this.activeConfig?.thickness || 18,
+                hasPlinth: this.activeConfig?.hasPlinth !== false,
+                hasBack: this.activeConfig?.hasBack !== false,
+                color: this.activeConfig?.color || 0x475569,
+                edges: this.activeConfig?.edges !== false
+            }
+        );
+
+        this.customModelGroup.add(carcass);
+        this.customModelGroup.position.set(0, 0, 0);
+        this.customModelGroup.rotation.set(0, 0, 0);
+        this.customModelGroup.scale.set(1, 1, 1);
+        this.scene.updateMatrixWorld(true);
+
+        const finalBox = new THREE.Box3().setFromObject(this.customModelGroup);
+        this.buildDimensionLinesFromBox(finalBox, rawW, rawH, effD);
+        this.dimensionsGroup.visible = true;
+
+        const strW = rawW > 0 ? `${Math.round(rawW)}` : '...';
+        const strH = rawH > 0 ? `${Math.round(rawH)}` : '...';
+        const strD = `${Math.round(effD)}`;
+        const partitionInfo = (vCount > 0 || hCount > 0) ? ` | Стійок: ${vCount} шт, Полиць: ${hCount} шт` : '';
+        if (this.badgeDims) {
+            this.badgeDims.innerText = `Габарити: ${strW} × ${strH} × ${strD} мм${partitionInfo}`;
+        }
     },
 
     // Real-time Elastic Sizing
@@ -869,15 +1092,17 @@ const Viewer3D = {
 
     // Form Listener Link
     onFieldChanged(fieldId, val) {
-        if (!this.isOpen || !this.activeConfig || this.activeConfig.type !== 'elastic') return;
-        const b = this.activeConfig.bindings;
-        if (!b) return;
+        if (!this.isOpen || !this.activeConfig) return;
+        if (this.activeConfig.type !== 'elastic' && this.activeConfig.type !== 'parametric') return;
+        const b = this.activeConfig.bindings || {};
 
         const numVal = Math.max(0, parseFloat(val) || 0);
 
         let w = this.currentDims.width || 0;
         let h = this.currentDims.height || 0;
         let d = this.currentDims.depth || this.baseDims.depth || 583;
+        let vCount = this.currentVertCount || 0;
+        let hCount = this.currentHorizCount || 0;
 
         const fieldDef = window.Engine?.getFieldDef ? window.Engine.getFieldDef(fieldId) : null;
         const label = (fieldDef?.label || '').toLowerCase();
@@ -885,6 +1110,8 @@ const Viewer3D = {
         const isWidth = b.widthField === fieldId || (b.widthLabelMatch && b.widthLabelMatch.some(m => label.includes(m))) || label.includes('ширина') || label.includes('width');
         const isHeight = b.heightField === fieldId || (b.heightLabelMatch && b.heightLabelMatch.some(m => label.includes(m))) || label.includes('висота') || label.includes('height');
         const isDepth = b.depthField === fieldId || (b.depthLabelMatch && b.depthLabelMatch.some(m => label.includes(m))) || label.includes('глибина') || label.includes('depth');
+        const isVertical = b.verticalField === fieldId || (label.includes('стійка') && label.includes('вертикал')) || label.includes('перегород');
+        const isHorizontal = b.horizontalField === fieldId || (label.includes('стійка') && label.includes('горизон')) || label.includes('полиц');
 
         if (isWidth) {
             w = numVal;
@@ -892,12 +1119,21 @@ const Viewer3D = {
             h = numVal;
         } else if (isDepth) {
             d = numVal;
+        } else if (isVertical) {
+            vCount = parseInt(numVal) || 0;
+        } else if (isHorizontal) {
+            hCount = parseInt(numVal) || 0;
         } else {
             return;
         }
 
         const wasHidden = !this.customModelGroup.visible;
-        this.applyDimensions(w, h, d);
+
+        if (this.activeConfig.type === 'parametric') {
+            this.renderParametricModel(w, h, d, vCount, hCount);
+        } else {
+            this.applyDimensions(w, h, d);
+        }
 
         if (wasHidden && this.customModelGroup.visible) {
             this.fitCameraToObject(this.customModelGroup);

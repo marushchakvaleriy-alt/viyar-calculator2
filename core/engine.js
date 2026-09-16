@@ -59,19 +59,23 @@ const Engine = {
     notify3DViewer(fieldId, val, eventType = 'input') {
         if (!window.Viewer3D || !window.find3DModelConfig) return;
 
-        const cfg = window.find3DModelConfig(window.currentConfigFile, 'g_main');
+        const fieldDef = this.getFieldDef(fieldId);
+        const fieldGroupId = fieldDef?.groupId;
+        let cfg = window.find3DModelConfig(window.currentConfigFile, fieldGroupId);
+        if (!cfg) cfg = window.find3DModelConfig(window.currentConfigFile, 'g_main');
         if (!cfg) return;
 
-        const fieldDef = this.getFieldDef(fieldId);
         const fieldLabel = (fieldDef?.label || '').toLowerCase();
         const b = cfg.bindings || {};
 
         const isWidth = b.widthField === fieldId || fieldLabel.includes('ширина') || fieldLabel.includes('width');
         const isHeight = b.heightField === fieldId || fieldLabel.includes('висота') || fieldLabel.includes('height');
         const isDepth = b.depthField === fieldId || fieldLabel.includes('глибина') || fieldLabel.includes('depth');
-        const isTargetGroup = fieldDef?.groupId === cfg.targetGroup;
+        const isVertical = b.verticalField === fieldId || (fieldLabel.includes('стійка') && fieldLabel.includes('вертикал'));
+        const isHorizontal = b.horizontalField === fieldId || (fieldLabel.includes('стійка') && fieldLabel.includes('горизон')) || fieldLabel.includes('полиц');
+        const isTargetGroup = fieldGroupId === cfg.targetGroup;
 
-        if (isWidth || isHeight || isDepth || isTargetGroup) {
+        if (isWidth || isHeight || isDepth || isVertical || isHorizontal || isTargetGroup) {
             // Auto-open 3D window on focus, click, or typing
             if (!window.Viewer3D.isOpen) {
                 window.Viewer3D.openWithConfig(cfg, this.state);
