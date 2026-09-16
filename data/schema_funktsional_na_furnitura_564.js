@@ -930,6 +930,10 @@ const Schema = {
                 "pr_d1": 1,
                 "pr_a1": 1,
                 "pr_i1": 1
+            },
+            "pr_c10": {
+                "v": 0,
+                "once": true
             }
         },
         "f1789539703093_mf_drawers": {
