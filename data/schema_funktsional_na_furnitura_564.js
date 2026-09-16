@@ -353,13 +353,36 @@ const Schema = {
             "default": "+Додати наповнення",
             "placeholderText": "",
             "labelYes": "",
-            "labelNo": ""
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf1789538934958",
+                    "label": "Нове поле",
+                    "type": "multiselect",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "Варіант 1"
+                        },
+                        {
+                            "value": "opt1789538938959",
+                            "label": "Варіант 2"
+                        },
+                        {
+                            "value": "opt1789538940539",
+                            "label": "Варіант 3"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "products": {
         "groups": [],
         "fields": []
     },
-    "rules": {}
+    "rules": {},
+    "modalFieldRules": {}
 };
 window.Schema = Schema;
