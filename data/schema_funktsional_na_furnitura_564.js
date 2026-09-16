@@ -271,17 +271,7 @@ const Schema = {
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
-                "width": "w-33"
-            }
-        },
-        {
-            "id": "f1789479695285",
-            "groupId": "g_main",
-            "label": "висота(мм)",
-            "type": "number",
-            "layout": {
-                "inpBorder": "#000000",
-                "width": "w-33"
+                "width": "w-25"
             }
         },
         {
@@ -291,10 +281,20 @@ const Schema = {
             "type": "number",
             "layout": {
                 "inpBorder": "#000000",
-                "width": "w-33"
+                "width": "w-25"
             },
             "helpContent": "",
             "allowDecimal": false
+        },
+        {
+            "id": "f1789479695285",
+            "groupId": "g_main",
+            "label": "висота(мм)",
+            "type": "number",
+            "layout": {
+                "inpBorder": "#000000",
+                "width": "w-25"
+            }
         },
         {
             "id": "f1789479349868",
@@ -353,6 +353,38 @@ const Schema = {
             },
             "helpContent": "",
             "allowDecimal": false
+        },
+        {
+            "id": "f1789541892287",
+            "groupId": "g1789481047588",
+            "label": "Підсвітка",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf1789541958625",
+                    "label": "Кількість світових ліній",
+                    "type": "number",
+                    "isMultiplier": false
+                }
+            ]
+        },
+        {
+            "id": "f1789542347378",
+            "groupId": "g1789481047588",
+            "label": "Наявність з'єднання під  45°",
+            "type": "select_yes_no",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": ""
         },
         {
             "id": "f1789538740557",
@@ -781,38 +813,6 @@ const Schema = {
             "placeholderText": "",
             "labelYes": "",
             "labelNo": ""
-        },
-        {
-            "id": "f1789541892287",
-            "groupId": "g1789481047588",
-            "label": "Підсвітка",
-            "type": "select_modal",
-            "layout": {
-                "inpBorder": "#000000"
-            },
-            "helpContent": "",
-            "default": "",
-            "placeholderText": "",
-            "labelYes": "",
-            "labelNo": "",
-            "modalFields": [
-                {
-                    "id": "mf1789541958625",
-                    "label": "Кількість світових ліній",
-                    "type": "number",
-                    "isMultiplier": false
-                }
-            ]
-        },
-        {
-            "id": "f1789542347378",
-            "groupId": "g1789481047588",
-            "label": "Наявність з'єднання під  45°",
-            "type": "select_yes_no",
-            "layout": {
-                "inpBorder": "#000000"
-            },
-            "helpContent": ""
         }
     ],
     "products": {
