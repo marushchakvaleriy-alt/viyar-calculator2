@@ -35,7 +35,7 @@ window.MODELS_3D_CONFIG = [
         "thickness": 18,
         "color": 4675945,
         "edges": true,
-        "showDimensions": true
+        "showDimensions": false
     },
     {
         "id": "stand_wall_funkc",
