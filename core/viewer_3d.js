@@ -311,6 +311,7 @@ const Viewer3D = {
                     <button class="viewer3d-tool-btn" onclick="Viewer3D.resetCamera()" title="Скинути камеру">🔄 Ракурс</button>
                     <button class="viewer3d-tool-btn" onclick="Viewer3D.setFrontView()" title="Вигляд спереду">📐 Фасад</button>
                     <button class="viewer3d-tool-btn" onclick="Viewer3D.setIsometricView()" title="Ізометрія">📦 3D</button>
+                    <button class="viewer3d-tool-btn active" id="viewer3d-btn-dims" onclick="Viewer3D.toggleDimensions()" title="Увімкнути/Вимкнути розміри">📏 Розміри</button>
                 </div>
 
                 <!-- Palette -->
@@ -465,8 +466,10 @@ const Viewer3D = {
     openWithConfig(cfg, formValues = {}) {
         this.init();
         this.activeConfig = cfg;
+        this.showDimensions = cfg.showDimensions !== false;
         this.widgetEl.style.display = 'flex';
         this.isOpen = true;
+        this.updateDimensionsVisibility();
 
         if (this.badgeTitle) this.badgeTitle.textContent = cfg.title || '3D Модель';
 
@@ -933,7 +936,7 @@ const Viewer3D = {
 
         const finalBox = new THREE.Box3().setFromObject(this.customModelGroup);
         this.buildDimensionLinesFromBox(finalBox, actualW, actualH, actualD);
-        this.dimensionsGroup.visible = true;
+        this.updateDimensionsVisibility();
 
         // Keep orbit controls centered on the cabinet
         if (this.controls) {
@@ -1018,7 +1021,7 @@ const Viewer3D = {
 
         const finalBox = new THREE.Box3().setFromObject(this.customModelGroup);
         this.buildDimensionLinesFromBox(finalBox, rawW, rawH, effD);
-        this.dimensionsGroup.visible = true;
+        this.updateDimensionsVisibility();
 
         const strW = rawW > 0 ? `${Math.round(rawW)}` : '...';
         const strH = rawH > 0 ? `${Math.round(rawH)}` : '...';
@@ -1114,8 +1117,42 @@ const Viewer3D = {
         }
     },
 
+    toggleDimensions() {
+        this.showDimensions = !this.showDimensions;
+        this.updateDimensionsVisibility();
+    },
+
+    updateDimensionsVisibility() {
+        const btn = document.getElementById('viewer3d-btn-dims');
+        if (btn) {
+            if (this.showDimensions) {
+                btn.classList.add('active');
+                btn.style.background = '#2563eb';
+                btn.style.color = '#ffffff';
+                btn.title = 'Розміри: Увімкнено (клікніть щоб вимкнути)';
+            } else {
+                btn.classList.remove('active');
+                btn.style.background = 'rgba(255, 255, 255, 0.9)';
+                btn.style.color = '#1e293b';
+                btn.title = 'Розміри: Вимкнено (клікніть щоб увімкнути)';
+            }
+        }
+
+        if (this.dimensionsGroup) {
+            this.dimensionsGroup.visible = this.showDimensions && !!(this.customModelGroup && this.customModelGroup.visible);
+        }
+
+        if (!this.showDimensions) {
+            if (this.labelWidth) this.labelWidth.style.display = 'none';
+            if (this.labelHeight) this.labelHeight.style.display = 'none';
+            if (this.labelDepth) this.labelDepth.style.display = 'none';
+        } else {
+            this.updateScreenBadges();
+        }
+    },
+
     updateScreenBadges() {
-        if (!this.dimensionsGroup?.userData?.points || !this.isOpen || this.activeConfig?.type === 'static' || !this.customModelGroup?.visible) {
+        if (!this.showDimensions || !this.dimensionsGroup?.userData?.points || !this.isOpen || this.activeConfig?.type === 'static' || !this.customModelGroup?.visible) {
             if (this.labelWidth) this.labelWidth.style.display = 'none';
             if (this.labelHeight) this.labelHeight.style.display = 'none';
             if (this.labelDepth) this.labelDepth.style.display = 'none';

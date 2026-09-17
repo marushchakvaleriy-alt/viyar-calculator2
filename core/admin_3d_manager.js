@@ -334,6 +334,9 @@
         if (document.getElementById('m3dGrowthMode')) {
             document.getElementById('m3dGrowthMode').value = item.growthMode || 'grow';
         }
+        if (typeof window.m3dUpdateDimensionsUI === 'function') {
+            window.m3dUpdateDimensionsUI(item.showDimensions !== false);
+        }
 
         m3dOnTypeChange();
         if (typeof window.m3dOnGrowthModeChange === 'function') {
@@ -361,6 +364,7 @@
             targetGroup: "g_main",
             type: "parametric",
             growthMode: "grow",
+            showDimensions: true,
             modelUrl: "",
             baseDims: {
                 width: 300,
@@ -451,6 +455,49 @@
         m3dApplyScaling();
     };
 
+    // Оновлення стану відображення розмірних ліній у всіх елементах керування
+    window.m3dUpdateDimensionsUI = function(show) {
+        if (document.getElementById('m3dShowDimensions')) {
+            document.getElementById('m3dShowDimensions').checked = show;
+        }
+        if (document.getElementById('m3dQuickDimsCheck')) {
+            document.getElementById('m3dQuickDimsCheck').checked = show;
+        }
+        const statusLabel = document.getElementById('m3dDimsStatusLabel');
+        if (statusLabel) {
+            statusLabel.innerText = show ? 'Увімк' : 'Вимк';
+            statusLabel.style.background = show ? '#dbeafe' : '#fee2e2';
+            statusLabel.style.color = show ? '#2563eb' : '#b91c1c';
+        }
+        const btn = document.getElementById('m3dBtnToggleDims');
+        if (btn) {
+            btn.innerText = show ? '📏 Розміри: Увімк' : '📏 Розміри: Вимк';
+            btn.style.background = show ? 'rgba(59, 130, 246, 0.25)' : 'rgba(255, 255, 255, 0.1)';
+            btn.style.color = show ? '#60a5fa' : '#94a3b8';
+            btn.style.borderColor = show ? '#3b82f6' : 'rgba(255, 255, 255, 0.2)';
+        }
+        if (m3dDimLinesGroup) {
+            m3dDimLinesGroup.visible = show;
+        }
+    };
+
+    // Перемикання відображення розмірних ліній з основного чекбокса
+    window.m3dOnDimensionsToggle = function () {
+        const show = document.getElementById('m3dShowDimensions') ? document.getElementById('m3dShowDimensions').checked : true;
+        m3dUpdateDimensionsUI(show);
+    };
+
+    // Швидке перемикання з чекбокса панелі тестування
+    window.m3dQuickToggleDims = function (checked) {
+        m3dUpdateDimensionsUI(checked);
+    };
+
+    // Перемикання з кнопки у верхньому тулбарі 3D
+    window.m3dToggleDimensionsFromToolbar = function () {
+        const cur = document.getElementById('m3dShowDimensions') ? document.getElementById('m3dShowDimensions').checked : true;
+        m3dUpdateDimensionsUI(!cur);
+    };
+
     // Збереження форми у поточну модель (в пам'ять)
     window.m3dSaveCurrentModel = function () {
         const id = document.getElementById('m3dId').value || ('stand_model_' + Date.now());
@@ -471,6 +518,7 @@
         };
 
         item.growthMode = document.getElementById('m3dGrowthMode') ? document.getElementById('m3dGrowthMode').value : 'grow';
+        item.showDimensions = document.getElementById('m3dShowDimensions') ? document.getElementById('m3dShowDimensions').checked : true;
 
         item.bindings = {
             widthField: document.getElementById('m3dWidthField').value,
@@ -1057,6 +1105,10 @@
     function updateDimensionLines(w, h, d) {
         if (!m3dDimLinesGroup) return;
         m3dDimLinesGroup.clear();
+
+        const show = document.getElementById('m3dShowDimensions') ? document.getElementById('m3dShowDimensions').checked : true;
+        m3dDimLinesGroup.visible = show;
+        if (!show) return;
 
         const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, linewidth: 2 });
 

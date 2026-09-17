@@ -569,7 +569,7 @@
                                 </div>
                             </div>
 
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">
                                 <div>
                                     <label class="form-label" style="font-weight: 600; font-size: 12px;">Тип поведінки / Джерело</label>
                                     <select id="m3dType" class="form-input" onchange="m3dOnTypeChange()">
@@ -585,6 +585,14 @@
                                         <option value="false">Вимкнено (гладке затінення)</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div style="margin-bottom: 12px; background: #eff6ff; padding: 10px 14px; border-radius: 8px; border: 1.5px solid #60a5fa; display: flex; align-items: center; justify-content: space-between;">
+                                <label for="m3dShowDimensions" style="font-size: 12.5px; font-weight: 700; color: #1e40af; cursor: pointer; display: flex; align-items: center; gap: 10px; user-select: none;">
+                                    <input type="checkbox" id="m3dShowDimensions" checked onchange="m3dOnDimensionsToggle()" style="cursor: pointer; width: 18px; height: 18px; accent-color: #2563eb;">
+                                    <span>📏 Відображати розмірні лінії та виноски (Ш × В × Г)</span>
+                                </label>
+                                <span id="m3dDimsStatusLabel" style="font-size: 11px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 6px;">Увімк</span>
                             </div>
 
                             <div class="form-group" id="m3dUrlGroup" style="margin-bottom: 12px;">
@@ -688,6 +696,7 @@
                             <span id="m3dStatusBadge" style="font-size: 11px; padding: 2px 8px; border-radius: 12px; background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">Готово</span>
                         </div>
                         <div style="display: flex; gap: 8px;">
+                            <button id="m3dBtnToggleDims" onclick="m3dToggleDimensionsFromToolbar()" class="btn-mini" style="background: rgba(59, 130, 246, 0.25); color: #60a5fa; border: 1px solid #3b82f6; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px;" title="Увімкнути/Вимкнути розмірні лінії">📏 Розміри: Увімк</button>
                             <button onclick="m3dResetCamera()" class="btn-mini" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Скинути ракурс камери">🔄 Ракурс</button>
                             <button onclick="m3dLoadCurrentIntoPreview()" class="btn-mini" style="background: rgba(2, 132, 199, 0.3); color: #38bdf8; border: 1px solid #0284c7; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Перезавантажити 3D файл">⚡ Оновити модель</button>
                         </div>
@@ -705,7 +714,13 @@
                     <div style="padding: 14px 18px; background: #0f172a; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 10px; z-index: 10;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Тестування розтягування моделі наживо</span>
-                            <button onclick="m3dResetTestSliders()" style="background: none; border: none; color: #38bdf8; font-size: 11px; cursor: pointer; text-decoration: underline;">Скинути до базових</button>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 11px; color: #cbd5e1; user-select: none;">
+                                    <input type="checkbox" id="m3dQuickDimsCheck" checked onchange="m3dQuickToggleDims(this.checked)" style="cursor: pointer; accent-color: #3b82f6;">
+                                    <span>📏 Розміри</span>
+                                </label>
+                                <button onclick="m3dResetTestSliders()" style="background: none; border: none; color: #38bdf8; font-size: 11px; cursor: pointer; text-decoration: underline;">Скинути до базових</button>
+                            </div>
                         </div>
 
                         <!-- Sliders Grid -->

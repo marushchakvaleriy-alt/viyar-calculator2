@@ -34,7 +34,8 @@ window.MODELS_3D_CONFIG = [
         "hasBack": true,
         "thickness": 18,
         "color": 4675945,
-        "edges": true
+        "edges": true,
+        "showDimensions": false
     },
     {
         "id": "stand_wall_funkc",
@@ -42,6 +43,7 @@ window.MODELS_3D_CONFIG = [
         "schemaMatch": "data/schema_funktsional_na_furnitura_564",
         "targetGroup": "g_main",
         "type": "elastic",
+        "showDimensions": true,
         "modelUrl": "../Модельки/ImageToStl.com_Стіна.gltf",
         "baseDims": {
             "width": 5256,
