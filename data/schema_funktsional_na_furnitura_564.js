@@ -813,6 +813,38 @@ const Schema = {
             "placeholderText": "",
             "labelYes": "",
             "labelNo": ""
+        },
+        {
+            "id": "f1789644392625",
+            "groupId": "g1789481047588",
+            "label": "Фасади",
+            "type": "select_modal",
+            "layout": {
+                "inpBorder": "#000000"
+            },
+            "helpContent": "",
+            "default": "",
+            "placeholderText": "",
+            "labelYes": "",
+            "labelNo": "",
+            "modalFields": [
+                {
+                    "id": "mf1789644462088",
+                    "label": "Матеріал",
+                    "type": "multiselect_qty",
+                    "isMultiplier": false,
+                    "options": [
+                        {
+                            "value": "opt1",
+                            "label": "ДСП"
+                        },
+                        {
+                            "value": "opt1789644477075",
+                            "label": "Скло"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "products": {
