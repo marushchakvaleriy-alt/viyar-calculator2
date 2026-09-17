@@ -73,11 +73,12 @@ const Engine = {
         const isDepth = b.depthField === fieldId || fieldLabel.includes('глибина') || fieldLabel.includes('depth');
         const isVertical = b.verticalField === fieldId || (fieldLabel.includes('стійка') && fieldLabel.includes('вертикал'));
         const isHorizontal = b.horizontalField === fieldId || (fieldLabel.includes('стійка') && fieldLabel.includes('горизон')) || fieldLabel.includes('полиц');
+        const isModules = fieldLabel.includes('модул');
         const isTargetGroup = fieldGroupId === cfg.targetGroup;
 
-        if (isWidth || isHeight || isDepth || isVertical || isHorizontal || isTargetGroup) {
-            // Auto-open 3D window on focus, click, or typing
-            if (!window.Viewer3D.isOpen) {
+        if (isWidth || isHeight || isDepth || isVertical || isHorizontal || isModules || isTargetGroup) {
+            // Auto-open 3D window or switch model if moving to a different group
+            if (!window.Viewer3D.isOpen || (window.Viewer3D.activeConfig && window.Viewer3D.activeConfig.id !== cfg.id)) {
                 window.Viewer3D.openWithConfig(cfg, this.state);
             }
             if (eventType !== 'focus') {

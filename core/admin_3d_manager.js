@@ -331,8 +331,14 @@
         if (document.getElementById('m3dThickness')) {
             document.getElementById('m3dThickness').value = item.thickness || 18;
         }
+        if (document.getElementById('m3dGrowthMode')) {
+            document.getElementById('m3dGrowthMode').value = item.growthMode || 'grow';
+        }
 
         m3dOnTypeChange();
+        if (typeof window.m3dOnGrowthModeChange === 'function') {
+            window.m3dOnGrowthModeChange();
+        }
 
         // Оновлюємо тестові слайдери габаритів під базові цієї моделі
         m3dTestDims.width = Number(base.width) || 5256;
@@ -354,20 +360,21 @@
             schemaMatch: "*",
             targetGroup: "g_main",
             type: "parametric",
+            growthMode: "grow",
             modelUrl: "",
             baseDims: {
-                width: 3000,
-                height: 2400,
-                depth: 600
+                width: 300,
+                height: 300,
+                depth: 500
             },
             bindings: {
                 widthField: "",
                 heightField: "",
                 verticalField: "",
                 horizontalField: "",
-                defaultDepth: 600
+                defaultDepth: 500
             },
-            hasPlinth: true,
+            hasPlinth: false,
             hasBack: true,
             thickness: 18,
             color: 0x475569,
@@ -429,6 +436,21 @@
         }
     };
 
+    // Перемикання режиму росту / ділення каркасу
+    window.m3dOnGrowthModeChange = function () {
+        const modeEl = document.getElementById('m3dGrowthMode');
+        const mode = modeEl ? modeEl.value : 'grow';
+        const titleEl = document.getElementById('m3dBaseDimsTitle');
+        if (titleEl) {
+            if (mode === 'grow') {
+                titleEl.innerText = '📐 Габарити однієї комірки (модуля) (мм)';
+            } else {
+                titleEl.innerText = 'Базові габарити виробу (мм)';
+            }
+        }
+        m3dApplyScaling();
+    };
+
     // Збереження форми у поточну модель (в пам'ять)
     window.m3dSaveCurrentModel = function () {
         const id = document.getElementById('m3dId').value || ('stand_model_' + Date.now());
@@ -447,6 +469,8 @@
             height: Number(document.getElementById('m3dBaseH').value) || 2548,
             depth: Number(document.getElementById('m3dBaseD').value) || 583
         };
+
+        item.growthMode = document.getElementById('m3dGrowthMode') ? document.getElementById('m3dGrowthMode').value : 'grow';
 
         item.bindings = {
             widthField: document.getElementById('m3dWidthField').value,
@@ -484,6 +508,39 @@
         const hasPlinth = options.hasPlinth !== false;
         const plinthH = hasPlinth ? 80 : 0;
         const hasBack = options.hasBack !== false;
+        const isGrowth = (options.growthMode === 'grow');
+
+        const N = Math.max(0, parseInt(vertCount) || 0);
+        const M = Math.max(0, parseInt(horizCount) || 0);
+        const cols = N + 1;
+        const rows = M + 1;
+
+        let actualW, actualH, actualD;
+        let cellW, cellH;
+
+        if (isGrowth) {
+            // Режим модульного росту: вхідні розміри - це розміри однієї комірки (модуля)
+            cellW = Math.max(100, Number(w) || 300);
+            cellH = Math.max(100, Number(h) || 300);
+            actualD = Math.max(100, Number(d) || 500);
+
+            // Кожна вертикальна стійка додає колонку комірок у ширину
+            actualW = cols * cellW + (cols + 1) * T;
+            // Кожна горизонтальна стійка додає ярус комірок у висоту
+            actualH = rows * cellH + (rows + 1) * T + plinthH;
+        } else {
+            // Режим ділення стіни: стійки ділять заданий габарит
+            actualW = Math.max(200, Number(w) || 3000);
+            actualH = Math.max(300, Number(h) || 2400);
+            actualD = Math.max(100, Number(d) || 500);
+
+            const totalDividersThickness = N * T;
+            const usefulWidth = (actualW - 2 * T) - totalDividersThickness;
+            cellW = usefulWidth / cols;
+            const carcassH = actualH - plinthH;
+            const innerH = carcassH - 2 * T;
+            cellH = innerH / rows;
+        }
 
         const mainColor = options.color || 0x475569;
         const boardMat = new THREE.MeshStandardMaterial({
@@ -513,90 +570,100 @@
             return mesh;
         };
 
-        const carcassH = h - plinthH;
+        const carcassH = actualH - plinthH;
         const innerH = carcassH - 2 * T;
         const innerCenterY = plinthH + T + innerH / 2;
 
         // 1. Боковина ліва
-        addBoard(T, carcassH, d, -w / 2 + T / 2, plinthH + carcassH / 2, 0);
+        addBoard(T, carcassH, actualD, -actualW / 2 + T / 2, plinthH + carcassH / 2, 0);
 
         // 2. Боковина права
-        addBoard(T, carcassH, d, w / 2 - T / 2, plinthH + carcassH / 2, 0);
+        addBoard(T, carcassH, actualD, actualW / 2 - T / 2, plinthH + carcassH / 2, 0);
 
         // 3. Дно
-        addBoard(w - 2 * T, T, d, 0, plinthH + T / 2, 0);
+        addBoard(actualW - 2 * T, T, actualD, 0, plinthH + T / 2, 0);
 
         // 4. Дах
-        addBoard(w - 2 * T, T, d, 0, h - T / 2, 0);
+        addBoard(actualW - 2 * T, T, actualD, 0, actualH - T / 2, 0);
 
         // 5. Цокольні планки
         if (hasPlinth && plinthH > 0) {
-            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, d / 2 - 30);
-            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, -d / 2 + 30);
+            addBoard(actualW - 2 * T, plinthH, T, 0, plinthH / 2, actualD / 2 - 30);
+            addBoard(actualW - 2 * T, plinthH, T, 0, plinthH / 2, -actualD / 2 + 30);
         }
 
         // 6. Задня стінка (ДВП/ХДФ 4 мм)
         if (hasBack) {
             const backMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 });
-            const backGeo = new THREE.BoxGeometry(w - 2 * T, innerH, 4);
+            const backGeo = new THREE.BoxGeometry(actualW - 2 * T, innerH, 4);
             const backMesh = new THREE.Mesh(backGeo, backMat);
-            backMesh.position.set(0, innerCenterY, -d / 2 + 3);
+            backMesh.position.set(0, innerCenterY, -actualD / 2 + 3);
             group.add(backMesh);
         }
 
         // 7. Стійки вертикальні (N шт)
-        const N = Math.max(0, parseInt(vertCount) || 0);
-        const sectionCount = N + 1;
-        const totalDividersThickness = N * T;
-        const usefulWidth = (w - 2 * T) - totalDividersThickness;
-        const sectionW = usefulWidth / sectionCount;
         const sectionCentersX = [];
-
-        let currentLeft = -w / 2 + T;
-        for (let s = 0; s < sectionCount; s++) {
-            sectionCentersX.push(currentLeft + sectionW / 2);
-            currentLeft += sectionW;
+        let currentLeft = -actualW / 2 + T;
+        for (let s = 0; s < cols; s++) {
+            sectionCentersX.push(currentLeft + cellW / 2);
+            currentLeft += cellW;
             if (s < N) {
                 // Додаємо вертикальну перегородку
                 const divX = currentLeft + T / 2;
-                addBoard(T, innerH, d - (hasBack ? 10 : 0), divX, innerCenterY, (hasBack ? 4 : 0));
+                addBoard(T, innerH, actualD - (hasBack ? 10 : 0), divX, innerCenterY, (hasBack ? 4 : 0));
                 currentLeft += T;
             }
         }
 
         // 8. Горизонтальні полиці (M шт)
-        const M = Math.max(0, parseInt(horizCount) || 0);
         if (M > 0) {
-            const shelfDepth = d - (hasBack ? 20 : 10);
+            const shelfDepth = actualD - (hasBack ? 20 : 10);
             const shelfZ = hasBack ? 5 : 0;
 
-            if (N === 0) {
-                // Полиці на всю ширину
-                const shelfGap = innerH / (M + 1);
-                for (let i = 1; i <= M; i++) {
-                    const sy = plinthH + T + i * shelfGap;
-                    addBoard(w - 2 * T, T, shelfDepth, 0, sy, shelfZ);
+            if (isGrowth) {
+                // У модульному рості: M ярусів полиць у кожній колонці
+                for (let r = 1; r <= M; r++) {
+                    const sy = plinthH + T + r * cellH + (r - 0.5) * T;
+                    for (let c = 0; c < cols; c++) {
+                        addBoard(cellW, T, shelfDepth, sectionCentersX[c], sy, shelfZ);
+                    }
                 }
             } else {
-                // Рівномірно розподіляємо полиці по секціях
-                const shelvesPerSec = Math.floor(M / sectionCount);
-                let remainder = M % sectionCount;
-
-                for (let s = 0; s < sectionCount; s++) {
-                    const countInThisSec = shelvesPerSec + (remainder > 0 ? 1 : 0);
-                    if (remainder > 0) remainder--;
-
-                    if (countInThisSec > 0) {
-                        const gap = innerH / (countInThisSec + 1);
-                        const scX = sectionCentersX[s];
-                        for (let j = 1; j <= countInThisSec; j++) {
-                            const sy = plinthH + T + j * gap;
-                            addBoard(sectionW, T, shelfDepth, scX, sy, shelfZ);
+                // У режимі ділення стіни: рівномірний розподіл полиць
+                if (N === 0) {
+                    const shelfGap = innerH / (M + 1);
+                    for (let i = 1; i <= M; i++) {
+                        const sy = plinthH + T + i * shelfGap;
+                        addBoard(actualW - 2 * T, T, shelfDepth, 0, sy, shelfZ);
+                    }
+                } else {
+                    const shelvesPerSec = Math.floor(M / cols);
+                    let remainder = M % cols;
+                    for (let s = 0; s < cols; s++) {
+                        const countInThisSec = shelvesPerSec + (remainder > 0 ? 1 : 0);
+                        if (remainder > 0) remainder--;
+                        if (countInThisSec > 0) {
+                            const gap = innerH / (countInThisSec + 1);
+                            const scX = sectionCentersX[s];
+                            for (let j = 1; j <= countInThisSec; j++) {
+                                const sy = plinthH + T + j * gap;
+                                addBoard(cellW, T, shelfDepth, scX, sy, shelfZ);
+                            }
                         }
                     }
                 }
             }
         }
+
+        group.userData.actualW = actualW;
+        group.userData.actualH = actualH;
+        group.userData.actualD = actualD;
+        group.userData.cellW = cellW;
+        group.userData.cellH = cellH;
+        group.userData.cols = cols;
+        group.userData.rows = rows;
+        group.userData.totalCells = cols * rows;
+        group.userData.isGrowth = isGrowth;
 
         return group;
     }
@@ -632,6 +699,7 @@
                 vertCount,
                 horizCount,
                 {
+                    growthMode: item.growthMode || 'grow',
                     thickness: item.thickness || 18,
                     hasPlinth: item.hasPlinth !== false,
                     hasBack: item.hasBack !== false,
@@ -645,11 +713,25 @@
             m3dCurrentModelGroup.userData.baseDims = { ...m3dTestDims };
             m3dScene.add(m3dCurrentModelGroup);
 
-            updateDimensionLines(m3dTestDims.width, m3dTestDims.height, m3dTestDims.depth);
+            const displayW = carcass.userData.actualW || m3dTestDims.width;
+            const displayH = carcass.userData.actualH || m3dTestDims.height;
+            const displayD = carcass.userData.actualD || m3dTestDims.depth;
+
+            updateDimensionLines(displayW, displayH, displayD);
             fitCameraToObject(m3dCurrentModelGroup);
 
+            const bW = document.getElementById('m3dBadgeW');
+            const bH = document.getElementById('m3dBadgeH');
+            const bD = document.getElementById('m3dBadgeD');
+            if (bW) bW.innerText = Math.round(displayW);
+            if (bH) bH.innerText = Math.round(displayH);
+            if (bD) bD.innerText = Math.round(displayD);
+
             if (badge) {
-                badge.innerText = '🛠️ Параметричний каркас';
+                const infoText = carcass.userData.isGrowth
+                    ? `🧱 Модулів: ${carcass.userData.totalCells} (${carcass.userData.cols}×${carcass.userData.rows})`
+                    : '🛠️ Параметричний каркас';
+                badge.innerText = infoText;
                 badge.style.background = 'rgba(16, 185, 129, 0.25)';
                 badge.style.color = '#34d399';
             }
@@ -915,6 +997,7 @@
                 vertCount,
                 horizCount,
                 {
+                    growthMode: item.growthMode || 'grow',
                     thickness: item.thickness || 18,
                     hasPlinth: item.hasPlinth !== false,
                     hasBack: item.hasBack !== false,
@@ -926,16 +1009,28 @@
             m3dCurrentModelGroup.userData.baseDims = { ...m3dTestDims };
             m3dScene.add(m3dCurrentModelGroup);
 
+            const displayW = m3dCurrentModelGroup.userData.actualW || m3dTestDims.width;
+            const displayH = m3dCurrentModelGroup.userData.actualH || m3dTestDims.height;
+            const displayD = m3dCurrentModelGroup.userData.actualD || m3dTestDims.depth;
+
             // Оновлюємо бейдж
             const bW = document.getElementById('m3dBadgeW');
             const bH = document.getElementById('m3dBadgeH');
             const bD = document.getElementById('m3dBadgeD');
-            if (bW) bW.innerText = Math.round(m3dTestDims.width);
-            if (bH) bH.innerText = Math.round(m3dTestDims.height);
-            if (bD) bD.innerText = Math.round(m3dTestDims.depth);
+            if (bW) bW.innerText = Math.round(displayW);
+            if (bH) bH.innerText = Math.round(displayH);
+            if (bD) bD.innerText = Math.round(displayD);
+
+            const badge = document.getElementById('m3dStatusBadge');
+            if (badge) {
+                const infoText = m3dCurrentModelGroup.userData.isGrowth
+                    ? `🧱 Модулів: ${m3dCurrentModelGroup.userData.totalCells} (${m3dCurrentModelGroup.userData.cols}×${m3dCurrentModelGroup.userData.rows})`
+                    : '🛠️ Параметричний каркас';
+                badge.innerText = infoText;
+            }
 
             // Оновлюємо розмірні стрілки в 3D сцені
-            updateDimensionLines(m3dTestDims.width, m3dTestDims.height, m3dTestDims.depth);
+            updateDimensionLines(displayW, displayH, displayD);
             return;
         }
 

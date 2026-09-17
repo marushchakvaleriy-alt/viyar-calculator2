@@ -16,10 +16,11 @@ window.MODELS_3D_CONFIG = [
             "g1789481047588"
         ],
         "type": "parametric",
+        "growthMode": "grow",
         "modelUrl": "",
         "baseDims": {
-            "width": 500,
-            "height": 500,
+            "width": 300,
+            "height": 300,
             "depth": 500
         },
         "bindings": {

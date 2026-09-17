@@ -474,6 +474,8 @@ const Viewer3D = {
         let w = 0;
         let h = 0;
         let d = cfg.bindings?.defaultDepth || cfg.baseDims?.depth || 583;
+        let vertCount = 0;
+        let horizCount = 0;
 
         if (cfg.bindings) {
             // If specific field IDs are not set, dynamically look up by label in Schema.fields
@@ -506,6 +508,10 @@ const Viewer3D = {
             }
             if (cfg.bindings.horizontalField && formValues[cfg.bindings.horizontalField] !== undefined) {
                 horizCount = parseInt(formValues[cfg.bindings.horizontalField]) || 0;
+            }
+            if (formValues['f1789481049587'] && vertCount === 0) {
+                const mCount = parseInt(formValues['f1789481049587']) || 0;
+                if (mCount > 1) vertCount = mCount - 1;
             }
         }
 
@@ -705,6 +711,39 @@ const Viewer3D = {
         const hasPlinth = options.hasPlinth !== false;
         const plinthH = hasPlinth ? 80 : 0;
         const hasBack = options.hasBack !== false;
+        const isGrowth = (options.growthMode === 'grow');
+
+        const N = Math.max(0, parseInt(vertCount) || 0);
+        const M = Math.max(0, parseInt(horizCount) || 0);
+        const cols = N + 1;
+        const rows = M + 1;
+
+        let actualW, actualH, actualD;
+        let cellW, cellH;
+
+        if (isGrowth) {
+            // Режим модульного росту: базова ширина/висота - це габарити однієї комірки (модуля)
+            cellW = Math.max(100, Number(w) || 300);
+            cellH = Math.max(100, Number(h) || 300);
+            actualD = Math.max(100, Number(d) || 500);
+
+            // Кожна вертикальна стійка додає колонку комірок у ширину
+            actualW = cols * cellW + (cols + 1) * T;
+            // Кожна горизонтальна стійка додає ярус комірок у висоту
+            actualH = rows * cellH + (rows + 1) * T + plinthH;
+        } else {
+            // Режим ділення: стійки ділять заданий габарит виробу
+            actualW = Math.max(200, Number(w) || 3000);
+            actualH = Math.max(300, Number(h) || 2400);
+            actualD = Math.max(100, Number(d) || 500);
+
+            const totalDividersThickness = N * T;
+            const usefulWidth = (actualW - 2 * T) - totalDividersThickness;
+            cellW = usefulWidth / cols;
+            const carcassH = actualH - plinthH;
+            const innerH = carcassH - 2 * T;
+            cellH = innerH / rows;
+        }
 
         const mainColor = options.color || 0x475569;
         const boardMat = new THREE.MeshStandardMaterial({
@@ -736,87 +775,101 @@ const Viewer3D = {
             return mesh;
         };
 
-        const carcassH = h - plinthH;
+        const carcassH = actualH - plinthH;
         const innerH = carcassH - 2 * T;
         const innerCenterY = plinthH + T + innerH / 2;
 
         // 1. Боковина ліва
-        addBoard(T, carcassH, d, -w / 2 + T / 2, plinthH + carcassH / 2, 0);
+        addBoard(T, carcassH, actualD, -actualW / 2 + T / 2, plinthH + carcassH / 2, 0);
 
         // 2. Боковина права
-        addBoard(T, carcassH, d, w / 2 - T / 2, plinthH + carcassH / 2, 0);
+        addBoard(T, carcassH, actualD, actualW / 2 - T / 2, plinthH + carcassH / 2, 0);
 
         // 3. Дно
-        addBoard(w - 2 * T, T, d, 0, plinthH + T / 2, 0);
+        addBoard(actualW - 2 * T, T, actualD, 0, plinthH + T / 2, 0);
 
         // 4. Дах
-        addBoard(w - 2 * T, T, d, 0, h - T / 2, 0);
+        addBoard(actualW - 2 * T, T, actualD, 0, actualH - T / 2, 0);
 
         // 5. Цокольні планки
         if (hasPlinth && plinthH > 0) {
-            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, d / 2 - 30);
-            addBoard(w - 2 * T, plinthH, T, 0, plinthH / 2, -d / 2 + 30);
+            addBoard(actualW - 2 * T, plinthH, T, 0, plinthH / 2, actualD / 2 - 30);
+            addBoard(actualW - 2 * T, plinthH, T, 0, plinthH / 2, -actualD / 2 + 30);
         }
 
         // 6. Задня стінка (ДВП/ХДФ 4 мм)
         if (hasBack) {
             const backMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 });
-            const backGeo = new THREE.BoxGeometry(w - 2 * T, innerH, 4);
+            const backGeo = new THREE.BoxGeometry(actualW - 2 * T, innerH, 4);
             const backMesh = new THREE.Mesh(backGeo, backMat);
-            backMesh.position.set(0, innerCenterY, -d / 2 + 3);
+            backMesh.position.set(0, innerCenterY, -actualD / 2 + 3);
             group.add(backMesh);
         }
 
         // 7. Стійки вертикальні (N шт)
-        const N = Math.max(0, parseInt(vertCount) || 0);
-        const sectionCount = N + 1;
-        const totalDividersThickness = N * T;
-        const usefulWidth = (w - 2 * T) - totalDividersThickness;
-        const sectionW = usefulWidth / sectionCount;
         const sectionCentersX = [];
-
-        let currentLeft = -w / 2 + T;
-        for (let s = 0; s < sectionCount; s++) {
-            sectionCentersX.push(currentLeft + sectionW / 2);
-            currentLeft += sectionW;
+        let currentLeft = -actualW / 2 + T;
+        for (let s = 0; s < cols; s++) {
+            sectionCentersX.push(currentLeft + cellW / 2);
+            currentLeft += cellW;
             if (s < N) {
                 const divX = currentLeft + T / 2;
-                addBoard(T, innerH, d - (hasBack ? 10 : 0), divX, innerCenterY, (hasBack ? 4 : 0));
+                addBoard(T, innerH, actualD - (hasBack ? 10 : 0), divX, innerCenterY, (hasBack ? 4 : 0));
                 currentLeft += T;
             }
         }
 
         // 8. Горизонтальні полиці (M шт)
-        const M = Math.max(0, parseInt(horizCount) || 0);
         if (M > 0) {
-            const shelfDepth = d - (hasBack ? 20 : 10);
+            const shelfDepth = actualD - (hasBack ? 20 : 10);
             const shelfZ = hasBack ? 5 : 0;
 
-            if (N === 0) {
-                const shelfGap = innerH / (M + 1);
-                for (let i = 1; i <= M; i++) {
-                    const sy = plinthH + T + i * shelfGap;
-                    addBoard(w - 2 * T, T, shelfDepth, 0, sy, shelfZ);
+            if (isGrowth) {
+                // Модульний ріст: яруси полиць у кожній колонці
+                for (let r = 1; r <= M; r++) {
+                    const sy = plinthH + T + r * cellH + (r - 0.5) * T;
+                    for (let c = 0; c < cols; c++) {
+                        addBoard(cellW, T, shelfDepth, sectionCentersX[c], sy, shelfZ);
+                    }
                 }
             } else {
-                const shelvesPerSec = Math.floor(M / sectionCount);
-                let remainder = M % sectionCount;
+                // Ділення стіни: рівномірний розподіл
+                if (N === 0) {
+                    const shelfGap = innerH / (M + 1);
+                    for (let i = 1; i <= M; i++) {
+                        const sy = plinthH + T + i * shelfGap;
+                        addBoard(actualW - 2 * T, T, shelfDepth, 0, sy, shelfZ);
+                    }
+                } else {
+                    const shelvesPerSec = Math.floor(M / cols);
+                    let remainder = M % cols;
 
-                for (let s = 0; s < sectionCount; s++) {
-                    const countInThisSec = shelvesPerSec + (remainder > 0 ? 1 : 0);
-                    if (remainder > 0) remainder--;
+                    for (let s = 0; s < cols; s++) {
+                        const countInThisSec = shelvesPerSec + (remainder > 0 ? 1 : 0);
+                        if (remainder > 0) remainder--;
 
-                    if (countInThisSec > 0) {
-                        const gap = innerH / (countInThisSec + 1);
-                        const scX = sectionCentersX[s];
-                        for (let j = 1; j <= countInThisSec; j++) {
-                            const sy = plinthH + T + j * gap;
-                            addBoard(sectionW, T, shelfDepth, scX, sy, shelfZ);
+                        if (countInThisSec > 0) {
+                            const gap = innerH / (countInThisSec + 1);
+                            const scX = sectionCentersX[s];
+                            for (let j = 1; j <= countInThisSec; j++) {
+                                const sy = plinthH + T + j * gap;
+                                addBoard(cellW, T, shelfDepth, scX, sy, shelfZ);
+                            }
                         }
                     }
                 }
             }
         }
+
+        group.userData.actualW = actualW;
+        group.userData.actualH = actualH;
+        group.userData.actualD = actualD;
+        group.userData.cellW = cellW;
+        group.userData.cellH = cellH;
+        group.userData.cols = cols;
+        group.userData.rows = rows;
+        group.userData.totalCells = cols * rows;
+        group.userData.isGrowth = isGrowth;
 
         return group;
     },
@@ -827,7 +880,7 @@ const Viewer3D = {
 
         const rawW = parseFloat(targetW) || 0;
         const rawH = parseFloat(targetH) || 0;
-        const rawD = parseFloat(targetD) || this.baseDims.depth || 583;
+        const rawD = parseFloat(targetD) || this.baseDims.depth || 500;
         const vCount = Math.max(0, parseInt(vertCount) || 0);
         const hCount = Math.max(0, parseInt(horizCount) || 0);
 
@@ -839,10 +892,10 @@ const Viewer3D = {
         if (emptyHint) emptyHint.style.display = 'none';
         this.customModelGroup.visible = true;
 
-        // Effective dimensions: if not set in form, use model baseDims (e.g. 3000x2400x583)
-        const effW = rawW > 0 ? Math.max(200, rawW) : (this.baseDims.width || 3000);
-        const effH = rawH > 0 ? Math.max(300, rawH) : (this.baseDims.height || 2400);
-        const effD = rawD > 0 ? Math.max(150, rawD) : (this.baseDims.depth || 583);
+        // Effective dimensions: if not set in form, use model baseDims (e.g. 300x300x500 in growth mode)
+        const effW = rawW > 0 ? Math.max(100, rawW) : (this.baseDims.width || 300);
+        const effH = rawH > 0 ? Math.max(100, rawH) : (this.baseDims.height || 300);
+        const effD = rawD > 0 ? Math.max(100, rawD) : (this.baseDims.depth || 500);
 
         // Clear previous meshes
         while (this.customModelGroup.children.length > 0) {
@@ -852,7 +905,6 @@ const Viewer3D = {
             obj.traverse(c => { if (c.geometry) c.geometry.dispose(); });
         }
 
-
         const carcass = this.buildParametricCarcass(
             effW,
             effH,
@@ -860,6 +912,7 @@ const Viewer3D = {
             vCount,
             hCount,
             {
+                growthMode: this.activeConfig?.growthMode || 'grow',
                 thickness: this.activeConfig?.thickness || 18,
                 hasPlinth: this.activeConfig?.hasPlinth !== false,
                 hasBack: this.activeConfig?.hasBack !== false,
@@ -874,14 +927,36 @@ const Viewer3D = {
         this.customModelGroup.scale.set(1, 1, 1);
         this.scene.updateMatrixWorld(true);
 
+        const actualW = carcass.userData.actualW || effW;
+        const actualH = carcass.userData.actualH || effH;
+        const actualD = carcass.userData.actualD || effD;
+
         const finalBox = new THREE.Box3().setFromObject(this.customModelGroup);
-        this.buildDimensionLinesFromBox(finalBox, rawW, rawH, effD);
+        this.buildDimensionLinesFromBox(finalBox, actualW, actualH, actualD);
         this.dimensionsGroup.visible = true;
 
-        const strW = rawW > 0 ? `${Math.round(rawW)}` : '...';
-        const strH = rawH > 0 ? `${Math.round(rawH)}` : '...';
-        const strD = `${Math.round(effD)}`;
-        const partitionInfo = (vCount > 0 || hCount > 0) ? ` | Стійок: ${vCount} шт, Полиць: ${hCount} шт` : '';
+        // Keep orbit controls centered on the cabinet
+        if (this.controls) {
+            const center = new THREE.Vector3();
+            finalBox.getCenter(center);
+            this.controls.target.copy(center);
+        }
+
+        const strW = `${Math.round(actualW)}`;
+        const strH = `${Math.round(actualH)}`;
+        const strD = `${Math.round(actualD)}`;
+
+        let partitionInfo = '';
+        if (carcass.userData.isGrowth) {
+            const cols = carcass.userData.cols || 1;
+            const rows = carcass.userData.rows || 1;
+            const cellW = Math.round(carcass.userData.cellW);
+            const cellH = Math.round(carcass.userData.cellH);
+            partitionInfo = ` | Модулів: ${cols * rows} шт (${cols} кол. × ${rows} ярус.) | Комірка: ${cellW}×${cellH}`;
+        } else if (vCount > 0 || hCount > 0) {
+            partitionInfo = ` | Стійок: ${vCount} шт, Полиць: ${hCount} шт`;
+        }
+
         if (this.badgeDims) {
             this.badgeDims.innerText = `Габарити: ${strW} × ${strH} × ${strD} мм${partitionInfo}`;
         }
@@ -1103,6 +1178,7 @@ const Viewer3D = {
         const isDepth = b.depthField === fieldId || (b.depthLabelMatch && b.depthLabelMatch.some(m => label.includes(m))) || label.includes('глибина') || label.includes('depth');
         const isVertical = b.verticalField === fieldId || (label.includes('стійка') && label.includes('вертикал')) || label.includes('перегород');
         const isHorizontal = b.horizontalField === fieldId || (label.includes('стійка') && label.includes('горизон')) || label.includes('полиц');
+        const isModules = b.modulesField === fieldId || label.includes('модул');
 
         if (isWidth) {
             w = numVal;
@@ -1114,6 +1190,11 @@ const Viewer3D = {
             vCount = parseInt(numVal) || 0;
         } else if (isHorizontal) {
             hCount = parseInt(numVal) || 0;
+        } else if (isModules) {
+            const mVal = parseInt(numVal) || 0;
+            if (mVal > 1 && vCount === 0) {
+                vCount = mVal - 1;
+            }
         } else {
             return;
         }
